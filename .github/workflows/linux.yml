@@ -1,0 +1,25 @@
+name: Linux
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  x86_64:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build
+      run: |
+        ./dist/linux.sh
+
+    - name: Release
+      uses: marvinpinto/action-automatic-releases@latest
+      with:
+        automatic_release_tag: linux
+        title: Linux
+        files: bin/pumas-luajit
+        repo_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,6 @@
+build-*
+bin
+share
+src/pumas/data/igrf13.lua
+src/pumas/header/*.lua
+src/pumas/libpumas_extended.*
