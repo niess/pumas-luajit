@@ -1076,21 +1076,22 @@ do
     local pumas_state_ptr = ffi.typeof('struct pumas_state *')
     local pumas_state_t = ffi.typeof('struct pumas_state')
 
-    function copy (self, other)
+    function set (self, other)
         if other == nil then
             local nargs = (self ~= nil) and 1 or 0
-            error('copy: expected 2 arguments (self, other) but got '
-                  .. nargs .. '.', 2)
+            error("bad number of arguments to 'set' (expected 2, got "
+                  .. nargs .. ')', 2)
         end
 
         ffi.copy(self._c, other._c, ffi.sizeof(ctype))
+        return self
     end
 
     function mt:__index (k)
         if k == '__metatype' then
             return pumas_state_t
-        elseif k == 'copy' then
-            return copy
+        elseif k == 'set' then
+            return set
         else
             return self._c[k]
         end
@@ -2029,8 +2030,8 @@ do
         function mt.__index:set (coordinates)
             if coordinates == nil then
                 local nargs = (self ~= nil) and 1 or 0
-                error('set: expected 2 arguments (self, coordinates) \z
-                       but got ' .. nargs .. '.', 2)
+                error("bad number of arguments to 'set' (expected 2, got " ..
+                       nargs .. ')', 2)
             end
 
             if ffi.istype(double3_t, coordinates) then

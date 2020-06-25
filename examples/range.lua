@@ -25,7 +25,7 @@ local initial = State {
 local s1, s2, n = 0, 0, 10000
 local state = State()
 for i = 1, n do
-    state:copy(initial)
+    state:set(initial)
     if context:random() < 0.5 then
         state.charge = -1
     else

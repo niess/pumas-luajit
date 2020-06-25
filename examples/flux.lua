@@ -71,7 +71,7 @@ for ik = 1, 81 do
 
     local s, s2, n = 0, 0, 10000
     for i = 1, n do
-        state:copy(initial)
+        state:set(initial)
 
         -- Randomise the charge
         if context:random() < 0.5 then
