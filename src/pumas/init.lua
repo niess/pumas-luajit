@@ -2064,11 +2064,13 @@ do
                     raw_coordinates = M[raw_coordinates]()
                 end
                 get(raw_coordinates, self)
-                raw_coordinates:transform()
-                self = raw_coordinates
+            else
+                ffi.copy(raw_coordinates, self, ffi.sizeof(self))
             end
+            raw_coordinates:transform()
 
-            return ffi.new('double [3]', self.x, self.y, self.z)
+            return ffi.new('double [3]', raw_coordinates.x, raw_coordinates.y,
+                           raw_coordinates.z)
         end
 
         if transform ~= nil then
