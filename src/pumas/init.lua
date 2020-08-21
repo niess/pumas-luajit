@@ -2059,10 +2059,10 @@ do
         end
 
         function mt.__index:get ()
+            if type(raw_coordinates) == 'string' then
+                raw_coordinates = M[raw_coordinates]()
+            end
             if get ~= nil then
-                if type(raw_coordinates) == 'string' then
-                    raw_coordinates = M[raw_coordinates]()
-                end
                 get(raw_coordinates, self)
             else
                 ffi.copy(raw_coordinates, self, ffi.sizeof(self))
