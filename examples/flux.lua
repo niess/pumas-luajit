@@ -8,7 +8,7 @@ local deg = math.pi / 180
 local latitude, longitude = 45, 3
 local geoid = TopographyData()
 local air = GradientMedium('AirDry1Atm', 'exponential',
-                           'vertical', -1E+04, 0, 1.205E-03)
+                           'vertical', -1E+04, 0, 1.205)
 
 local top_altitude = 1600
 local geometry = EarthGeometry({air, geoid, top_altitude})

@@ -4,7 +4,7 @@ PUMAS.load('share/materials/standard')
 -- Build the geometry, an Earth fully covered with sea
 local media = {}
 media['Atmosphere'] = GradientMedium('AirDry1Atm', 'exponential', 'vertical',
-                                     -1E+04, 0, 1.205E-03)
+                                     -1E+04, 0, 1.205)
 media['Seabed'] = UniformMedium('StandardRock')
 media['Sea'] = UniformMedium('WaterLiquid')
 
