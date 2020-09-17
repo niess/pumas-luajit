@@ -1,12 +1,22 @@
+-------------------------------------------------------------------------------
+-- PUMAS wrapper
+-- Author: Valentin Niess
+-- License: LGPL-v3
+-------------------------------------------------------------------------------
 local ffi = require 'ffi'
 local jit = require 'jit'
-            require 'lfs'
-            require 'pumas.header.api'
-            require 'pumas.header.extensions'
-            require 'pumas.header.gull'
-            require 'pumas.header.turtle'
+require 'lfs'
+require 'pumas.header.api'
+require 'pumas.header.extensions'
+require 'pumas.header.gull'
+require 'pumas.header.turtle'
+
+local _M = {}
 
 
+-------------------------------------------------------------------------------
+-- Set some OS specific constants
+-------------------------------------------------------------------------------
 local PATHSEP, LINESEP, LIBEXT
 if jit.os == 'Windows' then
     PATHSEP = '\\'
@@ -19,8 +29,10 @@ else
 end
 
 
+-------------------------------------------------------------------------------
+-- Load the C libraries and their extensions, if not embedded in the runtime
+-------------------------------------------------------------------------------
 do
-    -- Load C extensions if not embeded in the runtime
     local ok = pcall(function () return ffi.C.pumas_error_initialise end)
     if not ok then
         local _, path = ... -- Lua 5.2
@@ -28,7 +40,7 @@ do
             path = debug.getinfo(1, 'S').source:sub(2) -- Lua 5.1
         end
         if (love ~= nil) and (lfs.attributes(path) == nil) then
-            -- Patch for Love when in-source
+            -- Patch for Love when the module is located in-source
             path = love.filesystem.getSource() .. path
         end
 
@@ -39,6 +51,9 @@ do
 end
 
 
+-------------------------------------------------------------------------------
+-- Import the table.new extension or set a patch
+-------------------------------------------------------------------------------
 do
     -- Try to import some useful extensions
     local ok = pcall(require, 'table.new')
@@ -49,6 +64,9 @@ do
 end
 
 
+-------------------------------------------------------------------------------
+-- Prototypes of some standard C functions
+-------------------------------------------------------------------------------
 ffi.cdef [[
 void * calloc(size_t, size_t);
 void free(void *);
@@ -59,8 +77,10 @@ void * malloc(size_t);
 -- XXX Uniformise error messages, e.g. with standard functions
 
 
--- Extended types
-local function strtype (self)
+-------------------------------------------------------------------------------
+-- Extended type function handling PUMAS metatypes as well
+-------------------------------------------------------------------------------
+local function metatype (self)
     local tp = self.__metatype
     if tp ~= nil then
         if type(tp) == 'string' then
@@ -73,28 +93,9 @@ local function strtype (self)
 end
 
 
-local function exists (path)
-    return lfs.attributes(path, "mode") ~= nil
-end
-
-
-local function makedirs (path)
-    local dir = ''
-    for s in path:gmatch(PATHSEP .. '?[^' .. PATHSEP .. ']+') do
-        dir = dir .. s
-        if not exists(dir) then
-            local ok, err = lfs.mkdir(dir)
-            if not ok then return nil, err end
-        end
-    end
-    return true
-end
-
-
-local M = {}
-
-
+-------------------------------------------------------------------------------
 -- Forward enumerations (XXX wrap with an enum metatype)
+-------------------------------------------------------------------------------
 do
     local decay_tags = {
         'DECAY_NONE', 'DECAY_PROCESS', 'DECAY_WEIGHT'
@@ -119,7 +120,7 @@ do
 
         for _, tag in ipairs(tags) do
             local index = ffi.C['PUMAS_' .. tag]
-            M[tag] = index
+            _M[tag] = index
             mapping[index] = tag
         end
 
@@ -128,26 +129,28 @@ do
         end
     end
 
-    M.decay_tostring = Tagger(decay_tags)
-    M.event_tostring = Tagger(event_tags)
-    M.scheme_tostring = Tagger(scheme_tags)
+    _M.decay_tostring = Tagger(decay_tags)
+    _M.event_tostring = Tagger(event_tags)
+    _M.scheme_tostring = Tagger(scheme_tags)
 end
 
 
--- Forward error messages
+-------------------------------------------------------------------------------
+-- Wrap calls to C libraries in order to forward error messages
+-------------------------------------------------------------------------------
 do
     ffi.C.pumas_error_initialise()
 
     local pattern = '[^}]+} (.*)$'
 
-    function M._ccall (func, ...)
+    function _M._ccall (func, ...)
         if func(...) ~= 0 then
             local msg = ffi.string(ffi.C.pumas_error_get())
             error(msg:match(pattern), 2)
         end
     end
 
-    function M._pccall (func, ...)
+    function _M._pccall (func, ...)
         if func(...) ~= 0 then
             local msg = ffi.string(ffi.C.pumas_error_get())
             return msg:match(pattern)
@@ -156,10 +159,13 @@ do
 end
 
 
--- Main table for managing shared data
+-------------------------------------------------------------------------------
+-- Main PUMAS table for managing global/shared data
+-------------------------------------------------------------------------------
 do
     local PUMAS = {}
 
+    -- Update the PUMAS table constants, e.g. on a library initialisation
     function update ()
         local particle = ffi.new('enum pumas_particle [1]')
         local lifetime = ffi.new('double [1]')
@@ -179,6 +185,7 @@ do
         end
     end
 
+    -- Set the PUMAS library version tag
     do
         local tag = ffi.C.pumas_tag()
         local major = math.floor(tag / 1000)
@@ -188,7 +195,9 @@ do
 
     -- XXX add an interface to tables & properties
     local mt = {__index = {}}
+    _M.PUMAS = setmetatable(PUMAS, mt)
 
+    -- Load material tables from a binary dump
     function mt.__index.load (path)
         if type(path) ~= 'string' then
             error("bad argument #1 to 'load' (expected a string, got a " ..
@@ -205,20 +214,22 @@ do
         local f = io.open(path, 'rb')
         if f == nil then error('could not read file ' .. path) end
         ffi.C.pumas_finalise()
-        local errmsg = M._pccall(ffi.C.pumas_load, f)
+        local errmsg = _M._pccall(ffi.C.pumas_load, f)
         update(PUMAS)
         f:close()
         if errmsg then error(errmsg, 2) end
     end
 
+    -- Dump the current material tables to a binary file
     function mt.__index.dump (path)
         local f = io.open(path, "wb")
         if f == nil then error('could not open file ' .. path) end
-        local errmsg = M._pccall(ffi.C.pumas_dump, f)
+        local errmsg = _M._pccall(ffi.C.pumas_dump, f)
         f:close()
         if errmsg then error(errmsg, 2) end
     end
 
+    -- Convert a Camel like name to a snaky one
     local snakify
     do
         local function f (w) return "_" .. w:lower() end
@@ -230,15 +241,18 @@ do
         end
     end
 
+    -- Text buffer used for building up multi-lines text contents
     local Text
     do
         local mt = {__index={}}
 
+        -- Add a line of text
         function mt.__index:push (s, ...)
             table.insert(self, string.format(s, ...))
             return self
         end
 
+        -- Pop the full text with OS specific line seps
         function mt.__index:pop ()
             return table.concat(self, LINESEP)
         end
@@ -246,6 +260,20 @@ do
         function Text () return setmetatable({}, mt) end
     end
 
+    -- Recursively create a new directory if it does not already exist
+    local function makedirs (path)
+        local dir = ''
+        for s in path:gmatch(PATHSEP .. '?[^' .. PATHSEP .. ']+') do
+            dir = dir .. s
+            if lfs.attributes(path, "mode") == nil then
+                local ok, err = lfs.mkdir(dir)
+                if not ok then return nil, err end
+            end
+        end
+        return true
+    end
+
+    -- Tabulate a set of materials
     function mt.__index.build (args)
         if type(args) ~= 'table' then
             error("bad argument #1 to 'build' (expected a table, got a " ..
@@ -386,7 +414,7 @@ do
                           "'")
                 end
 
-                local material = M.MATERIALS[name]
+                local material = _M.MATERIALS[name]
                 if not material then
                     raise('materials', "unknown material '" .. name .. "'")
                 end
@@ -417,13 +445,13 @@ do
         local composition = {}
         for _, material in pairs(materials) do
             if material.__metatype ~= 'material' then
-                raise('materials', "expected a 'Material', got a " ..
-                      strtype(material))
+                raise('materials', 'expected a material, got a ' ..
+                      metatype(material))
             end
             for _, v in pairs(material.composition) do
                 local name = v[1]
                 if not composition[name] then
-                    local element = M.ELEMENTS[name]
+                    local element = _M.ELEMENTS[name]
                     if not element then
                         raise('materials', "unknown element '" .. name .. "'")
                     end
@@ -586,18 +614,18 @@ do
 
         restore_materials()
     end
-
-    M.PUMAS = setmetatable(PUMAS, mt)
 end
 
 
+-------------------------------------------------------------------------------
 -- The atomic Element metatype
+-------------------------------------------------------------------------------
 do
     local mt = {__index = {}}
 
     mt.__index.__metatype = 'element'
 
-    function M.Element (Z, A, I)
+    function _M.Element (Z, A, I)
         local index, tp
         if type(Z) ~= 'number' then index, tp = 1, type(Z) end
         if type(A) ~= 'number' then index, tp = 2, type(A) end
@@ -615,23 +643,26 @@ do
         return setmetatable(self, mt)
     end
 
+    -- Load the elements data
     local elements = require 'pumas.data.elements'
 
     -- The elements table
-    M.ELEMENTS = require 'pumas.data.elements'
-    for k, v in pairs(M.ELEMENTS) do
-        M.ELEMENTS[k] = setmetatable(v, mt)
+    _M.ELEMENTS = require 'pumas.data.elements'
+    for k, v in pairs(_M.ELEMENTS) do
+        _M.ELEMENTS[k] = setmetatable(v, mt)
     end
 end
 
 
+-------------------------------------------------------------------------------
 -- The Material metatype
+-------------------------------------------------------------------------------
 do
     local mt = {__index = {}}
 
     mt.__index.__metatype = 'material'
 
-    function M.Material (args)
+    function _M.Material (args)
         if type(args) ~= 'table' then
             error("bad argument #1 to 'Material' (expected a table, got a " ..
                   type(args) .. ')', 2)
@@ -672,7 +703,7 @@ do
             local composition, norm = {}, 0
             for symbol, count in formula:gmatch('(%u%l?)(%d*)') do
                 count = tonumber(count) or 1
-                local wi = count * M.ELEMENTS[symbol].A
+                local wi = count * _M.ELEMENTS[symbol].A
                 table.insert(composition, {symbol, wi})
                 norm = norm + wi
             end
@@ -692,7 +723,7 @@ do
         local ZoA, mee = 0, 0
         for _, value in ipairs(self.composition) do
             local symbol, wi = unpack(value)
-            local e = M.ELEMENTS[symbol]
+            local e = _M.ELEMENTS[symbol]
             if e == nil then
                 error("bad element '" .. symbol .. "' to 'Material'", 2)
             end
@@ -782,15 +813,17 @@ do
     end
 
     -- The materials table
-    M.MATERIALS = require 'pumas.data.materials'
-    for k, v in pairs(M.MATERIALS) do
+    _M.MATERIALS = require 'pumas.data.materials'
+    for k, v in pairs(_M.MATERIALS) do
         v.density = v.density * 1E+03 -- XXX use kg / m^3
-        M.MATERIALS[k] = M.Material(v)
+        _M.MATERIALS[k] = _M.Material(v)
     end
 end
 
 
--- Inverse mapping for media
+-------------------------------------------------------------------------------
+-- Inverse mapping between C media and their Lua wrappers
+-------------------------------------------------------------------------------
 local function addressof (ptr)
     return tonumber(ffi.cast('uintptr_t', ptr))
 end
@@ -798,7 +831,9 @@ end
 local media_table = {}
 
 
+-------------------------------------------------------------------------------
 -- The Monte Carlo context metatype
+-------------------------------------------------------------------------------
 -- XXX Lazy data set / get in order to handle re-initialisation of the
 -- PUMAS library (& MT)
 do
@@ -808,7 +843,7 @@ do
 
     function mt:__index (k)
         if k == '__metatype' then
-            return ctype
+            return 'context'
         elseif k == 'geometry' then
             return self._geometry
         elseif k == 'recorder' then
@@ -854,31 +889,31 @@ do
         function mt:__newindex (k, v)
             if k == 'distance_max' then
                 if v == nil then
-                    event_unset(self, M.EVENT_LIMIT_DISTANCE)
+                    event_unset(self, _M.EVENT_LIMIT_DISTANCE)
                     v = 0
                 else
-                    event_set(self, M.EVENT_LIMIT_DISTANCE)
+                    event_set(self, _M.EVENT_LIMIT_DISTANCE)
                 end
             elseif k == 'grammage_max' then
                 if v == nil then
-                    event_unset(self, M.EVENT_LIMIT_GRAMMAGE)
+                    event_unset(self, _M.EVENT_LIMIT_GRAMMAGE)
                     v = 0
                 else
-                    event_set(self, M.EVENT_LIMIT_GRAMMAGE)
+                    event_set(self, _M.EVENT_LIMIT_GRAMMAGE)
                 end
             elseif k == 'kinetic_limit' then
                 if v == nil then
-                    event_unset(self, M.EVENT_LIMIT_KINETIC)
+                    event_unset(self, _M.EVENT_LIMIT_KINETIC)
                     v = 0
                 else
-                    event_set(self, M.EVENT_LIMIT_KINETIC)
+                    event_set(self, _M.EVENT_LIMIT_KINETIC)
                 end
             elseif k == 'time_max' then
                 if v == nil then
-                    event_unset(self, M.EVENT_LIMIT_TIME)
+                    event_unset(self, _M.EVENT_LIMIT_TIME)
                     v = 0
                 else
-                    event_set(self, M.EVENT_LIMIT_TIME)
+                    event_set(self, _M.EVENT_LIMIT_TIME)
                 end
             elseif k == 'geometry' then
                 local current_geometry = rawget(self, '_geometry')
@@ -888,9 +923,9 @@ do
                     ffi.C.pumas_geometry_destroy(self._c)
                 end
 
-                if (v ~= nil) and (v.__metatype ~= pumas_geometry_t) then
-                    error('bad type (expected a <struct pumas_geometry>, \z
-                           got a ' .. strtype(v) .. ').')
+                if (v ~= nil) and (v.__metatype ~= 'geometry') then
+                    error('bad type (expected a geometry, \z
+                           got a ' .. metatype(v) .. ').')
                 end
 
                 rawset(self, '_geometry', v)
@@ -909,9 +944,9 @@ do
                     rawset(self, '_recorder', nil)
                     self._c.recorder = nil
                 else
-                    if v.__metatype ~= pumas_recorder_t then
-                        error('bad type (expected a <struct pumas_recorder>, \z
-                               got a ' .. strtype(v) .. ').', 2)
+                    if v.__metatype ~= 'recorder' then
+                        error('bad type (expected a recorder, \z
+                               got a ' .. metatype(v) .. ').', 2)
                     end
                     rawset(self, '_recorder', v)
                     self._c.recorder = v._c
@@ -920,7 +955,7 @@ do
             elseif k == 'geometry_callback' then
                 local user_data = ffi.cast('struct pumas_user_data *',
                                            self._c.user_data)
-                local wrapped_state = M.State()
+                local wrapped_state = _M.State()
                 user_data.geometry.callback =
                     function (geometry, state, medium, step)
                         local wrapped_medium = media_table[addressof(medium)]
@@ -945,9 +980,9 @@ do
                   .. nargs .. ')', 2)
         end
 
-        if state.__metatype ~= pumas_state_t then
+        if state.__metatype ~= 'state' then
             error("bad argument #2 to 'transport' (expected a \z
-                   <struct pumas_state> , got a " .. strtype(state) .. ')',
+                   state , got a " .. metatype(state) .. ')',
                   2)
         end
 
@@ -955,7 +990,7 @@ do
         ffi.C.pumas_state_extended_reset(extended_state, self._c)
 
         self._geometry:_update(self)
-        M._ccall(ffi.C.pumas_transport, self._c, state._c, self._cache.event,
+        _M._ccall(ffi.C.pumas_transport, self._c, state._c, self._cache.event,
                  self._cache.media)
         local media = table.new(2, 0)
 
@@ -974,10 +1009,9 @@ do
                   .. nargs .. ')', 2)
         end
 
-        if state.__metatype ~= pumas_state_t then
+        if state.__metatype ~= 'state' then
             error("bad argument #2 to 'medium' (expected a \z
-                   <struct pumas_state> , got a " .. strtype(state) .. ')',
-                  2)
+                   state , got a " .. metatype(state) .. ')', 2)
         end
 
         local extended_state = ffi.cast(pumas_state_extended_ptr, state._c)
@@ -995,9 +1029,9 @@ do
     end
 
     local function random (self, n)
-        if (type(self) ~= 'table') or (self.__metatype ~= ctype) then
-            error("bad argument #1 to 'random' (expected a <struct \z
-                   pumas_context>, got a " .. strtype(self) .. ')', 2)
+        if (type(self) ~= 'table') or (self.__metatype ~= 'context') then
+            error("bad argument #1 to 'random' (expected a context, \z
+                   got a " .. metatype(self) .. ')', 2)
         end
 
         local c = rawget(self, '_c')
@@ -1007,7 +1041,7 @@ do
         else
             if type(n) ~= 'number' then
                 error("bad argument #2 to 'random' (expected a number, got a "
-                      .. strtype(n) .. ')')
+                      .. metatype(n) .. ')')
             end
             local t = table.new(n, 0)
             for i = 1, n do
@@ -1017,14 +1051,14 @@ do
         end
     end
 
-    function M.Context (args)
+    function _M.Context (args)
         if args and type(args) ~= 'table' then
-            error('bad type for argument #1 (expected a table, got a ' ..
-                  type(args) .. ')')
+            error("bad argument #1 to 'Context' (expected a table, got a " ..
+                  metatype(args) .. ')')
         end
 
         local ptr = ffi.new('struct pumas_context *[1]')
-        M._ccall(ffi.C.pumas_context_create, ptr,
+        _M._ccall(ffi.C.pumas_context_create, ptr,
                 ffi.sizeof('struct pumas_user_data'))
         local c = ptr[0]
         ffi.gc(c, function () ffi.C.pumas_context_destroy(ptr) end)
@@ -1068,7 +1102,9 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- The Monte Carlo state metatype
+-------------------------------------------------------------------------------
 do
     local mt = {__index = {}}
 
@@ -1089,7 +1125,7 @@ do
 
     function mt:__index (k)
         if k == '__metatype' then
-            return pumas_state_t
+            return 'state'
         elseif k == 'set' then
             return set
         else
@@ -1102,7 +1138,7 @@ do
         self._c[k] = v
     end
 
-    function M.State (args)
+    function _M.State (args)
         local c = ffi.cast(pumas_state_ptr, ffi.C.calloc(1, ffi.sizeof(ctype)))
         ffi.gc(c, ffi.C.free)
 
@@ -1117,7 +1153,9 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- The base medium incomplete metatype
+-------------------------------------------------------------------------------
 -- XXX Set materials from 'Material' object or string ref. MATERIALS
 local BaseMedium = {}
 do
@@ -1125,7 +1163,7 @@ do
 
     function BaseMedium:__index (k, errmsg)
         if k == '__metatype' then
-            return ctype
+            return 'medium'
         elseif k == 'material' then
             return self._material
         else
@@ -1142,7 +1180,7 @@ do
 
         if type(v) == 'string' then
             local index = ffi.new('int [1]')
-            M._ccall(ffi.C.pumas_material_index, v, index)
+            _M._ccall(ffi.C.pumas_material_index, v, index)
             return index[0]
         elseif type(v) == 'number' then
             if (n == 1) and (v ~= 0) then
@@ -1155,7 +1193,7 @@ do
             return v
         else
             error("bad type to 'material' (expected a number or string, got \z
-                   a " .. type(v) .. ')', 3)
+                   a " .. metatype(v) .. ')', 3)
         end
     end
 
@@ -1181,7 +1219,9 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- The transparent medium
+-------------------------------------------------------------------------------
 do
     local errmsg = "'TransparentMedium' has no member named '"
     local mt = {}
@@ -1211,11 +1251,13 @@ do
 
     media_table[addressof(m._c)] = m
 
-    M.MEDIUM_TRANSPARENT = m
+    _M.MEDIUM_TRANSPARENT = m
 end
 
 
+-------------------------------------------------------------------------------
 -- The uniform medium metatype
+-------------------------------------------------------------------------------
 do
     local errmsg = "'UniformMedium' has no member named '"
     local mt = {}
@@ -1243,7 +1285,7 @@ do
     local ctype = ffi.typeof('struct pumas_medium_uniform')
     local ctype_ptr = ffi.typeof('struct pumas_medium_uniform *')
 
-    function M.UniformMedium (material, density, magnet)
+    function _M.UniformMedium (material, density, magnet)
         if material == nil then
             error("missing arguments to 'UniformMedium' (expected 1 or \z
                    more, got 0)", 2)
@@ -1252,7 +1294,7 @@ do
         local self, index = BaseMedium.new(ctype, ctype_ptr, material)
 
         if density == nil then
-            density = M.MATERIALS[material].density -- XXX check if Material
+            density = _M.MATERIALS[material].density -- XXX check if Material
         end
 
         ffi.C.pumas_medium_uniform_initialise(self._c, index, density, magnet)
@@ -1262,7 +1304,9 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- The gradient medium metatype
+-------------------------------------------------------------------------------
 do
     local errmsg = "'GradientMedium' has no member named "
 
@@ -1270,8 +1314,8 @@ do
 
     local function parse_type (v)
         if type(v) ~= 'string' then
-            error("bad type to 'type' (expected a string, got a " .. type(v) ..
-                  ')', 3)
+            error("bad type to 'type' (expected a string, got a " .. 
+                  metatype(v) .. ')', 3)
         end
         local tag = v:lower()
         if tag == 'linear' then
@@ -1308,7 +1352,7 @@ do
     local ctype = ffi.typeof('struct pumas_medium_gradient')
     local ctype_ptr = ffi.typeof('struct pumas_medium_gradient *')
 
-    function M.GradientMedium (material, type_, axis, value, position0,
+    function _M.GradientMedium (material, type_, axis, value, position0,
                                density0, magnet)
         if density0 == nil then
             local args = {material, type_, axis, value, position0}
@@ -1333,10 +1377,12 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- The base geometry metatype
-M.BaseGeometry = {__index = {}}
+-------------------------------------------------------------------------------
+_M.BaseGeometry = {__index = {}} -- XXX export this? or not?
 do
-    function M.BaseGeometry:new ()
+    function _M.BaseGeometry:new ()
         local obj = {}
         obj._daughters = {}
         obj._mothers = {}
@@ -1344,7 +1390,7 @@ do
         return setmetatable(obj, self)
     end
 
-    function M.BaseGeometry:clone ()
+    function _M.BaseGeometry:clone ()
         local mt = {__index = {}}
         mt.new = self.new
         mt.clone = self.clone
@@ -1354,9 +1400,7 @@ do
         return mt
     end
 
-    local pumas_geometry_t = ffi.typeof('struct pumas_geometry')
-
-    M.BaseGeometry.__index.__metatype = pumas_geometry_t
+    _M.BaseGeometry.__index.__metatype = 'geometry'
 
     local function walk_up (geometry, f)
         for mother, count in pairs(geometry._mothers) do
@@ -1365,12 +1409,12 @@ do
         end
     end
 
-    function M.BaseGeometry.__index:_invalidate ()
+    function _M.BaseGeometry.__index:_invalidate ()
         walk_up(self, function (g) g._valid = false end)
         self._valid = false
     end
 
-    function M.BaseGeometry.__index:insert (...)
+    function _M.BaseGeometry.__index:insert (...)
         local args, index, geometry, arg1 = {...}
         if #args == 0 then
                 error('missing argument(s) (expected 1 to 2, got 0)', 2)
@@ -1383,10 +1427,9 @@ do
             index, geometry, arg1 = 1, args[1], 1
         end
 
-        if geometry.__metatype ~= pumas_geometry_t then
+        if geometry.__metatype ~= 'geometry' then
             error('bad argument #' .. arg1 .. "to 'insert' (expected a \z
-                   <struct pumas_geometry>, got a " .. strtype(geometry) ..
-                   ')', 2)
+                   geometry, got a " .. metatype(geometry) .. ')', 2)
         end
 
         -- Invalidate the geometry and its parents
@@ -1414,7 +1457,7 @@ do
         table.insert(self._daughters, index, geometry)
     end
 
-    function M.BaseGeometry.__index:remove (index)
+    function _M.BaseGeometry.__index:remove (index)
         local geometry = table.remove(self._daughters, index)
         if geometry == nil then return end
 
@@ -1441,7 +1484,7 @@ do
         end
     end
 
-    function M.BaseGeometry.__index:_update (context)
+    function _M.BaseGeometry.__index:_update (context)
         ffi.C.pumas_geometry_reset(context._c)
 
         if (ffi.C.pumas_geometry_get(context._c) ~= nil) and self._valid then
@@ -1456,42 +1499,39 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- The infinite geometry metatype
+-------------------------------------------------------------------------------
 do
-    local mt = {}
-
-    local ctype = ffi.typeof('struct pumas_geometry_infinite')
-    local ctype_ptr = ffi.typeof('struct pumas_geometry_infinite *')
-    local pumas_geometry_ptr = ffi.typeof('struct pumas_geometry *')
-    local pumas_medium_t = ffi.typeof('struct pumas_medium')
-    local pumas_medium_ptr = ffi.typeof('struct pumas_medium *')
+    local InfiniteGeometry = {}
 
     local function new (self)
-        local c = ffi.cast(ctype_ptr, ffi.C.calloc(1, ffi.sizeof(ctype)))
+        local c = ffi.cast('struct pumas_geometry_infinite *',
+            ffi.C.calloc(1, ffi.sizeof('struct pumas_geometry_infinite')))
         c.base.get = ffi.C.pumas_geometry_infinite_get
         c.base.destroy = ffi.C.free
         if self._medium ~= nil then
-            c.medium = ffi.cast(pumas_medium_ptr, self._medium._c)
+            c.medium = ffi.cast('struct pumas_medium *', self._medium._c)
         end
-        return ffi.cast(pumas_geometry_ptr, c)
+        return ffi.cast('struct pumas_geometry *', c)
     end
 
-    function mt:__index (k)
+    function InfiniteGeometry:__index (k)
         if k == 'medium' then
             return self._medium
         elseif k == '_new' then
             return new
         else
-            return M.BaseGeometry.__index[k]
+            return _M.BaseGeometry.__index[k]
         end
     end
 
-    function mt:__newindex (k, v)
+    function InfiniteGeometry:__newindex (k, v)
         if k == 'medium' then
             if v == self._medium then return end
-            if v.__metatype ~= pumas_medium_t then
-                error('bad type (expected a <struct pumas_medium>, got a '
-                      .. strtype(medium) .. ')', 2)
+            if v.__metatype ~= 'medium' then
+                error('bad type (expected a medium, got a ' ..
+                      metatype(medium) .. ')', 2)
             end
             rawset(self,'_medium', v)
             self._invalidate()
@@ -1500,25 +1540,27 @@ do
         end
     end
 
-    function M.InfiniteGeometry (medium)
-        if (medium ~= nil) and (medium.__metatype ~= pumas_medium_t) then
-            error('bad type for argument #1 (expected a <struct pumas_medium>\z
-                   , got a ' .. strtype(medium) .. ')', 2)
+    function _M.InfiniteGeometry (medium)
+        if (medium ~= nil) and (medium.__metatype ~= 'medium') then
+            error("bad argument #1 to 'InfiniteGeometry' (expected a medium\z
+                   , got a " .. metatype(medium) .. ')', 2)
         end
 
-        local self = M.BaseGeometry:new()
+        local self = _M.BaseGeometry:new()
         self._medium = medium
 
-        return setmetatable(self, mt)
+        return setmetatable(self, InfiniteGeometry)
     end
 end
 
 
+-------------------------------------------------------------------------------
 -- The topography data metatype
+-------------------------------------------------------------------------------
 do
     local mt = {__index={}}
 
-    mt.__index.__metatype = 'TopographyData'
+    mt.__index.__metatype = 'topographydata'
 
     function mt.__index:elevation (x, y)
         if y == nil then
@@ -1532,7 +1574,7 @@ do
         else
             local z = ffi.new('double [1]')
             local inside = ffi.new('int [1]')
-            M._ccall(self._elevation, self._c, x, y, z, inside)
+            _M._ccall(self._elevation, self._c, x, y, z, inside)
             if inside[0] == 1 then
                 return z[0]
             else
@@ -1566,7 +1608,7 @@ do
     mt_flat.__index._stepper_add = ffi.C.turtle_stepper_add_flat
     for k, v in pairs(mt.__index) do mt_flat.__index[k] = v end
 
-    function M.TopographyData (data)
+    function _M.TopographyData (data)
         if data == nil then data = 0 end
 
         local self = {}
@@ -1578,14 +1620,14 @@ do
                 error('TopographyData: ' .. errmsg, 2)
             elseif mode == 'directory' then
                 ptr = ffi.new('struct turtle_stack *[1]')
-                M._ccall(ffi.C.turtle_stack_create, ptr, data, 0, nil, nil)
+                _M._ccall(ffi.C.turtle_stack_create, ptr, data, 0, nil, nil)
                 c = ptr[0]
                 ffi.gc(c, function () ffi.C.turtle_stack_destroy(ptr) end)
-                M._ccall(ffi.C.turtle_stack_load, c)
+                _M._ccall(ffi.C.turtle_stack_load, c)
                 metatype = mt_stack
             else
                 ptr = ffi.new('struct turtle_map *[1]')
-                M._ccall(ffi.C.turtle_map_load, ptr, data)
+                _M._ccall(ffi.C.turtle_map_load, ptr, data)
                 c = ptr[0]
                 ffi.gc(c, function () ffi.C.turtle_map_destroy(ptr) end)
                 metatype = mt_map
@@ -1604,7 +1646,9 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- The Earth geometry metatype
+-------------------------------------------------------------------------------
 do
     local mt = {}
 
@@ -1621,21 +1665,21 @@ do
         c.media = self._media
         c.n_layers = #self._layers
 
-        M._ccall(ffi.C.turtle_stepper_create, c.stepper)
+        _M._ccall(ffi.C.turtle_stepper_create, c.stepper)
         for i, layer in ipairs(self._layers) do
             local _, data, offset = unpack(layer)
 
             if i > 1 then
-                M._ccall(ffi.C.turtle_stepper_add_layer, c.stepper[0])
+                _M._ccall(ffi.C.turtle_stepper_add_layer, c.stepper[0])
             end
 
             for j = #data, 1, -1 do
                 local datum = data[j]
                 if type(datum._elevation) == 'number' then
-                    M._ccall(datum._stepper_add, c.stepper[0],
+                    _M._ccall(datum._stepper_add, c.stepper[0],
                             datum._elevation + offset)
                 else
-                    M._ccall(datum._stepper_add, c.stepper[0],
+                    _M._ccall(datum._stepper_add, c.stepper[0],
                             datum._c, offset)
                 end
             end
@@ -1659,7 +1703,7 @@ do
                 magnet = self._magnet
             end
 
-            local errmsg = M._pccall(
+            local errmsg = _M._pccall(
                 ffi.C.gull_snapshot_create, c.magnet.snapshot, magnet,
                 matches[1], matches[2], matches[3])
             if self._magnet == true then os.remove(magnet) end
@@ -1681,7 +1725,7 @@ do
         elseif k == '_new' then
             return new
         else
-            return M.BaseGeometry.__index[k]
+            return _M.BaseGeometry.__index[k]
         end
     end
 
@@ -1703,7 +1747,7 @@ do
         end
     end
 
-    function M.EarthGeometry (...)
+    function _M.EarthGeometry (...)
         local args, layers = {...}, {}
         for _, layer in ipairs(args) do
             local medium, data, offset = unpack(layer)
@@ -1713,7 +1757,7 @@ do
             -- XXX Add offset topography data?
             -- XXX Invert the order of layers?
 
-            if data.__metatype == 'TopographyData' then
+            if data.__metatype == 'topographydata' then
                 data = {data}
             end
 
@@ -1733,7 +1777,7 @@ do
             end
         end
 
-        local self = M.BaseGeometry:new()
+        local self = _M.BaseGeometry:new()
         self._media = media
         self._layers = layers
 
@@ -1742,7 +1786,9 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- The polytope geometry metatype
+-------------------------------------------------------------------------------
 do
     local mt = {}
 
@@ -1765,7 +1811,7 @@ do
         elseif (k == 'insert') or (k == 'remove') then
             return
         else
-            return M.BaseGeometry.__index[k]
+            return _M.BaseGeometry.__index[k]
         end
     end
 
@@ -1786,15 +1832,15 @@ do
                   .. ' (expected 2 or 3, got ' .. nargs .. ')', depth + 2)
         end
 
-        if (medium ~= nil) and (medium.__metatype ~= pumas_medium_t) then
+        if (medium ~= nil) and (medium.__metatype ~= 'medium') then
             error('bad argument #1 for Polytope ' .. get_tag(depth, index)
-                  .. ' (expected a <struct pumas_medium>, got a ' ..
-                  strtype(medium) .. ')', depth + 2)
+                  .. ' (expected a medium, got a ' .. metatype(medium) .. ')',
+                  depth + 2)
         end
 
         if type(data) ~= 'table' then
             error('bad argument #2 for Polytope ' .. get_tag(depth, index)
-                  .. ' (expected a table, got a ' .. strtype(data) .. ')',
+                  .. ' (expected a table, got a ' .. metatype(data) .. ')',
                   depth + 2)
         end
 
@@ -1807,7 +1853,7 @@ do
 
         if (daughters ~= nil) and (type(daughters) ~= 'table') then
             error('bad argument #3 for Polytope ' .. get_tag(depth, index)
-                  .. ' (expected a table, got a ' .. strtype(daughters) .. ')',
+                  .. ' (expected a table, got a ' .. metatype(daughters) .. ')',
                   depth + 2)
         end
 
@@ -1871,13 +1917,13 @@ do
         return mother
     end
 
-    function M.PolytopeGeometry (args, frame)
-        local self = M.BaseGeometry:new()
+    function _M.PolytopeGeometry (args, frame)
+        local self = _M.BaseGeometry:new()
         self._refs = {}
 
         if frame ~= nil then
-            point = M.CartesianPoint()
-            vector = M.CartesianVector()
+            point = _M.CartesianPoint()
+            vector = _M.CartesianVector()
         end
 
         build_polytopes(args, frame, self._refs, 1, 0)
@@ -1892,7 +1938,9 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- The recorder metatype
+-------------------------------------------------------------------------------
 do
     local errmsg = 'metatype Recorder has no member named '
     local mt = {}
@@ -1902,7 +1950,7 @@ do
 
         function mt:__index (k)
             if k == '__metatype' then
-                return ctype
+                return 'recorder'
             elseif k == 'period' then
                 return self._c.period
             elseif k == 'record' then
@@ -1917,7 +1965,7 @@ do
         local state_size = ffi.sizeof('struct pumas_state')
         function mt:__newindex (k, v)
             if k == 'record' then
-                local wrapped_state = M.State()
+                local wrapped_state = _M.State()
                 rawget(self, '_c').record =
                     function (context, state, medium, event)
                         local wrapped_medium = media_table[addressof(medium)]
@@ -1937,9 +1985,9 @@ do
         print(event, medium, state) -- XXX pretty print
     end
 
-    function M.Recorder (callback, period)
+    function _M.Recorder (callback, period)
         local ptr = ffi.new('struct pumas_recorder *[1]')
-        M._ccall(ffi.C.pumas_recorder_create, ptr, 0)
+        _M._ccall(ffi.C.pumas_recorder_create, ptr, 0)
         local c = ptr[0]
         ffi.gc(c, function () ffi.C.pumas_recorder_destroy(ptr) end)
 
@@ -1953,11 +2001,13 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- Linear transforms
+-------------------------------------------------------------------------------
 do
     local mt = {__index = {}}
 
-    mt.__index.__metatype = ffi.typeof('struct pumas_coordinates_transform')
+    mt.__index.__metatype = 'transform'
 
     function mt.__index:from_euler (axis, ...)
         if axis == nil then
@@ -2001,11 +2051,13 @@ do
         error('from_euler: not implemented', 2)
     end
 
-    M.Transform = ffi.metatype('struct pumas_coordinates_transform', mt)
+    _M.Transform = ffi.metatype('struct pumas_coordinates_transform', mt)
 end
 
 
+-------------------------------------------------------------------------------
 -- The Coordinates metatypes
+-------------------------------------------------------------------------------
 do
     local cartesian_point_t = ffi.typeof('struct pumas_cartesian_point')
     local cartesian_vector_t = ffi.typeof('struct pumas_cartesian_vector')
@@ -2017,7 +2069,7 @@ do
     local function CoordinatesType (ctype, setter, get, transform)
         local mt = {__index = {}}
 
-        mt.__index.__metatype = 'CoordinatesType'
+        mt.__index.__metatype = 'coordinates'
 
         local double3_t = ffi.typeof('double [3]')
         local raw_coordinates
@@ -2036,7 +2088,7 @@ do
 
             if ffi.istype(double3_t, coordinates) then
                 if type(raw_coordinates) == 'string' then
-                    raw_coordinates = M[raw_coordinates]()
+                    raw_coordinates = _M[raw_coordinates]()
                 end
                 raw_coordinates.x = coordinates[0]
                 raw_coordinates.y = coordinates[1]
@@ -2060,7 +2112,7 @@ do
 
         function mt.__index:get ()
             if type(raw_coordinates) == 'string' then
-                raw_coordinates = M[raw_coordinates]()
+                raw_coordinates = _M[raw_coordinates]()
             end
             if get ~= nil then
                 get(raw_coordinates, self)
@@ -2088,7 +2140,7 @@ do
         return ffi.metatype(ctype, mt)
     end
 
-    M.CartesianPoint = CoordinatesType(cartesian_point_t,
+    _M.CartesianPoint = CoordinatesType(cartesian_point_t,
         function (ct)
             if ct == geodetic_point_t then
                 return ffi.C.pumas_coordinates_cartesian_point_from_geodetic
@@ -2099,7 +2151,7 @@ do
         nil,
         ffi.C.pumas_coordinates_cartesian_point_transform)
 
-    M.CartesianVector = CoordinatesType(cartesian_vector_t,
+    _M.CartesianVector = CoordinatesType(cartesian_vector_t,
         function (ct)
             if ct == horizontal_vector_t then
                 return ffi.C.pumas_coordinates_cartesian_vector_from_horizontal
@@ -2110,7 +2162,7 @@ do
         nil,
         ffi.C.pumas_coordinates_cartesian_vector_transform)
 
-    M.GeodeticPoint = CoordinatesType(geodetic_point_t,
+    _M.GeodeticPoint = CoordinatesType(geodetic_point_t,
         function (ct)
             if ct == cartesian_point_t then
                 return ffi.C.pumas_coordinates_geodetic_point_from_cartesian
@@ -2120,7 +2172,7 @@ do
         end,
         ffi.C.pumas_coordinates_cartesian_point_from_geodetic)
 
-    M.HorizontalVector = CoordinatesType(horizontal_vector_t,
+    _M.HorizontalVector = CoordinatesType(horizontal_vector_t,
         function (ct)
             if ct == cartesian_vector_t then
                 return ffi.C.pumas_coordinates_horizontal_vector_from_cartesian
@@ -2131,7 +2183,7 @@ do
         ffi.C.pumas_coordinates_cartesian_vector_from_horizontal,
         ffi.C.pumas_coordinates_horizontal_vector_transform)
 
-    M.SphericalPoint = CoordinatesType(spherical_point_t,
+    _M.SphericalPoint = CoordinatesType(spherical_point_t,
         function (ct)
             if ct == cartesian_point_t then
                 return ffi.C.pumas_coordinates_spherical_point_from_cartesian
@@ -2142,7 +2194,7 @@ do
         ffi.C.pumas_coordinates_cartesian_point_from_spherical,
         ffi.C.pumas_coordinates_spherical_point_transform)
 
-    M.SphericalVector = CoordinatesType(spherical_vector_t,
+    _M.SphericalVector = CoordinatesType(spherical_vector_t,
         function (ct)
             if ct == cartesian_vector_t then
                 return ffi.C.pumas_coordinates_spherical_vector_from_cartesian
@@ -2155,12 +2207,14 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- Local Earth frames
+-------------------------------------------------------------------------------
 do
     local pumas_cartesian_point_t = ffi.typeof('struct pumas_cartesian_point')
     local pumas_geodetic_point_t = ffi.typeof('struct pumas_geodetic_point')
 
-    function M.LocalFrame (origin)
+    function _M.LocalFrame (origin)
         if origin == nil then
             error('LocalFrame: expected 1 argument (origin,) but got 0.', 2)
         end
@@ -2169,16 +2223,16 @@ do
         if ffi.istype(pumas_geodetic_point_t, origin) then
             geodetic = origin
         else
-            geodetic = M.GeodeticPoint():set(origin)
+            geodetic = _M.GeodeticPoint():set(origin)
         end
 
         if (not ffi.istype(pumas_cartesian_point_t, origin)) or
            (origin.frame ~= nil) then
-            origin = M.CartesianPoint():set(origin)
+            origin = _M.CartesianPoint():set(origin)
                                        :transform(nil)
         end
 
-        local frame = M.Transform()
+        local frame = _M.Transform()
         ffi.C.pumas_coordinates_frame_initialise_local(
             frame, origin, geodetic)
 
@@ -2187,9 +2241,11 @@ do
 end
 
 
+-------------------------------------------------------------------------------
 -- Free sky muons flux models
+-------------------------------------------------------------------------------
 do
-    M.MUON_MASS = 0.10565839
+    _M.MUON_MASS = 0.10565839
 
     local function ChargeRatio (charge_ratio)
         return function (charge)
@@ -2208,7 +2264,7 @@ do
 
         return function (kinetic, cos_theta, charge)
             if cos_theta < 0 then return 0 end
-            local Emu = kinetic + M.MUON_MASS
+            local Emu = kinetic + _M.MUON_MASS
             local ec = 1.1 * Emu * cos_theta
             local rpi = 1 + ec / 115
             local rK = 1 + ec / 850
@@ -2237,7 +2293,7 @@ do
         return function (kinetic, cos_theta, charge)
             local cs = cos_theta_star(cos_theta)
             if cs < 0 then return 0 end
-            local Emu = kinetic + M.MUON_MASS
+            local Emu = kinetic + _M.MUON_MASS
             return math.pow(1 + 3.64 / (Emu * math.pow(cs, 1.29)), -gamma) *
                    gaisser(kinetic, cs, charge)
         end
@@ -2284,14 +2340,14 @@ do
         return function (kinetic, cos_theta, charge)
             local cs = cos_theta_star(cos_theta)
             if cs < 0 then return 0 end
-            local Emu = kinetic + M.MUON_MASS
+            local Emu = kinetic + _M.MUON_MASS
 
             -- Calculate the effective initial energy, EI, and its derivative
             local EI, dEIdEf
             do
                 local X = mass_overburden(cos_theta) - X0
                 local ebx = math.exp(b * X)
-                local Ef = kinetic + M.MUON_MASS
+                local Ef = kinetic + _M.MUON_MASS
                 local Ei = ((a + b * Ef) * ebx - a) / b
 
                 local sE = 0.5 * c2 * (Ei * Ei - Ef * Ef) + c1 * (Ei - Ef) +
@@ -2320,14 +2376,14 @@ do
             -- Calculate the survival factor (W)
             local d0 = path_length(cos_theta)
             local ctau = 658.65
-            local W = math.exp(-d0 / ctau * M.MUON_MASS / EI)
+            local W = math.exp(-d0 / ctau * _M.MUON_MASS / EI)
 
             -- Return the modified Gaisser's flux
             return dEIdEf * W * gaisser(EI, cs, charge)
         end
     end
 
-    function M.MuonFlux (model, options)
+    function _M.MuonFlux (model, options)
         if model == nil then
             error("missing arguments to 'MuonFlux' (expected 1 or 2, got 0)", 2)
         end
@@ -2386,7 +2442,10 @@ do
 end
 
 
-return setmetatable(M, {
+-------------------------------------------------------------------------------
+-- Wrap and return the package
+-------------------------------------------------------------------------------
+return setmetatable(_M, {
     __call = function (self)
         -- Export all symbols to the global namespace
         for k, v in pairs(self) do
