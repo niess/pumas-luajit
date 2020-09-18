@@ -74,7 +74,97 @@ void * malloc(size_t);
 ]]
 
 
--- XXX Uniformise error messages, e.g. with standard functions
+-------------------------------------------------------------------------------
+-- Generic error messages formater
+-------------------------------------------------------------------------------
+local function raise (args)
+    local msg = {}
+
+    if args.header ~= nil then
+        table.insert(msg, args.header)
+    elseif args.type ~= nil then
+        if args.bad_member ~= nil then
+            table.insert(msg, "'" .. args.type .. "' has no member named '" ..
+                              args.bad_member .. "'")
+        elseif args.not_mutable ~= nil then
+            table.insert(msg, "cannot modify '" .. args.not_mutable ..
+                              " for '" .. args.type .. "'")
+        else
+            table.insert(msg, "an unknown error occured related to '" ..
+                              args.type .. "'")
+        end
+    else
+        if args.argnum ~= nil then
+            if type(args.argnum) == 'number' then
+                table.insert(msg, 'bad argument #' .. args.argnum)
+            else
+                table.insert(msg, 'bad number of argument(s)')
+            end
+        elseif args.argname ~= nil then
+            table.insert(msg, "bad argument '" .. args.argname .. "'")
+        else
+            table.insert(msg, "bad argument(s)")
+        end
+
+        if args.fname ~= nil then
+            table.insert(msg, "to '" .. args.fname .. "'")
+        end
+    end
+
+    local description = {}
+    if args.description ~= nil then
+        table.insert(description, args.description)
+    else
+        if args.expected ~= nil then
+            table.insert(description, 'expected ' .. args.expected)
+        end
+        if args.got ~= nil then
+            table.insert(description, 'got ' .. args.got)
+        end
+    end
+
+    if #description > 0 then
+        description = table.concat(description, ', ')
+        table.insert(msg, '(' .. description .. ')')
+    end
+    msg = table.concat(msg, ' ')
+
+    local depth
+    if args.depth == nil then
+        depth = 2
+    else
+        depth = args.depth
+    end
+
+    error(msg, depth + 1)
+end
+
+
+-- Generate an error function with default format parameters
+local function ErrorFunction (default_args)
+    return function (extra_args)
+        local args = {}
+        for k, v in pairs(default_args) do
+            args[k] = v
+        end
+
+        if type(extra_args) == 'string' then
+            args.description = extra_args
+        elseif extra_args ~= nil then
+            for k, v in pairs(extra_args) do
+                args[k] = v
+            end
+        end
+
+        if args.depth ~= nil then
+            args.depth = args.depth + 1
+        else
+            args.depth = 3
+        end
+
+        raise(args)
+    end
+end
 
 
 -------------------------------------------------------------------------------
@@ -89,6 +179,16 @@ local function metatype (self)
         return tostring(tp):match('<[^>]+>')
     else
         return type(self)
+    end
+end
+
+
+local function a_metatype (self)
+    local tp = metatype(self)
+    if tp == 'nil' then
+        return tp
+    else
+        return 'a ' .. tp
     end
 end
 
@@ -141,19 +241,21 @@ end
 do
     ffi.C.pumas_error_initialise()
 
+    local raise_error = ErrorFunction{header = 'C library error'}
+
     local pattern = '[^}]+} (.*)$'
 
     function _M._ccall (func, ...)
         if func(...) ~= 0 then
             local msg = ffi.string(ffi.C.pumas_error_get())
-            error(msg:match(pattern), 2)
+            raise_error(msg:match(pattern))
         end
     end
 
     function _M._pccall (func, ...)
         if func(...) ~= 0 then
             local msg = ffi.string(ffi.C.pumas_error_get())
-            return msg:match(pattern)
+            raise_error(msg:match(pattern))
         end
     end
 end
@@ -198,35 +300,67 @@ do
     _M.PUMAS = setmetatable(PUMAS, mt)
 
     -- Load material tables from a binary dump
-    function mt.__index.load (path)
-        if type(path) ~= 'string' then
-            error("bad argument #1 to 'load' (expected a string, got a " ..
-                  type(path) .. ')', 2)
-        end
+    do
+        local raise_error = ErrorFunction{
+            argnum = 1,
+            fname = 'load'
+        }
 
-        local mode, errmsg = lfs.attributes(path, 'mode')
-        if mode == nil then
-            error("bad argument #1 to 'load' (" .. errmsg .. ')', 2)
-        elseif mode == 'directory' then
-            path = path .. PATHSEP .. 'materials.pumas'
-        end
+        function mt.__index.load (path)
+            if type(path) ~= 'string' then
+                raise_error{
+                    expected = 'a string',
+                    got = 'a ' .. type(path),
+                }
+            end
 
-        local f = io.open(path, 'rb')
-        if f == nil then error('could not read file ' .. path) end
-        ffi.C.pumas_finalise()
-        local errmsg = _M._pccall(ffi.C.pumas_load, f)
-        update(PUMAS)
-        f:close()
-        if errmsg then error(errmsg, 2) end
+            local mode, errmsg = lfs.attributes(path, 'mode')
+            if mode == nil then
+                raise_error(errmsg)
+            elseif mode == 'directory' then
+                path = path .. PATHSEP .. 'materials.pumas'
+            end
+
+            local f = io.open(path, 'rb')
+            if f == nil then
+                raise_error('could not open file ' .. path)
+            end
+
+            ffi.C.pumas_finalise()
+            local errmsg = _M._pccall(ffi.C.pumas_load, f)
+            update(PUMAS)
+            f:close()
+            if errmsg then
+                raise_error{
+                    header = 'error when loading PUMAS materials',
+                    errmsg
+                }
+            end
+        end
     end
 
     -- Dump the current material tables to a binary file
-    function mt.__index.dump (path)
-        local f = io.open(path, "wb")
-        if f == nil then error('could not open file ' .. path) end
-        local errmsg = _M._pccall(ffi.C.pumas_dump, f)
-        f:close()
-        if errmsg then error(errmsg, 2) end
+    do
+        local raise_error = ErrorFunction{
+            argnum = 1,
+            fname = 'dump'
+        }
+
+        function mt.__index.dump (path)
+            local f = io.open(path, "wb")
+            if f == nil then
+                raise_error('could not open file ' .. path)
+            end
+
+            local errmsg = _M._pccall(ffi.C.pumas_dump, f)
+            f:close()
+            if errmsg then
+                raise_error{
+                    header = 'error when deumping PUMAS materials',
+                    errmsg
+                }
+            end
+        end
     end
 
     -- Convert a Camel like name to a snaky one
@@ -275,9 +409,14 @@ do
 
     -- Tabulate a set of materials
     function mt.__index.build (args)
+        local raise_error = ErrorFunction{fname = 'build'}
+
         if type(args) ~= 'table' then
-            error("bad argument #1 to 'build' (expected a table, got a " ..
-                  type(args) .. ')', 2)
+            raise_error{
+                argnum = 1,
+                expected = 'a table',
+                got = 'a ' .. type(args),
+            }
         end
 
         local materials, composites, project, path, particle, energies, compile
@@ -290,31 +429,42 @@ do
             elseif k == 'energies' then energies = v
             elseif k == 'compile' then compile = v
             else
-                error("bad argument '" .. k .. "' to Material", 2)
+                raise_error{
+                    argname = k,
+                    description = 'unknown argument'
+                }
             end
-        end
-
-        local function raise (arg, msg)
-            error('bad ' .. arg .. " to 'build' (" .. msg .. ')', 3)
         end
 
         if project == nil then
             project = 'materials'
         elseif type(project) ~= 'string' then
-            raise('project', 'expected a string, got a ' .. type(project))
+            raise_error{
+                argname = 'project',
+                expected = 'a string',
+                got = 'a ' .. type(project)
+            }
         end
 
         if compile == nil then
             compile = true
         elseif type(compile) ~= 'boolean' then
-            raise('compile', 'expected a boolean, got a ' .. type(compile))
+            raise_error{
+                argname = 'compile',
+                expected = 'a boolean',
+                got = 'a ' .. type(compile)
+            }
         end
 
         if particle == nil then
             particle = ffi.C.PUMAS_PARTICLE_MUON
         else
             if type(particle) ~= 'string' then
-                raise('particle', 'expected a string, got a ' .. type(particle))
+                raise_error{
+                    argname = 'particle',
+                    expected = 'a string',
+                    got = 'a ' .. type(particle)
+                }
             end
 
             local tmp = particle:lower()
@@ -323,8 +473,11 @@ do
             elseif tmp == "tau" then
                 particle = ffi.C.PUMAS_PARTICLE_TAU
             else
-                raise('particle', "expected 'muon' or 'tau', got '" ..
-                      particle .. "'")
+                raise_error{
+                    argname = 'particle',
+                    expected = "'muon' or 'tau'",
+                    got = "'" .. particle .. "'"
+                }
             end
         end
 
@@ -338,8 +491,11 @@ do
         if type(energies) == 'string' then
             local tmp = energies:lower()
             if tmp ~= 'pdg' then
-                raise('energies',  "expected a table or 'PDG', got '" ..
-                      energies .. "'")
+                raise_error{
+                    argname = 'energies',
+                    expected = "a table or 'PDG'",
+                    got = "'" .. energies .. "'"
+                }
             end
 
             energies = ffi.new("double [?]", 145,
@@ -364,16 +520,29 @@ do
             else
                 local min, max, n = energies.min, energies.max, energies.n
                 if min == nil then
-                    raise('energies', 'missing min kinetic energy')
+                    raise_error{
+                        argname = 'energies',
+                        description = 'missing min kinetic energy'
+                    }
                 end
                 if max == nil then
-                    raise('energies', 'missing max kinetic energy)')
+                    raise_error{
+                        argname = 'energies',
+                        description = 'missing max kinetic energy'
+                    }
                 end
                 if n == nil then
-                    raise('energies', "missing number of kinetic energies, 'n'")
+                    raise_error{
+                        argname = 'energies',
+                        description = "missing number of kinetic energies, 'n'"
+                    }
                 end
                 if n <= 1 then
-                    raise('energies', 'expected n > 1, got n = ' .. n)
+                    raise_error{
+                        argname = 'energies',
+                        expected = 'n > 1',
+                        got = 'n = ' .. n
+                    }
                 end
 
                 energies = ffi.new("double [?]", n)
@@ -381,14 +550,21 @@ do
                 for i = 0, n - 1 do energies[i] = min * math.exp(dlnk * i) end
             end
         else
-            raise('energies', 'expect a string or table, got a ' ..
-                  type(energies))
+            raise_error{
+                argname = 'energies',
+                expected = 'a string or table',
+                got 'a ' .. type(energies)
+            }
         end
 
         if path == nil then
             path = '.'
         elseif type(path) ~= 'string' then
-            raise('path', 'expected a string, got a ' .. type(path))
+            raise_error{
+                argname = 'path',
+                expected = 'a string',
+                got = 'a' .. type(path)
+            }
         end
 
         if path ~= "." then
@@ -403,20 +579,30 @@ do
             if tp == 'string' then
                 materials = {materials}
             elseif tp ~= 'table' then
-                raise('materials', 'expected a string or a table got a ' .. tp)
+                raise_error{
+                    argname = 'materials',
+                    expected = 'a string or a table',
+                    got = 'a ' .. tp
+                }
             end
         end
 
         if #materials > 0 then
             for i, name in ipairs(materials) do
                 if materials[name] ~= nil then
-                    raise('materials', "duplicated material name '" .. name ..
-                          "'")
+                    raise_error{
+                        argname = 'materials',
+                        description = "duplicated material name '" ..
+                                      name .. "'"
+                    }
                 end
 
                 local material = _M.MATERIALS[name]
                 if not material then
-                    raise('materials', "unknown material '" .. name .. "'")
+                    raise_error{
+                        argname = 'materials',
+                        description = "unknown material '" .. name .. "'"
+                    }
                 end
                 materials[name] = material
             end
@@ -427,15 +613,21 @@ do
 
         if composites ~= nil then
             if type(composites) ~= 'table' then
-                raise('composites', 'expected a table, got a ' ..
-                      type(composites))
+                raise_error{
+                    argname = 'composites',
+                    expected = ' a table',
+                    got = 'a ' .. type(composites)
+                }
             end
             for name, composition in pairs(composites) do
                 for _, v in ipairs(composition) do
                     local m = materials[v[1]]
                     if not m then
-                        raise('composites', "missing material '" ..
-                              v[1] .. "' for composite '" .. name "'")
+                        raise_error{
+                            argname = 'composites',
+                            description = "missing material '" .. v[1] ..
+                                          "' for composite '" .. name "'"
+                        }
                     end
                 end
             end
@@ -445,15 +637,21 @@ do
         local composition = {}
         for _, material in pairs(materials) do
             if material.__metatype ~= 'material' then
-                raise('materials', 'expected a material, got a ' ..
-                      metatype(material))
+                raise_error{
+                    argname = 'materials',
+                    expected =  'a material',
+                    got =  a_metatype(material)
+                }
             end
             for _, v in pairs(material.composition) do
                 local name = v[1]
                 if not composition[name] then
                     local element = _M.ELEMENTS[name]
                     if not element then
-                        raise('materials', "unknown element '" .. name .. "'")
+                        raise_error{
+                            argname = 'materials',
+                            description = "unknown element '" .. name .. "'"
+                        }
                     end
                     composition[name] = element
                 end
@@ -625,22 +823,29 @@ do
 
     mt.__index.__metatype = 'element'
 
-    function _M.Element (Z, A, I)
-        local index, tp
-        if type(Z) ~= 'number' then index, tp = 1, type(Z) end
-        if type(A) ~= 'number' then index, tp = 2, type(A) end
-        if type(I) ~= 'number' then index, tp = 3, type(I) end
-        if index ~= nil then
-            error('bad argument #' .. index .. " to 'Element' (expected a \z
-                   number, got a " .. tp .. ')', 2)
+    do
+        local raise_error = ErrorFunction{fname = 'Element'}
+
+        function _M.Element (Z, A, I)
+            local index, tp
+            if type(Z) ~= 'number' then index, tp = 1, type(Z) end
+            if type(A) ~= 'number' then index, tp = 2, type(A) end
+            if type(I) ~= 'number' then index, tp = 3, type(I) end
+            if index ~= nil then
+                raise_error{
+                    argnum = index,
+                    expected = 'a number',
+                    got = 'a ' .. tp
+                }
+            end
+
+            local self = table.new(0, 3)
+            self.Z = Z
+            self.A = A
+            self.I = I
+
+            return setmetatable(self, mt)
         end
-
-        local self = table.new(0, 3)
-        self.Z = Z
-        self.A = A
-        self.I = I
-
-        return setmetatable(self, mt)
     end
 
     -- Load the elements data
@@ -662,10 +867,15 @@ do
 
     mt.__index.__metatype = 'material'
 
+    local raise_error = ErrorFunction{fname = 'Material'}
+
     function _M.Material (args)
         if type(args) ~= 'table' then
-            error("bad argument #1 to 'Material' (expected a table, got a " ..
-                  type(args) .. ')', 2)
+            raise_error{
+                argnum = 1,
+                expected = 'a table',
+                got = type(args)
+            }
         end
 
         local formula, composition, density, state, I, a, k, x0, x1, Cbar,
@@ -683,14 +893,20 @@ do
             elseif k == 'Cbar' then Cbar = v
             elseif k == 'delta0' then delta0 = v
             else
-                error("bad argument '" .. k .. "' to Material", 2)
+                raise_error{
+                    argname = k,
+                    description = 'unknown parameter'
+                }
             end
         end
 
         -- XXX check the type of other args
         if type(density) ~= 'number' then
-            error("bad density to 'Material' (expected a number, got a " ..
-                  type(density) .. ')', 2)
+            raise_error{
+                argname = 'density',
+                expected = 'a number',
+                got = type(density)
+            }
         end
 
         if delta0 == nil then delta0 = 0 end
@@ -717,7 +933,7 @@ do
             -- Use the provided composition
             self.composition = composition
         else
-            error("missing 'composition' or 'formula' to 'Material'", 2)
+            raise_error{description = "missing 'composition' or 'formula'"}
         end
 
         local ZoA, mee = 0, 0
@@ -725,7 +941,7 @@ do
             local symbol, wi = unpack(value)
             local e = _M.ELEMENTS[symbol]
             if e == nil then
-                error("bad element '" .. symbol .. "' to 'Material'", 2)
+                raise_error{description = "unknown element '" .. symbol .. "'"}
             end
             local tmp = wi * e.Z / e.A
             ZoA = ZoA + tmp
@@ -741,8 +957,11 @@ do
         if state then
             local tmp = state:lower()
             if (tmp ~= 'gaz') and (tmp ~= 'liquid') and (tmp ~= 'solid') then
-                error("bad 'state' to 'Material' (expected 'solid', 'liquid' \z
-                       or 'gaz', got '" .. state .. "'", 2)
+                raise_error{
+                    argname = 'state',
+                    expected = "'solid', 'liquid' or 'gaz'",
+                    got = "'" .. state .. "'"
+                }
             end
             state = tmp
         else
@@ -924,8 +1143,11 @@ do
                 end
 
                 if (v ~= nil) and (v.__metatype ~= 'geometry') then
-                    error('bad type (expected a geometry, \z
-                           got a ' .. metatype(v) .. ').')
+                    raise{
+                        header = 'bad type',
+                        expected = 'a geometry',
+                        got = a_metatype(v)
+                    }
                 end
 
                 rawset(self, '_geometry', v)
@@ -945,8 +1167,11 @@ do
                     self._c.recorder = nil
                 else
                     if v.__metatype ~= 'recorder' then
-                        error('bad type (expected a recorder, \z
-                               got a ' .. metatype(v) .. ').', 2)
+                        raise{
+                            header = 'bad type',
+                            expected = 'a recorder',
+                            got = a_metatype(v)
+                        }
                     end
                     rawset(self, '_recorder', v)
                     self._c.recorder = v._c
@@ -976,14 +1201,21 @@ do
     local function transport (self, state)
         if state == nil then
             local nargs = (self ~= nil) and 1 or 0
-            error("bad number of arguments to 'transport' (expected 2, got "
-                  .. nargs .. ')', 2)
+            raise{
+                fname = 'transport',
+                argnum = 'bad',
+                expected = 2,
+                got = nargs
+            }
         end
 
         if state.__metatype ~= 'state' then
-            error("bad argument #2 to 'transport' (expected a \z
-                   state , got a " .. metatype(state) .. ')',
-                  2)
+            raise{
+                fname = 'transport',
+                argnum = 2,
+                expected = 'a state',
+                got = a_metatype(state)
+            }
         end
 
         local extended_state = ffi.cast(pumas_state_extended_ptr, state._c)
@@ -1005,13 +1237,21 @@ do
     local function medium (self, state)
         if state == nil then
             local nargs = (self ~= nil) and 1 or 0
-            error("bad number of arguments to 'medium' (expected 2, got "
-                  .. nargs .. ')', 2)
+            raise{
+                fname = 'medium',
+                argnum = 'bad',
+                expected = 2,
+                got = nargs
+            }
         end
 
         if state.__metatype ~= 'state' then
-            error("bad argument #2 to 'medium' (expected a \z
-                   state , got a " .. metatype(state) .. ')', 2)
+            raise{
+                fname = 'medium',
+                argnum = 2,
+                expected = 'a state',
+                got = a_metatype(state)
+            }
         end
 
         local extended_state = ffi.cast(pumas_state_extended_ptr, state._c)
@@ -1030,8 +1270,12 @@ do
 
     local function random (self, n)
         if (type(self) ~= 'table') or (self.__metatype ~= 'context') then
-            error("bad argument #1 to 'random' (expected a context, \z
-                   got a " .. metatype(self) .. ')', 2)
+            raise{
+                fname = 'random',
+                argnum = 1,
+                expected = 'a context',
+                got = a_metatype(self)
+            }
         end
 
         local c = rawget(self, '_c')
@@ -1040,8 +1284,12 @@ do
             return c:random()
         else
             if type(n) ~= 'number' then
-                error("bad argument #2 to 'random' (expected a number, got a "
-                      .. metatype(n) .. ')')
+                raise{
+                    fname = 'random',
+                    argnum = 2,
+                    expected = 'a number',
+                    got = a_metatype(n)
+                }
             end
             local t = table.new(n, 0)
             for i = 1, n do
@@ -1053,8 +1301,12 @@ do
 
     function _M.Context (args)
         if args and type(args) ~= 'table' then
-            error("bad argument #1 to 'Context' (expected a table, got a " ..
-                  metatype(args) .. ')')
+            raise{
+                fname = 'Context',
+                argnum = 1,
+                expected = 'a table',
+                got = a_metatype(args)
+            }
         end
 
         local ptr = ffi.new('struct pumas_context *[1]')
@@ -1115,8 +1367,12 @@ do
     function set (self, other)
         if other == nil then
             local nargs = (self ~= nil) and 1 or 0
-            error("bad number of arguments to 'set' (expected 2, got "
-                  .. nargs .. ')', 2)
+            raise {
+                fname = 'set',
+                argnum = 'bad',
+                expected = 2,
+                got = nargs
+            }
         end
 
         ffi.copy(self._c, other._c, ffi.sizeof(ctype))
@@ -1161,20 +1417,33 @@ local BaseMedium = {}
 do
     local ctype = ffi.typeof('struct pumas_medium')
 
-    function BaseMedium:__index (k, errmsg)
+    function BaseMedium:__index (k, strtype)
         if k == '__metatype' then
             return 'medium'
         elseif k == 'material' then
             return self._material
         else
-            error(errmsg .. k .. "'", 2)
+            raise{
+                ['type'] = strtype,
+                bad_member = k,
+                depth = 3
+            }
         end
     end
 
-    local function parse_material (v)
+    local function parse_material (v, strtype)
+        local raise_error = ErrorFunction{
+            fname = strtype,
+            argname = 'material',
+            depth = 3
+        }
+
         local n = ffi.C.pumas_material_length()
         if n == 0 then
-            error('missing materials (none loaded)', 3)
+            raise_error{
+                header = 'missing materials',
+                description = 'none loaded',
+            }
             -- XXX how to invalidate materials if reloaded?
         end
 
@@ -1184,36 +1453,46 @@ do
             return index[0]
         elseif type(v) == 'number' then
             if (n == 1) and (v ~= 0) then
-                error("bad value to 'material' (expected 0, got " .. v .. ')',
-                      3)
+                raise_error{
+                    expected = 0,
+                    got  = v
+                }
             elseif (v < 0) or (v >= n) then
-                error("bad value to 'material' (expected a value between 0 \z
-                       and " .. tostring(n - 1) .. ', got ' .. v .. ')', 3)
+                raise_error{
+                    expected = 'a value between 0 and ' .. tostring(n - 1),
+                    got  = v
+                }
             end
             return v
         else
-            error("bad type to 'material' (expected a number or string, got \z
-                   a " .. metatype(v) .. ')', 3)
+            raise_error{
+                expected = 'a number or a string',
+                got = a_metatype(v)
+            }
         end
     end
 
-    function BaseMedium:__newindex (k, v, errmsg)
+    function BaseMedium:__newindex (k, v, strtype)
         if k == 'material' then
-            self._c.medium.material = parse_material(v)
+            self._c.medium.material = parse_material(v, strtype)
             rawset(self, '_material', v)
         else
-            error(errmsg .. k .. "'", 2)
+            raise{
+                ['type'] = strtype,
+                bad_member = k,
+                depth = 3
+            }
         end
     end
 
-    function BaseMedium.new (ctype, ctype_ptr, material)
+    function BaseMedium.new (ctype, ctype_ptr, material, strtype)
         local c = ffi.cast(ctype_ptr, ffi.C.calloc(1, ffi.sizeof(ctype)))
         ffi.gc(c, ffi.C.free)
 
         local obj = {_c = c, _material = material}
         media_table[addressof(c)] = obj
 
-        local index = parse_material(material)
+        local index = parse_material(material, strtype)
         return obj, index
     end
 end
@@ -1223,7 +1502,7 @@ end
 -- The transparent medium
 -------------------------------------------------------------------------------
 do
-    local errmsg = "'TransparentMedium' has no member named '"
+    local strtype = 'TransparentMedium'
     local mt = {}
 
     function mt:__index (k)
@@ -1232,15 +1511,18 @@ do
         elseif (k == 'magnet') or (k == 'material') then
             return nil
         else
-            return BaseMedium.__index(self, k, errmsg)
+            return BaseMedium.__index(self, k, strtype)
         end
     end
 
     function mt:__newindex (k, v)
         if (k == 'density') or (k == 'magnet') or (k == 'material') then
-            error('cannot modify ' .. k, 2)
+            raise{
+                ['type'] = strtype,
+                not_mutable = k
+            }
         else
-            error(errmsg .. k .. "'", 2)
+            BaseMedium.__newindex(self, k, v, strtype)
         end
     end
 
@@ -1259,7 +1541,7 @@ end
 -- The uniform medium metatype
 -------------------------------------------------------------------------------
 do
-    local errmsg = "'UniformMedium' has no member named '"
+    local strtype = 'UniformMedium'
     local mt = {}
 
     function mt:__index (k)
@@ -1268,7 +1550,7 @@ do
         elseif k == 'magnet' then
             return self._c.locals.magnet
         else
-            return BaseMedium.__index(self, k, errmsg)
+            return BaseMedium.__index(self, k, strtype)
         end
     end
 
@@ -1278,7 +1560,7 @@ do
         elseif k == 'magnet' then
             self._c.locals.magnet = v
         else
-            BaseMedium.__newindex(self, k, v, errmsg)
+            BaseMedium.__newindex(self, k, v, strtype)
         end
     end
 
@@ -1287,11 +1569,15 @@ do
 
     function _M.UniformMedium (material, density, magnet)
         if material == nil then
-            error("missing arguments to 'UniformMedium' (expected 1 or \z
-                   more, got 0)", 2)
+            raise {
+                fname = strtype,
+                argnum = 1,
+                expected = 'a string or a number',
+                got = type(material)
+            }
         end
 
-        local self, index = BaseMedium.new(ctype, ctype_ptr, material)
+        local self, index = BaseMedium.new(ctype, ctype_ptr, material, strtype)
 
         if density == nil then
             density = _M.MATERIALS[material].density -- XXX check if Material
@@ -1308,23 +1594,35 @@ end
 -- The gradient medium metatype
 -------------------------------------------------------------------------------
 do
-    local errmsg = "'GradientMedium' has no member named "
+    local strtype = 'GradientMedium'
 
     local mt = {}
 
-    local function parse_type (v)
-        if type(v) ~= 'string' then
-            error("bad type to 'type' (expected a string, got a " .. 
-                  metatype(v) .. ')', 3)
-        end
-        local tag = v:lower()
-        if tag == 'linear' then
-            return ffi.C.PUMAS_MEDIUM_GRADIENT_LINEAR
-        elseif tag == 'exponential' then
-            return ffi.C.PUMAS_MEDIUM_GRADIENT_EXPONENTIAL
-        else
-            error("bad argument to 'type' (expected 'linear' or \z
-                   'exponential', got '" .. v .. "')")
+    local parse_type
+    do
+        local raise_error = ErrorFunction{
+            fname = 'type',
+            depth = 3
+        }
+
+        function parse_type (v)
+            if type(v) ~= 'string' then
+                raise_error{
+                    expected = 'a string',
+                    got = metatype(v)
+                }
+            end
+            local tag = v:lower()
+            if tag == 'linear' then
+                return ffi.C.PUMAS_MEDIUM_GRADIENT_LINEAR
+            elseif tag == 'exponential' then
+                return ffi.C.PUMAS_MEDIUM_GRADIENT_EXPONENTIAL
+            else
+                raise_error{
+                    expected = "'linear' or 'exponential'",
+                    got = v
+                }
+            end
         end
     end
 
@@ -1334,7 +1632,7 @@ do
         elseif k == 'magnet' then
             return self._c.magnet
         else
-            return BaseMedium.__index(self, k, errmsg)
+            return BaseMedium.__index(self, k, strtype)
         end
     end
 
@@ -1345,22 +1643,27 @@ do
         elseif k == 'magnet' then
             self._c.magnet = v
         else
-            BaseMedium.__newindex(self, k, v, errmsg)
+            BaseMedium.__newindex(self, k, v, strtype)
         end
     end
 
     local ctype = ffi.typeof('struct pumas_medium_gradient')
     local ctype_ptr = ffi.typeof('struct pumas_medium_gradient *')
 
+    -- XXX Use keyword arguments instead
     function _M.GradientMedium (material, type_, axis, value, position0,
                                density0, magnet)
         if density0 == nil then
             local args = {material, type_, axis, value, position0}
-            error("missing argument(s) to 'GradientMedium' (expect 6 or more, \z
-                   got " .. #args .. ')', 2)
+            raise{
+                fname = strtype,
+                argnum = 'bad',
+                expected = '6 or more',
+                got = #args
+            }
         end
 
-        local self, index = BaseMedium.new(ctype, ctype_ptr, material)
+        local self, index = BaseMedium.new(ctype, ctype_ptr, material, strtype)
         type_ = parse_type(type_)
 
         ffi.C.pumas_medium_gradient_initialise(self._c, index, type_, value,
@@ -1414,47 +1717,62 @@ do
         self._valid = false
     end
 
-    function _M.BaseGeometry.__index:insert (...)
-        local args, index, geometry, arg1 = {...}
-        if #args == 0 then
-                error('missing argument(s) (expected 1 to 2, got 0)', 2)
-        elseif type(args[1]) == 'number' then
-            if #args == 1 then
-                error('missing argument(s) (expected 2, got 1)', 2)
-            end
-            index, geometry, arg1 = args[1], args[2], 2
-        else
-            index, geometry, arg1 = 1, args[1], 1
-        end
+    do
+        local raise_error = ErrorFunction{fname = 'insert'}
 
-        if geometry.__metatype ~= 'geometry' then
-            error('bad argument #' .. arg1 .. "to 'insert' (expected a \z
-                   geometry, got a " .. metatype(geometry) .. ')', 2)
-        end
-
-        -- Invalidate the geometry and its parents
-        -- Also check for circular references
-        local circular = self == geometry
-        if not circular then
-            walk_up(self, function (g)
-                if g == geometry then
-                    circular = true
-                    return true
-                else
-                    g._valid = false
+        function _M.BaseGeometry.__index:insert (...)
+            local args, index, geometry, arg1 = {...}
+            if #args == 0 then
+                    raise_error{
+                        argnum = 'bad',
+                        expected = '1 or 2',
+                        got = 0
+                    }
+            elseif type(args[1]) == 'number' then
+                if #args == 1 then
+                    raise_error{
+                        argnum = 'bad',
+                        expected = 2,
+                        got = 1
+                    }
                 end
-            end)
-        end
-        if circular then
-            error('bad geometry (circular reference)', 2)
-        end
-        self._valid = false
+                index, geometry, arg1 = args[1], args[2], 2
+            else
+                index, geometry, arg1 = 1, args[1], 1
+            end
 
-        -- Update references
-        local count = geometry._mothers[self] or 0
-        geometry._mothers[self] = count + 1
+            if geometry.__metatype ~= 'geometry' then
+                raise_error{
+                    argnum = arg1,
+                    expected = 'a geometry',
+                    got = a_metatype(geometry)
+                }
+            end
 
-        table.insert(self._daughters, index, geometry)
+            -- Invalidate the geometry and its parents
+            -- Also check for circular references
+            local circular = self == geometry
+            if not circular then
+                walk_up(self, function (g)
+                    if g == geometry then
+                        circular = true
+                        return true
+                    else
+                        g._valid = false
+                    end
+                end)
+            end
+            if circular then
+                raise_error('circular reference')
+            end
+            self._valid = false
+
+            -- Update references
+            local count = geometry._mothers[self] or 0
+            geometry._mothers[self] = count + 1
+
+            table.insert(self._daughters, index, geometry)
+        end
     end
 
     function _M.BaseGeometry.__index:remove (index)
@@ -1530,8 +1848,11 @@ do
         if k == 'medium' then
             if v == self._medium then return end
             if v.__metatype ~= 'medium' then
-                error('bad type (expected a medium, got a ' ..
-                      metatype(medium) .. ')', 2)
+                raise{
+                    fname = k,
+                    expected = 'a medium',
+                    got = a_metatype(medium)
+                }
             end
             rawset(self,'_medium', v)
             self._invalidate()
@@ -1542,8 +1863,12 @@ do
 
     function _M.InfiniteGeometry (medium)
         if (medium ~= nil) and (medium.__metatype ~= 'medium') then
-            error("bad argument #1 to 'InfiniteGeometry' (expected a medium\z
-                   , got a " .. metatype(medium) .. ')', 2)
+            raise {
+                fname = 'InfiniteGeometry',
+                argnum = 1,
+                expected = 'a medium',
+                got = a_metatype(medium)
+            }
         end
 
         local self = _M.BaseGeometry:new()
@@ -1563,10 +1888,14 @@ do
     mt.__index.__metatype = 'topographydata'
 
     function mt.__index:elevation (x, y)
-        if y == nil then
+        if (self == nil) or (x == nil) or (y == nil) then
             local args = {self, x, y}
-            error('elevation: expected 3 arguments (self, x, y) \z
-                   but got ' .. #args .. '.', 2)
+            raise{
+                fname = 'elevation',
+                argnum = 'bad',
+                expected = 3,
+                got = #args
+            }
         end
 
         if type(self._elevation) == 'number' then
@@ -1617,7 +1946,10 @@ do
         if data_type == 'string' then
             local mode, errmsg = lfs.attributes(data, 'mode')
             if mode == nil then
-                error('TopographyData: ' .. errmsg, 2)
+                raise{
+                    fname = 'TopographyData',
+                    description = errmsg
+                }
             elseif mode == 'directory' then
                 ptr = ffi.new('struct turtle_stack *[1]')
                 _M._ccall(ffi.C.turtle_stack_create, ptr, data, 0, nil, nil)
@@ -1636,8 +1968,12 @@ do
             self._elevation = data
             metatype = mt_flat
         else
-            error("bad argument #1 to 'TopographyData' (expected a number or \z
-                   a string but got a " .. data_type .. ')', 2)
+            raise{
+                fname = 'TopographyData',
+                argnum = 1,
+                expected = 'a number or a string',
+                got = a_metatype(data)
+            }
         end
         self._c = c
 
@@ -1707,7 +2043,7 @@ do
                 ffi.C.gull_snapshot_create, c.magnet.snapshot, magnet,
                 matches[1], matches[2], matches[3])
             if self._magnet == true then os.remove(magnet) end
-            if errmsg then error(errmsg) end
+            if errmsg then error(errmsg, 2) end
 
             c.base.magnet = ffi.C.pumas_geometry_earth_magnet
         else
@@ -1736,14 +2072,20 @@ do
 
             local tp = type(v)
             if (tp ~= 'string') and (tp ~= 'nil') and (tp ~= 'boolean') then
-                error("bad type for '" .. k .. "' (expected a string, got a " ..
-                      tp .. ')')
+                raise{
+                    fname = k,
+                    expected = 'a string',
+                    got = a_metatype(v)
+                }
             end
 
             rawset(self, key, v)
             self:_invalidate()
         else
-            error('', 2)
+            raise{
+                ['type'] = 'EarthGeometry',
+                bad_member = k
+            }
         end
     end
 
@@ -1826,35 +2168,45 @@ do
     local function build_polytopes (args, frame, refs, depth, index)
         local medium, data, daughters = args[1], args[2], args[3]
 
-        if data == nil then
-            local nargs = (medium ~= nil) and 1 or 0
-            error('missing argument(s) for Polytope ' .. get_tag(depth, index)
-                  .. ' (expected 2 or 3, got ' .. nargs .. ')', depth + 2)
-        end
-
         if (medium ~= nil) and (medium.__metatype ~= 'medium') then
-            error('bad argument #1 for Polytope ' .. get_tag(depth, index)
-                  .. ' (expected a medium, got a ' .. metatype(medium) .. ')',
-                  depth + 2)
+            raise{
+                fname = 'Polytope ' .. get_tag(depth, index),
+                argnum = 1,
+                expected = 'a medium',
+                got = a_metatype(medium),
+                depth = depth + 2
+            }
         end
 
         if type(data) ~= 'table' then
-            error('bad argument #2 for Polytope ' .. get_tag(depth, index)
-                  .. ' (expected a table, got a ' .. metatype(data) .. ')',
-                  depth + 2)
+            raise{
+                fname = 'Polytope ' .. get_tag(depth, index),
+                argnum = 2,
+                expected = 'a table',
+                got = a_metatype(data),
+                depth = depth + 2
+            }
         end
 
         local n_faces = math.floor(#data / 6)
         if #data ~= 6 * n_faces then
-            error('bad argument #2 for Polytope ' .. get_tag(depth, index)
-                  .. ' (expected n x 6 values, got ' .. #data .. ')',
-                  depth + 2)
+            raise{
+                fname = 'Polytope ' .. get_tag(depth, index),
+                argnum = 2,
+                expected = 'n x 6 values',
+                got = #data,
+                depth = depth + 2
+            }
         end
 
         if (daughters ~= nil) and (type(daughters) ~= 'table') then
-            error('bad argument #3 for Polytope ' .. get_tag(depth, index)
-                  .. ' (expected a table, got a ' .. metatype(daughters) .. ')',
-                  depth + 2)
+            raise{
+                fname = 'Polytope ' .. get_tag(depth, index),
+                argnum = 3,
+                expected = 'nil or a table',
+                got = a_metatype(daughters),
+                depth = depth + 2
+            }
         end
 
         local size = ffi.sizeof(ctype) +
@@ -1942,7 +2294,6 @@ end
 -- The recorder metatype
 -------------------------------------------------------------------------------
 do
-    local errmsg = 'metatype Recorder has no member named '
     local mt = {}
 
     do
@@ -1956,7 +2307,10 @@ do
             elseif k == 'record' then
                 return self._record
             else
-                error(errmsg .. k, 2)
+                raise{
+                    ['type'] = 'Recorder',
+                    bad_member = k
+                }
             end
         end
     end
@@ -1976,7 +2330,10 @@ do
             elseif k == 'period' then
                 rawget(self, '_c').period = v
             else
-                error(errmsg .. k, 2)
+                raise{
+                    ['type'] = 'Recorder',
+                    bad_member = k
+                }
             end
         end
     end
@@ -2009,46 +2366,61 @@ do
 
     mt.__index.__metatype = 'transform'
 
-    function mt.__index:from_euler (axis, ...)
-        if axis == nil then
-            local nargs = (self ~= nil) and 1 or 0
-            error('from_euler: expected at least 3 arguments (self, \z
-                   axis, ...) but got '.. nargs .. '.', 2)
-        end
+    do
+        local raise_error = ErrorFunction{fname = 'from_euler'}
 
-        if type(axis) ~= 'string' then
-            error('from euler: expected a string for argument #2 (axis) but \z
-                   got a ' .. type(axis) .. '.', 2)
-        end
-
-        local angles = {...}
-        if #angles ~= #axis then
-            error('from_euler: expected ' .. #axis .. ' arguments but got ' ..
-                  #angles .. '.', 2)
-        end
-
-        if #axis == 1 then
-            local c, s = math.cos(angles[1]), math.sin(angles[1])
-            if (axis == 'x') or (axis == 'X') then
-                self.rotation = {{  1,  0,  0},
-                                 {  0,  c,  s},
-                                 {  0, -s,  c}}
-                return self
-            elseif (axis == 'y') or (axis == 'Y') then
-                self.rotation = {{  c,  0,  s},
-                                 {  0,  1,  0},
-                                 { -s,  0,  c}}
-                return self
-            elseif (axis == 'z') or (axis == 'Z') then
-                self.rotation = {{  c,  s,  0},
-                                 { -s,  c,  0},
-                                 {  0,  0,  1}}
-                return self
+        function mt.__index:from_euler (axis, ...)
+            if (self == nil) or (axis == nil) then
+                local nargs = (self ~= nil) and 1 or 0
+                raise_error{
+                    argnum = 'bad',
+                    expected = '3 or more',
+                    got = nargs
+                }
             end
-        end
 
-        -- XXX implement the general case in C
-        error('from_euler: not implemented', 2)
+            if type(axis) ~= 'string' then
+                raise_error{
+                    argnum = 2,
+                    expected = 'a string',
+                    got = a_metatype(axis)
+                }
+            end
+
+            local angles = {...}
+            if #angles ~= #axis then
+                error('from_euler: expected ' .. #axis .. ' arguments but got ' ..
+                      #angles .. '.', 2)
+                raise_error{
+                    argnum = 'bad',
+                    expected = #axis + 2,
+                    got = #angles + 2
+                }
+            end
+
+            if #axis == 1 then
+                local c, s = math.cos(angles[1]), math.sin(angles[1])
+                if (axis == 'x') or (axis == 'X') then
+                    self.rotation = {{  1,  0,  0},
+                                     {  0,  c,  s},
+                                     {  0, -s,  c}}
+                    return self
+                elseif (axis == 'y') or (axis == 'Y') then
+                    self.rotation = {{  c,  0,  s},
+                                     {  0,  1,  0},
+                                     { -s,  0,  c}}
+                    return self
+                elseif (axis == 'z') or (axis == 'Z') then
+                    self.rotation = {{  c,  s,  0},
+                                     { -s,  c,  0},
+                                     {  0,  0,  1}}
+                    return self
+                end
+            end
+
+            -- XXX implement the general case in C
+            raise_error('not implemented')
+        end
     end
 
     _M.Transform = ffi.metatype('struct pumas_coordinates_transform', mt)
@@ -2080,10 +2452,14 @@ do
         end
 
         function mt.__index:set (coordinates)
-            if coordinates == nil then
+            if (self == nil) or (coordinates == nil) then
                 local nargs = (self ~= nil) and 1 or 0
-                error("bad number of arguments to 'set' (expected 2, got " ..
-                       nargs .. ')', 2)
+                raise{
+                    fname = 'set',
+                    argnum = 'bad',
+                    expected = 2,
+                    got = nargs
+                }
             end
 
             if ffi.istype(double3_t, coordinates) then
@@ -2104,13 +2480,25 @@ do
                 if set ~= nil then
                     set(self, coordinates)
                 else
-                    error('set: not implemented.', 2)
+                    raise{
+                        fname = 'set',
+                        description = 'not implemented'
+                    }
                 end
             end
             return self
         end
 
         function mt.__index:get ()
+            if self == nil then
+                raise{
+                    fname = 'get',
+                    argnum = 1,
+                    expected = 'coordinates',
+                    got = 'nil'
+                }
+            end
+
             if type(raw_coordinates) == 'string' then
                 raw_coordinates = _M[raw_coordinates]()
             end
@@ -2127,9 +2515,13 @@ do
 
         if transform ~= nil then
             function mt.__index:transform (frame)
-                if self == nil then
-                    error('transform: expected 1 or 2 arguments (self, \z
-                           [frame]) but got 0.', 2)
+                if (self == nil) or (metatype(self) ~= 'coordinates') then
+                    raise{
+                        fname = 'transform',
+                        argnum = 1,
+                        expected = 'coordinates',
+                        got = a_metatype(self)
+                    }
                 end
 
                 transform(self, frame)
@@ -2216,7 +2608,12 @@ do
 
     function _M.LocalFrame (origin)
         if origin == nil then
-            error('LocalFrame: expected 1 argument (origin,) but got 0.', 2)
+            raise{
+                fname = 'LocalFrame',
+                argnum = 'bad',
+                expected = 1,
+                got = 0
+            }
         end
 
         local geodetic
@@ -2384,8 +2781,14 @@ do
     end
 
     function _M.MuonFlux (model, options)
+        local raise_error = ErrorFunction{fname = 'MuonFlux'}
+
         if model == nil then
-            error("missing arguments to 'MuonFlux' (expected 1 or 2, got 0)", 2)
+            raise_error{
+                argnum = 'bad',
+                expected = '1 or 2',
+                got = 0
+            }
         end
         if options == nil then options = {} end
 
@@ -2393,10 +2796,16 @@ do
         if tag == 'tabulation' then
             local normalisation, altitude = 1
             for k, v in pairs(options) do
-                if k == 'normalisation' then normalisation = v
-                elseif k == 'altitude' then altitude = v
-                else error("bad option '" .. k .. "' for tabulation \z
-                            'MuonFlux' model", 2)
+                if k == 'normalisation' then
+                    normalisation = v
+                elseif k == 'altitude' then
+                    altitude = v
+                else
+                    raise_error{
+                        argnum = 2,
+                        description = "unknown option '" .. k ..
+                                      "' for 'tabulation' model"
+                    }
                 end
             end
 
@@ -2413,10 +2822,15 @@ do
         local charge_ratio, gamma, normalisation
         for k, v in pairs(options) do
             if k == 'charge_ratio' then charge_ratio = v
-            elseif k == 'gamma' then gamma = v
+            elseif k == 'gamma' then
+                gamma = v
             elseif k == 'normalisation' then normalisation = v
-            else error("bad option '" .. k .. "' for '" .. model .. "' \z
-                        'MuonFlux' model", 2)
+            else 
+                raise_error{
+                    argnum = 2,
+                    description = "unknown option '" .. k ..
+                                  "' for '" .. model .. "' model"
+                }
             end
         end
 
@@ -2436,7 +2850,10 @@ do
             normalisation = normalisation or 9.814E+02
             return ChirkinFlux(normalisation, gamma, charge_ratio)
         else
-            error('bad flux model (' .. model .. ')', 2)
+            raise_error{
+                argnum = 1,
+                description = "'unknown flux model '" .. model .. "'"
+            }
         end
     end
 end
