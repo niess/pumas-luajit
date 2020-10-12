@@ -1364,6 +1364,11 @@ do
     local pumas_state_ptr = ffi.typeof('struct pumas_state *')
     local pumas_state_t = ffi.typeof('struct pumas_state')
 
+    function clear (self)
+        ffi.fill(self._c, ffi.sizeof(ctype))
+        return self
+    end
+
     function set (self, other)
         if other == nil then
             local nargs = (self ~= nil) and 1 or 0
@@ -1382,6 +1387,8 @@ do
     function mt:__index (k)
         if k == '__metatype' then
             return 'state'
+        elseif k == 'clear' then
+            return clear
         elseif k == 'set' then
             return set
         else
