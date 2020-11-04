@@ -70,6 +70,8 @@ end
 ffi.cdef [[
 void * calloc(size_t, size_t);
 void free(void *);
+size_t fwrite(const void * ptr, size_t size, size_t nmemb,
+    struct FILE * stream);
 void * malloc(size_t);
 ]]
 
@@ -2152,11 +2154,199 @@ do
         return ffi.cast(pumas_geometry_ptr, self._refs[1])
     end
 
+    local function dot (a, b)
+        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+    end
+
+
+    local function cross (a, b, c)
+        c[0] = a[1] * b[2] - a[2] * b[1]
+        c[1] = a[2] * b[0] - a[0] * b[2]
+        c[2] = a[0] * b[1] - a[1] * b[0]
+    end
+
+    -- Intersection of 3 planes
+    -- Ref: https://mathworld.wolfram.com/Plane-PlaneIntersection.html
+    local function intersect3 (x1, n1, x2, n2, x3, n3, x)
+        local det =   n1[0] * n2[1] * n3[2]
+                    + n2[0] * n3[1] * n1[2]
+                    + n3[0] * n1[1] * n2[2]
+                    - n3[0] * n2[1] * n1[2]
+                    - n1[0] * n3[1] * n2[2]
+                    - n2[0] * n1[1] * n3[2]
+        if math.abs(det) < 1E-13 then return false end
+
+        local x1n1 = dot(x1, n1)
+        local x2n2 = dot(x2, n2)
+        local x3n3 = dot(x3, n3)
+        local n2n3 = ffi.new('double [3]')
+        local n3n1 = ffi.new('double [3]')
+        local n1n2 = ffi.new('double [3]')
+        cross(n2, n3, n2n3)
+        cross(n3, n1, n3n1)
+        cross(n1, n2, n1n2)
+
+        for k = 0, 2 do
+            x[k] = (x1n1 * n2n3[k] + x2n2 * n3n1[k] +
+                    x3n3 * n1n2[k]) / det
+        end
+
+        return true
+    end
+
+    local function convert_polytope (polytope, all_vertices, all_faces)
+        -- Find the vertices
+        local vertices = {}
+        local vertex = ffi.new('double [3]')
+        for i = 0, polytope.n_faces - 1 do
+            for j = i + 1, polytope.n_faces - 1 do
+                for k = j + 1, polytope.n_faces - 1 do
+                    if intersect3(
+                        polytope.faces[i].origin, polytope.faces[i].normal,
+                        polytope.faces[j].origin, polytope.faces[j].normal,
+                        polytope.faces[k].origin, polytope.faces[k].normal,
+                        vertex)
+                    then
+                        local valid = true
+                        for l = 0, polytope.n_faces - 1 do
+                            if (l ~= i) and (l ~= j) and (l ~= k) then
+                                local f = polytope.faces[l]
+                                local d =
+                                    f.normal[0] * (vertex[0] - f.origin[0]) +
+                                    f.normal[1] * (vertex[1] - f.origin[1]) +
+                                    f.normal[2] * (vertex[2] - f.origin[2])
+                                if d > 0 then
+                                    valid = false
+                                    break
+                                end
+                            end
+                        end
+                        if valid then
+                            local v = ffi.new('double [3]', vertex)
+                            table.insert(vertices, {i, j, k, v})
+                        end
+                    end
+                end
+            end
+        end
+
+        -- Map the faces
+        local faces = {}
+        local index0 = #all_vertices
+        for i = 0, polytope.n_faces - 1 do
+            local index = {}
+            for j, vertex in ipairs(vertices) do
+                if (i == vertex[1]) or (i == vertex[2]) or (i == vertex[3]) then
+                    table.insert(index, {index0 + j - 1, vertex[4]})
+                end
+            end
+
+            if #index >= 3 then
+                local c = ffi.new('double [3]')
+                for j, vertex in ipairs(index) do
+                    for k = 0, 2 do
+                        c[k] = c[k] + vertex[2][k]
+                    end
+                end
+                for k = 0, 2 do
+                    c[k] = c[k] / #index
+                end
+
+                local ux = ffi.new('double [3]')
+                local norm = 0
+                for k = 0, 2 do
+                    ux[k] = index[1][2][k] - c[k]
+                    norm = norm + ux[k]^2
+                end
+                norm = 1 / math.sqrt(norm)
+                for k = 0, 2 do
+                    ux[k] = ux[k] * norm
+                end
+
+                local uy = ffi.new('double [3]')
+                cross(polytope.faces[i].normal, ux, uy)
+
+                for j, vertex in ipairs(index) do
+                    local r = ffi.new('double [3]')
+                    for k = 0, 2 do
+                        r[k] = vertex[2][k] - c[k]
+                    end
+                    local x = dot(r, ux)
+                    local y = dot(r, uy)
+
+                    vertex[2] = math.atan2(y, x)
+                end
+
+                table.sort(index, function (a, b)
+                    return a[2] < b[2]
+                end)
+                for j, vertex in ipairs(index) do
+                    index[j] = vertex[1]
+                end
+
+                table.insert(faces, index)
+            end
+        end
+
+        -- Update all vertices and faces
+        for _, vertex in ipairs(vertices) do
+            local r = vertex[4]
+            table.insert(all_vertices,
+                {tonumber(r[0]), tonumber(r[1]), tonumber(r[2])})
+        end
+        for _, face in ipairs(faces) do
+            table.insert(all_faces, face)
+        end
+
+        -- Convert daughter volumes
+        local daughter = polytope.base.daughters
+        while daughter ~= nil do
+            local p = ffi.cast('struct pumas_geometry_polytope *', daughter)
+            convert_polytope(p, all_vertices, all_faces)
+            daughter = daughter.next
+        end
+    end
+
+    local function dump_ply (self, path)
+        local vertices, faces = {}, {}
+        convert_polytope(self._refs[1], vertices, faces)
+
+        local header = string.format([[
+ply
+format binary_little_endian 1.0
+comment PUMAS geometry
+element vertex %d
+property double x
+property double y
+property double z
+element face %d
+property list int int vertex_index
+end_header
+]], #vertices, #faces)
+
+        local file = io.open(path, 'w')
+        file:write(header)
+        local v = ffi.new('double [3]')
+        for i, vertex in ipairs(vertices) do
+            v[0] = vertex[1]
+            v[1] = vertex[2]
+            v[2] = vertex[3]
+            ffi.C.fwrite(v, ffi.sizeof('double'), 3, file)
+        end
+        local size = ffi.new('int [1]')
+        for i, face in ipairs(faces) do
+            size[0] = #face
+            ffi.C.fwrite(size, ffi.sizeof(size), 1, file)
+            local index = ffi.new('int [?]', #face, face)
+            ffi.C.fwrite(index, ffi.sizeof('int'), #face, file)
+        end
+    end
+
     function mt:__index (k)
         if k == '_new' then
             return new
-        elseif k == 'transform' then
-            return transform
+        elseif k == 'dump' then
+            return dump_ply
         elseif (k == 'insert') or (k == 'remove') then
             return
         else
@@ -2276,6 +2466,10 @@ do
         return mother
     end
 
+    function load_ply (path)
+        error('not implemented')
+    end
+
     function _M.PolytopeGeometry (args, frame)
         local self = _M.BaseGeometry:new()
         self._refs = {}
@@ -2283,6 +2477,10 @@ do
         if frame ~= nil then
             point = _M.CartesianPoint()
             vector = _M.CartesianVector()
+        end
+
+        if type(args) == 'string' then
+            args = load_ply(args)
         end
 
         build_polytopes(args, frame, self._refs, 1, 0)
