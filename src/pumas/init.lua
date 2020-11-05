@@ -2158,7 +2158,6 @@ do
         return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
     end
 
-
     local function cross (a, b, c)
         c[0] = a[1] * b[2] - a[2] * b[1]
         c[1] = a[2] * b[0] - a[0] * b[2]
@@ -2231,17 +2230,17 @@ do
         end
 
         -- Map the faces
-        local faces = {}
         local index0 = #all_vertices
         for i = 0, polytope.n_faces - 1 do
-            local index = {}
+            local index, n_vertices = {}, 0
             for j, vertex in ipairs(vertices) do
                 if (i == vertex[1]) or (i == vertex[2]) or (i == vertex[3]) then
-                    table.insert(index, {index0 + j - 1, vertex[4]})
+                    table.insert(index, {0, vertex[4]})
+                    n_vertices = n_vertices + 1
                 end
             end
 
-            if #index >= 3 then
+            if n_vertices >= 3 then
                 local c = ffi.new('double [3]')
                 for j, vertex in ipairs(index) do
                     for k = 0, 2 do
@@ -2274,28 +2273,29 @@ do
                     local x = dot(r, ux)
                     local y = dot(r, uy)
 
-                    vertex[2] = math.atan2(y, x)
+                    vertex[1] = math.atan2(y, x)
                 end
 
                 table.sort(index, function (a, b)
-                    return a[2] < b[2]
+                    return a[1] < b[1]
                 end)
+
+                local nx = tonumber(polytope.faces[i].normal[0])
+                local ny = tonumber(polytope.faces[i].normal[1])
+                local nz = tonumber(polytope.faces[i].normal[2])
                 for j, vertex in ipairs(index) do
-                    index[j] = vertex[1]
+                    local r = vertex[2]
+                    table.insert(all_vertices, {tonumber(r[0]), tonumber(r[1]),
+                        tonumber(r[2]), nx, ny, nz, 255, 255, 255, 127})
+                    index[j] = index0 + j - 1
                 end
+                index0 = index0 + #index
 
-                table.insert(faces, index)
+                for j = 1, #index - 2 do
+                    table.insert(all_faces,
+                        {index[1], index[j + 1], index[j + 2]})
+                end
             end
-        end
-
-        -- Update all vertices and faces
-        for _, vertex in ipairs(vertices) do
-            local r = vertex[4]
-            table.insert(all_vertices,
-                {tonumber(r[0]), tonumber(r[1]), tonumber(r[2])})
-        end
-        for _, face in ipairs(faces) do
-            table.insert(all_faces, face)
         end
 
         -- Convert daughter volumes
@@ -2307,33 +2307,57 @@ do
         end
     end
 
-    local function dump_ply (self, path)
+    local ply_initialised = false
+
+    local function export_ply (self, path, options)
         local vertices, faces = {}, {}
         convert_polytope(self._refs[1], vertices, faces)
+
+        if not ply_initialised then
+            ffi.cdef([[
+            struct ply_vertex {
+                float x;
+                float y;
+                float z;
+                float nx;
+                float ny;
+                float nz;
+                unsigned char red;
+                unsigned char green;
+                unsigned char blue;
+                unsigned char alpha;
+            };
+            ]])
+        end
 
         local header = string.format([[
 ply
 format binary_little_endian 1.0
 comment PUMAS geometry
 element vertex %d
-property double x
-property double y
-property double z
+property float x
+property float y
+property float z
+property float nx
+property float ny
+property float nz
+property uchar red
+property uchar green
+property uchar blue
+property uchar alpha
 element face %d
-property list int int vertex_index
+property list uchar int vertex_indices
 end_header
 ]], #vertices, #faces)
 
         local file = io.open(path, 'w')
         file:write(header)
-        local v = ffi.new('double [3]')
+        local v = ffi.new('struct ply_vertex[1]')
         for i, vertex in ipairs(vertices) do
-            v[0] = vertex[1]
-            v[1] = vertex[2]
-            v[2] = vertex[3]
-            ffi.C.fwrite(v, ffi.sizeof('double'), 3, file)
+            v[0] = vertex
+            ffi.C.fwrite(v, ffi.sizeof('struct ply_vertex'), 1, file)
         end
-        local size = ffi.new('int [1]')
+        local size = ffi.new('unsigned char [1]')
         for i, face in ipairs(faces) do
             size[0] = #face
             ffi.C.fwrite(size, ffi.sizeof(size), 1, file)
@@ -2342,11 +2366,39 @@ end_header
         end
     end
 
+    local export
+    do
+        local raise_error = ErrorFunction{fname = 'export'}
+
+        function export (self, path, options)
+            options = options or {}
+
+            if type(path) ~= 'string' then
+                raise_error{
+                    argnum = 2,
+                    expected = 'a string',
+                    got = a_metatype(path)
+                }
+            end
+
+            local extension = path:match('^.+(%..+)$')
+            local lext = extension:lower()
+            if lext == '.ply' then
+                export_ply(self, path, options)
+            else
+                raise_error{
+                    argnum = 2,
+                    description = 'unknown format ' .. extension
+                }
+            end
+        end
+    end
+
     function mt:__index (k)
         if k == '_new' then
             return new
-        elseif k == 'dump' then
-            return dump_ply
+        elseif k == 'export' then
+            return export
         elseif (k == 'insert') or (k == 'remove') then
             return
         else
