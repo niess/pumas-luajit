@@ -2193,7 +2193,7 @@ do
         return true
     end
 
-    local function convert_polytope (polytope, all_vertices, all_faces)
+    local function convert_polytope (polytope, color, all_vertices, all_faces)
         -- Find the vertices
         local vertices = {}
         local vertex = ffi.new('double [3]')
@@ -2228,6 +2228,10 @@ do
                 end
             end
         end
+
+        -- Resolve the color
+        local wrapped_medium = media_table[addressof(polytope.medium)]
+        local red, green, blue, alpha = color(wrapped_medium)
 
         -- Map the faces
         local index0 = #all_vertices
@@ -2286,7 +2290,7 @@ do
                 for j, vertex in ipairs(index) do
                     local r = vertex[2]
                     table.insert(all_vertices, {tonumber(r[0]), tonumber(r[1]),
-                        tonumber(r[2]), nx, ny, nz, 255, 255, 255, 127})
+                        tonumber(r[2]), nx, ny, nz, red, green, blue, alpha})
                     index[j] = index0 + j - 1
                 end
                 index0 = index0 + #index
@@ -2302,16 +2306,16 @@ do
         local daughter = polytope.base.daughters
         while daughter ~= nil do
             local p = ffi.cast('struct pumas_geometry_polytope *', daughter)
-            convert_polytope(p, all_vertices, all_faces)
+            convert_polytope(p, color, all_vertices, all_faces)
             daughter = daughter.next
         end
     end
 
     local ply_initialised = false
 
-    local function export_ply (self, path, options)
+    local function export_ply (self, path, color)
         local vertices, faces = {}, {}
-        convert_polytope(self._refs[1], vertices, faces)
+        convert_polytope(self._refs[1], color, vertices, faces)
 
         if not ply_initialised then
             ffi.cdef([[
@@ -2371,8 +2375,6 @@ end_header
         local raise_error = ErrorFunction{fname = 'export'}
 
         function export (self, path, options)
-            options = options or {}
-
             if type(path) ~= 'string' then
                 raise_error{
                     argnum = 2,
@@ -2381,10 +2383,44 @@ end_header
                 }
             end
 
+            options = options or {}
+            local color_type, color = type(options.color)
+            if color_type == 'function' then
+                color = options.color
+            elseif color_type == 'table' then
+                local red = options.color.red or options.color[1] or 0
+                local green = options.color.green or options.color[2] or 0
+                local blue = options.color.blue or options.color[3] or 0
+                local alpha = options.color.alpha or options.color[4] or 255
+
+                color = function (medium)
+                    local m_r, m_g, m_b, m_a = options.color[medium]
+                    if m_r or m_b or m_g or m_a then
+                        m_r = m_r or 0
+                        m_g = m_g or 0
+                        m_b = m_b or 0
+                        m_alpha = m_alpha or 255
+                        return m_r, m_g, m_b, m_alpha
+                    else
+                        return red, green, blue, alpha
+                    end
+                end
+            elseif color_type == 'nil' then
+                color = function ()
+                    return 255, 255, 255, 255
+                end
+            else
+                raise_error{
+                    argname = 'color',
+                    expected = 'a table or function',
+                    got = a_metatype(options.color)
+                }
+            end
+
             local extension = path:match('^.+(%..+)$')
             local lext = extension:lower()
             if lext == '.ply' then
-                export_ply(self, path, options)
+                export_ply(self, path, color)
             else
                 raise_error{
                     argnum = 2,
