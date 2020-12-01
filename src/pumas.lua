@@ -45,7 +45,7 @@ do
         end
 
         local dirname = path:match('(.*'..PATHSEP..')')
-        local libname = 'libpumas_extended.'..LIBEXT
+        local libname = 'pumas/libpumas_extended.'..LIBEXT
         ffi.load(dirname..libname, true) -- Load to private space?
     end
 end

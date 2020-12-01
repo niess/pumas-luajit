@@ -291,7 +291,7 @@ $(OBJS_DIR)/$(CROSS)pumas_data_%.lua.o: pumas/data/%.lua $(LUAJIT_EXE) | $(OBJS_
 $(OBJS_DIR)/$(CROSS)pumas_header_%.lua.o: pumas/header/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
 	@$(call jit_compile,pumas.header.$*,$<,$@)
 
-$(OBJS_DIR)/$(CROSS)pumas.lua.o: pumas/init.lua $(LUAJIT_EXE) | $(OBJS_DIR)
+$(OBJS_DIR)/$(CROSS)pumas.lua.o: pumas.lua $(LUAJIT_EXE) | $(OBJS_DIR)
 	@$(call jit_compile,pumas,$<,$@)
 
 $(OBJS_DIR)/$(CROSS)runtime_%.lua.o: runtime/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
