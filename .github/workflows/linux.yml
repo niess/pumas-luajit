@@ -16,6 +16,10 @@ jobs:
       run: |
         ./dist/linux.sh
 
+    - name: Rock
+      run: |
+        ./dist/rock.sh ${{ secrets.LUAROCKS_TOKEN }}
+
     - name: Release
       uses: marvinpinto/action-automatic-releases@latest
       with:
