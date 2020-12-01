@@ -75,7 +75,7 @@ define wrap_header #([$1] = header.h, [$2] = header.lua)
 	    :gsub('FILE[ ]*[*]', 'struct FILE *') \
 	    :gsub('MT_PERIOD', '624'); \
 	f = io.open('$(2)', 'w+'); \
-	f:write('require \"ffi\" .cdef([[$(LINESEP)' .. include .. ']])'); \
+	f:write('require(\"ffi\").cdef([[$(LINESEP)' .. include .. ']])'); \
 	f:close() \
 	")
 	$(LUAJIT_EXE) -e $(__wrap_script)

@@ -1,17 +1,17 @@
 -------------------------------------------------------------------------------
 -- PUMAS wrapper
 -- Author: Valentin Niess
--- License: LGPL-v3
+-- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require 'ffi'
-local jit = require 'jit'
-require 'lfs'
-require 'pumas.header.api'
-require 'pumas.header.extensions'
-require 'pumas.header.gull'
-require 'pumas.header.turtle'
+local ffi = require('ffi')
+local jit = require('jit')
+require('lfs')
+require('pumas.header.api')
+require('pumas.header.extensions')
+require('pumas.header.gull')
+require('pumas.header.turtle')
 
-local _M = {}
+local pumas = {}
 
 
 -------------------------------------------------------------------------------
@@ -35,18 +35,18 @@ end
 do
     local ok = pcall(function () return ffi.C.pumas_error_initialise end)
     if not ok then
-        local _, path = ... -- Lua 5.2
+        local _, path =...-- Lua 5.2
         if path == nil then
             path = debug.getinfo(1, 'S').source:sub(2) -- Lua 5.1
         end
         if (love ~= nil) and (lfs.attributes(path) == nil) then
             -- Patch for Love when the module is located in-source
-            path = love.filesystem.getSource() .. path
+            path = love.filesystem.getSource()..path
         end
 
-        local dirname = path:match('(.*' .. PATHSEP .. ')')
-        local libname = 'libpumas_extended.' .. LIBEXT
-        ffi.load(dirname .. libname, true) -- Load to private space?
+        local dirname = path:match('(.*'..PATHSEP..')')
+        local libname = 'libpumas_extended.'..LIBEXT
+        ffi.load(dirname..libname, true) -- Load to private space?
     end
 end
 
@@ -86,30 +86,30 @@ local function raise (args)
         table.insert(msg, args.header)
     elseif args.type ~= nil then
         if args.bad_member ~= nil then
-            table.insert(msg, "'" .. args.type .. "' has no member named '" ..
-                              args.bad_member .. "'")
+            table.insert(msg, "'"..args.type.."' has no member named '"..
+                              args.bad_member.."'")
         elseif args.not_mutable ~= nil then
-            table.insert(msg, "cannot modify '" .. args.not_mutable ..
-                              " for '" .. args.type .. "'")
+            table.insert(msg, "cannot modify '"..args.not_mutable..
+                              " for '"..args.type.."'")
         else
-            table.insert(msg, "an unknown error occured related to '" ..
-                              args.type .. "'")
+            table.insert(msg, "an unknown error occured related to '"..
+                              args.type.."'")
         end
     else
         if args.argnum ~= nil then
             if type(args.argnum) == 'number' then
-                table.insert(msg, 'bad argument #' .. args.argnum)
+                table.insert(msg, 'bad argument #'..args.argnum)
             else
                 table.insert(msg, 'bad number of argument(s)')
             end
         elseif args.argname ~= nil then
-            table.insert(msg, "bad argument '" .. args.argname .. "'")
+            table.insert(msg, "bad argument '"..args.argname.."'")
         else
             table.insert(msg, "bad argument(s)")
         end
 
         if args.fname ~= nil then
-            table.insert(msg, "to '" .. args.fname .. "'")
+            table.insert(msg, "to '"..args.fname.."'")
         end
     end
 
@@ -118,16 +118,16 @@ local function raise (args)
         table.insert(description, args.description)
     else
         if args.expected ~= nil then
-            table.insert(description, 'expected ' .. args.expected)
+            table.insert(description, 'expected '..args.expected)
         end
         if args.got ~= nil then
-            table.insert(description, 'got ' .. args.got)
+            table.insert(description, 'got '..args.got)
         end
     end
 
     if #description > 0 then
         description = table.concat(description, ', ')
-        table.insert(msg, '(' .. description .. ')')
+        table.insert(msg, '('..description..')')
     end
     msg = table.concat(msg, ' ')
 
@@ -190,7 +190,7 @@ local function a_metatype (self)
     if tp == 'nil' then
         return tp
     else
-        return 'a ' .. tp
+        return 'a '..tp
     end
 end
 
@@ -221,8 +221,8 @@ do
         local mapping = {}
 
         for _, tag in ipairs(tags) do
-            local index = ffi.C['PUMAS_' .. tag]
-            _M[tag] = index
+            local index = ffi.C['PUMAS_'..tag]
+            pumas[tag] = index
             mapping[index] = tag
         end
 
@@ -231,9 +231,9 @@ do
         end
     end
 
-    _M.decay_tostring = Tagger(decay_tags)
-    _M.event_tostring = Tagger(event_tags)
-    _M.scheme_tostring = Tagger(scheme_tags)
+    pumas.decay_tostring = Tagger(decay_tags)
+    pumas.event_tostring = Tagger(event_tags)
+    pumas.scheme_tostring = Tagger(scheme_tags)
 end
 
 
@@ -247,14 +247,14 @@ do
 
     local pattern = '[^}]+} (.*)$'
 
-    function _M._ccall (func, ...)
+    function pumas._ccall (func,...)
         if func(...) ~= 0 then
             local msg = ffi.string(ffi.C.pumas_error_get())
             raise_error(msg:match(pattern))
         end
     end
 
-    function _M._pccall (func, ...)
+    function pumas._pccall (func,...)
         if func(...) ~= 0 then
             local msg = ffi.string(ffi.C.pumas_error_get())
             raise_error(msg:match(pattern))
@@ -299,7 +299,7 @@ do
 
     -- XXX add an interface to tables & properties
     local mt = {__index = {}}
-    _M.PUMAS = setmetatable(PUMAS, mt)
+    pumas.PUMAS = setmetatable(PUMAS, mt)
 
     -- Load material tables from a binary dump
     do
@@ -312,7 +312,7 @@ do
             if type(path) ~= 'string' then
                 raise_error{
                     expected = 'a string',
-                    got = 'a ' .. type(path),
+                    got = 'a '..type(path),
                 }
             end
 
@@ -320,16 +320,16 @@ do
             if mode == nil then
                 raise_error(errmsg)
             elseif mode == 'directory' then
-                path = path .. PATHSEP .. 'materials.pumas'
+                path = path..PATHSEP..'materials.pumas'
             end
 
             local f = io.open(path, 'rb')
             if f == nil then
-                raise_error('could not open file ' .. path)
+                raise_error('could not open file '..path)
             end
 
             ffi.C.pumas_finalise()
-            local errmsg = _M._pccall(ffi.C.pumas_load, f)
+            local errmsg = pumas._pccall(ffi.C.pumas_load, f)
             update(PUMAS)
             f:close()
             if errmsg then
@@ -351,10 +351,10 @@ do
         function mt.__index.dump (path)
             local f = io.open(path, "wb")
             if f == nil then
-                raise_error('could not open file ' .. path)
+                raise_error('could not open file '..path)
             end
 
-            local errmsg = _M._pccall(ffi.C.pumas_dump, f)
+            local errmsg = pumas._pccall(ffi.C.pumas_dump, f)
             f:close()
             if errmsg then
                 raise_error{
@@ -368,10 +368,10 @@ do
     -- Convert a Camel like name to a snaky one
     local snakify
     do
-        local function f (w) return "_" .. w:lower() end
+        local function f (w) return "_"..w:lower() end
 
         function snakify (camel)
-            camel = camel:sub(1,1):lower() .. camel:sub(2)
+            camel = camel:sub(1,1):lower()..camel:sub(2)
             return camel:gsub("%u", f)
                         :gsub("%d+", f)
         end
@@ -383,8 +383,8 @@ do
         local mt = {__index={}}
 
         -- Add a line of text
-        function mt.__index:push (s, ...)
-            table.insert(self, string.format(s, ...))
+        function mt.__index:push (s,...)
+            table.insert(self, string.format(s,...))
             return self
         end
 
@@ -399,8 +399,8 @@ do
     -- Recursively create a new directory if it does not already exist
     local function makedirs (path)
         local dir = ''
-        for s in path:gmatch(PATHSEP .. '?[^' .. PATHSEP .. ']+') do
-            dir = dir .. s
+        for s in path:gmatch(PATHSEP..'?[^'..PATHSEP..']+') do
+            dir = dir..s
             if lfs.attributes(dir, "mode") == nil then
                 local ok, err = lfs.mkdir(dir)
                 if not ok then return nil, err end
@@ -417,7 +417,7 @@ do
             raise_error{
                 argnum = 1,
                 expected = 'a table',
-                got = 'a ' .. type(args),
+                got = 'a '..type(args),
             }
         end
 
@@ -444,7 +444,7 @@ do
             raise_error{
                 argname = 'project',
                 expected = 'a string',
-                got = 'a ' .. type(project)
+                got = 'a '..type(project)
             }
         end
 
@@ -454,7 +454,7 @@ do
             raise_error{
                 argname = 'compile',
                 expected = 'a boolean',
-                got = 'a ' .. type(compile)
+                got = 'a '..type(compile)
             }
         end
 
@@ -465,7 +465,7 @@ do
                 raise_error{
                     argname = 'particle',
                     expected = 'a string',
-                    got = 'a ' .. type(particle)
+                    got = 'a '..type(particle)
                 }
             end
 
@@ -478,7 +478,7 @@ do
                 raise_error{
                     argname = 'particle',
                     expected = "'muon' or 'tau'",
-                    got = "'" .. particle .. "'"
+                    got = "'"..particle.."'"
                 }
             end
         end
@@ -496,7 +496,7 @@ do
                 raise_error{
                     argname = 'energies',
                     expected = "a table or 'PDG'",
-                    got = "'" .. energies .. "'"
+                    got = "'"..energies.."'"
                 }
             end
 
@@ -543,7 +543,7 @@ do
                     raise_error{
                         argname = 'energies',
                         expected = 'n > 1',
-                        got = 'n = ' .. n
+                        got = 'n = '..n
                     }
                 end
 
@@ -555,7 +555,7 @@ do
             raise_error{
                 argname = 'energies',
                 expected = 'a string or table',
-                got 'a ' .. type(energies)
+                got 'a '..type(energies)
             }
         end
 
@@ -565,7 +565,7 @@ do
             raise_error{
                 argname = 'path',
                 expected = 'a string',
-                got = 'a' .. type(path)
+                got = 'a'..type(path)
             }
         end
 
@@ -584,7 +584,7 @@ do
                 raise_error{
                     argname = 'materials',
                     expected = 'a string or a table',
-                    got = 'a ' .. tp
+                    got = 'a '..tp
                 }
             end
         end
@@ -594,16 +594,16 @@ do
                 if materials[name] ~= nil then
                     raise_error{
                         argname = 'materials',
-                        description = "duplicated material name '" ..
-                                      name .. "'"
+                        description = "duplicated material name '"..
+                                      name.."'"
                     }
                 end
 
-                local material = _M.MATERIALS[name]
+                local material = pumas.MATERIALS[name]
                 if not material then
                     raise_error{
                         argname = 'materials',
-                        description = "unknown material '" .. name .. "'"
+                        description = "unknown material '"..name.."'"
                     }
                 end
                 materials[name] = material
@@ -618,7 +618,7 @@ do
                 raise_error{
                     argname = 'composites',
                     expected = ' a table',
-                    got = 'a ' .. type(composites)
+                    got = 'a '..type(composites)
                 }
             end
             for name, composition in pairs(composites) do
@@ -627,8 +627,8 @@ do
                     if not m then
                         raise_error{
                             argname = 'composites',
-                            description = "missing material '" .. v[1] ..
-                                          "' for composite '" .. name "'"
+                            description = "missing material '"..v[1]..
+                                          "' for composite '"..name "'"
                         }
                     end
                 end
@@ -648,11 +648,11 @@ do
             for _, v in pairs(material.composition) do
                 local name = v[1]
                 if not composition[name] then
-                    local element = _M.ELEMENTS[name]
+                    local element = pumas.ELEMENTS[name]
                     if not element then
                         raise_error{
                             argname = 'materials',
-                            description = "unknown element '" .. name .. "'"
+                            description = "unknown element '"..name.."'"
                         }
                     end
                     composition[name] = element
@@ -694,7 +694,7 @@ do
 
         for i, name in ipairs(mlist) do
             xml:push('')
-            local dedx = snakify(name) .. '.txt'
+            local dedx = snakify(name)..'.txt'
             xml:push('  <material name="%s" file="%s">', name, dedx)
             local m = materials[name]
 
@@ -735,7 +735,7 @@ do
         end
         xml:push('</pumas>')
 
-        local mdf = path .. PATHSEP .. project .. '.xml'
+        local mdf = path..PATHSEP..project..'.xml'
         local f = io.open(mdf, 'w')
         f:write(xml:pop())
         f:close()
@@ -806,7 +806,7 @@ do
             local dump
             ffi.C.pumas_finalise()
             ffi.C.pumas_initialise(particle, mdf, path)
-            dump = path .. PATHSEP .. project .. '.pumas'
+            dump = path..PATHSEP..project..'.pumas'
             local f = io.open(dump, 'w+')
             ffi.C.pumas_dump(f)
             f:close()
@@ -828,7 +828,7 @@ do
     do
         local raise_error = ErrorFunction{fname = 'Element'}
 
-        function _M.Element (Z, A, I)
+        function pumas.Element (Z, A, I)
             local index, tp
             if type(Z) ~= 'number' then index, tp = 1, type(Z) end
             if type(A) ~= 'number' then index, tp = 2, type(A) end
@@ -837,7 +837,7 @@ do
                 raise_error{
                     argnum = index,
                     expected = 'a number',
-                    got = 'a ' .. tp
+                    got = 'a '..tp
                 }
             end
 
@@ -850,13 +850,10 @@ do
         end
     end
 
-    -- Load the elements data
-    local elements = require 'pumas.data.elements'
-
     -- The elements table
-    _M.ELEMENTS = require 'pumas.data.elements'
-    for k, v in pairs(_M.ELEMENTS) do
-        _M.ELEMENTS[k] = setmetatable(v, mt)
+    pumas.ELEMENTS = require('pumas.data.elements')
+    for k, v in pairs(pumas.ELEMENTS) do
+        pumas.ELEMENTS[k] = setmetatable(v, mt)
     end
 end
 
@@ -871,7 +868,7 @@ do
 
     local raise_error = ErrorFunction{fname = 'Material'}
 
-    function _M.Material (args)
+    function pumas.Material (args)
         if type(args) ~= 'table' then
             raise_error{
                 argnum = 1,
@@ -921,7 +918,7 @@ do
             local composition, norm = {}, 0
             for symbol, count in formula:gmatch('(%u%l?)(%d*)') do
                 count = tonumber(count) or 1
-                local wi = count * _M.ELEMENTS[symbol].A
+                local wi = count * pumas.ELEMENTS[symbol].A
                 table.insert(composition, {symbol, wi})
                 norm = norm + wi
             end
@@ -941,9 +938,9 @@ do
         local ZoA, mee = 0, 0
         for _, value in ipairs(self.composition) do
             local symbol, wi = unpack(value)
-            local e = _M.ELEMENTS[symbol]
+            local e = pumas.ELEMENTS[symbol]
             if e == nil then
-                raise_error{description = "unknown element '" .. symbol .. "'"}
+                raise_error{description = "unknown element '"..symbol.."'"}
             end
             local tmp = wi * e.Z / e.A
             ZoA = ZoA + tmp
@@ -962,7 +959,7 @@ do
                 raise_error{
                     argname = 'state',
                     expected = "'solid', 'liquid' or 'gaz'",
-                    got = "'" .. state .. "'"
+                    got = "'"..state.."'"
                 }
             end
             state = tmp
@@ -1034,10 +1031,10 @@ do
     end
 
     -- The materials table
-    _M.MATERIALS = require 'pumas.data.materials'
-    for k, v in pairs(_M.MATERIALS) do
+    pumas.MATERIALS = require('pumas.data.materials')
+    for k, v in pairs(pumas.MATERIALS) do
         v.density = v.density * 1E+03 -- XXX use kg / m^3
-        _M.MATERIALS[k] = _M.Material(v)
+        pumas.MATERIALS[k] = pumas.Material(v)
     end
 end
 
@@ -1110,31 +1107,31 @@ do
         function mt:__newindex (k, v)
             if k == 'distance_max' then
                 if v == nil then
-                    event_unset(self, _M.EVENT_LIMIT_DISTANCE)
+                    event_unset(self, pumas.EVENT_LIMIT_DISTANCE)
                     v = 0
                 else
-                    event_set(self, _M.EVENT_LIMIT_DISTANCE)
+                    event_set(self, pumas.EVENT_LIMIT_DISTANCE)
                 end
             elseif k == 'grammage_max' then
                 if v == nil then
-                    event_unset(self, _M.EVENT_LIMIT_GRAMMAGE)
+                    event_unset(self, pumas.EVENT_LIMIT_GRAMMAGE)
                     v = 0
                 else
-                    event_set(self, _M.EVENT_LIMIT_GRAMMAGE)
+                    event_set(self, pumas.EVENT_LIMIT_GRAMMAGE)
                 end
             elseif k == 'kinetic_limit' then
                 if v == nil then
-                    event_unset(self, _M.EVENT_LIMIT_KINETIC)
+                    event_unset(self, pumas.EVENT_LIMIT_KINETIC)
                     v = 0
                 else
-                    event_set(self, _M.EVENT_LIMIT_KINETIC)
+                    event_set(self, pumas.EVENT_LIMIT_KINETIC)
                 end
             elseif k == 'time_max' then
                 if v == nil then
-                    event_unset(self, _M.EVENT_LIMIT_TIME)
+                    event_unset(self, pumas.EVENT_LIMIT_TIME)
                     v = 0
                 else
-                    event_set(self, _M.EVENT_LIMIT_TIME)
+                    event_set(self, pumas.EVENT_LIMIT_TIME)
                 end
             elseif k == 'geometry' then
                 local current_geometry = rawget(self, '_geometry')
@@ -1182,7 +1179,7 @@ do
             elseif k == 'geometry_callback' then
                 local user_data = ffi.cast('struct pumas_user_data *',
                                            self._c.user_data)
-                local wrapped_state = _M.State()
+                local wrapped_state = pumas.State()
                 user_data.geometry.callback =
                     function (geometry, state, medium, step)
                         local wrapped_medium = media_table[addressof(medium)]
@@ -1224,7 +1221,7 @@ do
         ffi.C.pumas_state_extended_reset(extended_state, self._c)
 
         self._geometry:_update(self)
-        _M._ccall(ffi.C.pumas_transport, self._c, state._c, self._cache.event,
+        pumas._ccall(ffi.C.pumas_transport, self._c, state._c, self._cache.event,
                  self._cache.media)
         local media = table.new(2, 0)
 
@@ -1301,7 +1298,7 @@ do
         end
     end
 
-    function _M.Context (args)
+    function pumas.Context (args)
         if args and type(args) ~= 'table' then
             raise{
                 fname = 'Context',
@@ -1312,7 +1309,7 @@ do
         end
 
         local ptr = ffi.new('struct pumas_context *[1]')
-        _M._ccall(ffi.C.pumas_context_create, ptr,
+        pumas._ccall(ffi.C.pumas_context_create, ptr,
                 ffi.sizeof('struct pumas_user_data'))
         local c = ptr[0]
         ffi.gc(c, function () ffi.C.pumas_context_destroy(ptr) end)
@@ -1403,7 +1400,7 @@ do
         self._c[k] = v
     end
 
-    function _M.State (args)
+    function pumas.State (args)
         local c = ffi.cast(pumas_state_ptr, ffi.C.calloc(1, ffi.sizeof(ctype)))
         ffi.gc(c, ffi.C.free)
 
@@ -1458,7 +1455,7 @@ do
 
         if type(v) == 'string' then
             local index = ffi.new('int [1]')
-            _M._ccall(ffi.C.pumas_material_index, v, index)
+            pumas._ccall(ffi.C.pumas_material_index, v, index)
             return index[0]
         elseif type(v) == 'number' then
             if (n == 1) and (v ~= 0) then
@@ -1468,7 +1465,7 @@ do
                 }
             elseif (v < 0) or (v >= n) then
                 raise_error{
-                    expected = 'a value between 0 and ' .. tostring(n - 1),
+                    expected = 'a value between 0 and '..tostring(n - 1),
                     got  = v
                 }
             end
@@ -1542,7 +1539,7 @@ do
 
     media_table[addressof(m._c)] = m
 
-    _M.MEDIUM_TRANSPARENT = m
+    pumas.MEDIUM_TRANSPARENT = m
 end
 
 
@@ -1576,7 +1573,7 @@ do
     local ctype = ffi.typeof('struct pumas_medium_uniform')
     local ctype_ptr = ffi.typeof('struct pumas_medium_uniform *')
 
-    function _M.UniformMedium (material, density, magnet)
+    function pumas.UniformMedium (material, density, magnet)
         if material == nil then
             raise {
                 fname = strtype,
@@ -1589,7 +1586,7 @@ do
         local self, index = BaseMedium.new(ctype, ctype_ptr, material, strtype)
 
         if density == nil then
-            density = _M.MATERIALS[material].density -- XXX check if Material
+            density = pumas.MATERIALS[material].density -- XXX check if Material
         end
 
         ffi.C.pumas_medium_uniform_initialise(self._c, index, density, magnet)
@@ -1660,7 +1657,7 @@ do
     local ctype_ptr = ffi.typeof('struct pumas_medium_gradient *')
 
     -- XXX Use keyword arguments instead
-    function _M.GradientMedium (material, type_, axis, value, position0,
+    function pumas.GradientMedium (material, type_, axis, value, position0,
                                density0, magnet)
         if density0 == nil then
             local args = {material, type_, axis, value, position0}
@@ -1692,9 +1689,9 @@ end
 -------------------------------------------------------------------------------
 -- The base geometry metatype
 -------------------------------------------------------------------------------
-_M.BaseGeometry = {__index = {}} -- XXX export this? or not?
+pumas.BaseGeometry = {__index = {}} -- XXX export this? or not?
 do
-    function _M.BaseGeometry:new ()
+    function pumas.BaseGeometry:new ()
         local obj = {}
         obj._daughters = {}
         obj._mothers = {}
@@ -1702,7 +1699,7 @@ do
         return setmetatable(obj, self)
     end
 
-    function _M.BaseGeometry:clone ()
+    function pumas.BaseGeometry:clone ()
         local mt = {__index = {}}
         mt.new = self.new
         mt.clone = self.clone
@@ -1712,7 +1709,7 @@ do
         return mt
     end
 
-    _M.BaseGeometry.__index.__metatype = 'geometry'
+    pumas.BaseGeometry.__index.__metatype = 'geometry'
 
     local function walk_up (geometry, f)
         for mother, count in pairs(geometry._mothers) do
@@ -1721,7 +1718,7 @@ do
         end
     end
 
-    function _M.BaseGeometry.__index:_invalidate ()
+    function pumas.BaseGeometry.__index:_invalidate ()
         walk_up(self, function (g) g._valid = false end)
         self._valid = false
     end
@@ -1729,7 +1726,7 @@ do
     do
         local raise_error = ErrorFunction{fname = 'insert'}
 
-        function _M.BaseGeometry.__index:insert (...)
+        function pumas.BaseGeometry.__index:insert (...)
             local args, index, geometry, arg1 = {...}
             if #args == 0 then
                     raise_error{
@@ -1784,7 +1781,7 @@ do
         end
     end
 
-    function _M.BaseGeometry.__index:remove (index)
+    function pumas.BaseGeometry.__index:remove (index)
         local geometry = table.remove(self._daughters, index)
         if geometry == nil then return end
 
@@ -1811,7 +1808,7 @@ do
         end
     end
 
-    function _M.BaseGeometry.__index:_update (context)
+    function pumas.BaseGeometry.__index:_update (context)
         ffi.C.pumas_geometry_reset(context._c)
 
         if (ffi.C.pumas_geometry_get(context._c) ~= nil) and self._valid then
@@ -1849,7 +1846,7 @@ do
         elseif k == '_new' then
             return new
         else
-            return _M.BaseGeometry.__index[k]
+            return pumas.BaseGeometry.__index[k]
         end
     end
 
@@ -1870,7 +1867,7 @@ do
         end
     end
 
-    function _M.InfiniteGeometry (medium)
+    function pumas.InfiniteGeometry (medium)
         if (medium ~= nil) and (medium.__metatype ~= 'medium') then
             raise {
                 fname = 'InfiniteGeometry',
@@ -1880,7 +1877,7 @@ do
             }
         end
 
-        local self = _M.BaseGeometry:new()
+        local self = pumas.BaseGeometry:new()
         self._medium = medium
 
         return setmetatable(self, InfiniteGeometry)
@@ -1912,7 +1909,7 @@ do
         else
             local z = ffi.new('double [1]')
             local inside = ffi.new('int [1]')
-            _M._ccall(self._elevation, self._c, x, y, z, inside)
+            pumas._ccall(self._elevation, self._c, x, y, z, inside)
             if inside[0] == 1 then
                 return z[0]
             else
@@ -1946,7 +1943,7 @@ do
     mt_flat.__index._stepper_add = ffi.C.turtle_stepper_add_flat
     for k, v in pairs(mt.__index) do mt_flat.__index[k] = v end
 
-    function _M.TopographyData (data)
+    function pumas.TopographyData (data)
         if data == nil then data = 0 end
 
         local self = {}
@@ -1961,14 +1958,14 @@ do
                 }
             elseif mode == 'directory' then
                 ptr = ffi.new('struct turtle_stack *[1]')
-                _M._ccall(ffi.C.turtle_stack_create, ptr, data, 0, nil, nil)
+                pumas._ccall(ffi.C.turtle_stack_create, ptr, data, 0, nil, nil)
                 c = ptr[0]
                 ffi.gc(c, function () ffi.C.turtle_stack_destroy(ptr) end)
-                _M._ccall(ffi.C.turtle_stack_load, c)
+                pumas._ccall(ffi.C.turtle_stack_load, c)
                 metatype = mt_stack
             else
                 ptr = ffi.new('struct turtle_map *[1]')
-                _M._ccall(ffi.C.turtle_map_load, ptr, data)
+                pumas._ccall(ffi.C.turtle_map_load, ptr, data)
                 c = ptr[0]
                 ffi.gc(c, function () ffi.C.turtle_map_destroy(ptr) end)
                 metatype = mt_map
@@ -2010,21 +2007,21 @@ do
         c.media = self._media
         c.n_layers = #self._layers
 
-        _M._ccall(ffi.C.turtle_stepper_create, c.stepper)
+        pumas._ccall(ffi.C.turtle_stepper_create, c.stepper)
         for i, layer in ipairs(self._layers) do
             local _, data, offset = unpack(layer)
 
             if i > 1 then
-                _M._ccall(ffi.C.turtle_stepper_add_layer, c.stepper[0])
+                pumas._ccall(ffi.C.turtle_stepper_add_layer, c.stepper[0])
             end
 
             for j = #data, 1, -1 do
                 local datum = data[j]
                 if type(datum._elevation) == 'number' then
-                    _M._ccall(datum._stepper_add, c.stepper[0],
+                    pumas._ccall(datum._stepper_add, c.stepper[0],
                             datum._elevation + offset)
                 else
-                    _M._ccall(datum._stepper_add, c.stepper[0],
+                    pumas._ccall(datum._stepper_add, c.stepper[0],
                             datum._c, offset)
                 end
             end
@@ -2042,13 +2039,13 @@ do
             if self._magnet == true then
                 magnet = os.tmpname()
                 local f = io.open(magnet, 'a+')
-                f:write(require 'pumas.data.igrf13')
+                f:write(require('pumas.data.igrf13'))
                 f:close()
             else
                 magnet = self._magnet
             end
 
-            local errmsg = _M._pccall(
+            local errmsg = pumas._pccall(
                 ffi.C.gull_snapshot_create, c.magnet.snapshot, magnet,
                 matches[1], matches[2], matches[3])
             if self._magnet == true then os.remove(magnet) end
@@ -2070,13 +2067,13 @@ do
         elseif k == '_new' then
             return new
         else
-            return _M.BaseGeometry.__index[k]
+            return pumas.BaseGeometry.__index[k]
         end
     end
 
     function mt:__newindex (k, v)
         if (k == 'magnet') or (k == 'date') then
-            local key = '_' .. k
+            local key = '_'..k
             if v == rawget(self, key) then return end
 
             local tp = type(v)
@@ -2098,7 +2095,7 @@ do
         end
     end
 
-    function _M.EarthGeometry (...)
+    function pumas.EarthGeometry (...)
         local args, layers = {...}, {}
         for _, layer in ipairs(args) do
             local medium, data, offset = unpack(layer)
@@ -2128,7 +2125,7 @@ do
             end
         end
 
-        local self = _M.BaseGeometry:new()
+        local self = pumas.BaseGeometry:new()
         self._media = media
         self._layers = layers
 
@@ -2424,7 +2421,7 @@ end_header
             else
                 raise_error{
                     argnum = 2,
-                    description = 'unknown format ' .. extension
+                    description = 'unknown format '..extension
                 }
             end
         end
@@ -2438,13 +2435,13 @@ end_header
         elseif (k == 'insert') or (k == 'remove') then
             return
         else
-            return _M.BaseGeometry.__index[k]
+            return pumas.BaseGeometry.__index[k]
         end
     end
 
     local function get_tag(depth, index)
-        local tag = '#' .. depth
-        if index > 0 then tag = tag .. '.' .. index end
+        local tag = '#'..depth
+        if index > 0 then tag = tag..'.'..index end
         return tag
     end
 
@@ -2455,7 +2452,7 @@ end_header
 
         if (medium ~= nil) and (medium.__metatype ~= 'medium') then
             raise{
-                fname = 'Polytope ' .. get_tag(depth, index),
+                fname = 'Polytope '..get_tag(depth, index),
                 argnum = 1,
                 expected = 'a medium',
                 got = a_metatype(medium),
@@ -2465,7 +2462,7 @@ end_header
 
         if type(data) ~= 'table' then
             raise{
-                fname = 'Polytope ' .. get_tag(depth, index),
+                fname = 'Polytope '..get_tag(depth, index),
                 argnum = 2,
                 expected = 'a table',
                 got = a_metatype(data),
@@ -2476,7 +2473,7 @@ end_header
         local n_faces = math.floor(#data / 6)
         if #data ~= 6 * n_faces then
             raise{
-                fname = 'Polytope ' .. get_tag(depth, index),
+                fname = 'Polytope '..get_tag(depth, index),
                 argnum = 2,
                 expected = 'n x 6 values',
                 got = #data,
@@ -2486,7 +2483,7 @@ end_header
 
         if (daughters ~= nil) and (type(daughters) ~= 'table') then
             raise{
-                fname = 'Polytope ' .. get_tag(depth, index),
+                fname = 'Polytope '..get_tag(depth, index),
                 argnum = 3,
                 expected = 'nil or a table',
                 got = a_metatype(daughters),
@@ -2558,13 +2555,13 @@ end_header
         error('not implemented')
     end
 
-    function _M.PolytopeGeometry (args, frame)
-        local self = _M.BaseGeometry:new()
+    function pumas.PolytopeGeometry (args, frame)
+        local self = pumas.BaseGeometry:new()
         self._refs = {}
 
         if frame ~= nil then
-            point = _M.CartesianPoint()
-            vector = _M.CartesianVector()
+            point = pumas.CartesianPoint()
+            vector = pumas.CartesianVector()
         end
 
         if type(args) == 'string' then
@@ -2612,7 +2609,7 @@ do
         local state_size = ffi.sizeof('struct pumas_state')
         function mt:__newindex (k, v)
             if k == 'record' then
-                local wrapped_state = _M.State()
+                local wrapped_state = pumas.State()
                 rawget(self, '_c').record =
                     function (context, state, medium, event)
                         local wrapped_medium = media_table[addressof(medium)]
@@ -2635,9 +2632,9 @@ do
         print(event, medium, state) -- XXX pretty print
     end
 
-    function _M.Recorder (callback, period)
+    function pumas.Recorder (callback, period)
         local ptr = ffi.new('struct pumas_recorder *[1]')
-        _M._ccall(ffi.C.pumas_recorder_create, ptr, 0)
+        pumas._ccall(ffi.C.pumas_recorder_create, ptr, 0)
         local c = ptr[0]
         ffi.gc(c, function () ffi.C.pumas_recorder_destroy(ptr) end)
 
@@ -2662,7 +2659,7 @@ do
     do
         local raise_error = ErrorFunction{fname = 'from_euler'}
 
-        function mt.__index:from_euler (axis, ...)
+        function mt.__index:from_euler (axis,...)
             if (self == nil) or (axis == nil) then
                 local nargs = (self ~= nil) and 1 or 0
                 raise_error{
@@ -2682,8 +2679,8 @@ do
 
             local angles = {...}
             if #angles ~= #axis then
-                error('from_euler: expected ' .. #axis .. ' arguments but got ' ..
-                      #angles .. '.', 2)
+                error('from_euler: expected '..#axis..' arguments but got '..
+                      #angles..'.', 2)
                 raise_error{
                     argnum = 'bad',
                     expected = #axis + 2,
@@ -2716,7 +2713,7 @@ do
         end
     end
 
-    _M.Transform = ffi.metatype('struct pumas_coordinates_transform', mt)
+    pumas.Transform = ffi.metatype('struct pumas_coordinates_transform', mt)
 end
 
 
@@ -2757,7 +2754,7 @@ do
 
             if ffi.istype(double3_t, coordinates) then
                 if type(raw_coordinates) == 'string' then
-                    raw_coordinates = _M[raw_coordinates]()
+                    raw_coordinates = pumas[raw_coordinates]()
                 end
                 raw_coordinates.x = coordinates[0]
                 raw_coordinates.y = coordinates[1]
@@ -2793,7 +2790,7 @@ do
             end
 
             if type(raw_coordinates) == 'string' then
-                raw_coordinates = _M[raw_coordinates]()
+                raw_coordinates = pumas[raw_coordinates]()
             end
             if get ~= nil then
                 get(raw_coordinates, self)
@@ -2825,7 +2822,7 @@ do
         return ffi.metatype(ctype, mt)
     end
 
-    _M.CartesianPoint = CoordinatesType(cartesian_point_t,
+    pumas.CartesianPoint = CoordinatesType(cartesian_point_t,
         function (ct)
             if ct == geodetic_point_t then
                 return ffi.C.pumas_coordinates_cartesian_point_from_geodetic
@@ -2836,7 +2833,7 @@ do
         nil,
         ffi.C.pumas_coordinates_cartesian_point_transform)
 
-    _M.CartesianVector = CoordinatesType(cartesian_vector_t,
+    pumas.CartesianVector = CoordinatesType(cartesian_vector_t,
         function (ct)
             if ct == horizontal_vector_t then
                 return ffi.C.pumas_coordinates_cartesian_vector_from_horizontal
@@ -2847,7 +2844,7 @@ do
         nil,
         ffi.C.pumas_coordinates_cartesian_vector_transform)
 
-    _M.GeodeticPoint = CoordinatesType(geodetic_point_t,
+    pumas.GeodeticPoint = CoordinatesType(geodetic_point_t,
         function (ct)
             if ct == cartesian_point_t then
                 return ffi.C.pumas_coordinates_geodetic_point_from_cartesian
@@ -2857,7 +2854,7 @@ do
         end,
         ffi.C.pumas_coordinates_cartesian_point_from_geodetic)
 
-    _M.HorizontalVector = CoordinatesType(horizontal_vector_t,
+    pumas.HorizontalVector = CoordinatesType(horizontal_vector_t,
         function (ct)
             if ct == cartesian_vector_t then
                 return ffi.C.pumas_coordinates_horizontal_vector_from_cartesian
@@ -2868,7 +2865,7 @@ do
         ffi.C.pumas_coordinates_cartesian_vector_from_horizontal,
         ffi.C.pumas_coordinates_horizontal_vector_transform)
 
-    _M.SphericalPoint = CoordinatesType(spherical_point_t,
+    pumas.SphericalPoint = CoordinatesType(spherical_point_t,
         function (ct)
             if ct == cartesian_point_t then
                 return ffi.C.pumas_coordinates_spherical_point_from_cartesian
@@ -2879,7 +2876,7 @@ do
         ffi.C.pumas_coordinates_cartesian_point_from_spherical,
         ffi.C.pumas_coordinates_spherical_point_transform)
 
-    _M.SphericalVector = CoordinatesType(spherical_vector_t,
+    pumas.SphericalVector = CoordinatesType(spherical_vector_t,
         function (ct)
             if ct == cartesian_vector_t then
                 return ffi.C.pumas_coordinates_spherical_vector_from_cartesian
@@ -2899,7 +2896,7 @@ do
     local pumas_cartesian_point_t = ffi.typeof('struct pumas_cartesian_point')
     local pumas_geodetic_point_t = ffi.typeof('struct pumas_geodetic_point')
 
-    function _M.LocalFrame (origin)
+    function pumas.LocalFrame (origin)
         if origin == nil then
             raise{
                 fname = 'LocalFrame',
@@ -2913,16 +2910,16 @@ do
         if ffi.istype(pumas_geodetic_point_t, origin) then
             geodetic = origin
         else
-            geodetic = _M.GeodeticPoint():set(origin)
+            geodetic = pumas.GeodeticPoint():set(origin)
         end
 
         if (not ffi.istype(pumas_cartesian_point_t, origin)) or
            (origin.frame ~= nil) then
-            origin = _M.CartesianPoint():set(origin)
+            origin = pumas.CartesianPoint():set(origin)
                                        :transform(nil)
         end
 
-        local frame = _M.Transform()
+        local frame = pumas.Transform()
         ffi.C.pumas_coordinates_frame_initialise_local(
             frame, origin, geodetic)
 
@@ -2935,7 +2932,7 @@ end
 -- Free sky muons flux models
 -------------------------------------------------------------------------------
 do
-    _M.MUON_MASS = 0.10565839
+    pumas.MUON_MASS = 0.10565839
 
     local function ChargeRatio (charge_ratio)
         return function (charge)
@@ -2954,7 +2951,7 @@ do
 
         return function (kinetic, cos_theta, charge)
             if cos_theta < 0 then return 0 end
-            local Emu = kinetic + _M.MUON_MASS
+            local Emu = kinetic + pumas.MUON_MASS
             local ec = 1.1 * Emu * cos_theta
             local rpi = 1 + ec / 115
             local rK = 1 + ec / 850
@@ -2983,7 +2980,7 @@ do
         return function (kinetic, cos_theta, charge)
             local cs = cos_theta_star(cos_theta)
             if cs < 0 then return 0 end
-            local Emu = kinetic + _M.MUON_MASS
+            local Emu = kinetic + pumas.MUON_MASS
             return math.pow(1 + 3.64 / (Emu * math.pow(cs, 1.29)), -gamma) *
                    gaisser(kinetic, cs, charge)
         end
@@ -3030,14 +3027,14 @@ do
         return function (kinetic, cos_theta, charge)
             local cs = cos_theta_star(cos_theta)
             if cs < 0 then return 0 end
-            local Emu = kinetic + _M.MUON_MASS
+            local Emu = kinetic + pumas.MUON_MASS
 
             -- Calculate the effective initial energy, EI, and its derivative
             local EI, dEIdEf
             do
                 local X = mass_overburden(cos_theta) - X0
                 local ebx = math.exp(b * X)
-                local Ef = kinetic + _M.MUON_MASS
+                local Ef = kinetic + pumas.MUON_MASS
                 local Ei = ((a + b * Ef) * ebx - a) / b
 
                 local sE = 0.5 * c2 * (Ei * Ei - Ef * Ef) + c1 * (Ei - Ef) +
@@ -3066,14 +3063,14 @@ do
             -- Calculate the survival factor (W)
             local d0 = path_length(cos_theta)
             local ctau = 658.65
-            local W = math.exp(-d0 / ctau * _M.MUON_MASS / EI)
+            local W = math.exp(-d0 / ctau * pumas.MUON_MASS / EI)
 
             -- Return the modified Gaisser's flux
             return dEIdEf * W * gaisser(EI, cs, charge)
         end
     end
 
-    function _M.MuonFlux (model, options)
+    function pumas.MuonFlux (model, options)
         local raise_error = ErrorFunction{fname = 'MuonFlux'}
 
         if model == nil then
@@ -3096,7 +3093,7 @@ do
                 else
                     raise_error{
                         argnum = 2,
-                        description = "unknown option '" .. k ..
+                        description = "unknown option '"..k..
                                       "' for 'tabulation' model"
                     }
                 end
@@ -3121,8 +3118,8 @@ do
             else 
                 raise_error{
                     argnum = 2,
-                    description = "unknown option '" .. k ..
-                                  "' for '" .. model .. "' model"
+                    description = "unknown option '"..k..
+                                  "' for '"..model.."' model"
                 }
             end
         end
@@ -3145,7 +3142,7 @@ do
         else
             raise_error{
                 argnum = 1,
-                description = "'unknown flux model '" .. model .. "'"
+                description = "'unknown flux model '"..model.."'"
             }
         end
     end
@@ -3155,7 +3152,7 @@ end
 -------------------------------------------------------------------------------
 -- Wrap and return the package
 -------------------------------------------------------------------------------
-return setmetatable(_M, {
+return setmetatable(pumas, {
     __call = function (self)
         -- Export all symbols to the global namespace
         for k, v in pairs(self) do

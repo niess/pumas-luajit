@@ -1,26 +1,26 @@
-local M = {}
+local repl = {}
 
 
-M.NOTICE = string.format(
-    "Pumas LuaJIT (%s)  Copyright (C) 2020 UCA, CNRS/IN2P3, LPC",
+repl.NOTICE = string.format(
+    'LuaJIT+Pumas (%s)  Copyright (C) 2020 UCA, CNRS/IN2P3, LPC',
     _RUNTIME_VERSION)
 
 
 -- Set the main program
-function M.__main__()
+function repl.__main__()
     local interactive
     local index = 1
     while index <= #arg do
         local optstr = arg[index]
-        if #optstr == 1 or string.match(optstr, "^[^-]") then
+        if #optstr == 1 or string.match(optstr, '^[^-]') then
             break
         end
         index = index + 1
 
         local opt = optstr:sub(2, 2)
-        if opt == "i" then
+        if opt == 'i' then
             interactive = true
-        elseif opt == "-" then
+        elseif opt == '-' then
             break
         else
             local optarg
@@ -31,17 +31,17 @@ function M.__main__()
                 optarg = optstr:sub(3)
             end
 
-            if opt == "e" then
+            if opt == 'e' then
                 local chunk, err = loadstring(optarg)
                 if err then error(err, 2) end
                 chunk()
                 if interactive ~= true then
                     interactive = false
                 end
-            elseif opt == "l" then
+            elseif opt == 'l' then
                 require(optarg)
             else
-                error("invalid option -" .. opt, 2)
+                error('invalid option -'..opt, 2)
             end
         end
     end
@@ -55,17 +55,17 @@ function M.__main__()
         return
     end
 
-    local inspect = require "inspect"
-    local jit = require "jit"
-    local ffi = require "ffi"
+    local inspect = require('inspect')
+    local jit = require('jit')
+    local ffi = require('ffi')
 
-    local linesep = jit.os == "Windows" and "\r\n" or "\n"
+    local linesep = jit.os == 'Windows' and '\r\n' or '\n'
 
-    io.stdout:write(M.NOTICE)
+    io.stdout:write(repl.NOTICE)
     io.stdout:write(linesep)
 
-    local prompt, read_command = ">> "
-    local has_readline, lib = pcall(ffi.load, "readline")
+    local prompt, read_command = '>> '
+    local has_readline, lib = pcall(ffi.load, 'readline')
     if has_readline then
         ffi.cdef [[
             const char * rl_readline_name;
@@ -74,7 +74,7 @@ function M.__main__()
             void free(void *);
         ]]
 
-        lib.rl_readline_name = "pumas"
+        lib.rl_readline_name = 'pumas'
 
         read_command = function ()
             local line = lib.readline(prompt)
@@ -97,13 +97,13 @@ function M.__main__()
         local command = read_command()
         if not command then break end
 
-        if command:find("^!") then
+        if command:find('^!') then
             os.execute(command:sub(2))
         else
             -- XXX nil should show as "nil"
             local f, result, ok
-            f, result = loadstring("return " .. command, "=stdin")
-            if result ~= nil then f, result = loadstring(command, "=stdin") end
+            f, result = loadstring('return '..command, '=stdin')
+            if result ~= nil then f, result = loadstring(command, '=stdin') end
             if result == nil then ok, result = pcall(f) end
             if result ~= nil then
                 io.stdout:write(inspect(result, options))
@@ -115,4 +115,4 @@ function M.__main__()
 end
 
 
-return M
+return repl

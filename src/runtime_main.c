@@ -102,10 +102,10 @@ int main(int argc, char * argv[])
          * the REPL
          */
         const int rc = execute(L, "                                            \
-            local runtime = require 'runtime'                                  \
+            local runtime = require('runtime')                                 \
             runtime.__preload__()                                              \
-            local pumas = require 'pumas' ()                                   \
-            local repl = require 'runtime.repl'                                \
+            local pumas = require('pumas')()                                   \
+            local repl = require('runtime.repl')                               \
             repl.__main__()                                                    \
         ");
 
