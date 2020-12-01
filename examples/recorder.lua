@@ -1,34 +1,35 @@
+local pumas = require('pumas')
+
 -- Load materials tabulations
-PUMAS.load('share/materials/standard')
+pumas.PUMAS.load('share/materials/standard')
 
 -- Build the geometry, an Earth fully covered with sea
 local media = {}
-media['Atmosphere'] = GradientMedium('AirDry1Atm', 'exponential', 'vertical',
-                                     -1E+04, 0, 1.205)
-media['Seabed'] = UniformMedium('StandardRock')
-media['Sea'] = UniformMedium('WaterLiquid')
+media['Atmosphere'] = pumas.GradientMedium(
+    'AirDry1Atm', 'exponential', 'vertical', -1E+04, 0, 1.205)
+media['Seabed'] = pumas.UniformMedium('StandardRock')
+media['Sea'] = pumas.UniformMedium('WaterLiquid')
 
 local media_names = {}
 for k, v in pairs(media) do
     media_names[v] = k
 end
 
-local geoid = TopographyData()
-local geometry = EarthGeometry(
+local geoid = pumas.TopographyData()
+local geometry = pumas.EarthGeometry(
     {media['Seabed'], geoid, -100},
     {media['Sea'], geoid, 0},
     {media['Atmosphere'], geoid, 100}
 )
 
 -- Initialise the Monte Carlo state below the sea bed
-local position = GeodeticPoint(45, 3, -100.5)
-local frame = LocalFrame(position)
+local position = pumas.GeodeticPoint(45, 3, -100.5)
+local frame = pumas.LocalFrame(position)
 local deg = math.pi / 180
-local direction = HorizontalVector{azimuth = 0 * deg,
-                                   elevation = -10 * deg, norm = 1,
-                                   frame = frame}
+local direction = pumas.HorizontalVector{
+    azimuth = 0 * deg, elevation = -10 * deg, norm = 1, frame = frame}
 
-local state = State{
+local state = pumas.State{
     charge = -1,
     kinetic = 1,
     weight = 1,
@@ -38,17 +39,15 @@ local state = State{
 
 -- Callback function used for printing Monte Carlo steps
 local function print_step(state, medium, event)
-    if event == EVENT_NONE then return end
+    if event == pumas.EVENT_NONE then return end
 
-    if bit.band(event, EVENT_STOP) == EVENT_STOP then
-        event = event_tostring(event - EVENT_STOP)
+    if bit.band(event, pumas.EVENT_STOP) == pumas.EVENT_STOP then
+        event = pumas.event_tostring(event - pumas.EVENT_STOP)
     else
-        event = event_tostring(event)
+        event = pumas.event_tostring(event)
     end
 
-    local position = CartesianPoint(state.position[0], state.position[1],
-                                    state.position[2])
-    local geodetic = GeodeticPoint():set(position)
+    local geodetic = pumas.GeodeticPoint():set(state.position)
     local u0 = direction:get()
     local deflection = math.acos(state.direction[0] * u0[0] +
                                  state.direction[1] * u0[1] +
@@ -66,13 +65,13 @@ end
 
 -- Configure the simulation context for backward transport with a detailed
 -- Physics
-local context = Context {
+local context = pumas.Context {
     forward = false,
     longitudinal = false,
-    scheme = SCHEME_DETAILED,
+    scheme = pumas.SCHEME_DETAILED,
     geometry = geometry,
     random_seed = 0,
-    recorder = Recorder(print_step)
+    recorder = pumas.Recorder(print_step)
 }
 
 -- Do the transport

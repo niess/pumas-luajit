@@ -3150,13 +3150,6 @@ end
 
 
 -------------------------------------------------------------------------------
--- Wrap and return the package
+-- Return the package
 -------------------------------------------------------------------------------
-return setmetatable(pumas, {
-    __call = function (self)
-        -- Export all symbols to the global namespace
-        for k, v in pairs(self) do
-            if k:sub(1) ~= '_' then rawset(_G, k, v) end
-        end
-    end
-})
+return pumas

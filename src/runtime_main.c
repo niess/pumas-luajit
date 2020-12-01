@@ -104,7 +104,7 @@ int main(int argc, char * argv[])
         const int rc = execute(L, "                                            \
             local runtime = require('runtime')                                 \
             runtime.__preload__()                                              \
-            local pumas = require('pumas')()                                   \
+            pumas = require('pumas')                                           \
             local repl = require('runtime.repl')                               \
             repl.__main__()                                                    \
         ");
