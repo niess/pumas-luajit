@@ -285,11 +285,23 @@ $(OBJS_DIR)/$(CROSS)inspect.lua.o: $(INSPECT_SRC)/inspect.lua $(LUAJIT_EXE) | $(
 $(OBJS_DIR)/$(CROSS)%.lua.o: %.lua $(LUAJIT_EXE) | $(OBJS_DIR)
 	@$(call jit_compile,$*,$<,$@)
 
+$(OBJS_DIR)/$(CROSS)pumas_%.lua.o: pumas/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
+	@$(call jit_compile,pumas.$*,$<,$@)
+
+$(OBJS_DIR)/$(CROSS)pumas_coordinates_%.lua.o: pumas/coordinates/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
+	@$(call jit_compile,pumas.coordinates.$*,$<,$@)
+
 $(OBJS_DIR)/$(CROSS)pumas_data_%.lua.o: pumas/data/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
 	@$(call jit_compile,pumas.data.$*,$<,$@)
 
+$(OBJS_DIR)/$(CROSS)pumas_geometry_%.lua.o: pumas/geometry/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
+	@$(call jit_compile,pumas.geometry.$*,$<,$@)
+
 $(OBJS_DIR)/$(CROSS)pumas_header_%.lua.o: pumas/header/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
 	@$(call jit_compile,pumas.header.$*,$<,$@)
+
+$(OBJS_DIR)/$(CROSS)pumas_medium_%.lua.o: pumas/medium/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
+	@$(call jit_compile,pumas.medium.$*,$<,$@)
 
 $(OBJS_DIR)/$(CROSS)pumas.lua.o: pumas.lua $(LUAJIT_EXE) | $(OBJS_DIR)
 	@$(call jit_compile,pumas,$<,$@)
@@ -333,10 +345,37 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_data_elements.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_data_igrf13.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_data_materials.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_call.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_context.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_coordinates.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_coordinates_frame.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_coordinates_transform.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_coordinates_type.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_elements.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_enum.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_error.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_flux.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_geometry.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_geometry_base.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_geometry_earth.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_geometry_infinite.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_geometry_polytope.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_geometry_topography.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_header_api.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_header_gull.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_header_extensions.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_header_turtle.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_materials.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_medium.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_medium_base.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_medium_gradient.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_medium_transparent.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_medium_uniform.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_metatype.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_os.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_physics.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_recorder.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_state.lua.o \
 	      $(OBJS_DIR)/$(CROSS)runtime.lua.o \
 	      $(OBJS_DIR)/$(CROSS)runtime_repl.lua.o \
 	      $(OBJS_DIR)/$(CROSS)strict.lua.o

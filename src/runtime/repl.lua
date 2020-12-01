@@ -2,7 +2,7 @@ local repl = {}
 
 
 repl.NOTICE = string.format(
-    'LuaJIT+Pumas (%s)  Copyright (C) 2020 UCA, CNRS/IN2P3, LPC',
+    'LuaJIT Pumas (%s)  Copyright (C) 2020 UCA, CNRS/IN2P3, LPC',
     _RUNTIME_VERSION)
 
 
