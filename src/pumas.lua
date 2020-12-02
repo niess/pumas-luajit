@@ -51,19 +51,6 @@ end
 
 
 -------------------------------------------------------------------------------
--- Import the table.new extension or set a patch
--------------------------------------------------------------------------------
-do
-    -- Try to import some useful extensions
-    local ok = pcall(require, 'table.new')
-    if not ok then -- XXX Append to the table package or use a local?
-        table.new = function () return {} end
-        package.loaded['table.new'] = {}
-    end
-end
-
-
--------------------------------------------------------------------------------
 -- Set the PUMAS library version tag
 -------------------------------------------------------------------------------
 do

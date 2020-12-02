@@ -19,6 +19,7 @@ build = {
    modules = {
       pumas = 'src/pumas.lua',
       ['pumas.call'] = 'src/pumas/call.lua',
+      ['pumas.compat'] = 'src/pumas/compat.lua',
       ['pumas.context'] = 'src/pumas/context.lua',
       ['pumas.coordinates'] = 'src/pumas/coordinates.lua',
       ['pumas.coordinates.frame'] = 'src/pumas/coordinates/frame.lua',

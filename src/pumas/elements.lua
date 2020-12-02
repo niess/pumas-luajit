@@ -3,6 +3,7 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
+local compat = require('pumas.compat')
 local error = require('pumas.error')
 
 local elements = {}
@@ -31,7 +32,7 @@ do
             }
         end
 
-        local self = table.new(0, 3)
+        local self = compat.table_new(0, 3)
         self.Z = Z
         self.A = A
         self.I = I

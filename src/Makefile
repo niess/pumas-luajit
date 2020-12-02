@@ -342,15 +342,16 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(SOCKET_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)inspect.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas.lua.o \
-	      $(OBJS_DIR)/$(CROSS)pumas_data_elements.lua.o \
-	      $(OBJS_DIR)/$(CROSS)pumas_data_igrf13.lua.o \
-	      $(OBJS_DIR)/$(CROSS)pumas_data_materials.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_call.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_compat.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_context.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_coordinates.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_coordinates_frame.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_coordinates_transform.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_coordinates_type.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_data_elements.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_data_igrf13.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_data_materials.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_elements.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_enum.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_error.lua.o \

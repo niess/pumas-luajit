@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
 local call = require('pumas.call')
+local compat = require('pumas.compat')
 local error = require('pumas.error')
 local medium = require('pumas.medium')
 local metatype = require('pumas.metatype')
@@ -190,7 +191,7 @@ local function transport (self, state)
     self._geometry:_update(self)
     call(ffi.C.pumas_transport, self._c, state._c, self._cache.event,
              self._cache.media)
-    local media = table.new(2, 0)
+    local media = compat.table_new(2, 0)
 
     for i = 1, 2 do
         if self._cache.media[i - 1] ~= nil then
@@ -259,7 +260,7 @@ local function random (self, n)
                 got = metatype.a(n)
             }
         end
-        local t = table.new(n, 0)
+        local t = compat.table_new(n, 0)
         for i = 1, n do
             t[i] = c:random()
         end
