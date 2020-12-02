@@ -4,10 +4,10 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
-local call = require('pumas.call')
 local coordinates = require('pumas.coordinates')
 local error = require('pumas.error')
 local base = require('pumas.geometry.base')
+local medium = require('pumas.medium')
 local metatype = require('pumas.metatype')
 
 local polytope = {}
@@ -22,7 +22,6 @@ local ctype = ffi.typeof('struct pumas_geometry_polytope')
 local ctype_ptr = ffi.typeof('struct pumas_geometry_polytope *')
 local pumas_polytope_face_t = ffi.typeof('struct pumas_polytope_face')
 local pumas_geometry_ptr = ffi.typeof('struct pumas_geometry *')
-local pumas_medium_t = ffi.typeof('struct pumas_medium')
 local pumas_medium_ptr = ffi.typeof('struct pumas_medium *')
 
 
@@ -73,36 +72,38 @@ local function intersect3 (x1, n1, x2, n2, x3, n3, x)
 end
 
 
-local function convert_polytope (polytope, color, all_vertices, all_faces)
+local function convert_polytope (poly, color, all_vertices, all_faces)
     -- Find the vertices
     local vertices = {}
-    local vertex = ffi.new('double [3]')
-    for i = 0, polytope.n_faces - 1 do
-        for j = i + 1, polytope.n_faces - 1 do
-            for k = j + 1, polytope.n_faces - 1 do
-                if intersect3(
-                    polytope.faces[i].origin, polytope.faces[i].normal,
-                    polytope.faces[j].origin, polytope.faces[j].normal,
-                    polytope.faces[k].origin, polytope.faces[k].normal,
-                    vertex)
-                then
-                    local valid = true
-                    for l = 0, polytope.n_faces - 1 do
-                        if (l ~= i) and (l ~= j) and (l ~= k) then
-                            local f = polytope.faces[l]
-                            local d =
-                                f.normal[0] * (vertex[0] - f.origin[0]) +
-                                f.normal[1] * (vertex[1] - f.origin[1]) +
-                                f.normal[2] * (vertex[2] - f.origin[2])
-                            if d > 0 then
-                                valid = false
-                                break
+    do
+        local vertex = ffi.new('double [3]')
+        for i = 0, poly.n_faces - 1 do
+            for j = i + 1, poly.n_faces - 1 do
+                for k = j + 1, poly.n_faces - 1 do
+                    if intersect3(
+                        poly.faces[i].origin, poly.faces[i].normal,
+                        poly.faces[j].origin, poly.faces[j].normal,
+                        poly.faces[k].origin, poly.faces[k].normal,
+                        vertex)
+                    then
+                        local valid = true
+                        for l = 0, poly.n_faces - 1 do
+                            if (l ~= i) and (l ~= j) and (l ~= k) then
+                                local f = poly.faces[l]
+                                local d =
+                                    f.normal[0] * (vertex[0] - f.origin[0]) +
+                                    f.normal[1] * (vertex[1] - f.origin[1]) +
+                                    f.normal[2] * (vertex[2] - f.origin[2])
+                                if d > 0 then
+                                    valid = false
+                                    break
+                                end
                             end
                         end
-                    end
-                    if valid then
-                        local v = ffi.new('double [3]', vertex)
-                        table.insert(vertices, {i, j, k, v})
+                        if valid then
+                            local v = ffi.new('double [3]', vertex)
+                            table.insert(vertices, {i, j, k, v})
+                        end
                     end
                 end
             end
@@ -110,14 +111,14 @@ local function convert_polytope (polytope, color, all_vertices, all_faces)
     end
 
     -- Resolve the color
-    local wrapped_medium = medium.get(polytope.medium)
+    local wrapped_medium = medium.get(poly.medium)
     local red, green, blue, alpha = color(wrapped_medium)
 
     -- Map the faces
     local index0 = #all_vertices
-    for i = 0, polytope.n_faces - 1 do
+    for i = 0, poly.n_faces - 1 do
         local index, n_vertices = {}, 0
-        for j, vertex in ipairs(vertices) do
+        for _, vertex in ipairs(vertices) do
             if (i == vertex[1]) or (i == vertex[2]) or (i == vertex[3]) then
                 table.insert(index, {0, vertex[4]})
                 n_vertices = n_vertices + 1
@@ -126,7 +127,7 @@ local function convert_polytope (polytope, color, all_vertices, all_faces)
 
         if n_vertices >= 3 then
             local c = ffi.new('double [3]')
-            for j, vertex in ipairs(index) do
+            for _, vertex in ipairs(index) do
                 for k = 0, 2 do
                     c[k] = c[k] + vertex[2][k]
                 end
@@ -147,9 +148,9 @@ local function convert_polytope (polytope, color, all_vertices, all_faces)
             end
 
             local uy = ffi.new('double [3]')
-            cross(polytope.faces[i].normal, ux, uy)
+            cross(poly.faces[i].normal, ux, uy)
 
-            for j, vertex in ipairs(index) do
+            for _, vertex in ipairs(index) do
                 local r = ffi.new('double [3]')
                 for k = 0, 2 do
                     r[k] = vertex[2][k] - c[k]
@@ -164,9 +165,9 @@ local function convert_polytope (polytope, color, all_vertices, all_faces)
                 return a[1] < b[1]
             end)
 
-            local nx = tonumber(polytope.faces[i].normal[0])
-            local ny = tonumber(polytope.faces[i].normal[1])
-            local nz = tonumber(polytope.faces[i].normal[2])
+            local nx = tonumber(poly.faces[i].normal[0])
+            local ny = tonumber(poly.faces[i].normal[1])
+            local nz = tonumber(poly.faces[i].normal[2])
             for j, vertex in ipairs(index) do
                 local r = vertex[2]
                 table.insert(all_vertices, {tonumber(r[0]), tonumber(r[1]),
@@ -183,7 +184,7 @@ local function convert_polytope (polytope, color, all_vertices, all_faces)
     end
 
     -- Convert daughter volumes
-    local daughter = polytope.base.daughters
+    local daughter = poly.base.daughters
     while daughter ~= nil do
         local p = ffi.cast('struct pumas_geometry_polytope *', daughter)
         convert_polytope(p, color, all_vertices, all_faces)
@@ -238,12 +239,12 @@ end_header
     local file = io.open(path, 'w')
     file:write(header)
     local v = ffi.new('struct ply_vertex[1]')
-    for i, vertex in ipairs(vertices) do
+    for _, vertex in ipairs(vertices) do
         v[0] = vertex
         ffi.C.fwrite(v, ffi.sizeof('struct ply_vertex'), 1, file)
     end
     local size = ffi.new('unsigned char [1]')
-    for i, face in ipairs(faces) do
+    for _, face in ipairs(faces) do
         size[0] = #face
         ffi.C.fwrite(size, ffi.sizeof(size), 1, file)
         local index = ffi.new('int [?]', #face, face)
@@ -275,14 +276,14 @@ do
             local blue = options.color.blue or options.color[3] or 0
             local alpha = options.color.alpha or options.color[4] or 255
 
-            color = function (medium)
-                local m_r, m_g, m_b, m_a = options.color[medium]
+            color = function (medium_)
+                local m_r, m_g, m_b, m_a = unpack(options.color[medium_])
                 if m_r or m_b or m_g or m_a then
                     m_r = m_r or 0
                     m_g = m_g or 0
                     m_b = m_b or 0
-                    m_alpha = m_alpha or 255
-                    return m_r, m_g, m_b, m_alpha
+                    m_a = m_a or 255
+                    return m_r, m_g, m_b, m_a
                 else
                     return red, green, blue, alpha
                 end
@@ -313,7 +314,7 @@ do
 end
 
 
-function PolytopeGeometry:__index (k)
+function PolytopeGeometry.__index (_, k)
     if k == '_new' then
         return new
     elseif k == 'export' then
@@ -339,9 +340,9 @@ end
 local point, vector
 
 local function build_polytopes (args, frame, refs, depth, index)
-    local medium, data, daughters = args[1], args[2], args[3]
+    local medium_, data, daughters = args[1], args[2], args[3]
 
-    if (medium ~= nil) and (medium.__metatype ~= 'medium') then
+    if (medium_ ~= nil) and (medium_.__metatype ~= 'medium') then
         error.raise{
             fname = 'Polytope '..get_tag(depth, index),
             argnum = 1,
@@ -389,9 +390,9 @@ local function build_polytopes (args, frame, refs, depth, index)
     table.insert(refs, mother)
 
     mother.base.get = ffi.C.pumas_geometry_polytope_get
-    if medium ~= nil then
-        mother.medium = ffi.cast(pumas_medium_ptr, medium._c)
-        refs[medium._c] = true
+    if medium_ ~= nil then
+        mother.medium = ffi.cast(pumas_medium_ptr, medium_._c)
+        refs[medium_._c] = true
     end
     mother.n_faces = n_faces
 
@@ -443,7 +444,7 @@ local function build_polytopes (args, frame, refs, depth, index)
 end
 
 
-function load_ply (path)
+local function load_ply (_)
     error.raise{
         fname = 'PolytopeGeometry.load',
         description = 'PLY format not implemented'

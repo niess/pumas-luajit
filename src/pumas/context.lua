@@ -21,7 +21,6 @@ local context = {}
 -- XXX Lazy data set / get in order to handle re-initialisation of the
 -- PUMAS library (& MT)
 local Context = {}
-local ctype = ffi.typeof('struct pumas_context')
 
 
 function Context:__index (k)
@@ -69,106 +68,100 @@ local function get_random_seed ()
 end
 
 
-do
-    local pumas_geometry_t = ffi.typeof('struct pumas_geometry')
-    local pumas_recorder_t = ffi.typeof('struct pumas_recorder')
+function Context:__newindex (k, v)
+    if k == 'distance_max' then
+        if v == nil then
+            event_unset(self, enum.EVENT_LIMIT_DISTANCE)
+            v = 0
+        else
+            event_set(self, enum.EVENT_LIMIT_DISTANCE)
+        end
+    elseif k == 'grammage_max' then
+        if v == nil then
+            event_unset(self, enum.EVENT_LIMIT_GRAMMAGE)
+            v = 0
+        else
+            event_set(self, enum.EVENT_LIMIT_GRAMMAGE)
+        end
+    elseif k == 'kinetic_limit' then
+        if v == nil then
+            event_unset(self, enum.EVENT_LIMIT_KINETIC)
+            v = 0
+        else
+            event_set(self, enum.EVENT_LIMIT_KINETIC)
+        end
+    elseif k == 'time_max' then
+        if v == nil then
+            event_unset(self, enum.EVENT_LIMIT_TIME)
+            v = 0
+        else
+            event_set(self, enum.EVENT_LIMIT_TIME)
+        end
+    elseif k == 'geometry' then
+        local current_geometry = rawget(self, '_geometry')
+        if current_geometry == v then return end
 
-    function Context:__newindex (k, v)
-        if k == 'distance_max' then
-            if v == nil then
-                event_unset(self, enum.EVENT_LIMIT_DISTANCE)
-                v = 0
-            else
-                event_set(self, enum.EVENT_LIMIT_DISTANCE)
-            end
-        elseif k == 'grammage_max' then
-            if v == nil then
-                event_unset(self, enum.EVENT_LIMIT_GRAMMAGE)
-                v = 0
-            else
-                event_set(self, enum.EVENT_LIMIT_GRAMMAGE)
-            end
-        elseif k == 'kinetic_limit' then
-            if v == nil then
-                event_unset(self, enum.EVENT_LIMIT_KINETIC)
-                v = 0
-            else
-                event_set(self, enum.EVENT_LIMIT_KINETIC)
-            end
-        elseif k == 'time_max' then
-            if v == nil then
-                event_unset(self, enum.EVENT_LIMIT_TIME)
-                v = 0
-            else
-                event_set(self, enum.EVENT_LIMIT_TIME)
-            end
-        elseif k == 'geometry' then
-            local current_geometry = rawget(self, '_geometry')
-            if current_geometry == v then return end
+        if current_geometry ~= nil then
+            ffi.C.pumas_geometry_destroy(self._c)
+        end
 
-            if current_geometry ~= nil then
-                ffi.C.pumas_geometry_destroy(self._c)
-            end
+        if (v ~= nil) and (v.__metatype ~= 'geometry') then
+            error.raise{
+                header = 'bad type',
+                expected = 'a geometry',
+                got = metatype.a(v)
+            }
+        end
 
-            if (v ~= nil) and (v.__metatype ~= 'geometry') then
+        rawset(self, '_geometry', v)
+        return
+    elseif k == 'random_seed' then
+        if v == nil then
+            v = get_random_seed()
+        end
+        local c = rawget(self, '_c')
+        ffi.C.pumas_random_initialise(c, v)
+
+        rawset(self, '_random_seed', v)
+        return
+    elseif k == 'recorder' then
+        if v == nil then
+            rawset(self, '_recorder', nil)
+            self._c.recorder = nil
+        else
+            if v.__metatype ~= 'recorder' then
                 error.raise{
                     header = 'bad type',
-                    expected = 'a geometry',
+                    expected = 'a recorder',
                     got = metatype.a(v)
                 }
             end
-
-            rawset(self, '_geometry', v)
-            return
-        elseif k == 'random_seed' then
-            if v == nil then
-                v = get_random_seed()
-            end
-            local c = rawget(self, '_c')
-            ffi.C.pumas_random_initialise(c, v)
-
-            rawset(self, '_random_seed', v)
-            return
-        elseif k == 'recorder' then
-            if v == nil then
-                rawset(self, '_recorder', nil)
-                self._c.recorder = nil
-            else
-                if v.__metatype ~= 'recorder' then
-                    error.raise{
-                        header = 'bad type',
-                        expected = 'a recorder',
-                        got = metatype.a(v)
-                    }
-                end
-                rawset(self, '_recorder', v)
-                self._c.recorder = v._c
-            end
-            return
-        elseif k == 'geometry_callback' then
-            local user_data = ffi.cast('struct pumas_user_data *',
-                                       self._c.user_data)
-            local wrapped_state = state.State()
-            user_data.geometry.callback =
-                function (geometry, state, c_medium, step)
-                    local wrapped_medium = medium.get(c_medium)
-                    ffi.copy(wrapped_state._c, state,
-                        ffi.sizeof('struct pumas_state_extended'))
-                    v(geometry, wrapped_state, wrapped_medium, step)
-                end
-            return
+            rawset(self, '_recorder', v)
+            self._c.recorder = v._c
         end
-
-        rawget(self, '_c')[k] = v
+        return
+    elseif k == 'geometry_callback' then
+        local user_data = ffi.cast('struct pumas_user_data *',
+                                   self._c.user_data)
+        local wrapped_state = state.State()
+        user_data.geometry.callback =
+            function (geometry, c_state, c_medium, step)
+                local wrapped_medium = medium.get(c_medium)
+                ffi.copy(wrapped_state._c, c_state,
+                    ffi.sizeof('struct pumas_state_extended'))
+                v(geometry, wrapped_state, wrapped_medium, step)
+            end
+        return
     end
+
+    rawget(self, '_c')[k] = v
 end
 
 
-local pumas_state_t = ffi.typeof('struct pumas_state')
 local pumas_state_extended_ptr = ffi.typeof('struct pumas_state_extended *')
 
-local function transport (self, state)
-    if state == nil then
+local function transport (self, state_)
+    if state_ == nil then
         local nargs = (self ~= nil) and 1 or 0
         error.raise{
             fname = 'transport',
@@ -178,20 +171,20 @@ local function transport (self, state)
         }
     end
 
-    if state.__metatype ~= 'state' then
+    if state_.__metatype ~= 'state' then
         error.raise{
             fname = 'transport',
             argnum = 2,
             expected = 'a state',
-            got = metatype.a(state)
+            got = metatype.a(state_)
         }
     end
 
-    local extended_state = ffi.cast(pumas_state_extended_ptr, state._c)
+    local extended_state = ffi.cast(pumas_state_extended_ptr, state_._c)
     ffi.C.pumas_state_extended_reset(extended_state, self._c)
 
     self._geometry:_update(self)
-    call(ffi.C.pumas_transport, self._c, state._c, self._cache.event,
+    call(ffi.C.pumas_transport, self._c, state_._c, self._cache.event,
              self._cache.media)
     local media = compat.table_new(2, 0)
 
@@ -204,8 +197,8 @@ local function transport (self, state)
 end
 
 
-local function medium_callback (self, state)
-    if state == nil then
+local function medium_callback (self, state_)
+    if state_ == nil then
         local nargs = (self ~= nil) and 1 or 0
         error.raise{
             fname = 'medium',
@@ -215,20 +208,20 @@ local function medium_callback (self, state)
         }
     end
 
-    if state.__metatype ~= 'state' then
+    if state_.__metatype ~= 'state' then
         error.raise{
             fname = 'medium',
             argnum = 2,
             expected = 'a state',
-            got = metatype.a(state)
+            got = metatype.a(state_)
         }
     end
 
-    local extended_state = ffi.cast(pumas_state_extended_ptr, state._c)
+    local extended_state = ffi.cast(pumas_state_extended_ptr, state_._c)
     ffi.C.pumas_state_extended_reset(extended_state, self._c)
 
     self._geometry:_update(self)
-    self._c.medium(self._c, state._c, self._cache.media,
+    self._c.medium(self._c, state_._c, self._cache.media,
                    self._cache.distance)
 
     local wrapped_medium

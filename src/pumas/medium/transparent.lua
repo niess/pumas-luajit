@@ -3,8 +3,9 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local base = require('pumas.medium.base')
 local ffi = require('ffi')
+local error = require('pumas.error')
+local base = require('pumas.medium.base')
 
 local transparent = {}
 
@@ -22,7 +23,7 @@ function TransparentMedium:__index (k)
     elseif (k == 'magnet') or (k == 'material') then
         return nil
     else
-        return BaseMedium.__index(self, k, strtype)
+        return base.BaseMedium.__index(self, k, strtype)
     end
 end
 
@@ -34,7 +35,7 @@ function TransparentMedium:__newindex (k, v)
             not_mutable = k
         }
     else
-        BaseMedium.__newindex(self, k, v, strtype)
+        base.BaseMedium.__newindex(self, k, v, strtype)
     end
 end
 

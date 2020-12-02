@@ -133,7 +133,6 @@ local function ChirkinFlux (normalisation, gamma, charge_ratio)
     return function (kinetic, cos_theta, charge)
         local cs = cos_theta_star(cos_theta)
         if cs < 0 then return 0 end
-        local Emu = kinetic + physics.MUON_MASS
 
         -- Calculate the effective initial energy, EI, and its derivative
         local EI, dEIdEf
@@ -225,7 +224,7 @@ function flux.MuonFlux (model, options)
         elseif k == 'gamma' then
             gamma = v
         elseif k == 'normalisation' then normalisation = v
-        else 
+        else
             raise_error{
                 argnum = 2,
                 description = "unknown option '"..k..

@@ -4,6 +4,8 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
+local lfs = require('lfs')
+local call = require('pumas.call')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
 
@@ -81,7 +83,7 @@ function topography.TopographyData (data)
     if data == nil then data = 0 end
 
     local self = {}
-    local c, ptr, metatype
+    local c, ptr, metatype_
     local data_type = type(data)
     if data_type == 'string' then
         local mode, errmsg = lfs.attributes(data, 'mode')
@@ -96,17 +98,17 @@ function topography.TopographyData (data)
             c = ptr[0]
             ffi.gc(c, function () ffi.C.turtle_stack_destroy(ptr) end)
             call(ffi.C.turtle_stack_load, c)
-            metatype = mt_stack
+            metatype_ = mt_stack
         else
             ptr = ffi.new('struct turtle_map *[1]')
             call(ffi.C.turtle_map_load, ptr, data)
             c = ptr[0]
             ffi.gc(c, function () ffi.C.turtle_map_destroy(ptr) end)
-            metatype = mt_map
+            metatype_ = mt_map
         end
     elseif data_type == 'number' then
         self._elevation = data
-        metatype = mt_flat
+        metatype_ = mt_flat
     else
         error.raise{
             fname = 'TopographyData',
@@ -117,7 +119,7 @@ function topography.TopographyData (data)
     end
     self._c = c
 
-    return setmetatable(self, metatype)
+    return setmetatable(self, metatype_)
 end
 
 

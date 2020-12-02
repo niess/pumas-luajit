@@ -12,7 +12,7 @@ local geometry = {}
 
 geometry.EarthGeometry = earth.EarthGeometry
 geometry.InfiniteGeometry = infinite.InfiniteGeometry
-geometry.PolytopeGeometry = geometry.PolytopeGeometry
+geometry.PolytopeGeometry = polytope.PolytopeGeometry
 geometry.TopographyData = topography.TopographyData
 
 

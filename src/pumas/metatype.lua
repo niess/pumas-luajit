@@ -8,7 +8,7 @@
 -------------------------------------------------------------------------------
 -- Return the PUMAS metatype. Fallback to the usual type otherwise
 -------------------------------------------------------------------------------
-local function metatype (self, obj)
+local function metatype (_, obj)
     local tp = obj.__metatype
     if tp ~= nil then
         if type(tp) == 'string' then

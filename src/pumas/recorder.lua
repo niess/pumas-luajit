@@ -18,22 +18,18 @@ local recorder = {}
 local Recorder = {}
 
 
-do
-    local ctype = ffi.typeof('struct pumas_recorder')
-
-    function Recorder:__index (k)
-        if k == '__metatype' then
-            return 'recorder'
-        elseif k == 'period' then
-            return self._c.period
-        elseif k == 'record' then
-            return self._record
-        else
-            error.raise{
-                ['type'] = 'Recorder',
-                bad_member = k
-            }
-        end
+function Recorder:__index (k)
+    if k == '__metatype' then
+        return 'recorder'
+    elseif k == 'period' then
+        return self._c.period
+    elseif k == 'record' then
+        return self._record
+    else
+        error.raise{
+            ['type'] = 'Recorder',
+            bad_member = k
+        }
     end
 end
 
@@ -45,9 +41,9 @@ do
         if k == 'record' then
             local wrapped_state = state.State()
             rawget(self, '_c').record =
-                function (context, state, c_medium, event)
+                function (_, c_state, c_medium, event)
                     local wrapped_medium = medium.get(c_medium)
-                    ffi.copy(wrapped_state._c, state, state_size)
+                    ffi.copy(wrapped_state._c, c_state, state_size)
                     v(wrapped_state, wrapped_medium, tonumber(event))
                 end
             rawset(self, '_record', v)
@@ -66,8 +62,8 @@ end
 -------------------------------------------------------------------------------
 -- The recorder constructor
 -------------------------------------------------------------------------------
-local function default_callback (state, medium, event)
-    print(event, medium, state) -- XXX pretty print
+local function default_callback (state_, medium_, event)
+    print(event, medium_, state_) -- XXX pretty print
 end
 
 function recorder.Recorder (callback, period)

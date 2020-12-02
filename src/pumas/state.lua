@@ -16,16 +16,15 @@ local State = {__index = {}}
 
 local ctype = ffi.typeof('struct pumas_state_extended')
 local pumas_state_ptr = ffi.typeof('struct pumas_state *')
-local pumas_state_t = ffi.typeof('struct pumas_state')
 
 
-function clear (self)
+local function clear (self)
     ffi.fill(self._c, ffi.sizeof(ctype))
     return self
 end
 
 
-function set (self, other)
+local function set (self, other)
     if other == nil then
         local nargs = (self ~= nil) and 1 or 0
         error.raise {

@@ -35,7 +35,7 @@ local PUMAS = {}
 -------------------------------------------------------------------------------
 -- Update the PUMAS table constants, e.g. on a library initialisation
 -------------------------------------------------------------------------------
-function update ()
+local function update ()
     local particle = ffi.new('enum pumas_particle [1]')
     local lifetime = ffi.new('double [1]')
     local mass = ffi.new('double [1]')
@@ -100,7 +100,7 @@ do
         end
 
         ffi.C.pumas_finalise()
-        local errmsg = call.protected(ffi.C.pumas_load, f)
+        errmsg = call.protected(ffi.C.pumas_load, f)
         update(PUMAS)
         f:close()
         if errmsg then
@@ -160,20 +160,20 @@ end
 -------------------------------------------------------------------------------
 local Text
 do
-    local mt = {__index={}}
+    local Text_ = {__index={}}
 
     -- Add a line of text
-    function mt.__index:push (s,...)
+    function Text_.__index:push (s,...)
         table.insert(self, string.format(s,...))
         return self
     end
 
     -- Pop the full text with OS specific line seps
-    function mt.__index:pop ()
-        return table.concat(self, LINESEP)
+    function Text_.__index:pop ()
+        return table.concat(self, os.LINESEP)
     end
 
-    function Text () return setmetatable({}, mt) end
+    function Text () return setmetatable({}, Text_) end
 end
 
 
@@ -341,7 +341,7 @@ function mt.__index.build (args)
         raise_error{
             argname = 'energies',
             expected = 'a string or table',
-            got 'a '..type(energies)
+            got = metatype.a(energies)
         }
     end
 
@@ -351,7 +351,7 @@ function mt.__index.build (args)
         raise_error{
             argname = 'path',
             expected = 'a string',
-            got = 'a'..type(path)
+            got = metatype.a(path)
         }
     end
 
@@ -380,7 +380,7 @@ function mt.__index.build (args)
     end
 
     if #materials > 0 then
-        for i, name in ipairs(materials) do
+        for _, name in ipairs(materials) do
             if materials[name] ~= nil then
                 raise_error{
                     argname = 'materials',
@@ -400,7 +400,7 @@ function mt.__index.build (args)
         end
 
         local n = #materials
-        for i = 1, n do table.remove(materials) end
+        for _ = 1, n do table.remove(materials) end
     end
 
     if composites ~= nil then
@@ -482,21 +482,21 @@ function mt.__index.build (args)
             symbol, align1, e.Z, align2, e.A, e.I, align3)
     end
 
-    for i, name in ipairs(mlist) do
+    for _, name in ipairs(mlist) do
         xml:push('')
         local dedx = snakify(name)..'.txt'
         xml:push('  <material name="%s" file="%s">', name, dedx)
         local m = materials[name]
 
-        local padmax = 0
+        local padmax2 = 0
         for _, v in ipairs(m.composition) do
             local n = #v[1]
-            if n > padmax then padmax = n end
+            if n > padmax2 then padmax2 = n end
         end
 
         for _, value in ipairs(m.composition) do
             local symbol, wi = unpack(value)
-            local pad = string.rep(" ", padmax - #symbol)
+            local pad = string.rep(" ", padmax2 - #symbol)
             xml:push(
                 '    <component name="%s"%s fraction="%6f" />',
                 symbol, pad, wi)
@@ -505,18 +505,18 @@ function mt.__index.build (args)
     end
 
     if composites then
-        for name, composition in pairs(composites) do
-            local padmax = 0
-            for _, v in ipairs(composition) do
+        for name, compo in pairs(composites) do
+            local padmax2 = 0
+            for _, v in ipairs(compo) do
                 local n = #v[1]
-                if n > padmax then padmax = n end
+                if n > padmax2 then padmax2 = n end
             end
 
             xml:push('')
             xml:push('  <composite name="%s">', name)
-            for _, v in ipairs(composition) do
+            for _, v in ipairs(compo) do
                 local m = materials[v[1]]
-                local pad = string.rep(" ", padmax - #v[1])
+                local pad = string.rep(" ", padmax2 - #v[1])
                 xml:push('    <component name="%s"%s fraction="%f" \z
                     density="%f" />', v[1], pad, v[2], m.density * 1E-03)
             end
@@ -566,7 +566,7 @@ function mt.__index.build (args)
         m.density = material.density
         m.I = material.I * 1E-09
         if material.state == nil then
-            m.state = C.PUMAS_TABULATION_STATE_UNKNOWN
+            m.state = ffi.C.PUMAS_TABULATION_STATE_UNKNOWN
         else
             m.state = ({
                 solid  = ffi.C.PUMAS_TABULATION_STATE_SOLID,
@@ -585,7 +585,6 @@ function mt.__index.build (args)
         if not ok then break end
     end
     ffi.C.pumas_tabulation_clear(data)
-    outdir = nil
     if not ok then
         restore_materials()
         raise_error{
@@ -599,9 +598,9 @@ function mt.__index.build (args)
         ffi.C.pumas_finalise()
         ffi.C.pumas_initialise(particle, mdf, path)
         dump = path..os.PATHSEP..project..'.pumas'
-        local f = io.open(dump, 'w+')
-        ffi.C.pumas_dump(f)
-        f:close()
+        local file = io.open(dump, 'w+')
+        ffi.C.pumas_dump(file)
+        file:close()
     end
 
     restore_materials()

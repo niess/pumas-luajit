@@ -29,21 +29,21 @@ function materials.Material (args)
 
     local formula, composition, density, state, I, a, k, x0, x1, Cbar,
           delta0
-    for k, v in pairs(args) do
-        if     k == 'formula' then formula = v
-        elseif k == 'composition' then composition = v
-        elseif k == 'density' then density = v
-        elseif k == 'state' then state = v
-        elseif k == 'I' then I = v
-        elseif k == 'a' then a = v
-        elseif k == 'k' then k = v
-        elseif k == 'x0' then x0 = v
-        elseif k == 'x1' then x1 = v
-        elseif k == 'Cbar' then Cbar = v
-        elseif k == 'delta0' then delta0 = v
+    for key, value in pairs(args) do
+        if     key == 'formula' then formula = value
+        elseif key == 'composition' then composition = value
+        elseif key == 'density' then density = value
+        elseif key == 'state' then state = value
+        elseif key == 'I' then I = value
+        elseif key == 'a' then a = value
+        elseif key == 'k' then k = value
+        elseif key == 'x0' then x0 = value
+        elseif key == 'x1' then x1 = value
+        elseif key == 'Cbar' then Cbar = value
+        elseif key == 'delta0' then delta0 = value
         else
             raise_error{
-                argname = k,
+                argname = key,
                 description = 'unknown parameter'
             }
         end
@@ -65,19 +65,19 @@ function materials.Material (args)
     if formula then
         -- Parse the chemical composition and compute the mass fractions
         self.formula = args.formula
-        local composition, norm = {}, 0
+        local compo, norm = {}, 0
         for symbol, count in formula:gmatch('(%u%l?)(%d*)') do
             count = tonumber(count) or 1
             local wi = count * elements.ELEMENTS[symbol].A
-            table.insert(composition, {symbol, wi})
+            table.insert(compo, {symbol, wi})
             norm = norm + wi
         end
         norm = 1 / norm
-        for _, value in ipairs(composition) do
-            local symbol, wi = unpack(value)
+        for _, value in ipairs(compo) do
+            local _, wi = unpack(value)
             value[2] = wi * norm
         end
-        self.composition = composition
+        self.composition = compo
     elseif composition then
         -- Use the provided composition
         self.composition = composition

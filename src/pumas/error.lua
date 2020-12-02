@@ -97,7 +97,7 @@ function error_.ErrorFunction (default_args)
             args.depth = 3
         end
 
-        raise(args)
+        error_.raise(args)
     end
 end
 

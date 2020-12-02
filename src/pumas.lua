@@ -4,7 +4,6 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
-local jit = require('jit')
 local lfs = require('lfs')
 local os = require('pumas.os')
 require('pumas.header.api')

@@ -41,8 +41,6 @@ end
 local BaseMedium = {}
 base.BaseMedium = BaseMedium
 
-local ctype = ffi.typeof('struct pumas_medium')
-
 
 function BaseMedium:__index (k, strtype)
     if k == '__metatype' then

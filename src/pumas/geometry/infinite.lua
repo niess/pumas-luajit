@@ -47,7 +47,7 @@ function InfiniteGeometry:__newindex (k, v)
             error.raise{
                 fname = k,
                 expected = 'a medium',
-                got = metatype.a(medium)
+                got = metatype.a(v)
             }
         end
         rawset(self,'_medium', v)

@@ -24,7 +24,7 @@ local pattern = '[^}]+} (.*)$'
 -------------------------------------------------------------------------------
 local raise_error = error.ErrorFunction{header = 'C library error'}
 
-local function ccall (self, func,...)
+local function ccall (_, func,...)
     if func(...) ~= 0 then
         local msg = ffi.string(ffi.C.pumas_error_get())
         raise_error(msg:match(pattern))
