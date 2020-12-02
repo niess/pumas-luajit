@@ -6,9 +6,11 @@
 local ffi = require('ffi')
 local call = require('pumas.call')
 local compat = require('pumas.compat')
+local enum = require('pumas.enum')
 local error = require('pumas.error')
 local medium = require('pumas.medium')
 local metatype = require('pumas.metatype')
+local state = require('pumas.state')
 
 local context = {}
 
@@ -74,31 +76,31 @@ do
     function Context:__newindex (k, v)
         if k == 'distance_max' then
             if v == nil then
-                event_unset(self, pumas.EVENT_LIMIT_DISTANCE)
+                event_unset(self, enum.EVENT_LIMIT_DISTANCE)
                 v = 0
             else
-                event_set(self, pumas.EVENT_LIMIT_DISTANCE)
+                event_set(self, enum.EVENT_LIMIT_DISTANCE)
             end
         elseif k == 'grammage_max' then
             if v == nil then
-                event_unset(self, pumas.EVENT_LIMIT_GRAMMAGE)
+                event_unset(self, enum.EVENT_LIMIT_GRAMMAGE)
                 v = 0
             else
-                event_set(self, pumas.EVENT_LIMIT_GRAMMAGE)
+                event_set(self, enum.EVENT_LIMIT_GRAMMAGE)
             end
         elseif k == 'kinetic_limit' then
             if v == nil then
-                event_unset(self, pumas.EVENT_LIMIT_KINETIC)
+                event_unset(self, enum.EVENT_LIMIT_KINETIC)
                 v = 0
             else
-                event_set(self, pumas.EVENT_LIMIT_KINETIC)
+                event_set(self, enum.EVENT_LIMIT_KINETIC)
             end
         elseif k == 'time_max' then
             if v == nil then
-                event_unset(self, pumas.EVENT_LIMIT_TIME)
+                event_unset(self, enum.EVENT_LIMIT_TIME)
                 v = 0
             else
-                event_set(self, pumas.EVENT_LIMIT_TIME)
+                event_set(self, enum.EVENT_LIMIT_TIME)
             end
         elseif k == 'geometry' then
             local current_geometry = rawget(self, '_geometry')
@@ -146,7 +148,7 @@ do
         elseif k == 'geometry_callback' then
             local user_data = ffi.cast('struct pumas_user_data *',
                                        self._c.user_data)
-            local wrapped_state = pumas.State()
+            local wrapped_state = state.State()
             user_data.geometry.callback =
                 function (geometry, state, c_medium, step)
                     local wrapped_medium = medium.get(c_medium)

@@ -50,7 +50,7 @@ local function CoordinatesType (ctype, setter, get, transform)
 
         if ffi.istype(double3_t, coordinates) then
             if type(raw_coordinates) == 'string' then
-                raw_coordinates = pumas[raw_coordinates]()
+                raw_coordinates = type_[raw_coordinates]()
             end
             raw_coordinates.x = coordinates[0]
             raw_coordinates.y = coordinates[1]
@@ -86,7 +86,7 @@ local function CoordinatesType (ctype, setter, get, transform)
         end
 
         if type(raw_coordinates) == 'string' then
-            raw_coordinates = pumas[raw_coordinates]()
+            raw_coordinates = type_[raw_coordinates]()
         end
         if get ~= nil then
             get(raw_coordinates, self)

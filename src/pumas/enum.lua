@@ -48,14 +48,18 @@ local function Tagger (t, tags)
     end
 end
 
+enum.decay_tostring = Tagger(enum, decay_tags)
+enum.event_tostring = Tagger(enum, event_tags)
+enum.scheme_tostring = Tagger(enum, scheme_tags)
+
 
 -------------------------------------------------------------------------------
 -- Register all enums to a table
 -------------------------------------------------------------------------------
 function enum.register_to (t)
-    t.decay_tostring = Tagger(t, decay_tags)
-    t.event_tostring = Tagger(t, event_tags)
-    t.scheme_tostring = Tagger(t, scheme_tags)
+    for k, v in pairs(enum) do
+        t[k] = v
+    end
 end
 
 

@@ -7,6 +7,7 @@ local ffi = require('ffi')
 local call = require('pumas.call')
 local error = require('pumas.error')
 local medium = require('pumas.medium')
+local state = require('pumas.state')
 
 local recorder = {}
 
@@ -42,7 +43,7 @@ do
 
     function Recorder:__newindex (k, v)
         if k == 'record' then
-            local wrapped_state = pumas.State()
+            local wrapped_state = state.State()
             rawget(self, '_c').record =
                 function (context, state, c_medium, event)
                     local wrapped_medium = medium.get(c_medium)

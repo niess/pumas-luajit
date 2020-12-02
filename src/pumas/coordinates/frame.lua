@@ -6,6 +6,7 @@
 local ffi = require('ffi')
 local transform = require('pumas.coordinates.transform')
 local error = require('pumas.error')
+local type_ = require('pumas.coordinates.type')
 
 local frame = {}
 
@@ -31,12 +32,12 @@ function frame.LocalFrame (origin)
     if ffi.istype(pumas_geodetic_point_t, origin) then
         geodetic = origin
     else
-        geodetic = pumas.GeodeticPoint():set(origin)
+        geodetic = type_.GeodeticPoint():set(origin)
     end
 
     if (not ffi.istype(pumas_cartesian_point_t, origin)) or
        (origin.frame ~= nil) then
-        origin = pumas.CartesianPoint():set(origin)
+        origin = type_.CartesianPoint():set(origin)
                                    :transform(nil)
     end
 
