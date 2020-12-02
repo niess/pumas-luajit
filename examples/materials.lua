@@ -6,11 +6,10 @@
 --
 -- Custom materials can be defined and added to the MATERIALS table as well.
 
-local gettime = require('socket').gettime -- XXX move this to pumas?
 local pumas = require('pumas')
 
 print('building material tables for the examples ...')
-local t0 = gettime()
+local t0 = pumas.time()
 
 pumas.PUMAS.build({ -- XXX is the PUMAS table really needed?
     materials = {'StandardRock', 'WaterLiquid', 'AirDry1Atm'},
@@ -19,7 +18,7 @@ pumas.PUMAS.build({ -- XXX is the PUMAS table really needed?
     path = 'share/materials/standard'
 })
 
-print('done in ' .. gettime() - t0 .. ' s')
+print('done in ' .. pumas.time() - t0 .. ' s')
 
 -- Print a list of available materials
 print([[

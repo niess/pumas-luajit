@@ -72,6 +72,7 @@ local function register (pkg)
 end
 
 register('pumas.call')
+register('pumas.compat')
 register('pumas.context')
 register('pumas.coordinates')
 register('pumas.elements')

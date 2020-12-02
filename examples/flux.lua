@@ -1,4 +1,3 @@
-local gettime = require('socket').gettime -- XXX move this to pumas?
 local pumas = require('pumas')
 
 -- Load materials tabulations
@@ -65,7 +64,7 @@ print([[
 ]])
 
 for ik = 1, 81 do
-    local t0 = gettime()
+    local t0 = pumas.time()
 
     initial.kinetic = 1E-02 * math.exp((ik - 1) * math.log(1E+08) / 80)
     local state = pumas.State()
@@ -93,7 +92,7 @@ for ik = 1, 81 do
     s = s / n
     s2 = s2 / n
 
-    local dt = gettime() - t0
+    local dt = pumas.time() - t0
 
     print(string.format('%.5E  %.5E %.5E  %.5E', initial.kinetic, s,
                         math.sqrt((s2 - s * s) / n), dt))
