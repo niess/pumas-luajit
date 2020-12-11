@@ -17,7 +17,9 @@ chmod u+x pumas-luajit
 
 On OSX you might be successful in running the Makefile, as:
 ```bash
-make install PREFIX=$(pwd)
+make install PREFIX=$(pwd) MACOSX_DEPLOYMENT_TARGET=10.7
 ```
+Note that you must provide a deployment target version and that
+it must be equal or greater than 10.7.
 
 Windows is not yet supported.

@@ -6,7 +6,11 @@ RUNTIME_EXE= $(BUILD_DIR)/bin/pumas-luajit
 
 ifeq ($(BUILD_TYPE), release)
 CFLAGS+= -O3
-INSTALL_EXE= install -s
+ifeq ($(shell uname -s),Linux)
+  INSTALL_EXE= install -s
+  else
+  INSTALL_EXE= install
+endif
 else ifeq ($(BUILD_TYPE), debug)
 CFLAGS+= -O0 -g3
 INSTALL_EXE= install

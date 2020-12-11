@@ -145,28 +145,29 @@ $(LFS_OBJ): $(LFS_SRC)/src/lfs.c $(LFS_SRC)/src/lfs.h | $(OBJS_DIR)
 	@$(CROSS)$(CC) -o $@ -I$(LUAJIT_INC) -c $(CFLAGS) $<
 
 SOCKET_SRC= $(BUILD_DIR)/src/socket
-SOCKET_OBJS= $(OBJS_DIR)/$(CROSS)auxiliar.c.o \
-	     $(OBJS_DIR)/$(CROSS)luasocket.c.o \
-	     $(OBJS_DIR)/$(CROSS)timeout.c.o \
-	     $(OBJS_DIR)/$(CROSS)buffer.c.o \
-	     $(OBJS_DIR)/$(CROSS)mime.c.o \
-	     $(OBJS_DIR)/$(CROSS)udp.c.o \
-	     $(OBJS_DIR)/$(CROSS)compat.c.o \
-	     $(OBJS_DIR)/$(CROSS)options.c.o \
-	     $(OBJS_DIR)/$(CROSS)except.c.o \
-	     $(OBJS_DIR)/$(CROSS)select.c.o \
-	     $(OBJS_DIR)/$(CROSS)inet.c.o \
-	     $(OBJS_DIR)/$(CROSS)io.c.o \
-	     $(OBJS_DIR)/$(CROSS)tcp.c.o \
-	     $(OBJS_DIR)/$(CROSS)ltn12.lua.o \
-	     $(OBJS_DIR)/$(CROSS)mime.lua.o \
-	     $(OBJS_DIR)/$(CROSS)socket.lua.o \
-	     $(OBJS_DIR)/$(CROSS)socket_ftp.lua.o \
-	     $(OBJS_DIR)/$(CROSS)socket_headers.lua.o \
-	     $(OBJS_DIR)/$(CROSS)socket_http.lua.o \
-	     $(OBJS_DIR)/$(CROSS)socket_smtp.lua.o \
-	     $(OBJS_DIR)/$(CROSS)socket_tp.lua.o \
-	     $(OBJS_DIR)/$(CROSS)socket_url.lua.o
+SOCKET_C_OBJS= $(OBJS_DIR)/$(CROSS)auxiliar.c.o \
+	       $(OBJS_DIR)/$(CROSS)luasocket.c.o \
+	       $(OBJS_DIR)/$(CROSS)timeout.c.o \
+	       $(OBJS_DIR)/$(CROSS)buffer.c.o \
+	       $(OBJS_DIR)/$(CROSS)mime.c.o \
+	       $(OBJS_DIR)/$(CROSS)udp.c.o \
+	       $(OBJS_DIR)/$(CROSS)compat.c.o \
+	       $(OBJS_DIR)/$(CROSS)options.c.o \
+	       $(OBJS_DIR)/$(CROSS)except.c.o \
+	       $(OBJS_DIR)/$(CROSS)select.c.o \
+	       $(OBJS_DIR)/$(CROSS)inet.c.o \
+	       $(OBJS_DIR)/$(CROSS)io.c.o \
+	       $(OBJS_DIR)/$(CROSS)tcp.c.o
+
+SOCKET_LUA_OBJS= $(OBJS_DIR)/$(CROSS)ltn12.lua.o \
+	         $(OBJS_DIR)/$(CROSS)mime.lua.o \
+	         $(OBJS_DIR)/$(CROSS)socket.lua.o \
+	         $(OBJS_DIR)/$(CROSS)socket_ftp.lua.o \
+	         $(OBJS_DIR)/$(CROSS)socket_headers.lua.o \
+	         $(OBJS_DIR)/$(CROSS)socket_http.lua.o \
+	         $(OBJS_DIR)/$(CROSS)socket_smtp.lua.o \
+	         $(OBJS_DIR)/$(CROSS)socket_tp.lua.o \
+	         $(OBJS_DIR)/$(CROSS)socket_url.lua.o
 
 .PRECIOUS: $(SOCKET_SRC)/src/%.c $(SOCKET_SRC)/src/%.lua
 $(SOCKET_SRC)/src/%.c $(SOCKET_SRC)/src/%.lua:
@@ -175,18 +176,19 @@ $(SOCKET_SRC)/src/%.c $(SOCKET_SRC)/src/%.lua:
 SOCKET_FLAGS= LUAINC=$(LUAJIT_INC)
 ifdef CROSS
 SOCKET_FLAGS+= PLAT=mingw CC=$(CROSS)$(CC)
-SOCKET_OBJS+= $(OBJS_DIR)/$(CROSS)wsocket.c.o
+SOCKET_C_OBJS+= $(OBJS_DIR)/$(CROSS)wsocket.c.o
 else
 SOCKET_FLAGS+= PLAT=linux
-SOCKET_OBJS+= $(OBJS_DIR)/$(CROSS)unix.c.o \
-	      $(OBJS_DIR)/$(CROSS)usocket.c.o \
-	      $(OBJS_DIR)/$(CROSS)unixstream.c.o \
-	      $(OBJS_DIR)/$(CROSS)unixdgram.c.o \
-	      $(OBJS_DIR)/$(CROSS)serial.c.o
+SOCKET_C_OBJS+= $(OBJS_DIR)/$(CROSS)unix.c.o \
+	        $(OBJS_DIR)/$(CROSS)usocket.c.o \
+	        $(OBJS_DIR)/$(CROSS)unixstream.c.o \
+	        $(OBJS_DIR)/$(CROSS)unixdgram.c.o \
+	        $(OBJS_DIR)/$(CROSS)serial.c.o
 endif
+SOCKET_OBJS= $(SOCKET_C_OBJS) $(SOCKET_LUA_OBJS)
 
 unexport CFLAGS
-$(OBJS_DIR)/$(CROSS)%.c.o: $(SOCKET_SRC)/src/%.c
+$(SOCKET_C_OBJS): $(OBJS_DIR)/$(CROSS)%.c.o: $(SOCKET_SRC)/src/%.c
 	@echo "CC        $$(basename $@)"
 	@$(MAKE) --quiet -C $(SOCKET_SRC)/src $*.o $(SOCKET_FLAGS)
 	@mv $(SOCKET_SRC)/src/$*.o $@
@@ -402,13 +404,16 @@ endif
 ifeq ($(shell uname -s),Linux)
 WHOLE_ARCHIVE=    -Wl,--whole-archive
 NO_WHOLE_ARCHIVE= -Wl,--no-whole-archive
+FORCE_LOAD=
 else
-WHOLE_ARCHIVE=    -Wl,-all_load
-NO_WHOLE_ARCHIVE= -Wl,-noall_load
+WHOLE_ARCHIVE=
+NO_WHOLE_ARCHIVE=
+FORCE_LOAD=       -Wl,-force_load
 endif
 
 LDFLAGS+= $(WHOLE_ARCHIVE) $(EXPORT_SYMBOLS) \
-          -L$(BUILD_DIR)/lib -lluajit-$(CROSS)5.1 -lruntime-$(CROSS)5.1 \
+          $(FORCE_LOAD) $(LUAJIT_LIB) \
+          $(FORCE_LOAD) $(RUNTIME_LIB) \
           $(NO_WHOLE_ARCHIVE)
 
 ifdef CROSS

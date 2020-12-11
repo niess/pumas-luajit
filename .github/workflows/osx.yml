@@ -3,18 +3,18 @@ name: OSX
 on:
   push:
     branches:
-      - disable
+      - main
 
 jobs:
   x86_64:
-    runs-on: macOS-10.15
+    runs-on: macOS-latest
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Build
       run: |
-        make install PREFIX=$(pwd) MACOSX_DEPLOYMENT_TARGET=10.15
+        make install PREFIX=$(pwd) MACOSX_DEPLOYMENT_TARGET=10.7
 
     - name: Release
       uses: marvinpinto/action-automatic-releases@latest
