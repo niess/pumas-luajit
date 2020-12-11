@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+    paths:
+    - '.github/workflows/linux.yml'
+    - 'Makefile'
+    - 'src/**'
 
 jobs:
   x86_64:
