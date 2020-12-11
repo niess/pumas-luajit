@@ -3,7 +3,7 @@ name: OSX
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   x86_64:
