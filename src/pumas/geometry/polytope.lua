@@ -3,9 +3,9 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
 local coordinates = require('pumas.coordinates')
 local error = require('pumas.error')
+local ffi = require('pumas.ffi')
 local base = require('pumas.geometry.base')
 local medium = require('pumas.medium')
 local metatype = require('pumas.metatype')

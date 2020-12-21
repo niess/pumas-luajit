@@ -10,7 +10,7 @@ description = {
    license = 'GNU LGPL-3.0'
 }
 dependencies = {
-   'lua 5.1',
+   'lua >= 5.1',
    'luasocket',
    'luafilesystem'
 }
@@ -31,6 +31,7 @@ build = {
       ['pumas.elements'] = 'src/pumas/elements.lua',
       ['pumas.enum'] = 'src/pumas/enum.lua',
       ['pumas.error'] = 'src/pumas/error.lua',
+      ['pumas.ffi'] = 'src/pumas/ffi.lua',
       ['pumas.flux'] = 'src/pumas/flux.lua',
       ['pumas.geometry'] = 'src/pumas/geometry.lua',
       ['pumas.geometry.base'] = 'src/pumas/geometry/base.lua',

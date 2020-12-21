@@ -41,7 +41,14 @@ local state = pumas.State{
 local function print_step(state, medium, event)
     if event == pumas.EVENT_NONE then return end
 
-    if bit.band(event, pumas.EVENT_STOP) == pumas.EVENT_STOP then
+    local band
+    if bit then
+        band = bit.band
+    else
+        band = function (x, y) return x & y end
+    end
+
+    if band(event, pumas.EVENT_STOP) == pumas.EVENT_STOP then
         event = pumas.event_tostring(event - pumas.EVENT_STOP)
     else
         event = pumas.event_tostring(event)
@@ -52,7 +59,6 @@ local function print_step(state, medium, event)
     local deflection = math.acos(state.direction[0] * u0[0] +
                                  state.direction[1] * u0[1] +
                                  state.direction[2] * u0[2]) * 180 / math.pi
-
     local medium_name = media_names[medium]
 
     print(string.format('%-10s  %.3E %10.3f %.5E %.5E  %s', medium_name,

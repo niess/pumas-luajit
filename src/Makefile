@@ -75,7 +75,7 @@ define wrap_header #([$1] = header.h, [$2] = header.lua)
 	    :gsub('FILE[ ]*[*]', 'struct FILE *') \
 	    :gsub('MT_PERIOD', '624'); \
 	f = io.open('$(2)', 'w+'); \
-	f:write('require(\"ffi\").cdef([[$(LINESEP)' .. include .. ']])'); \
+	f:write('require(\'pumas.ffi\').cdef([[$(LINESEP)'..include..']])'); \
 	f:close() \
 	")
 	$(LUAJIT_EXE) -e $(__wrap_script)
@@ -88,7 +88,7 @@ define wrap_data #([$1] = data.ext, [$2] = data.lua)
 	local data = f:read '*a'; \
 	f:close(); \
 	f = io.open('$(2)', 'w+'); \
-	f:write('return [[$(LINESEP)' .. data .. ']]'); \
+	f:write('return [[$(LINESEP)'..data..']]'); \
 	f:close() \
 	")
 	$(LUAJIT_EXE) -e $(__wrap_script)
@@ -357,6 +357,7 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_elements.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_enum.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_error.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_ffi.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_flux.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_geometry.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_geometry_base.lua.o \

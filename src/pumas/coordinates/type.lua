@@ -3,8 +3,8 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
 local error = require('pumas.error')
+local ffi = require('pumas.ffi')
 local metatype = require('pumas.metatype')
 
 local type_ = {}
@@ -60,7 +60,8 @@ local function CoordinatesType (ctype, setter, get, transform)
 
         local ct = ffi.typeof(coordinates)
         if ct == ctype then
-            ffi.copy(self, coordinates, ffi.sizeof(ct))
+            ffi.copy(ffi.cast('void *', self), ffi.cast('void *', coordinates),
+                ffi.sizeof(ct))
         else
             local set = setter(ct)
             if set ~= nil then
@@ -91,7 +92,8 @@ local function CoordinatesType (ctype, setter, get, transform)
         if get ~= nil then
             get(raw_coordinates, self)
         else
-            ffi.copy(raw_coordinates, self, ffi.sizeof(self))
+            ffi.copy(ffi.cast('void *', raw_coordinates),
+                ffi.cast('void *', self), ffi.sizeof(raw_coordinates))
         end
         raw_coordinates:transform()
 

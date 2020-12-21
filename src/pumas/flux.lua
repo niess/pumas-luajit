@@ -3,8 +3,8 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
 local error = require('pumas.error')
+local ffi = require('pumas.ffi')
 local physics = require('pumas.physics')
 
 local flux = {}

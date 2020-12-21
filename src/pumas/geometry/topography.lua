@@ -3,10 +3,10 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
 local lfs = require('lfs')
 local call = require('pumas.call')
 local error = require('pumas.error')
+local ffi = require('pumas.ffi')
 local metatype = require('pumas.metatype')
 
 local topography = {}
@@ -58,7 +58,7 @@ mt_map.__index._stepper_add = ffi.C.turtle_stepper_add_map
 do
     mt_map.__index._elevation = function (self, x, y, z, inside)
         local projection = ffi.C.turtle_map_projection(self)
-        if projection ~= nil then
+        if projection ~= ffi.nullptr then
             local xmap = ffi.new('double [1]')
             local ymap = ffi.new('double [1]')
             ffi.C.turtle_projection_project(projection, x, y, xmap, ymap)
@@ -94,7 +94,8 @@ function topography.TopographyData (data)
             }
         elseif mode == 'directory' then
             ptr = ffi.new('struct turtle_stack *[1]')
-            call(ffi.C.turtle_stack_create, ptr, data, 0, nil, nil)
+            call(ffi.C.turtle_stack_create, ptr, data, 0, ffi.nullptr,
+                ffi.nullptr)
             c = ptr[0]
             ffi.gc(c, function () ffi.C.turtle_stack_destroy(ptr) end)
             call(ffi.C.turtle_stack_load, c)

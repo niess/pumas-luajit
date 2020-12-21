@@ -3,11 +3,13 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
 local call = require('pumas.call')
 local error = require('pumas.error')
+local ffi = require('pumas.ffi')
 local base = require('pumas.geometry.base')
 local metatype = require('pumas.metatype')
+
+local unpack = unpack or table.unpack
 
 local earth = {}
 
@@ -51,7 +53,7 @@ local function new (self)
         end
     end
 
-    c.magnet.workspace[0] = nil
+    c.magnet.workspace[0] = ffi.nullptr
     if self._magnet then
         local date = self._date or '01/01/2020'
         local matches = {}
@@ -82,7 +84,7 @@ local function new (self)
 
         c.base.magnet = ffi.C.pumas_geometry_earth_magnet
     else
-        c.magnet.snapshot[0] = nil
+        c.magnet.snapshot[0] = ffi.nulptr
     end
 
     return ffi.cast(pumas_geometry_ptr, c)

@@ -3,7 +3,7 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
+local ffi = require('pumas.ffi')
 
 local enum = {}
 

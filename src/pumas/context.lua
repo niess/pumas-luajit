@@ -3,11 +3,11 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
 local call = require('pumas.call')
 local compat = require('pumas.compat')
 local enum = require('pumas.enum')
 local error = require('pumas.error')
+local ffi = require('pumas.ffi')
 local medium = require('pumas.medium')
 local metatype = require('pumas.metatype')
 local state = require('pumas.state')
@@ -37,6 +37,10 @@ function Context:__index (k)
     end
 end
 
+local bit = {
+    band = function (x, y) return x & y end,
+    bor = function (x, y) return x | y end
+}
 
 local function event_set (self, flag)
     local c = rawget(self, '_c')
@@ -127,7 +131,7 @@ function Context:__newindex (k, v)
     elseif k == 'recorder' then
         if v == nil then
             rawset(self, '_recorder', nil)
-            self._c.recorder = nil
+            self._c.recorder = ffi.nullptr
         else
             if v.__metatype ~= 'recorder' then
                 error.raise{
@@ -189,7 +193,7 @@ local function transport (self, state_)
     local media = compat.table_new(2, 0)
 
     for i = 1, 2 do
-        if self._cache.media[i - 1] ~= nil then
+        if self._cache.media[i - 1] ~= ffi.nullptr then
             media[i] = medium.get(self._cache.media[i - 1])
         end
     end
@@ -225,7 +229,7 @@ local function medium_callback (self, state_)
                    self._cache.distance)
 
     local wrapped_medium
-    if self._cache.media[0] ~= nil then
+    if self._cache.media[0] ~= ffi.nullptr then
             wrapped_medium = medium.get(self._cache.media[0])
     end
     return wrapped_medium, self._cache.distance[0]
@@ -287,8 +291,8 @@ function context.Context (args)
     c.medium = ffi.C.pumas_geometry_medium
 
     local user_data = ffi.cast('struct pumas_user_data *', c.user_data)
-    user_data.geometry.top = nil
-    user_data.geometry.current = nil
+    user_data.geometry.top = ffi.nullptr
+    user_data.geometry.current = ffi.nullptr
     user_data.geometry.callback = nil
 
     local self = setmetatable({

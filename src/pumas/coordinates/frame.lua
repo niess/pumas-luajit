@@ -3,9 +3,9 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
 local transform = require('pumas.coordinates.transform')
 local error = require('pumas.error')
+local ffi = require('pumas.ffi')
 local type_ = require('pumas.coordinates.type')
 
 local frame = {}

@@ -6,6 +6,8 @@
 local elements = require('pumas.elements')
 local error = require('pumas.error')
 
+local unpack = unpack or table.unpack
+
 local materials = {}
 
 

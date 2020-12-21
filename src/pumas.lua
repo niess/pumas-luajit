@@ -3,8 +3,8 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
 local lfs = require('lfs')
+local ffi = require('pumas.ffi')
 local os = require('pumas.os')
 require('pumas.header.api')
 require('pumas.header.extensions')
@@ -42,8 +42,9 @@ do
         end
 
         local dirname = path:match('(.*'..os.PATHSEP..')')
-        local libname = '../../../lib/lua/5.1/pumas/libpumas_extended.'..
-            os.LIBEXT
+        local version = _VERSION:match('Lua ([0-9.]+)')
+        local libname = '../../../lib/lua/'..version..
+            '/pumas/libpumas_extended.'..os.LIBEXT
         ffi.load(dirname..libname, true) -- XXX Load to private space?
     end
 end

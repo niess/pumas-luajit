@@ -3,9 +3,9 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
 local call = require('pumas.call')
 local error = require('pumas.error')
+local ffi = require('pumas.ffi')
 local metatype = require('pumas.metatype')
 
 local base = {}
@@ -16,7 +16,8 @@ local base = {}
 -------------------------------------------------------------------------------
 do
     local function addressof (ptr)
-        return tonumber(ffi.cast('uintptr_t', ptr))
+        local a = tonumber(ffi.cast('uintptr_t', ptr))
+        return a or 0
     end
 
     local media_table = {}

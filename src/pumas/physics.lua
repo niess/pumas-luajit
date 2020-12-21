@@ -4,13 +4,15 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local lfs = require('lfs')
-local ffi = require('ffi')
 local call = require('pumas.call')
 local elements = require('pumas.elements')
 local error = require('pumas.error')
+local ffi = require('pumas.ffi')
 local materials_ = require('pumas.materials')
 local metatype = require('pumas.metatype')
 local os = require('pumas.os')
+
+local unpack = unpack or table.unpack
 
 local physics = {}
 

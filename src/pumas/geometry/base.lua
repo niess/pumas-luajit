@@ -3,8 +3,8 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
 local error = require('pumas.error')
+local ffi = require('pumas.ffi')
 local metatype = require('pumas.metatype')
 
 local base = {}
@@ -145,7 +145,8 @@ end
 function base.BaseGeometry.__index:_update (context)
     ffi.C.pumas_geometry_reset(context._c)
 
-    if (ffi.C.pumas_geometry_get(context._c) ~= nil) and self._valid then
+    if (ffi.C.pumas_geometry_get(context._c) ~= ffi.nullptr) and
+        self._valid then
         return
     end
 
