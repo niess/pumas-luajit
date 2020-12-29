@@ -39,13 +39,22 @@ do
 
     function Recorder:__newindex (k, v)
         if k == 'record' then
-            local wrapped_state = state.State()
-            rawget(self, '_c').record =
-                function (_, c_state, c_medium, event)
-                    local wrapped_medium = medium.get(c_medium)
-                    ffi.copy(wrapped_state._c, c_state, state_size)
-                    v(wrapped_state, wrapped_medium, tonumber(event))
-                end
+            if self._c.record ~= nil then
+                self._c.record:free()
+            end
+
+            if v then
+                local wrapped_state = state.State()
+                self._c.record = ffi.cast('pumas_recorder_cb *',
+                    function (_, c_state, c_medium, event)
+                        local wrapped_medium = medium.get(c_medium)
+                        ffi.copy(wrapped_state._c, c_state, state_size)
+                        v(wrapped_state, wrapped_medium, tonumber(event))
+                    end)
+            else
+                self._c.record = nil
+            end
+
             rawset(self, '_record', v)
         elseif k == 'period' then
             rawget(self, '_c').period = v
@@ -70,7 +79,12 @@ function recorder.Recorder (callback, period)
     local ptr = ffi.new('struct pumas_recorder *[1]')
     call(ffi.C.pumas_recorder_create, ptr, 0)
     local c = ptr[0]
-    ffi.gc(c, function () ffi.C.pumas_recorder_destroy(ptr) end)
+    ffi.gc(c, function ()
+        if c.record ~= nil then
+            c.record:free()
+        end
+        ffi.C.pumas_recorder_destroy(ptr)
+    end)
 
     local self = setmetatable({_c = c}, Recorder)
 
