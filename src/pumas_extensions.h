@@ -125,7 +125,7 @@ void pumas_geometry_push(struct pumas_geometry * geometry,
     struct pumas_geometry * daughter);
 
 /* Generic geometry callback for PUMAS */
-void pumas_geometry_medium(struct pumas_context * context,
+enum pumas_step pumas_geometry_medium(struct pumas_context * context,
     struct pumas_state * state, struct pumas_medium ** medium_p,
     double * step_p);
 

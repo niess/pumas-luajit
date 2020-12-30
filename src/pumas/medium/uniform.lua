@@ -51,18 +51,18 @@ function uniform.UniformMedium (material, density, magnet)
         error.raise {
             fname = strtype,
             argnum = 1,
-            expected = 'a string or a number',
+            expected = 'a string',
             got = type(material)
         }
     end
 
-    local self, index = base.BaseMedium.new(ctype, ctype_ptr, material, strtype)
+    local self = base.BaseMedium.new(ctype, ctype_ptr, material)
 
     if density == nil then
         density = materials.MATERIALS[material].density -- XXX check if Material
     end
 
-    ffi.C.pumas_medium_uniform_initialise(self._c, index, density, magnet)
+    ffi.C.pumas_medium_uniform_initialise(self._c, -1, density, magnet)
 
     return setmetatable(self, UniformMedium)
 end

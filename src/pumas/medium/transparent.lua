@@ -46,7 +46,7 @@ end
 do
     local m = setmetatable({
         _c = ffi.C.PUMAS_MEDIUM_TRANSPARENT,
-        _material = 'Transparent'
+        material = 'Transparent'
     }, TransparentMedium)
 
     base.add(m)

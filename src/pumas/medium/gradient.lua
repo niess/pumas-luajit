@@ -90,10 +90,10 @@ function gradient.GradientMedium (material, type_, axis, value, position0,
         }
     end
 
-    local self, index = base.BaseMedium.new(ctype, ctype_ptr, material, strtype)
+    local self = base.BaseMedium.new(ctype, ctype_ptr, material)
     type_ = parse_type(type_)
 
-    ffi.C.pumas_medium_gradient_initialise(self._c, index, type_, value,
+    ffi.C.pumas_medium_gradient_initialise(self._c, -1, type_, value,
                                            position0, density0, magnet)
     if (type(axis) == 'string') and (axis:lower() == 'vertical') then
         self._c.gradient.project =

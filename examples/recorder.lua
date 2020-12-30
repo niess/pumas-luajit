@@ -1,8 +1,5 @@
 local pumas = require('pumas')
 
--- Load materials tabulations
-pumas.PUMAS.load('share/materials/standard')
-
 -- Build the geometry, an Earth fully covered with sea
 local media = {}
 media['Atmosphere'] = pumas.GradientMedium(
@@ -63,9 +60,12 @@ local function print_step(state, medium, event)
                                                             event))
 end
 
--- Configure the simulation context for backward transport with a detailed
+-- Load materials tabulations
+local physics = pumas.Physics('share/materials/standard')
+
+-- Configure a simulation context for backward transport with a detailed
 -- Physics
-local context = pumas.Context {
+local context = physics:Context{
     forward = false,
     longitudinal = false,
     scheme = pumas.SCHEME_DETAILED,

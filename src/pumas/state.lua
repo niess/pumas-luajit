@@ -12,7 +12,7 @@ local state = {}
 -------------------------------------------------------------------------------
 -- The Monte Carlo state metatype
 -------------------------------------------------------------------------------
-local State = {__index = {}}
+local State = {}
 
 local ctype = ffi.typeof('struct pumas_state_extended')
 local pumas_state_ptr = ffi.typeof('struct pumas_state *')
@@ -41,7 +41,6 @@ end
 
 
 function State:__index (k)
-
     if k == '__metatype' then
         return 'state'
     elseif k == 'clear' then

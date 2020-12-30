@@ -6,6 +6,7 @@
 local lfs = require('lfs')
 local ffi = require('ffi')
 local call = require('pumas.call')
+local context = require('pumas.context')
 local elements = require('pumas.elements')
 local error = require('pumas.error')
 local materials_ = require('pumas.materials')
@@ -27,88 +28,130 @@ physics.TAU_MASS = 1.77682
 
 
 -------------------------------------------------------------------------------
--- Main table for global / shared data
+-- Conversion between particles C type and strings
 -------------------------------------------------------------------------------
-local PUMAS = {}
-
-
--------------------------------------------------------------------------------
--- Update the PUMAS table constants, e.g. on a library initialisation
--------------------------------------------------------------------------------
-local function update ()
-    local particle = ffi.new('enum pumas_particle [1]')
-    local lifetime = ffi.new('double [1]')
-    local mass = ffi.new('double [1]')
-    if ffi.C.pumas_particle(particle, lifetime, mass) == 0 then
-        if particle[0] == ffi.C.PUMAS_PARTICLE_MUON then
-            PUMAS.particle = 'muon'
-        else
-            PUMAS.particle = 'tau'
-        end
-        PUMAS.lifetime = tonumber(lifetime[0])
-        PUMAS.mass = tonumber(mass[0])
+local function particle_ctype (name, raise_error)
+    if name == nil then
+        return ffi.C.PUMAS_PARTICLE_MUON
     else
-        PUMAS.particle = nil
-        PUMAS.lifetime = nil
-        PUMAS.mass = nil
+        if type(name) ~= 'string' then
+            raise_error{
+                argname = 'particle',
+                expected = 'a string',
+                got = 'a '..type(name)
+            }
+        end
+
+        local tmp = name:lower()
+        if tmp == 'muon' then
+            return ffi.C.PUMAS_PARTICLE_MUON
+        elseif tmp == "tau" then
+            return ffi.C.PUMAS_PARTICLE_TAU
+        else
+            raise_error{
+                argname = 'particle',
+                expected = "'muon' or 'tau'",
+                got = "'"..name.."'"
+            }
+        end
+    end
+end
+
+
+local function particle_string (ctype)
+    if ctype == ffi.C.PUMAS_PARTICLE_MUON then
+        return 'muon'
+    elseif ctype == ffi.C.PUMAS_PARTICLE_TAU then
+        return 'tau'
     end
 end
 
 
 -------------------------------------------------------------------------------
--- Register the subpackage
+-- The Physics metatype
 -------------------------------------------------------------------------------
--- XXX add an interface to tables & properties
-local mt = {__index = {}}
+local Physics = {__index = {}}
 
-function physics.register_to (t)
-    t.PUMAS = setmetatable(PUMAS, mt)
-
-    for k, v in pairs(physics) do
-        t[k] = v
-    end
-end
+Physics.__index.__metatype = 'physics'
+Physics.__index.Context = context.Context
 
 
 -------------------------------------------------------------------------------
--- Load material tables from a binary dump
+-- The Physics constructor
 -------------------------------------------------------------------------------
 do
-    local raise_error = error.ErrorFunction{
-        argnum = 1,
-        fname = 'load'
-    }
+    local physics_version = 0
+    local raise_error = error.ErrorFunction{fname = 'Physics'}
 
-    function mt.__index.load (path)
-        if type(path) ~= 'string' then
-            raise_error{
-                expected = 'a string',
-                got = 'a '..type(path),
+    function physics.Physics (args)
+        local c = ffi.new('struct pumas_physics *[1]')
+        ffi.gc(c, ffi.C.pumas_physics_destroy)
+
+        if args == nil then
+            error.raise{
+                argnum = 'bad',
+                expected = 1,
+                got = 0
             }
         end
 
-        local mode, errmsg = lfs.attributes(path, 'mode')
-        if mode == nil then
-            raise_error(errmsg)
-        elseif mode == 'directory' then
-            path = path..os.PATHSEP..'materials.pumas'
-        end
-
-        local f = io.open(path, 'rb')
-        if f == nil then
-            raise_error('could not open file '..path)
-        end
-
-        ffi.C.pumas_finalise()
-        errmsg = call.protected(ffi.C.pumas_load, f)
-        update(PUMAS)
-        f:close()
-        if errmsg then
+        local tp = type(args)
+        if (tp ~= 'string') and (tp ~= 'table') then
             raise_error{
-                header = 'error when loading PUMAS materials',
-                errmsg
+                argnum = 1,
+                expected = 'a string or a table',
+                got = 'a '..type(args)
             }
         end
+
+        -- Load the physics tables
+        if tp == 'table' then
+            local particle = particle_ctype(args.particle, raise_error)
+            ffi.C.pumas_physics_create(c, particle, args.mdf, args.dedx)
+        else
+            local path = args
+            local mode, errmsg = lfs.attributes(path, 'mode')
+            if mode == nil then
+                raise_error(errmsg)
+            elseif mode == 'directory' then
+                path = path..os.PATHSEP..'materials.pumas'
+            end
+
+            local f = io.open(path, 'rb')
+            if f == nil then
+                raise_error('could not open file '..path)
+            end
+
+            errmsg = call.protected(ffi.C.pumas_physics_load, c, f)
+            f:close()
+            if errmsg then
+                raise_error{
+                    header = 'error when loading materials',
+                    errmsg
+                }
+            end
+        end
+
+        -- Update the version
+        local self = setmetatable({_c = c}, Physics)
+        self._version = physics_version
+        physics_version = physics_version + 1
+
+        -- Update the particle properties
+        local particle = ffi.new('enum pumas_particle [1]')
+        local lifetime = ffi.new('double [1]')
+        local mass = ffi.new('double [1]')
+        local rc = ffi.C.pumas_physics_particle(c[0], particle, lifetime,
+            mass)
+        if rc == 0 then
+            self.particle = {
+                name = particle_string(particle[0]),
+                lifetime = tonumber(lifetime[0]),
+                mass = tonumber(mass[0])
+            }
+        end
+
+        return self
     end
 end
 
@@ -118,21 +161,30 @@ end
 -------------------------------------------------------------------------------
 do
     local raise_error = error.ErrorFunction{
-        argnum = 1,
+        argnum = 2,
         fname = 'dump'
     }
 
-    function mt.__index.dump (path)
+    function Physics.__index:dump (path)
+        if path == nil then
+            local nargs = (self ~= nil) and 1 or 0
+            error.raise{
+                argnum = 'bad',
+                expected = 2,
+                got = nargs
+            }
+        end
+
         local f = io.open(path, 'wb')
         if f == nil then
             raise_error('could not open file '..path)
         end
 
-        local errmsg = call.protected(ffi.C.pumas_dump, f)
+        local errmsg = call.protected(ffi.C.pumas_physics_dump, self._c[0], f)
         f:close()
         if errmsg then
             raise_error{
-                header = 'error when dumping PUMAS materials',
+                header = 'error when dumping materials',
                 errmsg
             }
         end
@@ -196,7 +248,7 @@ end
 -------------------------------------------------------------------------------
 -- Tabulate a set of materials
 -------------------------------------------------------------------------------
-function mt.__index.build (args)
+function physics.build (args)
     local raise_error = error.ErrorFunction{fname = 'build'}
 
     if type(args) ~= 'table' then
@@ -244,30 +296,7 @@ function mt.__index.build (args)
         }
     end
 
-    if particle == nil then
-        particle = ffi.C.PUMAS_PARTICLE_MUON
-    else
-        if type(particle) ~= 'string' then
-            raise_error{
-                argname = 'particle',
-                expected = 'a string',
-                got = 'a '..type(particle)
-            }
-        end
-
-        local tmp = particle:lower()
-        if tmp == 'muon' then
-            particle = ffi.C.PUMAS_PARTICLE_MUON
-        elseif tmp == "tau" then
-            particle = ffi.C.PUMAS_PARTICLE_TAU
-        else
-            raise_error{
-                argname = 'particle',
-                expected = "'muon' or 'tau'",
-                got = "'"..particle.."'"
-            }
-        end
-    end
+    particle = particle_ctype(particle, raise_error)
 
     if energies == nil then
         if particle == ffi.C.PUMAS_PARTICLE_MUON
@@ -530,26 +559,12 @@ function mt.__index.build (args)
     f:write(xml:pop())
     f:close()
 
-    -- Backup the current materials and set a restore point
-    local materials_backup
-    if ffi.C.pumas_material_length() > 0 then
-        materials_backup = io.tmpfile()
-        ffi.C.pumas_dump(materials_backup)
-        materials_backup:seek('set', 0)
-    end
-
-    local function restore_materials()
-        ffi.C.pumas_finalise()
-        if materials_backup == nil then return end
-        ffi.C.pumas_load(materials_backup)
-        materials_backup:close()
-        materials_backup = nil
-    end
-
     -- Generate the energy loss tables
-    ffi.C.pumas_finalise()
-    ffi.C.pumas_tabulation_initialise(particle, mdf)
-    local data = ffi.new('struct pumas_tabulation_data')
+    local physics_ = ffi.new('struct pumas_physics *[1]')
+    ffi.gc(physics_, ffi.C.pumas_physics_destroy)
+    ffi.C.pumas_physics_create_tabulation(physics_, particle, mdf)
+
+    local data = ffi.new('struct pumas_physics_tabulation_data')
     local outdir
     if path ~= nil then outdir = ffi.new('char [?]', #path + 1, path) end
     data.outdir = outdir
@@ -561,17 +576,17 @@ function mt.__index.build (args)
     for name, material in pairs(materials) do
         local m = data.material
         local index = ffi.new('int [1]')
-        ffi.C.pumas_material_index(name, index)
+        ffi.C.pumas_physics_material_index(physics_[0], name, index)
         m.index = index[0]
         m.density = material.density
         m.I = material.I * 1E-09
         if material.state == nil then
-            m.state = ffi.C.PUMAS_TABULATION_STATE_UNKNOWN
+            m.state = ffi.C.PUMAS_PHYSICS_STATE_UNKNOWN
         else
             m.state = ({
-                solid  = ffi.C.PUMAS_TABULATION_STATE_SOLID,
-                liquid = ffi.C.PUMAS_TABULATION_STATE_LIQUID,
-                gaz    = ffi.C.PUMAS_TABULATION_STATE_GAZ
+                solid  = ffi.C.PUMAS_PHYSICS_STATE_SOLID,
+                liquid = ffi.C.PUMAS_PHYSICS_STATE_LIQUID,
+                gaz    = ffi.C.PUMAS_PHYSICS_STATE_GAZ
             })[material.state:lower()]
         end
         m.a = material.a
@@ -581,12 +596,12 @@ function mt.__index.build (args)
         m.Cbar = material.Cbar
         m.delta0 = material.delta0
 
-        ok, errormsg = pcall(ffi.C.pumas_tabulation_tabulate, data)
+        ok, errormsg = pcall(ffi.C.pumas_physics_tabulate, physics_[0], data)
         if not ok then break end
     end
-    ffi.C.pumas_tabulation_clear(data)
+    ffi.C.pumas_physics_tabulation_clear(physics_[0], data)
     if not ok then
-        restore_materials()
+        ffi.C.pumas_physics_destroy(physics_)
         raise_error{
             description = errormsg
         }
@@ -595,15 +610,27 @@ function mt.__index.build (args)
     if compile then
         -- Generate a binary dump
         local dump
-        ffi.C.pumas_finalise()
-        ffi.C.pumas_initialise(particle, mdf, path)
+        ffi.C.pumas_physics_destroy(physics_)
+        ffi.C.pumas_physics_create(physics_, particle, mdf, path)
         dump = path..os.PATHSEP..project..'.pumas'
         local file = io.open(dump, 'w+')
-        ffi.C.pumas_dump(file)
+        ffi.C.pumas_physics_dump(physics_[0], file)
         file:close()
     end
 
-    restore_materials()
+    ffi.C.pumas_physics_destroy(physics_)
+end
+
+
+-------------------------------------------------------------------------------
+-- Register the subpackage
+-------------------------------------------------------------------------------
+-- XXX add an interface to tables & properties
+
+function physics.register_to (t)
+    for k, v in pairs(physics) do
+        t[k] = v
+    end
 end
 
 

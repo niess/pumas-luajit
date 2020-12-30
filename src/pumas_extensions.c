@@ -262,7 +262,7 @@ static void geometry_navigate(struct pumas_geometry * geometry,
 
 
 /* Generic geometry callback */
-void pumas_geometry_medium(struct pumas_context * context,
+enum pumas_step pumas_geometry_medium(struct pumas_context * context,
     struct pumas_state * state, struct pumas_medium ** medium_p,
     double * step_p)
 {
@@ -277,6 +277,8 @@ void pumas_geometry_medium(struct pumas_context * context,
         geometry_navigate(geometry, state, &tmp, step_p, NULL,
                           &user_data->geometry.current);
         if (medium_p != NULL) *medium_p = tmp;
+
+        return PUMAS_STEP_APPROXIMATE; /* XXX Exact steps for polytopes? */
 }
 
 

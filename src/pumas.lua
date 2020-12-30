@@ -53,7 +53,7 @@ end
 -- Set the PUMAS library version tag
 -------------------------------------------------------------------------------
 do
-    local tag = ffi.C.pumas_tag()
+    local tag = ffi.C.pumas_version()
     local major = math.floor(tag / 1000)
     local minor = tag - major
     pumas.version = string.format('%d.%d', major, minor)
@@ -72,7 +72,6 @@ end
 
 register('pumas.call')
 register('pumas.compat')
-register('pumas.context')
 register('pumas.coordinates')
 register('pumas.elements')
 register('pumas.flux')

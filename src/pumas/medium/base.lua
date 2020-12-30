@@ -4,22 +4,20 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
-local call = require('pumas.call')
 local error = require('pumas.error')
-local metatype = require('pumas.metatype')
 
 local base = {}
 
 
 -------------------------------------------------------------------------------
--- Mapping between C media and their Lua wrappers
+-- Cross utilities between C media and their Lua wrappers
 -------------------------------------------------------------------------------
 do
     local function addressof (ptr)
         return tonumber(ffi.cast('uintptr_t', ptr))
     end
 
-    local media_table = {}
+    local media_table = setmetatable({}, {__mode = 'v'})
 
     function base.get (c_medium)
         return media_table[addressof(c_medium)]
@@ -27,6 +25,31 @@ do
 
     function base.add (medium)
         media_table[addressof(medium._c)] = medium
+    end
+
+    local last_version
+    local index = ffi.new('int [1]')
+
+    function base.update (physics)
+        if last_version == physics._version then
+            return true
+        end
+
+        for _, medium in pairs(media_table) do
+            if medium.material and (medium.material ~= 'Transparent') then
+                local rc = ffi.C.pumas_physics_material_index(physics._c[0],
+                    medium.material, index)
+                if rc ~= ffi.C.PUMAS_RETURN_SUCCESS then
+                    return false, medium
+                else
+                    local m = ffi.cast('struct pumas_medium *', medium._c)
+                    m.material = index[0]
+                end
+            end
+        end
+        last_version = physics._version
+
+        return true
     end
 end
 
@@ -37,63 +60,18 @@ end
 -- Note: this is an incomplete metatype intended to be inherited. It provides
 -- common functionalities for media types.
 -------------------------------------------------------------------------------
--- XXX Set materials from 'Material' object or string ref. MATERIALS
 local BaseMedium = {}
 base.BaseMedium = BaseMedium
 
 
-function BaseMedium:__index (k, strtype)
+function BaseMedium.__index (_, k, strtype)
     if k == '__metatype' then
         return 'medium'
-    elseif k == 'material' then
-        return self._material
     else
         error.raise{
             ['type'] = strtype,
             bad_member = k,
             depth = 3
-        }
-    end
-end
-
-
-local function parse_material (v, strtype)
-    local raise_error = error.ErrorFunction{
-        fname = strtype,
-        argname = 'material',
-        depth = 3
-    }
-
-    local n = ffi.C.pumas_material_length()
-    if n == 0 then
-        raise_error{
-            header = 'missing materials',
-            description = 'none loaded',
-        }
-        -- XXX how to invalidate materials if reloaded?
-    end
-
-    if type(v) == 'string' then
-        local index = ffi.new('int [1]')
-        call(ffi.C.pumas_material_index, v, index)
-        return index[0]
-    elseif type(v) == 'number' then
-        if (n == 1) and (v ~= 0) then
-            raise_error{
-                expected = 0,
-                got  = v
-            }
-        elseif (v < 0) or (v >= n) then
-            raise_error{
-                expected = 'a value between 0 and '..tostring(n - 1),
-                got  = v
-            }
-        end
-        return v
-    else
-        raise_error{
-            expected = 'a number or a string',
-            got = metatype.a(v)
         }
     end
 end
@@ -101,8 +79,7 @@ end
 
 function BaseMedium:__newindex (k, v, strtype)
     if k == 'material' then
-        self._c.medium.material = parse_material(v, strtype)
-        rawset(self, '_material', v)
+        rawset(self, 'material', v)
     else
         error.raise{
             ['type'] = strtype,
@@ -113,15 +90,14 @@ function BaseMedium:__newindex (k, v, strtype)
 end
 
 
-function BaseMedium.new (ctype, ctype_ptr, material, strtype)
+function BaseMedium.new (ctype, ctype_ptr, material)
     local c = ffi.cast(ctype_ptr, ffi.C.calloc(1, ffi.sizeof(ctype)))
     ffi.gc(c, ffi.C.free)
 
-    local obj = {_c = c, _material = material}
+    local obj = {_c = c, material = material}
     base.add(obj)
 
-    local index = parse_material(material, strtype)
-    return obj, index
+    return obj
 end
 
 

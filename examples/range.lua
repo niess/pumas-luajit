@@ -1,14 +1,14 @@
 local pumas = require('pumas')
 
--- Load materials tabulations
-pumas.PUMAS.load('share/materials/standard')
-
 -- Build the geometry, a uniform medium of infinite extension
 local medium = pumas.UniformMedium('StandardRock')
 local geometry = pumas.InfiniteGeometry(medium)
 
+-- Load materials tabulations
+local physics = pumas.Physics('share/materials/standard')
+
 -- Configure a simulation context
-local context = pumas.Context {
+local context = physics:Context{
     forward = true,
     longitudinal = true,
     scheme = pumas.SCHEME_HYBRID,
@@ -16,7 +16,7 @@ local context = pumas.Context {
 }
 
 -- Initial muon state
-local initial = pumas.State {
+local initial = pumas.State{
     kinetic = 1E+03,
     weight = 1,
     position = {0, 0, 0},

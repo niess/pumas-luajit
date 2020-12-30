@@ -11,12 +11,12 @@ local pumas = require('pumas')
 print('building material tables for the examples ...')
 local t0 = pumas.time()
 
-pumas.PUMAS.build({ -- XXX is the PUMAS table really needed?
+pumas.build{
     materials = {'StandardRock', 'WaterLiquid', 'AirDry1Atm'},
     composites = {WetRock = {{'StandardRock', 0.788},
                              {'WaterLiquid', 0.212}}},
     path = 'share/materials/standard'
-})
+}
 
 print('done in ' .. pumas.time() - t0 .. ' s')
 

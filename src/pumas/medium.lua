@@ -11,6 +11,7 @@ local uniform = require('pumas.medium.uniform')
 local medium = {}
 
 medium.get = base.get
+medium.update = base.update
 
 medium.MEDIUM_TRANSPARENT = transparent.MEDIUM_TRANSPARENT
 medium.GradientMedium = gradient.GradientMedium

@@ -1,8 +1,5 @@
 local pumas = require('pumas')
 
--- Load materials tabulations
-pumas.PUMAS.load('share/materials/standard')
-
 -- Build the geometry, an Earth with a flat topography
 local deg = math.pi / 180
 local latitude, longitude = 45, 3
@@ -35,8 +32,11 @@ do
     end
 end
 
+-- Load materials tabulations
+local physics = pumas.Physics('share/materials/standard')
+
 -- Configure an hybrid simulation context, a la MUM
-local context = pumas.Context {
+local context = physics:Context{
     forward = false,
     longitudinal = true,
     scheme = pumas.SCHEME_HYBRID,
@@ -50,7 +50,7 @@ local frame = pumas.LocalFrame(position)
 local direction = pumas.HorizontalVector{
     azimuth = 0 * deg, elevation = -90 * deg, norm = 1, frame = frame}
 
-local initial = pumas.State {
+local initial = pumas.State{
     weight = 1,
     position = position:get(),
     direction = direction:get()

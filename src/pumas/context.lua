@@ -18,8 +18,7 @@ local context = {}
 -------------------------------------------------------------------------------
 -- The Monte Carlo context metatype
 -------------------------------------------------------------------------------
--- XXX Lazy data set / get in order to handle re-initialisation of the
--- PUMAS library (& MT)
+-- XXX  support multi threading?
 local Context = {}
 
 
@@ -160,40 +159,49 @@ end
 
 local pumas_state_extended_ptr = ffi.typeof('struct pumas_state_extended *')
 
-local function transport (self, state_)
-    if state_ == nil then
-        local nargs = (self ~= nil) and 1 or 0
-        error.raise{
-            fname = 'transport',
-            argnum = 'bad',
-            expected = 2,
-            got = nargs
-        }
-    end
+local transport
+do
+    local raise_error = error.ErrorFunction{fname = 'transport'}
 
-    if state_.__metatype ~= 'state' then
-        error.raise{
-            fname = 'transport',
-            argnum = 2,
-            expected = 'a state',
-            got = metatype.a(state_)
-        }
-    end
-
-    local extended_state = ffi.cast(pumas_state_extended_ptr, state_._c)
-    ffi.C.pumas_state_extended_reset(extended_state, self._c)
-
-    self._geometry:_update(self)
-    call(ffi.C.pumas_transport, self._c, state_._c, self._cache.event,
-             self._cache.media)
-    local media = compat.table_new(2, 0)
-
-    for i = 1, 2 do
-        if self._cache.media[i - 1] ~= nil then
-            media[i] = medium.get(self._cache.media[i - 1])
+    function transport (self, state_)
+        if state_ == nil then
+            local nargs = (self ~= nil) and 1 or 0
+            raise_error{
+                argnum = 'bad',
+                expected = 2,
+                got = nargs
+            }
         end
+
+        if state_.__metatype ~= 'state' then
+            raise_error{
+                argnum = 2,
+                expected = 'a state',
+                got = metatype.a(state_)
+            }
+        end
+
+        local extended_state = ffi.cast(pumas_state_extended_ptr, state_._c)
+        ffi.C.pumas_state_extended_reset(extended_state, self._c)
+
+        local ok, m = medium.update(self._physics)
+        if not ok then
+            raise_error{
+                description = "unknown material '"..m.material.."'"
+            }
+        end
+        self._geometry:_update(self)
+        call(ffi.C.pumas_context_transport, self._c, state_._c,
+            self._cache.event, self._cache.media)
+        local media = compat.table_new(2, 0)
+
+        for i = 1, 2 do
+            if self._cache.media[i - 1] ~= nil then
+                media[i] = medium.get(self._cache.media[i - 1])
+            end
+        end
+        return self._cache.event[0], media
     end
-    return self._cache.event[0], media
 end
 
 
@@ -267,65 +275,69 @@ end
 -------------------------------------------------------------------------------
 -- Monte Carlo context constructor
 -------------------------------------------------------------------------------
-function context.Context (args)
-    if args and type(args) ~= 'table' then
-        error.raise{
-            fname = 'Context',
-            argnum = 1,
-            expected = 'a table',
-            got = metatype.a(args)
-        }
-    end
+do
+    local raise_error = error.ErrorFunction{fname = 'Context'}
 
-    local ptr = ffi.new('struct pumas_context *[1]')
-    call(ffi.C.pumas_context_create, ptr,
-            ffi.sizeof('struct pumas_user_data'))
-    local c = ptr[0]
-    ffi.gc(c, function () ffi.C.pumas_context_destroy(ptr) end)
+    function context.Context (physics, args)
+        if (not physics) or (physics.__metatype ~= 'physics') then
+            raise_error{
+                argnum = 1,
+                expected = 'a physics',
+                got = metatype.a(physics)
+            }
+        end
 
-    c.random = ffi.C.pumas_random_uniform01
-    c.medium = ffi.C.pumas_geometry_medium
+        if args and type(args) ~= 'table' then
+            raise_error{
+                argnum = 2,
+                expected = 'a table',
+                got = metatype.a(args)
+            }
+        end
 
-    local user_data = ffi.cast('struct pumas_user_data *', c.user_data)
-    user_data.geometry.top = nil
-    user_data.geometry.current = nil
-    user_data.geometry.callback = nil
+        local ptr = ffi.new('struct pumas_context *[1]')
+        call(ffi.C.pumas_context_create, ptr, physics._c[0],
+                ffi.sizeof('struct pumas_user_data'))
+        local c = ptr[0]
+        ffi.gc(c, function () ffi.C.pumas_context_destroy(ptr) end)
 
-    local self = setmetatable({
-        _c = c,
-        medium = medium_callback,
-        transport = transport,
-        random = random,
-        _cache = {
-            distance = ffi.new('double [1]'),
-            event = ffi.new('enum pumas_event [1]'),
-            media = ffi.new('struct pumas_medium *[2]')
-        }
-    }, Context)
+        c.random = ffi.C.pumas_random_uniform01
+        c.medium = ffi.C.pumas_geometry_medium
 
-    local seeded = false
-    if args ~= nil then
-        for k, v in pairs(args) do
-            self[k] = v
-            if k == 'random_seed' then
-                seeded = true
+        local user_data = ffi.cast('struct pumas_user_data *', c.user_data)
+        user_data.geometry.top = nil
+        user_data.geometry.current = nil
+        user_data.geometry.callback = nil
+
+        local self = setmetatable({
+            _c = c,
+            _physics = physics,
+            medium = medium_callback,
+            transport = transport,
+            random = random,
+            _cache = {
+                distance = ffi.new('double [1]'),
+                event = ffi.new('enum pumas_event [1]'),
+                media = ffi.new('struct pumas_medium *[2]')
+            }
+        }, Context)
+
+        local seeded = false
+        if args ~= nil then
+            for k, v in pairs(args) do
+                self[k] = v
+                if k == 'random_seed' then
+                    seeded = true
+                end
             end
         end
+
+        if not seeded then
+            self.random_seed = nil
+        end
+
+        return self
     end
-
-    if not seeded then
-        self.random_seed = nil
-    end
-
-    return self
-end
-
-
--------------------------------------------------------------------------------
--- Register the subpackage
--------------------------------------------------------------------------------
-function context.register_to (t)
-    t.Context = context.Context
 end
 
 
