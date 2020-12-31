@@ -2,7 +2,7 @@ PREFIX=     /usr/local
 BUILD_TYPE= release
 
 export BUILD_DIR= $(PWD)/build-$(BUILD_TYPE)
-RUNTIME_EXE= $(BUILD_DIR)/bin/pumas-luajit
+RUNTIME_EXE= $(BUILD_DIR)/bin/luajit-pumas
 
 ifeq ($(BUILD_TYPE), release)
 CFLAGS+= -O3
@@ -23,12 +23,12 @@ export CFLAGS
 FORCE:
 
 $(RUNTIME_EXE): FORCE
-	@echo "==== Building pumas-luajit ===="
+	@echo "==== Building luajit-pumas ===="
 	@$(MAKE) -e -C src
-	@echo "==== Successfully built pumas ===="
+	@echo "==== Successfully built luajit-pumas ===="
 
 install: $(RUNTIME_EXE)
-	@echo "==== Installing pumas-luajit to $(PREFIX) ===="
+	@echo "==== Installing luajit-pumas to $(PREFIX) ===="
 	@install -d $(PREFIX)/bin
-	@$(INSTALL_EXE) -m 0755 $(RUNTIME_EXE) $(PREFIX)/bin/pumas-luajit
-	@echo "==== Successfully installed pumas-luajit to $(PREFIX) ===="
+	@$(INSTALL_EXE) -m 0755 $(RUNTIME_EXE) $(PREFIX)/bin/luajit-pumas
+	@echo "==== Successfully installed luajit-pumas to $(PREFIX) ===="

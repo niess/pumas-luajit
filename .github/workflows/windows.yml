@@ -22,12 +22,12 @@ jobs:
       run: |
         make CROSS=x86_64-w64-mingw32-
         mkdir -p ../bin
-        mv build/bin/x86_64-w64-mingw32-pumas-luajit ../bin/pumas-luajit.exe
+        mv build/bin/x86_64-w64-mingw32-luajit-pumas ../bin/luajit-pumas.exe
 
     - name: Release
       uses: marvinpinto/action-automatic-releases@latest
       with:
         automatic_release_tag: windows
         title: Windows
-        files: bin/pumas-luajit.exe
+        files: bin/luajit-pumas.exe
         repo_token: ${{ secrets.GITHUB_TOKEN }}

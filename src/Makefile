@@ -96,7 +96,7 @@ endef
 
 .PHONY: clean
 
-RUNTIME_EXE= $(BUILD_DIR)/bin/$(CROSS)pumas-luajit
+RUNTIME_EXE= $(BUILD_DIR)/bin/$(CROSS)luajit-pumas
 RUNTIME_VERSION= $(shell \
     git describe --match=NeVeRmAtCh --always --abbrev=7 --dirty)
 

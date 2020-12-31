@@ -25,5 +25,5 @@ jobs:
       with:
         automatic_release_tag: osx
         title: OSX
-        files: bin/pumas-luajit
+        files: bin/luajit-pumas
         repo_token: ${{ secrets.GITHUB_TOKEN }}
