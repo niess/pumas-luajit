@@ -46,25 +46,37 @@ end
 local ctype = ffi.typeof('struct pumas_medium_uniform')
 local ctype_ptr = ffi.typeof('struct pumas_medium_uniform *')
 
-function uniform.UniformMedium (material, density, magnet)
-    if material == nil then
-        error.raise {
-            fname = strtype,
-            argnum = 1,
-            expected = 'a string',
-            got = type(material)
-        }
+do
+    local raise_error = error.ErrorFunction{fname = 'UniformMedium'}
+
+    function uniform.UniformMedium (material, density, magnet)
+        if material == nil then
+            raise_error{
+                argnum = 1,
+                expected = 'a string',
+                got = type(material)
+            }
+        end
+
+        local self = base.BaseMedium.new(ctype, ctype_ptr, material)
+
+        if density == nil then
+            local m = materials.MATERIALS[material]
+            if m then
+                density = materials.MATERIALS[material].density
+            else
+                raise_error{
+                    argnum = 2,
+                    expected = 'a number',
+                    got = 'nil'
+                }
+            end
+        end
+
+        ffi.C.pumas_medium_uniform_initialise(self._c, -1, density, magnet)
+
+        return setmetatable(self, UniformMedium)
     end
-
-    local self = base.BaseMedium.new(ctype, ctype_ptr, material)
-
-    if density == nil then
-        density = materials.MATERIALS[material].density -- XXX check if Material
-    end
-
-    ffi.C.pumas_medium_uniform_initialise(self._c, -1, density, magnet)
-
-    return setmetatable(self, UniformMedium)
 end
 
 
