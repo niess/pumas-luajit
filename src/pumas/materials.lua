@@ -187,6 +187,8 @@ end
 materials.MATERIALS = require('pumas.data.materials')
 for k, v in pairs(materials.MATERIALS) do
     v.density = v.density * 1E+03 -- XXX use kg / m^3
+                                  -- XXX Add update tools / pdg package (?)
+                                  -- XXX Remove the socket deps?
     materials.MATERIALS[k] = materials.Material(v)
 end
 

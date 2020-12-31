@@ -4,8 +4,9 @@ local pumas = require('pumas')
 local deg = math.pi / 180
 local latitude, longitude = 45, 3
 local geoid = pumas.TopographyData()
-local air = pumas.GradientMedium('AirDry1Atm', 'exponential',
-                                 'vertical', -1E+04, 0, 1.205)
+local air = pumas.GradientMedium('AirDry1Atm', {
+    ['type'] = 'exponential', axis = 'vertical', lambda = -1E+04,
+    z0 = 0, rho0 = 1.205})
 
 local top_altitude = 1600
 local geometry = pumas.EarthGeometry({air, geoid, top_altitude})
