@@ -54,7 +54,12 @@ end
 
 
 function State:__newindex (k, v)
-    -- XXX check for position or direction & coordinates
+    if ((k == 'position') or (k == 'direction')) and (v ~= nil) and
+        (v.__metatype == 'coordinates') then
+        -- Get the Monte Carlo representation of the position or direction
+        v = v:get()
+    end
+
     self._c[k] = v
 end
 
@@ -66,13 +71,15 @@ function state.State (args)
     local c = ffi.cast(pumas_state_ptr, ffi.C.calloc(1, ffi.sizeof(ctype)))
     ffi.gc(c, ffi.C.free)
 
+    local self = setmetatable({_c = c}, State)
+
     if args ~= nil then
         for k, v in pairs(args) do
-            c[k] = v
+            self[k] = v
         end
     end
 
-    return setmetatable({_c = c}, State)
+    return self
 end
 
 

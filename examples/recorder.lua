@@ -29,8 +29,8 @@ local state = pumas.State{
     charge = -1,
     kinetic = 1,
     weight = 1,
-    position = position:get(),
-    direction = direction:get()
+    position = position,
+    direction = direction
 }
 
 -- Callback function used for printing Monte Carlo steps

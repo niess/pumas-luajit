@@ -53,8 +53,8 @@ local direction = pumas.HorizontalVector{
 
 local initial = pumas.State{
     weight = 1,
-    position = position:get(),
-    direction = direction:get()
+    position = position,
+    direction = direction
 }
 
 -- Loop over energies, using a logarithmic binning, and backward sample the
