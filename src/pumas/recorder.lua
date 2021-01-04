@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
 local call = require('pumas.call')
+local enum = require('pumas.enum')
 local error = require('pumas.error')
 local medium = require('pumas.medium')
 local state = require('pumas.state')
@@ -45,11 +46,13 @@ do
 
             if v then
                 local wrapped_state = state.State()
+                local wrapped_event = enum.Event()
                 self._c.record = ffi.cast('pumas_recorder_cb *',
-                    function (_, c_state, c_medium, event)
+                    function (_, c_state, c_medium, c_event)
                         local wrapped_medium = medium.get(c_medium)
                         ffi.copy(wrapped_state._c, c_state, state_size)
-                        v(wrapped_state, wrapped_medium, tonumber(event))
+                        wrapped_event.value = c_event
+                        v(wrapped_state, wrapped_medium, wrapped_event)
                     end)
             else
                 self._c.record = nil

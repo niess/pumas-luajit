@@ -37,20 +37,6 @@ function Context:__index (k)
 end
 
 
-local function event_set (self, flag)
-    local c = rawget(self, '_c')
-    c.event = bit.bor(tonumber(c.event), flag)
-end
-
-
-local function event_unset (self, flag)
-    local c = rawget(self, '_c')
-    if bit.band(tonumber(c.event), flag) == flag then
-        c.event = c.event - flag
-    end
-end
-
-
 local function get_random_seed ()
     local seed
     local f = io.open('/dev/urandom', 'rb') -- XXX Windows case?
@@ -70,31 +56,31 @@ end
 function Context:__newindex (k, v)
     if k == 'distance_max' then
         if v == nil then
-            event_unset(self, enum.EVENT_LIMIT_DISTANCE)
+            self.event.limit_distance = false
             v = 0
         else
-            event_set(self, enum.EVENT_LIMIT_DISTANCE)
+            self.event.limit_distance = true
         end
     elseif k == 'grammage_max' then
         if v == nil then
-            event_unset(self, enum.EVENT_LIMIT_GRAMMAGE)
+            self.event.limit_grammage = false
             v = 0
         else
-            event_set(self, enum.EVENT_LIMIT_GRAMMAGE)
+            self.event.limit_grammage = true
         end
     elseif k == 'kinetic_limit' then
         if v == nil then
-            event_unset(self, enum.EVENT_LIMIT_KINETIC)
+            self.event.limit_kinetic = false
             v = 0
         else
-            event_set(self, enum.EVENT_LIMIT_KINETIC)
+            self.event.limit_kinetic = true
         end
     elseif k == 'time_max' then
         if v == nil then
-            event_unset(self, enum.EVENT_LIMIT_TIME)
+            self.event.limit_time = false
             v = 0
         else
-            event_set(self, enum.EVENT_LIMIT_TIME)
+            self.event.limit_time = true
         end
     elseif k == 'geometry' then
         local current_geometry = rawget(self, '_geometry')
@@ -124,6 +110,7 @@ function Context:__newindex (k, v)
         rawset(self, '_random_seed', v)
         return
     elseif k == 'recorder' then
+        -- XXX Allow to directly set a recorder function
         if v == nil then
             rawset(self, '_recorder', nil)
             self._c.recorder = nil
@@ -191,6 +178,7 @@ do
             }
         end
         self._geometry:_update(self)
+        self._c.event = self.event.value
         call(ffi.C.pumas_context_transport, self._c, state_._c,
             self._cache.event, self._cache.media)
         local media = compat.table_new(2, 0)
@@ -280,6 +268,7 @@ do
 
     function context.Context (physics, args)
         if (not physics) or (physics.__metatype ~= 'physics') then
+            -- Allow string / table argument for the physics
             raise_error{
                 argnum = 1,
                 expected = 'a physics',
@@ -309,9 +298,13 @@ do
         user_data.geometry.current = nil
         user_data.geometry.callback = nil
 
+        local event = enum.Event()
+        event.value = c.event
+
         local self = setmetatable({
             _c = c,
             _physics = physics,
+            event = event,
             medium = medium_callback,
             transport = transport,
             random = random,

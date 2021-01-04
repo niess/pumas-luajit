@@ -37,6 +37,8 @@ local function CoordinatesType (ctype, setter, get, transform)
         raw_coordinates = 'CartesianVector'
     end
 
+    -- XXX Allow to instanciate directly from a double [3]?
+
     function mt.__index:set (coordinates)
         if (self == nil) or (coordinates == nil) then
             local nargs = (self ~= nil) and 1 or 0

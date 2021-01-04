@@ -35,13 +35,7 @@ local state = pumas.State{
 
 -- Callback function used for printing Monte Carlo steps
 local function print_step(state, medium, event)
-    if event == pumas.EVENT_NONE then return end
-
-    if bit.band(event, pumas.EVENT_STOP) == pumas.EVENT_STOP then
-        event = pumas.event_tostring(event - pumas.EVENT_STOP)
-    else
-        event = pumas.event_tostring(event)
-    end
+    if event.none then return end
 
     local geodetic = pumas.GeodeticPoint():set(state.position)
     local u0 = direction:get()
