@@ -27,7 +27,7 @@ local horizontal_vector_t = ffi.typeof('struct pumas_horizontal_vector')
 local function CoordinatesType (ctype, setter, get, transform)
     local mt = {__index = {}}
 
-    mt.__index.__metatype = 'coordinates'
+    mt.__index.__metatype = 'Coordinates'
 
     local double3_t = ffi.typeof('double [3]')
     local raw_coordinates
@@ -82,7 +82,7 @@ local function CoordinatesType (ctype, setter, get, transform)
             error.raise{
                 fname = 'get',
                 argnum = 1,
-                expected = 'coordinates',
+                expected = 'a Coordinates cdata',
                 got = 'nil'
             }
         end
@@ -103,11 +103,11 @@ local function CoordinatesType (ctype, setter, get, transform)
 
     if transform ~= nil then
         function mt.__index:transform (frame)
-            if (self == nil) or (metatype(self) ~= 'coordinates') then
+            if (self == nil) or (metatype(self) ~= 'Coordinates') then
                 error.raise{
                     fname = 'transform',
                     argnum = 1,
-                    expected = 'coordinates',
+                    expected = 'a Coordinates cdata',
                     got = metatype.a(self)
                 }
             end

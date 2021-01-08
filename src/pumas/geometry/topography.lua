@@ -16,7 +16,7 @@ local topography = {}
 -- The topography data metatypes
 -------------------------------------------------------------------------------
 local TopographyData = {__index={}}
-TopographyData.__index.__metatype = 'topographydata'
+TopographyData.__index.__metatype = 'TopographyData'
 
 
 function TopographyData.__index:elevation (x, y)

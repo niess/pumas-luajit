@@ -49,7 +49,7 @@ do
 
     function Limit:__index (k)
         if k == '__metatype' then
-            return 'limit'
+            return 'Limit'
         elseif k == 'set' then
             return set
         else
@@ -93,7 +93,7 @@ local Context = {}
 
 function Context:__index (k)
     if k == '__metatype' then
-        return 'context'
+        return 'Context'
     elseif k == 'geometry' then
         return self._geometry
     elseif k == 'limit' then
@@ -142,8 +142,9 @@ function Context:__newindex (k, v)
             ffi.C.pumas_geometry_destroy(self._c)
         end
 
-        if (v ~= nil) and (v.__metatype ~= 'geometry') then
-            error.raise{header = 'bad type', expected = 'a geometry',
+        if (v ~= nil) and ((type(v) ~= 'table') or
+            (v.__metatype ~= 'Geometry')) then
+            error.raise{header = 'bad type', expected = 'a Geometry table',
                 got = metatype.a(v)}
         end
 
@@ -163,8 +164,8 @@ function Context:__newindex (k, v)
         else
             if type(v) == 'function' then
                 v = recorder.Recorder(v)
-            elseif (type(v) ~= 'table') or (v.__metatype ~= 'recorder') then
-                error.raise{header = 'bad type', expected = 'a recorder',
+            elseif (type(v) ~= 'table') or (v.__metatype ~= 'Recorder') then
+                error.raise{header = 'bad type', expected = 'a Recorder table',
                     got = metatype.a(v)}
             end
             rawset(self, '_recorder', v)
@@ -200,8 +201,8 @@ do
             raise_error{argnum = 'bad', expected = 2, got = nargs}
         end
 
-        if state_.__metatype ~= 'state' then
-            raise_error{argnum = 2, expected = 'a state',
+        if state_.__metatype ~= 'State' then
+            raise_error{argnum = 2, expected = 'a State table',
                 got = metatype.a(state_)}
         end
 
@@ -237,8 +238,8 @@ local function medium_callback (self, state_)
             got = nargs}
     end
 
-    if state_.__metatype ~= 'state' then
-        error.raise{fname = 'medium', argnum = 2, expected = 'a state',
+    if state_.__metatype ~= 'State' then
+        error.raise{fname = 'medium', argnum = 2, expected = 'a State table',
             got = metatype.a(state_)}
     end
 
@@ -258,8 +259,8 @@ end
 
 
 local function random (self, n)
-    if (type(self) ~= 'table') or (self.__metatype ~= 'context') then
-        error.raise{fname = 'random', argnum = 1, expected = 'a context',
+    if (type(self) ~= 'table') or (self.__metatype ~= 'Context') then
+        error.raise{fname = 'random', argnum = 1, expected = 'a Context table',
             got = metatype.a(self)}
     end
 
@@ -315,7 +316,6 @@ do
             (physics.__metatype ~= 'Physics') then
             raise_error{argnum = argnum, argname = argname,
                 expected = 'a Physics table', got = metatype.a(physics)}
-            -- XXX change the metatype semantic?
         end
 
         if args then

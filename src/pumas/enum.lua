@@ -77,7 +77,7 @@ do
 
     function Event.__index (self, k)
         if k == '__metatype' then
-            return 'enum'
+            return 'Event'
         end
 
         local b = get_value(k)
@@ -183,7 +183,7 @@ do
 
     function Mode:__index (k)
         if k == '__metatype' then
-            return 'mode'
+            return 'Mode'
         elseif k == 'set' then
             return set
         else

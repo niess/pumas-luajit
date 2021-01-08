@@ -21,7 +21,7 @@ local Recorder = {}
 
 function Recorder:__index (k)
     if k == '__metatype' then
-        return 'recorder'
+        return 'Recorder'
     elseif k == 'period' then
         return self._c.period
     elseif k == 'record' then

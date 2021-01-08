@@ -42,7 +42,7 @@ end
 
 function State:__index (k)
     if k == '__metatype' then
-        return 'state'
+        return 'State'
     elseif k == 'clear' then
         return clear
     elseif k == 'set' then
@@ -55,7 +55,7 @@ end
 
 function State:__newindex (k, v)
     if ((k == 'position') or (k == 'direction')) and (v ~= nil) and
-        (v.__metatype == 'coordinates') then
+        (v.__metatype == 'Coordinates') then
         -- Get the Monte Carlo representation of the position or direction
         v = v:get()
     end

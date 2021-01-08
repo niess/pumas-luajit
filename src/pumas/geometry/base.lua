@@ -17,7 +17,7 @@ local base = {}
 -- common functionalities for geometry types.
 -------------------------------------------------------------------------------
 base.BaseGeometry = {__index = {}}
-base.BaseGeometry.__index.__metatype = 'geometry'
+base.BaseGeometry.__index.__metatype = 'Geometry'
 
 
 function base.BaseGeometry:new ()
@@ -78,10 +78,10 @@ do
             index, geometry, arg1 = 1, args[1], 1
         end
 
-        if geometry.__metatype ~= 'geometry' then
+        if geometry.__metatype ~= 'Geometry' then
             raise_error{
                 argnum = arg1,
-                expected = 'a geometry',
+                expected = 'a Geometry table',
                 got = metatype.a(geometry)
             }
         end

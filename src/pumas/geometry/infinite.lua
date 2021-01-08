@@ -43,10 +43,10 @@ end
 function InfiniteGeometry:__newindex (k, v)
     if k == 'medium' then
         if v == self._medium then return end
-        if v.__metatype ~= 'medium' then
+        if v.__metatype ~= 'Medium' then
             error.raise{
                 fname = k,
-                expected = 'a medium',
+                expected = 'a Medium table',
                 got = metatype.a(v)
             }
         end
@@ -62,11 +62,11 @@ end
 -- The infinite geometry constructor
 -------------------------------------------------------------------------------
 function infinite.InfiniteGeometry (medium)
-    if (medium ~= nil) and (medium.__metatype ~= 'medium') then
+    if (medium ~= nil) and (medium.__metatype ~= 'Medium') then
         error.raise {
             fname = 'InfiniteGeometry',
             argnum = 1,
-            expected = 'a medium',
+            expected = 'a Medium table',
             got = metatype.a(medium)
         }
     end

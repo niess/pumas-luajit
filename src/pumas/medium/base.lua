@@ -66,7 +66,7 @@ base.BaseMedium = BaseMedium
 
 function BaseMedium.__index (_, k, strtype)
     if k == '__metatype' then
-        return 'medium'
+        return 'Medium'
     else
         error.raise{
             ['type'] = strtype,

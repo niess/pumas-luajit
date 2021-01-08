@@ -14,7 +14,7 @@ local transform = {}
 -- The transform metatype
 -------------------------------------------------------------------------------
 local Transform = {__index = {}}
-Transform.__index.__metatype = 'transform'
+Transform.__index.__metatype = 'Transform'
 
 
 local raise_error = error.ErrorFunction{fname = 'from_euler'}

@@ -457,10 +457,10 @@ function physics.build (args)
     -- Build the list of elements
     local composition = {}
     for _, material in pairs(materials) do
-        if material.__metatype ~= 'material' then
+        if material.__metatype ~= 'Material' then
             raise_error{
                 argname = 'materials',
-                expected =  'a material',
+                expected =  'a Material table',
                 got =  metatype.a(material)
             }
         end

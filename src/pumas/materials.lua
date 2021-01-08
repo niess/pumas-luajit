@@ -14,7 +14,7 @@ local materials = {}
 -------------------------------------------------------------------------------
 local mt = {__index = {}}
 
-mt.__index.__metatype = 'material'
+mt.__index.__metatype = 'Material'
 
 local raise_error = error.ErrorFunction{fname = 'Material'}
 

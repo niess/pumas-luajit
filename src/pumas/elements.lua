@@ -14,7 +14,7 @@ local elements = {}
 -------------------------------------------------------------------------------
 local mt = {__index = {}}
 
-mt.__index.__metatype = 'element'
+mt.__index.__metatype = 'Element'
 
 do
     local raise_error = error.ErrorFunction{fname = 'Element'}

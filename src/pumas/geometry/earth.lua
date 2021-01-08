@@ -140,7 +140,7 @@ function earth.EarthGeometry (...)
         -- XXX Add offset topography data?
         -- XXX Invert the order of layers?
 
-        if data.__metatype == 'topographydata' then
+        if data.__metatype == 'TopographyData' then
             data = {data}
         end
 

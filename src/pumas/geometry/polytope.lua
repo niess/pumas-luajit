@@ -342,11 +342,11 @@ local point, vector
 local function build_polytopes (args, frame, refs, depth, index)
     local medium_, data, daughters = args[1], args[2], args[3]
 
-    if (medium_ ~= nil) and (medium_.__metatype ~= 'medium') then
+    if (medium_ ~= nil) and (medium_.__metatype ~= 'Medium') then
         error.raise{
             fname = 'Polytope '..get_tag(depth, index),
             argnum = 1,
-            expected = 'a medium',
+            expected = 'a Medium table',
             got = metatype.a(medium),
             depth = depth + 2
         }

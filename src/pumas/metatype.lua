@@ -9,14 +9,12 @@
 -- Return the PUMAS metatype. Fallback to the usual type otherwise
 -------------------------------------------------------------------------------
 local function metatype (_, obj)
-    local tp = obj and obj.__metatype or 'nil'
-    if tp ~= nil then
-        if type(tp) == 'string' then
-            return tp
-        end
-        return tostring(tp):match('<[^>]+>')
+    local tp = type(obj)
+    if (tp == 'table') or (tp == 'cdata') then
+        mt = obj.__metatype
+        if mt then return mt else return tp end
     else
-        return type(obj)
+        return tp
     end
 end
 
