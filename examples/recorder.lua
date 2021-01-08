@@ -59,9 +59,7 @@ local physics = pumas.Physics('share/materials/standard')
 -- Configure a simulation context for backward transport with a detailed
 -- Physics
 local context = physics:Context{
-    forward = false,
-    longitudinal = false,
-    scheme = pumas.SCHEME_DETAILED,
+    mode = 'backward detailed',
     geometry = geometry,
     random_seed = 0,
     recorder = pumas.Recorder(print_step)

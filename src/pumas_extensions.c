@@ -559,7 +559,8 @@ void pumas_geometry_polytope_get(struct pumas_geometry * geometry,
         const double * const position = state->position;
 
         struct pumas_state_extended * extended = (void *)state;
-        const double sgn = extended->context->forward ? 1 : -1;
+        const double sgn =
+            (extended->context->mode.direction == PUMAS_MODE_FORWARD)? 1 : -1;
         const double direction[3] = {sgn * state->direction[0],
                                      sgn * state->direction[1],
                                      sgn * state->direction[2]};

@@ -4,42 +4,9 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
+local error = require('pumas.error')
 
 local enum = {}
-
-
--------------------------------------------------------------------------------
--- Enum tags per category
--------------------------------------------------------------------------------
-local decay_tags = {
-    'DECAY_NONE', 'DECAY_PROCESS', 'DECAY_WEIGHT'
-}
-
-local scheme_tags = {
-    'SCHEME_CSDA', 'SCHEME_DETAILED', 'SCHEME_HYBRID', 'SCHEME_NO_LOSS'
-}
-
-
--------------------------------------------------------------------------------
--- Register an enum category to a table
--- XXX Define a mode enum for Monte Carlo context
--------------------------------------------------------------------------------
-local function Tagger (t, tags)
-    local mapping = {}
-
-    for _, tag in ipairs(tags) do
-        local index = ffi.C['PUMAS_'..tag]
-        t[tag] = index
-        mapping[index] = tag
-    end
-
-    return function (i)
-        return mapping[i]
-    end
-end
-
-enum.decay_tostring = Tagger(enum, decay_tags)
-enum.scheme_tostring = Tagger(enum, scheme_tags)
 
 
 -------------------------------------------------------------------------------
@@ -156,12 +123,115 @@ end
 
 
 -------------------------------------------------------------------------------
--- Register all enums to a table
+-- The Mode wrapper
+-------------------------------------------------------------------------------
+do
+    local Mode = {}
+
+    local tags = {
+        {'direction', {'forward', 'backward'}},
+        {'scattering', {'full_space', 'longitudinal'}},
+        {'energy_loss', {'virtual', 'csda', 'hybrid', 'detailed'}},
+        {'decay', {'stable', 'weight', 'decay'}}}
+
+    local strtoval, valtostr, categories = {}, {}, {}
+    for _, data in ipairs(tags) do
+        local category, subtags = unpack(data)
+        table.insert(categories, category)
+        local t = {}
+        valtostr[category] = t
+        for _, k in ipairs(subtags) do
+            local v = tonumber(ffi.C['PUMAS_MODE_'..k:upper()])
+            strtoval[k] = {category, v}
+            t[v] = k
+        end
+    end
+
+    local raise_error = error.ErrorFunction{fname = 'mode'}
+
+    local function set1 (self, s, category)
+        local r = strtoval[s]
+        if r then
+            local k, v = unpack(r)
+            if category and (category ~= k) then
+                for _, c in ipairs(categories) do
+                    if c == category then
+                        raise_error{fname = 'mode.'..category, argname = s,
+                            description = 'invalid value', depth = 3}
+                    end
+                end
+                raise_error{argname = category,
+                    description = 'no such member', depth = 3}
+            end
+            self._c[k] = v
+        else
+            local depth = category and 2 or 4 -- XXX detect depth automaticaly
+            raise_error{argname = s, description = 'no such value',
+                depth = depth}
+        end
+    end
+
+    local function set (self, str)
+        for _, category in ipairs(categories) do
+            self._c[category] = self._default[category]
+        end
+
+        for s in str:gmatch('[%w_]+') do
+            set1(self, s)
+        end
+    end
+
+    function Mode:__index (k)
+        if k == '__metatype' then
+            return 'mode'
+        elseif k == 'set' then
+            return set
+        else
+            local ok = false
+            for _, category in ipairs(categories) do
+                if k == category then
+                    ok = true
+                    break
+                end
+            end
+            if not ok then
+                raise_error{argname = k, description ='no such member',
+                    depth = 2}
+            else
+                return valtostr[k][tonumber(self._c[k])]
+            end
+        end
+    end
+
+    function Mode:__newindex (k, s)
+        set1(self, s, k)
+    end
+
+    function Mode:__tostring ()
+        local t = {}
+        for _, category in ipairs(categories) do
+            table.insert(t, valtostr[category][tonumber(self._c[category])])
+        end
+        return table.concat(t, ' ')
+    end
+
+    function enum.Mode (c_context)
+        local c = c_context.mode
+        local default = {}
+        for _, category in ipairs(categories) do
+            default[category] = tonumber(c[category])
+        end
+
+        return setmetatable({_c = c, _default = default}, Mode)
+    end
+end
+
+
+-------------------------------------------------------------------------------
+-- Register enums to a table
 -------------------------------------------------------------------------------
 function enum.register_to (t)
-    for k, v in pairs(enum) do
-        t[k] = v
-    end
+    t.Event = enum.Event
 end
 
 

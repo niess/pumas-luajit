@@ -38,10 +38,8 @@ local physics = pumas.Physics('share/materials/standard')
 
 -- Configure an hybrid simulation context, a la MUM
 local context = physics:Context{
-    forward = false,
-    longitudinal = true,
-    scheme = pumas.SCHEME_HYBRID,
-    kinetic_limit = 1E+08,
+    mode = 'backward longitudinal hybrid',
+    limit = {kinetic = 1E+08},
     geometry = geometry
 }
 

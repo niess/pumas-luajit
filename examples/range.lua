@@ -9,9 +9,7 @@ local physics = pumas.Physics('share/materials/standard')
 
 -- Configure a simulation context
 local context = physics:Context{
-    forward = true,
-    longitudinal = true,
-    scheme = pumas.SCHEME_HYBRID,
+    mode = 'forward longitudinal hybrid',
     geometry = geometry,
 }
 

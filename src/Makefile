@@ -11,7 +11,7 @@ LUAJIT_REPO=     "https://github.com/openresty/luajit2.git"
 LUAJIT_VERSION=  "v2.1-20200102"
 
 PUMAS_REPO=      "https://github.com/niess/pumas.git"
-PUMAS_VERSION=   "8dde4a9"
+PUMAS_VERSION=   "db6e0e3"
 
 SOCKET_REPO=     "https://github.com/diegonehab/luasocket.git"
 SOCKET_VERSION=  "733af88"
