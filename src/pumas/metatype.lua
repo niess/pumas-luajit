@@ -11,7 +11,7 @@
 local function metatype (_, obj)
     local tp = type(obj)
     if (tp == 'table') or (tp == 'cdata') then
-        mt = obj.__metatype
+        local mt = obj.__metatype
         if mt then return mt else return tp end
     else
         return tp

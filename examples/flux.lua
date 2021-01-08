@@ -48,7 +48,6 @@ local direction = pumas.HorizontalVector{
     azimuth = 0 * deg, elevation = -90 * deg, norm = 1, frame = frame}
 
 local initial = pumas.State{
-    weight = 1,
     position = position,
     direction = direction
 }

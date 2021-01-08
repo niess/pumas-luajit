@@ -74,6 +74,11 @@ function state.State (args)
     local self = setmetatable({_c = c}, State)
 
     if args ~= nil then
+        c.charge = -1
+        c.kinetic = 1
+        c.weight = 1
+        c.direction[2] = 1
+
         for k, v in pairs(args) do
             self[k] = v
         end
