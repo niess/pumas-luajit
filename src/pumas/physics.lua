@@ -72,7 +72,7 @@ end
 -------------------------------------------------------------------------------
 local Physics = {__index = {}}
 
-Physics.__index.__metatype = 'physics'
+Physics.__index.__metatype = 'Physics'
 Physics.__index.Context = context.Context
 
 
@@ -625,12 +625,16 @@ end
 -------------------------------------------------------------------------------
 -- Register the subpackage
 -------------------------------------------------------------------------------
--- XXX add an interface to tables & properties
+-- XXX add an interface to tables, properties and DCSs
 
 function physics.register_to (t)
     for k, v in pairs(physics) do
         t[k] = v
     end
+
+    -- Register back to context as well. This is to avoid a cross-reference
+    -- loop.
+    context._physics = physics
 end
 
 

@@ -33,11 +33,9 @@ do
     end
 end
 
--- Load materials tabulations
-local physics = pumas.Physics('share/materials/standard')
-
--- Configure an hybrid simulation context, a la MUM
-local context = physics:Context{
+-- Create a backward simulation context
+local context = pumas.Context{
+    physics = 'share/materials/standard',
     mode = 'backward longitudinal hybrid',
     limit = {kinetic = 1E+08},
     geometry = geometry

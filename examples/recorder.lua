@@ -53,12 +53,9 @@ local function print_step(state, medium, event)
                                                             event))
 end
 
--- Load materials tabulations
-local physics = pumas.Physics('share/materials/standard')
-
--- Configure a simulation context for backward transport with a detailed
--- Physics
-local context = physics:Context{
+-- Create a backward simulation context with a detailed transport
+local context = pumas.Context{
+    physics = 'share/materials/standard',
     mode = 'backward detailed',
     geometry = geometry,
     random_seed = 0,

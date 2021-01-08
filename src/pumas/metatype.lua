@@ -9,7 +9,7 @@
 -- Return the PUMAS metatype. Fallback to the usual type otherwise
 -------------------------------------------------------------------------------
 local function metatype (_, obj)
-    local tp = obj.__metatype
+    local tp = obj and obj.__metatype or 'nil'
     if tp ~= nil then
         if type(tp) == 'string' then
             return tp
@@ -22,14 +22,18 @@ end
 
 
 -------------------------------------------------------------------------------
--- Return `a {metatype}` handling the nil case
+-- Return `a {metatype}` handling the nil case and metatypes
 -------------------------------------------------------------------------------
 local function a_metatype (obj)
-    local tp = metatype(nil, obj)
-    if tp == 'nil' then
-        return tp
+    local mt = metatype(nil, obj)
+    if mt == 'nil' then
+        return mt
     else
-        return 'a '..tp
+        local tp = type(obj)
+        if mt ~= tp then
+            mt = mt..' '..tp
+        end
+        return 'a '..mt
     end
 end
 

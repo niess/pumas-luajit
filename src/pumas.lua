@@ -72,6 +72,7 @@ end
 
 register('pumas.call')
 register('pumas.compat')
+register('pumas.context')
 register('pumas.coordinates')
 register('pumas.elements')
 register('pumas.flux')

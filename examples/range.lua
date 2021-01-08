@@ -7,11 +7,9 @@ local geometry = pumas.InfiniteGeometry(medium)
 -- Load materials tabulations
 local physics = pumas.Physics('share/materials/standard')
 
--- Configure a simulation context
-local context = physics:Context{
-    mode = 'forward longitudinal hybrid',
-    geometry = geometry,
-}
+-- Create an hybrid simulation context a la MuM
+local context = physics:Context('longitudinal hybrid')
+context.geometry = geometry
 
 -- Initial muon state
 local initial = pumas.State{

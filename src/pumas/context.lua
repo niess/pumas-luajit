@@ -100,6 +100,8 @@ function Context:__index (k)
         return self._limit
     elseif k == 'mode' then
         return self._mode
+    elseif k == 'physics' then
+        return self._physics
     elseif k == 'recorder' then
         return self._recorder
     elseif k == 'random_seed' then
@@ -285,16 +287,44 @@ end
 do
     local raise_error = error.ErrorFunction{fname = 'Context'}
 
-    function context.Context (physics, args)
-        if (not physics) or (physics.__metatype ~= 'physics') then
-            -- XXX Allow string / table argument for the physics
-            raise_error{argnum = 1, expected = 'a physics',
-                got = metatype.a(physics)}
+    function context.Context (...)
+        local nargs = select('#', ...)
+        if (nargs < 1) or (nargs > 2) then
+            raise_error{argnum = 'bad', expected = '1 or 2',
+                got = nargs}
         end
 
-        if args and type(args) ~= 'table' then
-            raise_error{argnum = 2, expected = 'a table',
-                got = metatype.a(args)}
+        local args, physics, argnum, argname
+        if nargs == 1 then
+            args = select(1, ...)
+            if type(args) ~= 'table' then
+                raise_error{argnum = 1, expected = 'a table',
+                    got = metatype.a(args)}
+            end
+            physics = args.physics
+            argname = 'physics'
+        else
+            physics = select(1, ...)
+            args = select(2, ...)
+            argnum = 1
+        end
+
+        if type(physics) == 'string' then
+            physics = context._physics.Physics(physics)
+        elseif (type(physics) ~= 'table') or
+            (physics.__metatype ~= 'Physics') then
+            raise_error{argnum = argnum, argname = argname,
+                expected = 'a Physics table', got = metatype.a(physics)}
+            -- XXX change the metatype semantic?
+        end
+
+        if args then
+            if type(args) == 'string' then
+                args = {mode = args}
+            elseif type(args) ~= 'table' then
+                raise_error{argnum = nargs, expected = 'a string or a table',
+                    got = metatype.a(args)}
+            end
         end
 
         local ptr = ffi.new('struct pumas_context *[1]')
@@ -333,9 +363,11 @@ do
         local seeded = false
         if args ~= nil then
             for k, v in pairs(args) do
-                self[k] = v
-                if k == 'random_seed' then
-                    seeded = true
+                if k ~= 'physics' then
+                    self[k] = v
+                    if k == 'random_seed' then
+                        seeded = true
+                    end
                 end
             end
         end
@@ -346,6 +378,14 @@ do
 
         return self
     end
+end
+
+
+-------------------------------------------------------------------------------
+-- Register the subpackage
+-------------------------------------------------------------------------------
+function context.register_to (t)
+    t.Context = context.Context
 end
 
 
