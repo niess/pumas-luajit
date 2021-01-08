@@ -10,6 +10,7 @@ local enum = require('pumas.enum')
 local error = require('pumas.error')
 local medium = require('pumas.medium')
 local metatype = require('pumas.metatype')
+local recorder = require('pumas.recorder')
 local state = require('pumas.state')
 
 local context = {}
@@ -154,12 +155,13 @@ function Context:__newindex (k, v)
 
         rawset(self, '_random_seed', v)
     elseif k == 'recorder' then
-        -- XXX Allow to directly set a recorder function
         if v == nil then
             rawset(self, '_recorder', nil)
             self._c.recorder = nil
         else
-            if v.__metatype ~= 'recorder' then
+            if type(v) == 'function' then
+                v = recorder.Recorder(v)
+            elseif (type(v) ~= 'table') or (v.__metatype ~= 'recorder') then
                 error.raise{header = 'bad type', expected = 'a recorder',
                     got = metatype.a(v)}
             end

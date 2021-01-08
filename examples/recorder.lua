@@ -62,7 +62,7 @@ local context = physics:Context{
     mode = 'backward detailed',
     geometry = geometry,
     random_seed = 0,
-    recorder = pumas.Recorder(print_step)
+    recorder = print_step
 }
 
 -- Do the transport
