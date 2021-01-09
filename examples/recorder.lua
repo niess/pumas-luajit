@@ -30,8 +30,16 @@ local state = pumas.State{
     direction = direction
 }
 
--- Callback function used for printing Monte Carlo steps
-local function print_step(state, medium, event)
+-- Create a backward simulation context with a detailed transport
+local context = pumas.Context{
+    physics = 'share/materials/standard',
+    mode = 'backward detailed',
+    geometry = geometry,
+    random_seed = 0
+}
+
+-- Set a callback for printing Monte Carlo steps
+context.recorder = function (state, medium, event)
     if event.none then return end
 
     local geodetic = pumas.GeodeticPoint():set(state.position)
@@ -50,14 +58,6 @@ local function print_step(state, medium, event)
                                                             event))
 end
 
--- Create a backward simulation context with a detailed transport
-local context = pumas.Context{
-    physics = 'share/materials/standard',
-    mode = 'backward detailed',
-    geometry = geometry,
-    random_seed = 0,
-    recorder = print_step
-}
 
 -- Do the transport
 print([[
