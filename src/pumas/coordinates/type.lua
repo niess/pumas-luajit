@@ -24,7 +24,7 @@ local horizontal_vector_t = ffi.typeof('struct pumas_horizontal_vector')
 -------------------------------------------------------------------------------
 -- Generic constructor for coordinates metatypes
 -------------------------------------------------------------------------------
-local function CoordinatesType (ctype, setter, get, transform)
+local function CoordinatesType (name, ctype, setter, get, transform)
     local mt = {__index = {}}
 
     mt.__index.__metatype = 'Coordinates'
@@ -117,6 +117,8 @@ local function CoordinatesType (ctype, setter, get, transform)
         end
     end
 
+    error.register(name, mt)
+
     return ffi.metatype(ctype, mt)
 end
 
@@ -124,7 +126,7 @@ end
 -------------------------------------------------------------------------------
 -- Metatype for a point using Cartesian coordinates
 -------------------------------------------------------------------------------
-type_.CartesianPoint = CoordinatesType(cartesian_point_t,
+type_.CartesianPoint = CoordinatesType('CartesianPoint', cartesian_point_t,
     function (ct)
         if ct == geodetic_point_t then
             return ffi.C.pumas_coordinates_cartesian_point_from_geodetic
@@ -139,7 +141,7 @@ type_.CartesianPoint = CoordinatesType(cartesian_point_t,
 -------------------------------------------------------------------------------
 -- Metatype for a vector using Cartesian coordinates
 -------------------------------------------------------------------------------
-type_.CartesianVector = CoordinatesType(cartesian_vector_t,
+type_.CartesianVector = CoordinatesType('CartesianVector', cartesian_vector_t,
     function (ct)
         if ct == horizontal_vector_t then
             return ffi.C.pumas_coordinates_cartesian_vector_from_horizontal
@@ -154,7 +156,7 @@ type_.CartesianVector = CoordinatesType(cartesian_vector_t,
 -------------------------------------------------------------------------------
 -- Metatype for a point using geodetic coordinates
 -------------------------------------------------------------------------------
-type_.GeodeticPoint = CoordinatesType(geodetic_point_t,
+type_.GeodeticPoint = CoordinatesType('GeodeticPoint', geodetic_point_t,
     function (ct)
         if ct == cartesian_point_t then
             return ffi.C.pumas_coordinates_geodetic_point_from_cartesian
@@ -168,7 +170,8 @@ type_.GeodeticPoint = CoordinatesType(geodetic_point_t,
 -------------------------------------------------------------------------------
 -- Metatype for a vector using horizontal coordinates
 -------------------------------------------------------------------------------
-type_.HorizontalVector = CoordinatesType(horizontal_vector_t,
+type_.HorizontalVector = CoordinatesType('HorizontalVector',
+    horizontal_vector_t,
     function (ct)
         if ct == cartesian_vector_t then
             return ffi.C.pumas_coordinates_horizontal_vector_from_cartesian
@@ -183,7 +186,7 @@ type_.HorizontalVector = CoordinatesType(horizontal_vector_t,
 -------------------------------------------------------------------------------
 -- Metatype for a point using spherical coordinates
 -------------------------------------------------------------------------------
-type_.SphericalPoint = CoordinatesType(spherical_point_t,
+type_.SphericalPoint = CoordinatesType('SphericalPoint', spherical_point_t,
     function (ct)
         if ct == cartesian_point_t then
             return ffi.C.pumas_coordinates_spherical_point_from_cartesian
@@ -198,7 +201,7 @@ type_.SphericalPoint = CoordinatesType(spherical_point_t,
 -------------------------------------------------------------------------------
 -- Metatype for a vector using spherical coordinates
 -------------------------------------------------------------------------------
-type_.SphericalVector = CoordinatesType(spherical_vector_t,
+type_.SphericalVector = CoordinatesType('SphericalVector', spherical_vector_t,
     function (ct)
         if ct == cartesian_vector_t then
             return ffi.C.pumas_coordinates_spherical_vector_from_cartesian

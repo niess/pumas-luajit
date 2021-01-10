@@ -83,7 +83,7 @@ do
     local physics_version = 0
     local raise_error = error.ErrorFunction{fname = 'Physics'}
 
-    function physics.Physics (args)
+    local function new (cls, args)
         local c = ffi.new('struct pumas_physics *[1]')
         ffi.gc(c, ffi.C.pumas_physics_destroy)
 
@@ -133,7 +133,7 @@ do
         end
 
         -- Update the version
-        local self = setmetatable({_c = c}, Physics)
+        local self = setmetatable({_c = c}, cls)
         self._version = physics_version
         physics_version = physics_version + 1
 
@@ -153,6 +153,8 @@ do
 
         return self
     end
+
+    physics.Physics = setmetatable(Physics, {__call = new})
 end
 
 
@@ -628,9 +630,8 @@ end
 -- XXX add an interface to tables, properties and DCSs
 
 function physics.register_to (t)
-    for k, v in pairs(physics) do
-        t[k] = v
-    end
+    t.build = physics.build
+    t.Physics = physics.Physics
 
     -- Register back to context as well. This is to avoid a cross-reference
     -- loop.

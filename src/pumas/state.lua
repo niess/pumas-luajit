@@ -67,25 +67,26 @@ end
 -------------------------------------------------------------------------------
 -- The Monte Carlo state constructor
 -------------------------------------------------------------------------------
-function state.State (args)
-    local c = ffi.cast(pumas_state_ptr, ffi.C.calloc(1, ffi.sizeof(ctype)))
-    ffi.gc(c, ffi.C.free)
+state.State = setmetatable(State, {
+    __call = function (cls, args)
+        local c = ffi.cast(pumas_state_ptr, ffi.C.calloc(1, ffi.sizeof(ctype)))
+        ffi.gc(c, ffi.C.free)
 
-    local self = setmetatable({_c = c}, State)
+        local self = setmetatable({_c = c}, cls)
 
-    if args ~= nil then
-        c.charge = -1
-        c.kinetic = 1
-        c.weight = 1
-        c.direction[2] = 1
+        if args ~= nil then
+            c.charge = -1
+            c.kinetic = 1
+            c.weight = 1
+            c.direction[2] = 1
 
-        for k, v in pairs(args) do
-            self[k] = v
+            for k, v in pairs(args) do
+                self[k] = v
+            end
         end
-    end
 
-    return self
-end
+        return self
+    end})
 
 
 -------------------------------------------------------------------------------

@@ -79,47 +79,51 @@ for k, v in pairs(TopographyData.__index) do mt_flat.__index[k] = v end
 -------------------------------------------------------------------------------
 -- The topography data constructor
 -------------------------------------------------------------------------------
-function topography.TopographyData (data)
-    if data == nil then data = 0 end
+do
+    local function new (_, data)
+        if data == nil then data = 0 end
 
-    local self = {}
-    local c, ptr, metatype_
-    local data_type = type(data)
-    if data_type == 'string' then
-        local mode, errmsg = lfs.attributes(data, 'mode')
-        if mode == nil then
+        local self = {}
+        local c, ptr, metatype_
+        local data_type = type(data)
+        if data_type == 'string' then
+            local mode, errmsg = lfs.attributes(data, 'mode')
+            if mode == nil then
+                error.raise{
+                    fname = 'TopographyData',
+                    description = errmsg
+                }
+            elseif mode == 'directory' then
+                ptr = ffi.new('struct turtle_stack *[1]')
+                call(ffi.C.turtle_stack_create, ptr, data, 0, nil, nil)
+                c = ptr[0]
+                ffi.gc(c, function () ffi.C.turtle_stack_destroy(ptr) end)
+                call(ffi.C.turtle_stack_load, c)
+                metatype_ = mt_stack
+            else
+                ptr = ffi.new('struct turtle_map *[1]')
+                call(ffi.C.turtle_map_load, ptr, data)
+                c = ptr[0]
+                ffi.gc(c, function () ffi.C.turtle_map_destroy(ptr) end)
+                metatype_ = mt_map
+            end
+        elseif data_type == 'number' then
+            self._elevation = data
+            metatype_ = mt_flat
+        else
             error.raise{
                 fname = 'TopographyData',
-                description = errmsg
+                argnum = 1,
+                expected = 'a number or a string',
+                got = metatype.a(data)
             }
-        elseif mode == 'directory' then
-            ptr = ffi.new('struct turtle_stack *[1]')
-            call(ffi.C.turtle_stack_create, ptr, data, 0, nil, nil)
-            c = ptr[0]
-            ffi.gc(c, function () ffi.C.turtle_stack_destroy(ptr) end)
-            call(ffi.C.turtle_stack_load, c)
-            metatype_ = mt_stack
-        else
-            ptr = ffi.new('struct turtle_map *[1]')
-            call(ffi.C.turtle_map_load, ptr, data)
-            c = ptr[0]
-            ffi.gc(c, function () ffi.C.turtle_map_destroy(ptr) end)
-            metatype_ = mt_map
         end
-    elseif data_type == 'number' then
-        self._elevation = data
-        metatype_ = mt_flat
-    else
-        error.raise{
-            fname = 'TopographyData',
-            argnum = 1,
-            expected = 'a number or a string',
-            got = metatype.a(data)
-        }
-    end
-    self._c = c
+        self._c = c
 
-    return setmetatable(self, metatype_)
+        return setmetatable(self, metatype_)
+    end
+
+    topography.TopographyData = setmetatable(TopographyData, {__call = new})
 end
 
 

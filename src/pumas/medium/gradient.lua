@@ -61,11 +61,11 @@ do
         else
             raise_error{
                 argname = argname, expected = 'a number',
-                got = metatype.a(v), depth = 3}
+                got = metatype.a(v)}
         end
     end
 
-    function gradient.GradientMedium (material, args)
+    local function new (cls, material, args)
         -- Check the number and type of arguments
         if args == nil then
             local nargs = (material ~= nil) and 1 or 0
@@ -170,8 +170,10 @@ do
             self._c.gradient.direction = axis
         end
 
-        return setmetatable(self, GradientMedium)
+        return setmetatable(self, cls)
     end
+
+    gradient.GradientMedium = setmetatable(GradientMedium, {__call = new})
 end
 
 

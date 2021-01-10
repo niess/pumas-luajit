@@ -157,17 +157,14 @@ do
                 for _, c in ipairs(categories) do
                     if c == category then
                         raise_error{fname = 'mode.'..category, argname = s,
-                            description = 'invalid value', depth = 3}
+                            description = 'invalid value'}
                     end
                 end
-                raise_error{argname = category,
-                    description = 'no such member', depth = 3}
+                raise_error{argname = category, description = 'no such member'}
             end
             self._c[k] = v
         else
-            local depth = category and 2 or 4 -- XXX detect depth automaticaly
-            raise_error{argname = s, description = 'no such value',
-                depth = depth}
+            raise_error{argname = s, description = 'no such value'}
         end
     end
 
@@ -195,8 +192,7 @@ do
                 end
             end
             if not ok then
-                raise_error{argname = k, description ='no such member',
-                    depth = 2}
+                raise_error{argname = k, description ='no such member'}
             else
                 return valtostr[k][tonumber(self._c[k])]
             end
@@ -215,15 +211,19 @@ do
         return table.concat(t, ' ')
     end
 
-    function enum.Mode (c_context)
+    local function new (cls, c_context)
         local c = c_context.mode
         local default = {}
         for _, category in ipairs(categories) do
             default[category] = tonumber(c[category])
         end
 
-        return setmetatable({_c = c, _default = default}, Mode)
+        return setmetatable({_c = c, _default = default}, cls)
     end
+
+    enum.Mode = setmetatable(Mode, {__call = new})
+
+    error.register('enum.Mode', Mode)
 end
 
 

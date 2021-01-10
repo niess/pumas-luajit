@@ -68,11 +68,7 @@ function BaseMedium.__index (_, k, strtype)
     if k == '__metatype' then
         return 'Medium'
     else
-        error.raise{
-            ['type'] = strtype,
-            bad_member = k,
-            depth = 3
-        }
+        error.raise{['type'] = strtype, bad_member = k}
     end
 end
 
@@ -81,11 +77,7 @@ function BaseMedium:__newindex (k, v, strtype)
     if k == 'material' then
         rawset(self, 'material', v)
     else
-        error.raise{
-            ['type'] = strtype,
-            bad_member = k,
-            depth = 3
-        }
+        error.raise{['type'] = strtype, bad_member = k}
     end
 end
 

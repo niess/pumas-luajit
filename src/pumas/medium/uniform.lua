@@ -49,7 +49,7 @@ local ctype_ptr = ffi.typeof('struct pumas_medium_uniform *')
 do
     local raise_error = error.ErrorFunction{fname = 'UniformMedium'}
 
-    function uniform.UniformMedium (material, density, magnet)
+    local function new (cls, material, density, magnet)
         if material == nil then
             raise_error{
                 argnum = 1,
@@ -75,8 +75,10 @@ do
 
         ffi.C.pumas_medium_uniform_initialise(self._c, -1, density, magnet)
 
-        return setmetatable(self, UniformMedium)
+        return setmetatable(self, cls)
     end
+
+    uniform.UniformMedium  = setmetatable(UniformMedium, {__call = new})
 end
 
 

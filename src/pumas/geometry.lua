@@ -20,9 +20,10 @@ geometry.TopographyData = topography.TopographyData
 -- Register the subpackage
 -------------------------------------------------------------------------------
 function geometry.register_to (t)
-    for k, v in pairs(geometry) do
-        t[k] = v
-    end
+    t.EarthGeometry = geometry.EarthGeometry
+    t.InfiniteGeometry = geometry.InfiniteGeometry
+    t.PolytopeGeometry = geometry.PolytopeGeometry
+    t.TopographyData = geometry.TopographyData
 end
 
 

@@ -21,7 +21,9 @@ end
 -------------------------------------------------------------------------------
 function coordinates.register_to (t)
     for k, v in pairs(coordinates) do
-        t[k] = v
+        if k ~= 'register_to' then
+            t[k] = v
+        end
     end
 end
 

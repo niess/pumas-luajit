@@ -130,41 +130,45 @@ end
 -------------------------------------------------------------------------------
 -- The Earth geometry constructor
 -------------------------------------------------------------------------------
-function earth.EarthGeometry (...)
-    local args, layers = {...}, {}
-    for _, layer in ipairs(args) do
-        local medium, data, offset = unpack(layer)
+do
+    local function new_ (cls, ...)
+        local args, layers = {...}, {}
+        for _, layer in ipairs(args) do
+            local medium, data, offset = unpack(layer)
 
-        -- XXX validate the medium and data
-        -- XXX Manage geoid undulations
-        -- XXX Add offset topography data?
-        -- XXX Invert the order of layers?
+            -- XXX validate the medium and data
+            -- XXX Manage geoid undulations
+            -- XXX Add offset topography data?
+            -- XXX Invert the order of layers?
 
-        if data.__metatype == 'TopographyData' then
-            data = {data}
+            if data.__metatype == 'TopographyData' then
+                data = {data}
+            end
+
+            offset = (offset == nil) and 0 or offset
+
+            table.insert(layers, {medium, data, offset})
         end
 
-        offset = (offset == nil) and 0 or offset
-
-        table.insert(layers, {medium, data, offset})
-    end
-
-    local pumas_medium_ptr = ffi.typeof('struct pumas_medium *')
-    local pumas_medium_ptrarr = ffi.typeof('struct pumas_medium **')
-    local size = ffi.sizeof(pumas_medium_ptr)
-    local media = ffi.cast(pumas_medium_ptrarr, ffi.C.calloc(#layers, size))
-    ffi.gc(media, ffi.C.free)
-    for i, layer in ipairs(layers) do
-        if layer[1] ~= nil then
-            media[i - 1] = ffi.cast(pumas_medium_ptr, layer[1]._c)
+        local pumas_medium_ptr = ffi.typeof('struct pumas_medium *')
+        local pumas_medium_ptrarr = ffi.typeof('struct pumas_medium **')
+        local size = ffi.sizeof(pumas_medium_ptr)
+        local media = ffi.cast(pumas_medium_ptrarr, ffi.C.calloc(#layers, size))
+        ffi.gc(media, ffi.C.free)
+        for i, layer in ipairs(layers) do
+            if layer[1] ~= nil then
+                media[i - 1] = ffi.cast(pumas_medium_ptr, layer[1]._c)
+            end
         end
+
+        local self = base.BaseGeometry:new()
+        self._media = media
+        self._layers = layers
+
+        return setmetatable(self, cls)
     end
 
-    local self = base.BaseGeometry:new()
-    self._media = media
-    self._layers = layers
-
-    return setmetatable(self, EarthGeometry)
+    earth.EarthGeometry = setmetatable(EarthGeometry, {__call = new_})
 end
 
 

@@ -75,6 +75,8 @@ end
 transform.Transform = ffi.metatype(
     'struct pumas_coordinates_transform', Transform)
 
+error.register('Transform', Transform)
+
 
 -------------------------------------------------------------------------------
 -- Return the package

@@ -49,6 +49,8 @@ do
         material = 'Transparent'
     }, TransparentMedium)
 
+    error.register('TranparentMedium', TransparentMedium)
+
     base.add(m)
     transparent.MEDIUM_TRANSPARENT = m
 end

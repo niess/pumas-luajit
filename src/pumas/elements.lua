@@ -12,14 +12,14 @@ local elements = {}
 -------------------------------------------------------------------------------
 -- The atomic Element metatype
 -------------------------------------------------------------------------------
-local mt = {__index = {}}
+local Element = {__index = {}}
 
-mt.__index.__metatype = 'Element'
+Element.__index.__metatype = 'Element'
 
 do
     local raise_error = error.ErrorFunction{fname = 'Element'}
 
-    function elements.Element (Z, A, I)
+    local function new (cls, Z, A, I)
         local index, tp
         if type(Z) ~= 'number' then index, tp = 1, type(Z) end
         if type(A) ~= 'number' then index, tp = 2, type(A) end
@@ -37,8 +37,10 @@ do
         self.A = A
         self.I = I
 
-        return setmetatable(self, mt)
+        return setmetatable(self, cls)
     end
+
+    elements.Element = setmetatable(Element, {__call = new})
 end
 
 
@@ -48,7 +50,7 @@ end
 elements.ELEMENTS = require('pumas.data.elements')
 
 for k, v in pairs(elements.ELEMENTS) do
-    elements.ELEMENTS[k] = setmetatable(v, mt)
+    elements.ELEMENTS[k] = setmetatable(v, Element)
 end
 
 
@@ -56,9 +58,8 @@ end
 -- Register the subpackage
 -------------------------------------------------------------------------------
 function elements.register_to (t)
-    for k, v in pairs(elements) do
-        t[k] = v
-    end
+    t.Element = elements.Element
+    t.ELEMENTS = elements.ELEMENTS
 end
 
 

@@ -66,7 +66,8 @@ end
 local function register (pkg)
     local p = require(pkg)
     if p.register_to then
-        p.register_to(pumas)
+        p.register_to(pumas) -- XXX remove register_to from the registered
+                             -- functions
     end
 end
 
@@ -78,7 +79,6 @@ register('pumas.elements')
 register('pumas.flux')
 register('pumas.geometry')
 register('pumas.enum')
-register('pumas.error')
 register('pumas.materials')
 register('pumas.medium')
 register('pumas.metatype')
@@ -86,6 +86,16 @@ register('pumas.physics')
 register('pumas.recorder')
 register('pumas.state')
 
+
+-------------------------------------------------------------------------------
+-- Register all API functions
+-------------------------------------------------------------------------------
+do
+    local error_ = require('pumas.error')
+    for k, v in pairs(pumas) do
+        error_.register(k, v)
+    end
+end
 
 -------------------------------------------------------------------------------
 -- Return the package

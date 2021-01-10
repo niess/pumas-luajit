@@ -25,9 +25,9 @@ end
 do
     local ok, socket = pcall(require, 'socket')
     if ok then
-        compat.time = socket.gettime
+        compat.time = function () return socket.gettime() end
     else
-        compat.time = os.time
+        compat.time = function () return os.time() end
     end
 end
 

@@ -8,9 +8,63 @@ local error_ = {}
 
 
 -------------------------------------------------------------------------------
+-- Table of API functions
+--
+-- This table keeps weak references of all pumas API functions. It is used for
+-- computing the stack depth when raising an error.
+-------------------------------------------------------------------------------
+local api_functions = setmetatable({}, {__mode='k'})
+error_.api_functions = api_functions
+
+
+-------------------------------------------------------------------------------
+-- Register an API function or metatable
+-------------------------------------------------------------------------------
+do
+    local function register_meta (k, v, index)
+        v = v[index]
+        if v then
+            k = k..'.'..index
+
+            if type(v) == 'function' then
+                api_functions[v] = k
+            elseif type(v) == 'table' then
+                for ki, vi in pairs(v) do
+                    if type(vi) == 'function' then
+                        api_functions[vi] = k..'.'..ki
+                    end
+                end
+                local mt = getmetatable(v)
+                if mt and mt[index] then
+                    api_functions[mt[index]] = k
+                end
+            end
+        end
+    end
+
+    function error_.register (k, v)
+        if type(v) == 'function' then
+            api_functions[v] = k
+        elseif type(v) == 'table' then
+            if rawget(v, '__index') then
+                local mt = getmetatable(v)
+                if mt and mt.__call then
+                    api_functions[mt.__call] = k..'.__call'
+                end
+
+                register_meta(k, v, '__index')
+                register_meta(k, v, '__newindex')
+            end
+        end
+    end
+end
+
+
+-------------------------------------------------------------------------------
 -- Generic error messages formater
 -------------------------------------------------------------------------------
 function error_.raise (args)
+    -- Format the error message
     local msg = {}
 
     if args.header ~= nil then
@@ -62,14 +116,23 @@ function error_.raise (args)
     end
     msg = table.concat(msg, ' ')
 
-    local depth
-    if args.depth == nil then
-        depth = 2
-    else
-        depth = args.depth
+    -- Compute the depth
+    local depth = 1
+    do
+        local level = 1
+        while true do
+            local info = debug.getinfo(level, 'Sf')
+            if not info or (info.what == 'main') then break end
+            level = level + 1
+            if info.what == 'Lua' then
+                if api_functions[info.func] then
+                    depth = level
+                end
+            end
+        end
     end
 
-    error(msg, depth + 1)
+    error(msg, depth)
 end
 
 
@@ -89,12 +152,6 @@ function error_.ErrorFunction (default_args)
             for k, v in pairs(extra_args) do
                 args[k] = v
             end
-        end
-
-        if args.depth ~= nil then
-            args.depth = args.depth + 1
-        else
-            args.depth = 3
         end
 
         error_.raise(args)

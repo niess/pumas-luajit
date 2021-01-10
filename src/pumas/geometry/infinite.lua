@@ -61,20 +61,25 @@ end
 -------------------------------------------------------------------------------
 -- The infinite geometry constructor
 -------------------------------------------------------------------------------
-function infinite.InfiniteGeometry (medium)
-    if (medium ~= nil) and (medium.__metatype ~= 'Medium') then
-        error.raise {
-            fname = 'InfiniteGeometry',
-            argnum = 1,
-            expected = 'a Medium table',
-            got = metatype.a(medium)
-        }
+do
+    local function new_ (cls, medium)
+        if (medium ~= nil) and (medium.__metatype ~= 'Medium') then
+            error.raise {
+                fname = 'InfiniteGeometry',
+                argnum = 1,
+                expected = 'a Medium table',
+                got = metatype.a(medium)
+            }
+        end
+
+        local self = base.BaseGeometry:new()
+        self._medium = medium
+
+        return setmetatable(self, cls)
     end
 
-    local self = base.BaseGeometry:new()
-    self._medium = medium
-
-    return setmetatable(self, InfiniteGeometry)
+    infinite.InfiniteGeometry = setmetatable(InfiniteGeometry,
+        {__call = new_})
 end
 
 

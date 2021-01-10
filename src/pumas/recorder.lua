@@ -78,23 +78,27 @@ local function default_callback (state_, medium_, event)
     print(event, medium_, state_) -- XXX pretty print
 end
 
-function recorder.Recorder (callback, period)
-    local ptr = ffi.new('struct pumas_recorder *[1]')
-    call(ffi.C.pumas_recorder_create, ptr, 0)
-    local c = ptr[0]
-    ffi.gc(c, function ()
-        if c.record ~= nil then
-            c.record:free()
-        end
-        ffi.C.pumas_recorder_destroy(ptr)
-    end)
+do
+    local function new (cls, callback, period)
+        local ptr = ffi.new('struct pumas_recorder *[1]')
+        call(ffi.C.pumas_recorder_create, ptr, 0)
+        local c = ptr[0]
+        ffi.gc(c, function ()
+            if c.record ~= nil then
+                c.record:free()
+            end
+            ffi.C.pumas_recorder_destroy(ptr)
+        end)
 
-    local self = setmetatable({_c = c}, Recorder)
+        local self = setmetatable({_c = c}, cls)
 
-    self.record = callback or default_callback
-    self.period = period or 1
+        self.record = callback or default_callback
+        self.period = period or 1
 
-    return self
+        return self
+    end
+
+    recorder.Recorder = setmetatable(Recorder, {__call = new})
 end
 
 

@@ -24,7 +24,7 @@ do
 
     local fields = {'distance', 'grammage', 'kinetic', 'time'}
 
-    local raise_error = error.ErrorFunction{fname = 'limit', depth = 2}
+    local raise_error = error.ErrorFunction{fname = 'limit'}
 
     local function set (self, t)
         if type(t) == 'table' then
@@ -79,9 +79,12 @@ do
         raise_error{argname = k, description = 'no such member'}
     end
 
-    function context.Limit (self)
-        return setmetatable({_context = self}, Limit)
-    end
+    context.Limit = setmetatable(Limit, {
+        __call = function (_, context_)
+            return setmetatable({_context = context_}, Limit)
+        end})
+
+    error.register('context.Limit', context.Limit)
 end
 
 -------------------------------------------------------------------------------
@@ -89,28 +92,6 @@ end
 -------------------------------------------------------------------------------
 -- XXX  support multi threading?
 local Context = {}
-
-
-function Context:__index (k)
-    if k == '__metatype' then
-        return 'Context'
-    elseif k == 'geometry' then
-        return self._geometry
-    elseif k == 'limit' then
-        return self._limit
-    elseif k == 'mode' then
-        return self._mode
-    elseif k == 'physics' then
-        return self._physics
-    elseif k == 'recorder' then
-        return self._recorder
-    elseif k == 'random_seed' then
-        return self._random_seed
-    else
-        error.raise{fname = 'Context', argname = k,
-            description = 'no such member', depth = 2}
-    end
-end
 
 
 local function get_random_seed ()
@@ -184,7 +165,7 @@ function Context:__newindex (k, v)
             end
     else
         error.raise{fname = 'Context', argname = k,
-            description = 'no such member', depth = 2}
+            description = 'no such member'}
     end
 end
 
@@ -282,13 +263,41 @@ local function random (self, n)
 end
 
 
+do
+    local index = {
+        __metatype = 'Context',
+        medium = medium_callback,
+        random = random,
+        transport = transport
+    }
+
+    local members = {
+        geometry = '_geometry',
+        limit = '_limit',
+        mode = '_mode',
+        physics = '_physics',
+        recorder = '_recorder',
+        random_seed = '_random_seed'}
+
+    function Context:__index (k)
+        local v = index[k]
+        if v then return v end
+
+        v = members[k]
+        if v then return self[v] end
+
+        error.raise{fname = 'Context', argname = k,
+            description = 'no such member'}
+    end
+end
+
 -------------------------------------------------------------------------------
 -- Monte Carlo context constructor
 -------------------------------------------------------------------------------
 do
     local raise_error = error.ErrorFunction{fname = 'Context'}
 
-    function context.Context (...)
+    local function new (cls, ...)
         local nargs = select('#', ...)
         if (nargs < 1) or (nargs > 2) then
             raise_error{argnum = 'bad', expected = '1 or 2',
@@ -357,7 +366,7 @@ do
                 event = ffi.new('enum pumas_event [1]'),
                 media = ffi.new('struct pumas_medium *[2]')
             }
-        }, Context)
+        }, cls)
         rawset(self, '_limit', context.Limit(self))
 
         local seeded = false
@@ -378,6 +387,8 @@ do
 
         return self
     end
+
+    context.Context = setmetatable(Context, {__call = new})
 end
 
 

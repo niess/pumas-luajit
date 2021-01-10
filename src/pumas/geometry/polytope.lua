@@ -320,7 +320,7 @@ function PolytopeGeometry.__index (_, k)
     elseif k == 'export' then
         return export
     elseif (k == 'insert') or (k == 'remove') then
-        return
+        return -- XXX is this needed?
     else
         return base.BaseGeometry.__index[k]
     end
@@ -347,8 +347,7 @@ local function build_polytopes (args, frame, refs, depth, index)
             fname = 'Polytope '..get_tag(depth, index),
             argnum = 1,
             expected = 'a Medium table',
-            got = metatype.a(medium),
-            depth = depth + 2
+            got = metatype.a(medium)
         }
     end
 
@@ -357,8 +356,7 @@ local function build_polytopes (args, frame, refs, depth, index)
             fname = 'Polytope '..get_tag(depth, index),
             argnum = 2,
             expected = 'a table',
-            got = metatype.a(data),
-            depth = depth + 2
+            got = metatype.a(data)
         }
     end
 
@@ -368,8 +366,7 @@ local function build_polytopes (args, frame, refs, depth, index)
             fname = 'Polytope '..get_tag(depth, index),
             argnum = 2,
             expected = 'n x 6 values',
-            got = #data,
-            depth = depth + 2
+            got = #data
         }
     end
 
@@ -378,8 +375,7 @@ local function build_polytopes (args, frame, refs, depth, index)
             fname = 'Polytope '..get_tag(depth, index),
             argnum = 3,
             expected = 'nil or a table',
-            got = metatype.a(daughters),
-            depth = depth + 2
+            got = metatype.a(daughters)
         }
     end
 
@@ -452,27 +448,31 @@ local function load_ply (_)
 end
 
 
-function polytope.PolytopeGeometry (args, frame)
-    local self = base.BaseGeometry:new()
-    self._refs = {}
+do
+    local function new_ (cls, args, frame)
+        local self = base.BaseGeometry:new()
+        self._refs = {}
 
-    if frame ~= nil then
-        point = coordinates.CartesianPoint()
-        vector = coordinates.CartesianVector()
+        if frame ~= nil then
+            point = coordinates.CartesianPoint()
+            vector = coordinates.CartesianVector()
+        end
+
+        if type(args) == 'string' then
+            args = load_ply(args)
+        end
+
+        build_polytopes(args, frame, self._refs, 1, 0)
+
+        if frame ~= nil then
+            point = nil
+            vector = nil
+        end
+
+        return setmetatable(self, cls)
     end
 
-    if type(args) == 'string' then
-        args = load_ply(args)
-    end
-
-    build_polytopes(args, frame, self._refs, 1, 0)
-
-    if frame ~= nil then
-        point = nil
-        vector = nil
-    end
-
-    return setmetatable(self, PolytopeGeometry)
+    polytope.PolytopeGeometry = setmetatable(PolytopeGeometry, {__call = new_})
 end
 
 
