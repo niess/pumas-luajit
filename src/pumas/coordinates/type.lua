@@ -37,8 +37,6 @@ local function CoordinatesType (name, ctype, setter, get, transform)
         raw_coordinates = 'CartesianVector'
     end
 
-    -- XXX Allow to instanciate directly from a double [3]?
-
     function mt.__index:set (coordinates)
         if (self == nil) or (coordinates == nil) then
             local nargs = (self ~= nil) and 1 or 0
@@ -119,7 +117,22 @@ local function CoordinatesType (name, ctype, setter, get, transform)
 
     error.register(name, mt)
 
-    return ffi.metatype(ctype, mt)
+    local Meta = ffi.metatype(ctype, mt)
+
+    local function new (...)
+        if select('#', ...) == 1 then
+            local arg = select(1, ...)
+            if ffi.istype(double3_t, arg) then
+                return Meta():set(arg)
+            end
+        end
+
+        return Meta(...)
+    end
+
+    error.register(new)
+
+    return new
 end
 
 

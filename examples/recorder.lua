@@ -42,7 +42,7 @@ local context = pumas.Context{
 context.recorder = function (state, medium, event)
     if event.none then return end
 
-    local geodetic = pumas.GeodeticPoint():set(state.position)
+    local geodetic = pumas.GeodeticPoint(state.position)
     local u0 = direction:get()
     local deflection = math.acos(state.direction[0] * u0[0] +
                                  state.direction[1] * u0[1] +
