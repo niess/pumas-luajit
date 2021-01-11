@@ -319,8 +319,6 @@ function PolytopeGeometry.__index (_, k)
         return new
     elseif k == 'export' then
         return export
-    elseif (k == 'insert') or (k == 'remove') then
-        return -- XXX is this needed?
     else
         return base.BaseGeometry.__index[k]
     end

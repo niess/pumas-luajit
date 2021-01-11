@@ -6,11 +6,6 @@ media['Atmosphere'] = pumas.GradientMedium('AirDry1Atm', {lambda = -1E+04})
 media['Seabed'] = pumas.UniformMedium('StandardRock')
 media['Sea'] = pumas.UniformMedium('WaterLiquid')
 
-local media_names = {}
-for k, v in pairs(media) do
-    media_names[v] = k
-end
-
 local geoid = pumas.TopographyData()
 local geometry = pumas.EarthGeometry(
     {media['Seabed'], geoid, -100},
@@ -39,6 +34,11 @@ local context = pumas.Context{
 }
 
 -- Set a callback for printing Monte Carlo steps
+local media_names = {}
+for k, v in pairs(media) do
+    media_names[v] = k
+end
+
 context.recorder = function (state, medium, event)
     if event.none then return end
 

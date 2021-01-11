@@ -31,13 +31,13 @@ function TopographyData.__index:elevation (x, y)
     end
 
     if type(self._elevation) == 'number' then
-        return self._elevation
+        return self._elevation + self.offset
     else
         local z = ffi.new('double [1]')
         local inside = ffi.new('int [1]')
         call(self._elevation, self._c, x, y, z, inside)
         if inside[0] == 1 then
-            return z[0]
+            return z[0] + self.offset
         else
             return nil
         end
@@ -45,14 +45,49 @@ function TopographyData.__index:elevation (x, y)
 end
 
 
--- Wrap the turtle_stack struct
+-------------------------------------------------------------------------------
+-- Addition and subtraction operators
+-------------------------------------------------------------------------------
+do
+    local function add (t, v)
+        if type(v) == 'number' then
+            local c = {}
+            for ki, vi in pairs(t) do
+                c[ki] = vi
+            end
+            c.offset = c.offset + v
+
+            return setmetatable(c, TopographyData)
+        else
+            error.raise{
+                fname = '__add',
+                argnum = 2,
+                expected = 'a number',
+                got = metatype.a(v)
+            }
+        end
+    end
+
+    TopographyData.__add = add
+
+    function TopographyData:__sub (v)
+        return add(self, -v)
+    end
+end
+
+
+-------------------------------------------------------------------------------
+-- Wrapper for turtle_stack struct
+-------------------------------------------------------------------------------
 local mt_stack = {__index = {}}
 mt_stack.__index._stepper_add = ffi.C.turtle_stepper_add_stack
 mt_stack.__index._elevation = ffi.C.turtle_stack_elevation
 for k, v in pairs(TopographyData.__index) do mt_stack.__index[k] = v end
 
 
--- Wrap the turtle_map struct
+-------------------------------------------------------------------------------
+-- Wrapper for turtle_map struct
+-------------------------------------------------------------------------------
 local mt_map = {__index = {}}
 mt_map.__index._stepper_add = ffi.C.turtle_stepper_add_map
 do
@@ -70,7 +105,9 @@ end
 for k, v in pairs(TopographyData.__index) do mt_map.__index[k] = v end
 
 
--- Wrap the flat topography
+-------------------------------------------------------------------------------
+-- Wrapper for flat topography
+-------------------------------------------------------------------------------
 local mt_flat = {__index = {}}
 mt_flat.__index._stepper_add = ffi.C.turtle_stepper_add_flat
 for k, v in pairs(TopographyData.__index) do mt_flat.__index[k] = v end
@@ -84,6 +121,7 @@ do
         if data == nil then data = 0 end
 
         local self = {}
+        self.offset = 0
         local c, ptr, metatype_
         local data_type = type(data)
         if data_type == 'string' then

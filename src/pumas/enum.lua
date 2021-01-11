@@ -24,6 +24,8 @@ do
         'vertex_photonuclear'
     }
 
+    local raise_error = error.ErrorFunction{['type'] = 'Event'}
+
     local get_value
     do
         local mapping = {}
@@ -36,7 +38,7 @@ do
             if v then
                 return v
             else
-                error("'pumas.Event' has no member named '"..k.."'", 3)
+                raise_error{bad_member = k}
             end
         end
     end
@@ -147,8 +149,6 @@ do
         end
     end
 
-    local raise_error = error.ErrorFunction{fname = 'mode'}
-
     local function set1 (self, s, category)
         local r = strtoval[s]
         if r then
@@ -156,15 +156,15 @@ do
             if category and (category ~= k) then
                 for _, c in ipairs(categories) do
                     if c == category then
-                        raise_error{fname = 'mode.'..category, argname = s,
+                        error.raise{fname = 'Mode.'..category, argname = s,
                             description = 'invalid value'}
                     end
                 end
-                raise_error{argname = category, description = 'no such member'}
+                error.raise{['type'] = 'Mode', bad_member = category}
             end
             self._c[k] = v
         else
-            raise_error{argname = s, description = 'no such value'}
+            error.raise{['type'] = 'Mode', bad_member = s}
         end
     end
 
@@ -192,7 +192,7 @@ do
                 end
             end
             if not ok then
-                raise_error{argname = k, description ='no such member'}
+                error.raise{['type'] = 'Mode', bad_member = k}
             else
                 return valtostr[k][tonumber(self._c[k])]
             end
