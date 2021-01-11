@@ -8,9 +8,9 @@ media['Sea'] = pumas.UniformMedium('WaterLiquid')
 
 local geoid = pumas.TopographyData()
 local geometry = pumas.EarthGeometry(
-    {media['Seabed'], geoid, -100},
-    {media['Sea'], geoid, 0},
-    {media['Atmosphere'], geoid, 100}
+    {media['Seabed'], geoid - 100},
+    {media['Sea'], geoid},
+    {media['Atmosphere'], geoid + 100}
 )
 
 -- Initialise the Monte Carlo state below the sea bed

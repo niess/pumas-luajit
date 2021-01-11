@@ -11,6 +11,8 @@ local metatype = require('pumas.metatype')
 
 local topography = {}
 
+-- XXX Add a TopographyDataSet with global offset? Or multiple data sources
+
 
 -------------------------------------------------------------------------------
 -- The topography data metatypes
@@ -57,7 +59,7 @@ do
             end
             c.offset = c.offset + v
 
-            return setmetatable(c, TopographyData)
+            return setmetatable(c, getmetatable(t))
         else
             error.raise{
                 fname = '__add',
@@ -77,40 +79,58 @@ end
 
 
 -------------------------------------------------------------------------------
+-- Generic wrapper for topography data types
+-------------------------------------------------------------------------------
+local function WrappedData (add, elevation)
+    local mt = {__index = {}}
+
+    mt.__index._stepper_add = add
+    if elevation then
+        mt.__index._elevation = elevation
+    end
+
+    for k, v in pairs(TopographyData.__index) do
+        mt.__index[k] = v
+    end
+
+    mt.__add = TopographyData.__add
+    mt.__sub = TopographyData.__sub
+
+    return mt
+end
+
+
+-------------------------------------------------------------------------------
 -- Wrapper for turtle_stack struct
 -------------------------------------------------------------------------------
-local mt_stack = {__index = {}}
-mt_stack.__index._stepper_add = ffi.C.turtle_stepper_add_stack
-mt_stack.__index._elevation = ffi.C.turtle_stack_elevation
-for k, v in pairs(TopographyData.__index) do mt_stack.__index[k] = v end
+local mt_stack = WrappedData(
+    ffi.C.turtle_stepper_add_stack,
+    ffi.C.turtle_stack_elevation)
 
 
 -------------------------------------------------------------------------------
 -- Wrapper for turtle_map struct
 -------------------------------------------------------------------------------
-local mt_map = {__index = {}}
-mt_map.__index._stepper_add = ffi.C.turtle_stepper_add_map
-do
-    mt_map.__index._elevation = function (self, x, y, z, inside)
+local mt_map = WrappedData(
+    ffi.C.turtle_stepper_add_map,
+    function (self, x, y, z, inside)
         local projection = ffi.C.turtle_map_projection(self)
+
         if projection ~= nil then
             local xmap = ffi.new('double [1]')
             local ymap = ffi.new('double [1]')
             ffi.C.turtle_projection_project(projection, x, y, xmap, ymap)
             x, y = xmap[0], ymap[0]
         end
+
         return ffi.C.turtle_map_elevation(self, x, y, z, inside)
-    end
-end
-for k, v in pairs(TopographyData.__index) do mt_map.__index[k] = v end
+    end)
 
 
 -------------------------------------------------------------------------------
 -- Wrapper for flat topography
 -------------------------------------------------------------------------------
-local mt_flat = {__index = {}}
-mt_flat.__index._stepper_add = ffi.C.turtle_stepper_add_flat
-for k, v in pairs(TopographyData.__index) do mt_flat.__index[k] = v end
+local mt_flat = WrappedData(ffi.C.turtle_stepper_add_flat)
 
 
 -------------------------------------------------------------------------------

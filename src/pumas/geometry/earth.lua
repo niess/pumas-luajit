@@ -33,7 +33,7 @@ local function new (self)
 
     call(ffi.C.turtle_stepper_create, c.stepper)
     for i, layer in ipairs(self._layers) do
-        local _, data, offset = unpack(layer)
+        local _, data = unpack(layer)
 
         if i > 1 then
             call(ffi.C.turtle_stepper_add_layer, c.stepper[0])
@@ -43,10 +43,10 @@ local function new (self)
             local datum = data[j]
             if type(datum._elevation) == 'number' then
                 call(datum._stepper_add, c.stepper[0],
-                        datum._elevation + offset)
+                        datum._elevation + datum.offset)
             else
                 call(datum._stepper_add, c.stepper[0],
-                        datum._c, offset)
+                        datum._c, datum.offset)
             end
         end
     end
@@ -134,20 +134,17 @@ do
     local function new_ (cls, ...)
         local args, layers = {...}, {}
         for _, layer in ipairs(args) do
-            local medium, data, offset = unpack(layer)
+            local medium, data = unpack(layer)
 
             -- XXX validate the medium and data
             -- XXX Manage geoid undulations
-            -- XXX Add offset topography data?
             -- XXX Invert the order of layers?
 
             if data.__metatype == 'TopographyData' then
                 data = {data}
             end
 
-            offset = (offset == nil) and 0 or offset
-
-            table.insert(layers, {medium, data, offset})
+            table.insert(layers, {medium, data})
         end
 
         local pumas_medium_ptr = ffi.typeof('struct pumas_medium *')
