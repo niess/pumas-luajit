@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local elements = require('pumas.elements')
 local error = require('pumas.error')
+local metatype = require('pumas.metatype')
 
 local materials = {}
 
@@ -19,6 +20,16 @@ Material.__index.__metatype = 'Material'
 local raise_error = error.ErrorFunction{fname = 'Material'}
 
 do
+    local function check_number (k, v, unit)
+        if type(v) ~= 'number' then
+            raise_error{argname = k, expected = 'a number',
+                got = metatype.a(v)}
+        elseif unit and (v <= 0) then
+            v = v..' '..unit
+            raise_error{argname = k, expected = 'a positive number', got = v}
+        end
+    end
+
     local function new (cls, args)
         if type(args) ~= 'table' then
             raise_error{
@@ -50,20 +61,22 @@ do
             end
         end
 
-        -- XXX check the type of other args
-        if type(density) ~= 'number' then
-            raise_error{
-                argname = 'density',
-                expected = 'a number',
-                got = type(density)
-            }
-        end
+        check_number('density', density, 'kg / m^2')
 
-        if delta0 == nil then delta0 = 0 end
+        if delta0 then
+            check_number('delta0', delta0)
+        else
+            delta0 = 0
+        end
 
         local self = {}
 
         if formula then
+            if type(formula) ~= 'string' then
+                raise_error{argname = 'formula', expected = 'a string',
+                    got = metatype.a(formula)}
+            end
+
             -- Parse the chemical composition and compute the mass fractions
             self.formula = args.formula
             local compo, norm = {}, 0
@@ -81,6 +94,10 @@ do
             self.composition = compo
         elseif composition then
             -- Use the provided composition
+            if type(composition) ~= 'table' then
+                raise_error{argname = 'composition', expected = 'a table',
+                    got = metatype.a(composition)}
+            end
             self.composition = composition
         else
             raise_error{description = "missing 'composition' or 'formula'"}
@@ -98,18 +115,24 @@ do
             mee = mee + tmp * math.log(e.I)
         end
         self.ZoA = ZoA
-        if not I then
+        if I then
+            check_number('I', I, 'eV')
+        else
             I = math.exp(mee / ZoA) * 1.13 -- 13% rule, see Groom et al.
         end
         self.I = I
         self.density = density
 
         if state then
+            if type(state) ~= 'string' then
+                raise_error{argname = 'state', expected = 'a string',
+                    got = metatype.a(state)}
+            end
+
             local tmp = state:lower()
             if (tmp ~= 'gaz') and (tmp ~= 'liquid') and (tmp ~= 'solid') then
                 raise_error{
-                    argname = 'state',
-                    expected = "'solid', 'liquid' or 'gaz'",
+                    argname = 'state', expected = "'solid', 'liquid' or 'gaz'",
                     got = "'"..state.."'"
                 }
             end
@@ -124,16 +147,24 @@ do
 
         -- Set the Sternheimer coefficients. If not provided the Sternheimer
         -- and Peierls recipe is used
-        if k == nil then k = 3 end
+        if k then
+            check_number('k', k)
+        else
+            k = 3
+        end
         self.k = k
 
-        if not Cbar then
+        if Cbar then
+            check_number('Cbar', Cbar)
+        else
             local hwp = 28.816E-09 * math.sqrt(density * 1E-03 * ZoA)
             Cbar = 2 * math.log(self.I / hwp)
         end
         self.Cbar = Cbar
 
-        if not x0 then
+        if x0 then
+            check_number('x0', x0)
+        else
             if state == 'gaz' then
                 if     Cbar <= 10     then x0 = 1.6
                 elseif Cbar <= 10.5   then x0 = 1.7
@@ -156,7 +187,9 @@ do
         end
         self.x0 = x0
 
-        if not x1 then
+        if x1 then
+            check_number('x1', x1)
+        else
             if state == 'gaz' then
                 if   Cbar < 13.804
                 then x1 = 4
@@ -170,7 +203,9 @@ do
         end
         self.x1 = x1
 
-        if not a then
+        if a then
+            check_number('a', a)
+        else
             local dx = x1 - x0
             a = (Cbar - 2 * math.log(10) * x0) / (dx * dx * dx)
         end
