@@ -1,15 +1,14 @@
 local pumas = require('pumas')
 
--- Build the geometry, an Earth with a flat topography
-local deg = math.pi / 180
+-- Settings for the simulation
 local latitude, longitude = 45, 3
-local geoid = pumas.TopographyData()
-local air = pumas.GradientMedium('AirDry1Atm', {
+local top_altitude = 1600
+
+-- Build the geometry, an Earth with a flat topography
+local atmosphere = pumas.GradientMedium('AirDry1Atm', {
     ['type'] = 'exponential', axis = 'vertical', lambda = -1E+04,
     z0 = 0, rho0 = 1.205})
-
-local top_altitude = 1600
-local geometry = pumas.EarthGeometry({air, geoid, top_altitude})
+local geometry = pumas.EarthGeometry{medium = atmosphere, data = top_altitude}
 
 -- Wrap the primary flux model
 --
@@ -44,6 +43,7 @@ local context = pumas.Context{
 -- Set the initial state for Monte Carlo particles
 local position = pumas.GeodeticPoint(latitude, longitude, 0)
 local frame = pumas.LocalFrame(position)
+local deg = math.pi / 180
 local direction = pumas.HorizontalVector{
     azimuth = 0 * deg, elevation = -90 * deg, norm = 1, frame = frame}
 
@@ -66,7 +66,7 @@ for ik = 1, 81 do
     local state = pumas.State()
 
     local s, s2, n = 0, 0, 10000
-    for i = 1, n do
+    for _ = 1, n do
         state:set(initial)
 
         -- Randomise the charge

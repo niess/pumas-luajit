@@ -6,12 +6,11 @@
 local ffi = require('ffi')
 local lfs = require('lfs')
 local call = require('pumas.call')
+local compat = require('pumas.compat')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
 
 local topography = {}
-
--- XXX Add a TopographyDataSet with global offset? Or multiple data sources
 
 
 -------------------------------------------------------------------------------
@@ -182,6 +181,73 @@ do
     end
 
     topography.TopographyData = setmetatable(TopographyData, {__call = new})
+end
+
+
+-------------------------------------------------------------------------------
+-- Topography data set
+-------------------------------------------------------------------------------
+local TopographyDataSet = {__index = {}}
+
+TopographyDataSet.__index.__metatype = 'TopographyDataSet'
+
+do
+    local function add (self, t)
+        local new = compat.table_new(#self, 0)
+
+        for i, v in ipairs(self) do
+            new[i] = v + t
+        end
+
+        return setmetatable(new, TopographyDataSet)
+    end
+
+    TopographyDataSet.__add = add
+
+    function TopographyDataSet:__sub (t)
+        return add(self, -t)
+    end
+end
+
+do
+    local raise_error = error.ErrorFunction{fname = 'TopographyDataSet'}
+
+    local function new (cls, ...)
+        local nargs = select('#', ...)
+        if nargs == 0 then
+            raise_error{argnum = 'bad', expected = '1 or more', got = 0}
+        end
+
+        local self = compat.table_new(nargs, 0)
+        local iarg = 0
+
+        local function add (args, index)
+            for i, arg in ipairs(args) do
+                local mt = metatype(arg)
+                if mt == 'TopographyData' then
+                    iarg = iarg + 1
+                    self[iarg] = arg
+                elseif (mt == 'string') or (mt == 'number') then
+                    iarg = iarg + 1
+                    self[iarg] = TopographyData(arg)
+                elseif mt == 'table' then
+                    add(arg, index or i)
+                else
+                    raise_error{argnum = index or i,
+                        expected = 'a (TopographyData) table, a string or \z
+                                    a number',
+                        got = metatype.a(arg)}
+                end
+            end
+        end
+
+        add({...})
+
+        return setmetatable(self, cls)
+    end
+
+    topography.TopographyDataSet =
+        setmetatable(TopographyDataSet, {__call = new})
 end
 
 

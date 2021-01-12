@@ -16,7 +16,7 @@ local initial = pumas.State{kinetic = 1E+03} -- GeV
 -- Run the Monte Carlo
 local s1, s2, n = 0, 0, 10000
 local state = pumas.State()
-for i = 1, n do
+for _ = 1, n do
     state:set(initial)
     context:transport(state)
 

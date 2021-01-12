@@ -82,10 +82,10 @@ function error_.raise (args)
         end
     else
         if args.argnum ~= nil then
-            if type(args.argnum) == 'number' then
-                table.insert(msg, 'bad argument #'..args.argnum)
-            else
+            if args.argnum == 'bad' then
                 table.insert(msg, 'bad number of argument(s)')
+            else
+                table.insert(msg, 'bad argument #'..args.argnum)
             end
         elseif args.argname ~= nil then
             table.insert(msg, "bad argument '"..args.argname.."'")

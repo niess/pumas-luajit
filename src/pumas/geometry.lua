@@ -14,6 +14,7 @@ geometry.EarthGeometry = earth.EarthGeometry
 geometry.InfiniteGeometry = infinite.InfiniteGeometry
 geometry.PolytopeGeometry = polytope.PolytopeGeometry
 geometry.TopographyData = topography.TopographyData
+geometry.TopographyDataSet = topography.TopographyDataSet
 
 
 -------------------------------------------------------------------------------
@@ -24,6 +25,7 @@ function geometry.register_to (t)
     t.InfiniteGeometry = geometry.InfiniteGeometry
     t.PolytopeGeometry = geometry.PolytopeGeometry
     t.TopographyData = geometry.TopographyData
+    t.TopographyDataSet = geometry.TopographyDataSet
 end
 
 

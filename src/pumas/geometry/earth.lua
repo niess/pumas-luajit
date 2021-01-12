@@ -5,8 +5,10 @@
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
 local call = require('pumas.call')
+local compat = require('pumas.compat')
 local error = require('pumas.error')
 local base = require('pumas.geometry.base')
+local topography = require('pumas.geometry.topography')
 local metatype = require('pumas.metatype')
 
 local earth = {}
@@ -131,21 +133,70 @@ end
 -- The Earth geometry constructor
 -------------------------------------------------------------------------------
 do
+    local raise_error = error.ErrorFunction{fname = 'EarthGeometry'}
+
     local function new_ (cls, ...)
-        local args, layers = {...}, {}
-        for _, layer in ipairs(args) do
-            local medium, data = unpack(layer)
-
-            -- XXX validate the medium and data
-            -- XXX Manage geoid undulations
-            -- XXX Invert the order of layers?
-
-            if data.__metatype == 'TopographyData' then
-                data = {data}
-            end
-
-            table.insert(layers, {medium, data})
+        local nargs = select('#', ...)
+        if nargs == 0 then
+            raise_error{argnum = 'bad', expected = '1 or more', got = 0}
         end
+
+        local layers = compat.table_new(nargs, 0)
+        local ilayer = 0
+
+        local function add(args, index)
+            for i, arg in ipairs(args) do
+                local medium, data = arg.medium, arg.data
+                if (not medium) and (not data) and type(arg) == 'table' then
+                    add(arg, index or i)
+                else
+                    if (metatype(medium) ~= 'Medium') and (medium ~= nil) then
+                        raise_error{argnum = (index or i)..' (medium)',
+                            expected = 'a Medium table or nil',
+                            got = metatype.a(medium)}
+                    end
+
+                    if not data then
+                        raise_error{argnum = (index or i)..' (data)',
+                            expected = 'a TopographyData(Set) table',
+                            got = metatype.a(data)}
+                    end
+
+                    local mt = metatype(data)
+                    if (mt ~= 'table') and (mt ~= 'TopographyDataSet') then
+                        data = {data}
+                    end
+
+                    for j, datum in ipairs(data) do
+                        local mt_ = metatype(datum)
+                        if (mt_ == 'string') or (mt_ == 'number') then
+                            data[j] = topography.TopographyData(datum)
+                        elseif mt_ ~= 'TopographyData' then
+                            raise_error{argnum = (index or i)..' (data)',
+                                expected = 'a TopographyData table, a number \z
+                                    or a string', got = metatype.a(data)}
+                        end
+                    end
+
+                    ilayer = ilayer + 1
+                    layers[ilayer] = {medium, data}
+                end
+            end
+        end
+
+        add{...}
+
+        -- Revert the order of layers such that the first entry is the top
+        -- layer
+        do
+            local tmp = compat.table_new(#layers, 0)
+            for i, v in ipairs(layers) do
+                tmp[#layers - i + 1] = v
+            end
+            layers = tmp
+        end
+
+        -- XXX Manage geoid undulations
 
         local pumas_medium_ptr = ffi.typeof('struct pumas_medium *')
         local pumas_medium_ptrarr = ffi.typeof('struct pumas_medium **')
