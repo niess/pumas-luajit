@@ -13,9 +13,6 @@ LUAJIT_VERSION=  "v2.1-20200102"
 PUMAS_REPO=      "https://github.com/niess/pumas.git"
 PUMAS_VERSION=   "db6e0e3"
 
-SOCKET_REPO=     "https://github.com/diegonehab/luasocket.git"
-SOCKET_VERSION=  "733af88"
-
 TURTLE_REPO=     "https://github.com/niess/turtle.git"
 TURTLE_VERSION=  "2c2ecdf"
 
@@ -106,7 +103,6 @@ all: $(RUNTIME_EXE) $(CORE_LIB)
 
 clean:
 	@$(MAKE) --quiet -C $(LUAJIT_SRC)/src clean
-	@$(MAKE) --quiet -C $(BUILD_DIR)/src/socket/src clean
 	@cd $(BUILD_DIR) && \
 	rm -rf bin include lib objs share pumas/*.h.lua
 
@@ -143,61 +139,6 @@ $(LFS_SRC)/src/lfs.c $(LFS_SRC)/src/lfs.h:
 $(LFS_OBJ): $(LFS_SRC)/src/lfs.c $(LFS_SRC)/src/lfs.h | $(OBJS_DIR)
 	@echo "CC        $$(basename $@)"
 	@$(CROSS)$(CC) -o $@ -I$(LUAJIT_INC) -c $(CFLAGS) $<
-
-SOCKET_SRC= $(BUILD_DIR)/src/socket
-SOCKET_C_OBJS= $(OBJS_DIR)/$(CROSS)auxiliar.c.o \
-	       $(OBJS_DIR)/$(CROSS)luasocket.c.o \
-	       $(OBJS_DIR)/$(CROSS)timeout.c.o \
-	       $(OBJS_DIR)/$(CROSS)buffer.c.o \
-	       $(OBJS_DIR)/$(CROSS)mime.c.o \
-	       $(OBJS_DIR)/$(CROSS)udp.c.o \
-	       $(OBJS_DIR)/$(CROSS)compat.c.o \
-	       $(OBJS_DIR)/$(CROSS)options.c.o \
-	       $(OBJS_DIR)/$(CROSS)except.c.o \
-	       $(OBJS_DIR)/$(CROSS)select.c.o \
-	       $(OBJS_DIR)/$(CROSS)inet.c.o \
-	       $(OBJS_DIR)/$(CROSS)io.c.o \
-	       $(OBJS_DIR)/$(CROSS)tcp.c.o
-
-SOCKET_LUA_OBJS= $(OBJS_DIR)/$(CROSS)ltn12.lua.o \
-	         $(OBJS_DIR)/$(CROSS)mime.lua.o \
-	         $(OBJS_DIR)/$(CROSS)socket.lua.o \
-	         $(OBJS_DIR)/$(CROSS)socket_ftp.lua.o \
-	         $(OBJS_DIR)/$(CROSS)socket_headers.lua.o \
-	         $(OBJS_DIR)/$(CROSS)socket_http.lua.o \
-	         $(OBJS_DIR)/$(CROSS)socket_smtp.lua.o \
-	         $(OBJS_DIR)/$(CROSS)socket_tp.lua.o \
-	         $(OBJS_DIR)/$(CROSS)socket_url.lua.o
-
-.PRECIOUS: $(SOCKET_SRC)/src/%.c $(SOCKET_SRC)/src/%.lua
-$(SOCKET_SRC)/src/%.c $(SOCKET_SRC)/src/%.lua:
-	@$(call git_clone,$(SOCKET_SRC),$(SOCKET_REPO),$(SOCKET_VERSION))
-
-SOCKET_FLAGS= LUAINC=$(LUAJIT_INC)
-ifdef CROSS
-SOCKET_FLAGS+= PLAT=mingw CC=$(CROSS)$(CC)
-SOCKET_C_OBJS+= $(OBJS_DIR)/$(CROSS)wsocket.c.o
-else
-SOCKET_FLAGS+= PLAT=linux
-SOCKET_C_OBJS+= $(OBJS_DIR)/$(CROSS)unix.c.o \
-	        $(OBJS_DIR)/$(CROSS)usocket.c.o \
-	        $(OBJS_DIR)/$(CROSS)unixstream.c.o \
-	        $(OBJS_DIR)/$(CROSS)unixdgram.c.o \
-	        $(OBJS_DIR)/$(CROSS)serial.c.o
-endif
-SOCKET_OBJS= $(SOCKET_C_OBJS) $(SOCKET_LUA_OBJS)
-
-unexport CFLAGS
-$(SOCKET_C_OBJS): $(OBJS_DIR)/$(CROSS)%.c.o: $(SOCKET_SRC)/src/%.c
-	@echo "CC        $$(basename $@)"
-	@$(MAKE) --quiet -C $(SOCKET_SRC)/src $*.o $(SOCKET_FLAGS)
-	@mv $(SOCKET_SRC)/src/$*.o $@
-
-$(OBJS_DIR)/$(CROSS)socket_%.lua.o: $(SOCKET_SRC)/src/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
-	@$(call jit_compile,socket.$*,$<,$@)
-
-$(OBJS_DIR)/$(CROSS)%.lua.o: $(SOCKET_SRC)/src/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
-	@$(call jit_compile,$*,$<,$@)
 
 GULL_SRC= $(BUILD_DIR)/src/gull
 GULL_INC= $(GULL_SRC)/include
@@ -341,7 +282,6 @@ CORE_OBJS= $(GULL_OBJ) \
 
 RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(LFS_OBJ) \
-	      $(SOCKET_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)inspect.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_call.lua.o \

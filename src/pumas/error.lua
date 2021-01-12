@@ -64,57 +64,62 @@ end
 -- Generic error messages formater
 -------------------------------------------------------------------------------
 function error_.raise (args)
-    -- Format the error message
-    local msg = {}
-
-    if args.header ~= nil then
-        table.insert(msg, args.header)
-    elseif args.type ~= nil then
-        if args.bad_member ~= nil then
-            table.insert(msg, "'"..args.type.."' has no member named '"..
-                              args.bad_member.."'")
-        elseif args.not_mutable ~= nil then
-            table.insert(msg, "cannot modify '"..args.not_mutable..
-                              " for '"..args.type.."'")
-        else
-            table.insert(msg, "an unknown error occured related to '"..
-                              args.type.."'")
-        end
+    local msg
+    if type(args) == 'string' then
+        msg = args
     else
-        if args.argnum ~= nil then
-            if args.argnum == 'bad' then
-                table.insert(msg, 'bad number of argument(s)')
+        -- Format the error message
+        msg = {}
+
+        if args.header ~= nil then
+            table.insert(msg, args.header)
+        elseif args.type ~= nil then
+            if args.bad_member ~= nil then
+                table.insert(msg, "'"..args.type.."' has no member named '"..
+                                  args.bad_member.."'")
+            elseif args.not_mutable ~= nil then
+                table.insert(msg, "cannot modify '"..args.not_mutable..
+                                  " for '"..args.type.."'")
             else
-                table.insert(msg, 'bad argument #'..args.argnum)
+                table.insert(msg, "an unknown error occured related to '"..
+                                  args.type.."'")
             end
-        elseif args.argname ~= nil then
-            table.insert(msg, "bad argument '"..args.argname.."'")
         else
-            table.insert(msg, "bad argument(s)")
+            if args.argnum ~= nil then
+                if args.argnum == 'bad' then
+                    table.insert(msg, 'bad number of argument(s)')
+                else
+                    table.insert(msg, 'bad argument #'..args.argnum)
+                end
+            elseif args.argname ~= nil then
+                table.insert(msg, "bad argument '"..args.argname.."'")
+            else
+                table.insert(msg, "bad argument(s)")
+            end
+
+            if args.fname ~= nil then
+                table.insert(msg, "to '"..args.fname.."'")
+            end
         end
 
-        if args.fname ~= nil then
-            table.insert(msg, "to '"..args.fname.."'")
+        local description = {}
+        if args.description ~= nil then
+            table.insert(description, args.description)
+        else
+            if args.expected ~= nil then
+                table.insert(description, 'expected '..args.expected)
+            end
+            if args.got ~= nil then
+                table.insert(description, 'got '..args.got)
+            end
         end
-    end
 
-    local description = {}
-    if args.description ~= nil then
-        table.insert(description, args.description)
-    else
-        if args.expected ~= nil then
-            table.insert(description, 'expected '..args.expected)
+        if #description > 0 then
+            description = table.concat(description, ', ')
+            table.insert(msg, '('..description..')')
         end
-        if args.got ~= nil then
-            table.insert(description, 'got '..args.got)
-        end
+        msg = table.concat(msg, ' ')
     end
-
-    if #description > 0 then
-        description = table.concat(description, ', ')
-        table.insert(msg, '('..description..')')
-    end
-    msg = table.concat(msg, ' ')
 
     -- Compute the depth
     local depth = 1
