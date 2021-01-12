@@ -3,7 +3,7 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
+local ffi = require('ffi') -- XXX support vanilla Lua with cffi?
 local lfs = require('lfs')
 local os = require('pumas.os')
 require('pumas.header.api')
@@ -66,8 +66,7 @@ end
 local function register (pkg)
     local p = require(pkg)
     if p.register_to then
-        p.register_to(pumas) -- XXX remove register_to from the registered
-                             -- functions
+        p.register_to(pumas)
     end
 end
 

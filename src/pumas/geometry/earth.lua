@@ -34,6 +34,19 @@ local function new (self)
     c.n_layers = #self._layers
 
     call(ffi.C.turtle_stepper_create, c.stepper)
+
+    if self._geoid_undulations then
+        local undulations
+        if metatype(self._geoid_undulations) == 'TopographyData' then
+            undulations = self._geoid_undulations
+        else
+            undulations = topography.TopographyData(self._geoid_undulations)
+        end
+
+        ffi.C.turtle_stepper_geoid_set(c.stepper[0], undulations._c)
+        rawset(self, '_undulations', undulations)
+    end
+
     for i, layer in ipairs(self._layers) do
         local _, data = unpack(layer)
 
@@ -105,17 +118,44 @@ end
 
 
 function EarthGeometry:__newindex (k, v)
-    if (k == 'magnet') or (k == 'date') then
+    if (k == 'magnet') or (k == 'date') or (k == 'geoid_undulations') then
         local key = '_'..k
         if v == rawget(self, key) then return end
 
-        local tp = type(v)
-        if (tp ~= 'string') and (tp ~= 'nil') and (tp ~= 'boolean') then
+        local mt, expected = metatype(v)
+        if k == 'date' then
+            if (mt ~= 'string') and (mt ~= 'nil') then
+                expected = 'a string or nil'
+            end
+        elseif k == 'magnet' then
+            if (mt ~= 'string') and (mt ~= 'nil') and (mt ~= 'boolean') then
+                expected = 'a boolean, a string or nil'
+            end
+        else
+            if (mt ~= 'string') and (mt ~= 'nil') and
+                (mt ~= 'TopographyData') then
+                expected = 'a TopographyData table, a string or nil'
+            end
+        end
+
+        if expected then
             error.raise{
                 fname = k,
-                expected = 'a string',
+                expected = expected,
                 got = metatype.a(v)
             }
+        end
+
+        if k == 'geoid_undulations' then
+            if (mt == 'TopographyData') and
+                not ffi.istype('struct turtle_map *', v._c) then
+                error.raise{
+                    fname = k,
+                    description = 'invalid TopographyData format'
+                }
+            end
+
+            rawset(self, '_undulations', nil)
         end
 
         rawset(self, key, v)
@@ -143,9 +183,16 @@ do
 
         local layers = compat.table_new(nargs, 0)
         local ilayer = 0
+        local magnet, date, geoid_undulations
 
         local function add(args, index)
             for i, arg in ipairs(args) do
+                if arg.magnet then magnet = arg.magnet end
+                if arg.date then date = arg.date end
+                if arg.geoid_undulations then
+                    geoid_undulations = arg.geoid_undulations
+                end
+
                 local medium, data = arg.medium, arg.data
                 if (not medium) and (not data) and type(arg) == 'table' then
                     add(arg, index or i)
@@ -196,7 +243,7 @@ do
             layers = tmp
         end
 
-        -- XXX Manage geoid undulations
+        -- XXX Provide elevation and frame methods?
 
         local pumas_medium_ptr = ffi.typeof('struct pumas_medium *')
         local pumas_medium_ptrarr = ffi.typeof('struct pumas_medium **')
@@ -213,7 +260,12 @@ do
         self._media = media
         self._layers = layers
 
-        return setmetatable(self, cls)
+        self = setmetatable(self, cls)
+        self.magnet = magnet
+        self.date = date
+        self.geoid_undulations = geoid_undulations
+
+        return self
     end
 
     earth.EarthGeometry = setmetatable(EarthGeometry, {__call = new_})

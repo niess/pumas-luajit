@@ -271,6 +271,12 @@ do
         transport = transport
     }
 
+    for k, v in pairs(index) do
+        if type(v) == 'function' then
+            error.register('Context.__index.'..k, v)
+        end
+    end
+
     local members = {
         geometry = '_geometry',
         limit = '_limit',
@@ -357,10 +363,7 @@ do
             _c = c,
             _physics = physics,
             event = event,
-            medium = medium_callback,
             _mode = enum.Mode(c),
-            transport = transport,
-            random = random,
             _cache = {
                 distance = ffi.new('double [1]'),
                 event = ffi.new('enum pumas_event [1]'),

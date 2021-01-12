@@ -6,15 +6,16 @@ media['Atmosphere'] = pumas.GradientMedium('AirDry1Atm', {lambda = -1E+04})
 media['Sea'] = pumas.UniformMedium('WaterLiquid')
 media['Seabed'] = pumas.UniformMedium('StandardRock')
 
-local geoid = pumas.TopographyData()
+local top_altitude, bottom_altitude = 100, -100
 local geometry = pumas.EarthGeometry{
-    {medium = media['Atmosphere'], data = geoid + 100},
-    {medium = media['Sea'],        data = geoid},
-    {medium = media['Seabed'],     data = geoid - 100}
+    {medium = media['Atmosphere'], data = top_altitude   },
+    {medium = media['Sea'],        data = 0              },
+    {medium = media['Seabed'],     data = bottom_altitude}
 }
 
 -- Initialise the Monte Carlo state below the sea bed
-local position = pumas.GeodeticPoint(45, 3, -100.5)
+local latitude, longitude, altitude = 45, 3, bottom_altitude - 0.5
+local position = pumas.GeodeticPoint(latitude, longitude, altitude)
 local frame = pumas.LocalFrame(position)
 local deg = math.pi / 180
 local direction = pumas.HorizontalVector{
