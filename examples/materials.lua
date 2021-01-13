@@ -9,7 +9,7 @@
 local pumas = require('pumas')
 
 print('building material tables for the examples ...')
-local t0 = pumas.time()
+local t0 = os.clock()
 
 pumas.build{
     materials = {'StandardRock', 'WaterLiquid', 'AirDry1Atm'},
@@ -18,7 +18,7 @@ pumas.build{
     path = 'share/materials/standard'
 }
 
-print('done in ' .. pumas.time() - t0 .. ' s')
+print('done in ' .. os.clock() - t0 .. ' s')
 
 -- Print a list of available materials
 print([[

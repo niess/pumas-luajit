@@ -27,24 +27,33 @@ void * malloc(size_t);
 
 
 -------------------------------------------------------------------------------
--- Load the C libraries and their extensions, if not embedded in the runtime
+-- Load the C libraries and their extensions if not embedded in the runtime
 -------------------------------------------------------------------------------
 do
     local ok = pcall(function () return ffi.C.pumas_error_initialise end)
     if not ok then
-        local _, path =...-- Lua 5.2
+        local _, path = ... -- Lua 5.2
         if path == nil then
             path = debug.getinfo(1, 'S').source:sub(2) -- Lua 5.1
         end
-        if (love ~= nil) and (lfs.attributes(path) == nil) then
-            -- Patch for Love when the module is located in-source
-            path = love.filesystem.getSource()..path
+        local dirname = path:match('(.*'..os.PATHSEP..')') or ''
+
+        local libname = 'libpumas_extended.'..os.LIBEXT
+        if love then
+            -- For love2d the module is expected be located in the source
+            dirname = love.filesystem.getSource()..dirname
+            path = dirname..table.concat({'pumas', libname}, os.PATHSEP)
+        else
+            -- For Lua modules the C library is installed under lib/ while
+            -- this source is under share/.
+            -- XXX this is likely OS specific
+            local version = _VERSION:match('[0-9.]+')
+            path = dirname..table.concat(
+                {'..', '..', '..', 'lib', 'lua', version, 'pumas', libname},
+                os.PATHSEP)
         end
 
-        local dirname = path:match('(.*'..os.PATHSEP..')')
-        local libname = '../../../lib/lua/5.1/pumas/libpumas_extended.'..
-            os.LIBEXT
-        ffi.load(dirname..libname, true) -- XXX Load to private space?
+        ffi.load(path, true)
     end
 end
 

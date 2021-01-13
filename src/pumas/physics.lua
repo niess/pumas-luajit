@@ -107,7 +107,7 @@ do
         -- Load the physics tables
         if tp == 'table' then
             local particle = particle_ctype(args.particle, raise_error)
-            ffi.C.pumas_physics_create(c, particle, args.mdf, args.dedx)
+            call(ffi.C.pumas_physics_create, c, particle, args.mdf, args.dedx)
         else
             local path = args
             local mode, errmsg = lfs.attributes(path, 'mode')
@@ -564,7 +564,7 @@ function physics.build (args)
     -- Generate the energy loss tables
     local physics_ = ffi.new('struct pumas_physics *[1]')
     ffi.gc(physics_, ffi.C.pumas_physics_destroy)
-    ffi.C.pumas_physics_create_tabulation(physics_, particle, mdf)
+    call(ffi.C.pumas_physics_create_tabulation, physics_, particle, mdf)
 
     local data = ffi.new('struct pumas_physics_tabulation_data')
     local outdir
@@ -574,7 +574,7 @@ function physics.build (args)
     data.n_kinetics = ffi.sizeof(energies) / ffi.sizeof('double')
     data.kinetic = energies
 
-    local ok, errormsg
+    local errormsg
     for name, material in pairs(materials) do
         local m = data.material
         local index = ffi.new('int [1]')
@@ -598,11 +598,12 @@ function physics.build (args)
         m.Cbar = material.Cbar
         m.delta0 = material.delta0
 
-        ok, errormsg = pcall(ffi.C.pumas_physics_tabulate, physics_[0], data)
-        if not ok then break end
+        errormsg = call.protected(
+            ffi.C.pumas_physics_tabulate, physics_[0], data)
+        if errormsg then break end
     end
     ffi.C.pumas_physics_tabulation_clear(physics_[0], data)
-    if not ok then
+    if errormsg then
         ffi.C.pumas_physics_destroy(physics_)
         raise_error{
             description = errormsg
@@ -613,10 +614,10 @@ function physics.build (args)
         -- Generate a binary dump
         local dump
         ffi.C.pumas_physics_destroy(physics_)
-        ffi.C.pumas_physics_create(physics_, particle, mdf, path)
+        call(ffi.C.pumas_physics_create, physics_, particle, mdf, path)
         dump = path..os.PATHSEP..project..'.pumas'
         local file = io.open(dump, 'w+')
-        ffi.C.pumas_physics_dump(physics_[0], file)
+        call(ffi.C.pumas_physics_dump, physics_[0], file)
         file:close()
     end
 
