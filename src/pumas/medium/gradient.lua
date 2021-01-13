@@ -4,6 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
+local clib = require('pumas.clib')
 local error = require('pumas.error')
 local materials = require('pumas.materials')
 local base = require('pumas.medium.base')
@@ -104,16 +105,16 @@ do
             end
             local type_tag = args.type:lower()
             if type_tag == 'linear' then
-                type_ = ffi.C.PUMAS_MEDIUM_GRADIENT_LINEAR
+                type_ = clib.PUMAS_MEDIUM_GRADIENT_LINEAR
             elseif type_tag == 'exponential' then
-                type_ = ffi.C.PUMAS_MEDIUM_GRADIENT_EXPONENTIAL
+                type_ = clib.PUMAS_MEDIUM_GRADIENT_EXPONENTIAL
             else
                 raise_error{
                     argname = 'type', expected = "'linear' or 'exponential'",
                     got = args.type}
             end
         else
-            type_ = ffi.C.PUMAS_MEDIUM_GRADIENT_EXPONENTIAL
+            type_ = clib.PUMAS_MEDIUM_GRADIENT_EXPONENTIAL
         end
 
         -- Parse the gradient axis
@@ -161,11 +162,11 @@ do
 
         local self = base.BaseMedium.new(ctype, ctype_ptr, material)
 
-        ffi.C.pumas_medium_gradient_initialise(self._c, -1, type_, lambda,
+        clib.pumas_medium_gradient_initialise(self._c, -1, type_, lambda,
                                                z0, rho0, magnet)
         if axis == 'vertical' then
             self._c.gradient.project =
-                ffi.C.pumas_medium_gradient_project_altitude
+                clib.pumas_medium_gradient_project_altitude
         else
             self._c.gradient.direction = axis
         end

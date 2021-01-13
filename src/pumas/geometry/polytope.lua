@@ -4,6 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
+local clib = require('pumas.clib')
 local coordinates = require('pumas.coordinates')
 local error = require('pumas.error')
 local base = require('pumas.geometry.base')
@@ -383,7 +384,7 @@ local function build_polytopes (args, frame, refs, depth, index)
     ffi.gc(mother, ffi.C.free)
     table.insert(refs, mother)
 
-    mother.base.get = ffi.C.pumas_geometry_polytope_get
+    mother.base.get = clib.pumas_geometry_polytope_get
     if medium_ ~= nil then
         mother.medium = ffi.cast(pumas_medium_ptr, medium_._c)
         refs[medium_._c] = true

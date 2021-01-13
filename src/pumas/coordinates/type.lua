@@ -4,6 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
+local clib = require('pumas.clib')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
 
@@ -142,13 +143,13 @@ end
 type_.CartesianPoint = CoordinatesType('CartesianPoint', cartesian_point_t,
     function (ct)
         if ct == geodetic_point_t then
-            return ffi.C.pumas_coordinates_cartesian_point_from_geodetic
+            return clib.pumas_coordinates_cartesian_point_from_geodetic
         elseif ct == spherical_point_t then
-            return ffi.C.pumas_coordinates_cartesian_point_from_spherical
+            return clib.pumas_coordinates_cartesian_point_from_spherical
         end
     end,
     nil,
-    ffi.C.pumas_coordinates_cartesian_point_transform)
+    clib.pumas_coordinates_cartesian_point_transform)
 
 
 -------------------------------------------------------------------------------
@@ -157,13 +158,13 @@ type_.CartesianPoint = CoordinatesType('CartesianPoint', cartesian_point_t,
 type_.CartesianVector = CoordinatesType('CartesianVector', cartesian_vector_t,
     function (ct)
         if ct == horizontal_vector_t then
-            return ffi.C.pumas_coordinates_cartesian_vector_from_horizontal
+            return clib.pumas_coordinates_cartesian_vector_from_horizontal
         elseif ct == spherical_vector_t then
-            return ffi.C.pumas_coordinates_cartesian_vector_from_spherical
+            return clib.pumas_coordinates_cartesian_vector_from_spherical
         end
     end,
     nil,
-    ffi.C.pumas_coordinates_cartesian_vector_transform)
+    clib.pumas_coordinates_cartesian_vector_transform)
 
 
 -------------------------------------------------------------------------------
@@ -172,12 +173,12 @@ type_.CartesianVector = CoordinatesType('CartesianVector', cartesian_vector_t,
 type_.GeodeticPoint = CoordinatesType('GeodeticPoint', geodetic_point_t,
     function (ct)
         if ct == cartesian_point_t then
-            return ffi.C.pumas_coordinates_geodetic_point_from_cartesian
+            return clib.pumas_coordinates_geodetic_point_from_cartesian
         elseif ct == spherical_point_t then
-            return ffi.C.pumas_coordinates_geodetic_point_from_spherical
+            return clib.pumas_coordinates_geodetic_point_from_spherical
         end
     end,
-    ffi.C.pumas_coordinates_cartesian_point_from_geodetic)
+    clib.pumas_coordinates_cartesian_point_from_geodetic)
 
 
 -------------------------------------------------------------------------------
@@ -187,13 +188,13 @@ type_.HorizontalVector = CoordinatesType('HorizontalVector',
     horizontal_vector_t,
     function (ct)
         if ct == cartesian_vector_t then
-            return ffi.C.pumas_coordinates_horizontal_vector_from_cartesian
+            return clib.pumas_coordinates_horizontal_vector_from_cartesian
         elseif ct == spherical_vector_t then
-            return ffi.C.pumas_coordinates_horizontal_vector_from_spherical
+            return clib.pumas_coordinates_horizontal_vector_from_spherical
         end
     end,
-    ffi.C.pumas_coordinates_cartesian_vector_from_horizontal,
-    ffi.C.pumas_coordinates_horizontal_vector_transform)
+    clib.pumas_coordinates_cartesian_vector_from_horizontal,
+    clib.pumas_coordinates_horizontal_vector_transform)
 
 
 -------------------------------------------------------------------------------
@@ -202,13 +203,13 @@ type_.HorizontalVector = CoordinatesType('HorizontalVector',
 type_.SphericalPoint = CoordinatesType('SphericalPoint', spherical_point_t,
     function (ct)
         if ct == cartesian_point_t then
-            return ffi.C.pumas_coordinates_spherical_point_from_cartesian
+            return clib.pumas_coordinates_spherical_point_from_cartesian
         elseif ct == geodetic_point_t then
-            return ffi.C.pumas_coordinates_spherical_point_from_geodetic
+            return clib.pumas_coordinates_spherical_point_from_geodetic
         end
     end,
-    ffi.C.pumas_coordinates_cartesian_point_from_spherical,
-    ffi.C.pumas_coordinates_spherical_point_transform)
+    clib.pumas_coordinates_cartesian_point_from_spherical,
+    clib.pumas_coordinates_spherical_point_transform)
 
 
 -------------------------------------------------------------------------------
@@ -217,13 +218,13 @@ type_.SphericalPoint = CoordinatesType('SphericalPoint', spherical_point_t,
 type_.SphericalVector = CoordinatesType('SphericalVector', spherical_vector_t,
     function (ct)
         if ct == cartesian_vector_t then
-            return ffi.C.pumas_coordinates_spherical_vector_from_cartesian
+            return clib.pumas_coordinates_spherical_vector_from_cartesian
         elseif ct == horizontal_vector_t then
-            return ffi.C.pumas_coordinates_spherical_vector_from_horizontal
+            return clib.pumas_coordinates_spherical_vector_from_horizontal
         end
     end,
-    ffi.C.pumas_coordinates_cartesian_vector_from_spherical,
-    ffi.C.pumas_coordinates_spherical_vector_transform)
+    clib.pumas_coordinates_cartesian_vector_from_spherical,
+    clib.pumas_coordinates_spherical_vector_transform)
 
 
 -------------------------------------------------------------------------------

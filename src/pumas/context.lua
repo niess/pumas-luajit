@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
 local call = require('pumas.call')
+local clib = require('pumas.clib')
 local compat = require('pumas.compat')
 local enum = require('pumas.enum')
 local error = require('pumas.error')
@@ -120,7 +121,7 @@ function Context:__newindex (k, v)
         if current_geometry == v then return end
 
         if current_geometry ~= nil then
-            ffi.C.pumas_geometry_destroy(self._c)
+            clib.pumas_geometry_destroy(self._c)
         end
 
         if (v ~= nil) and ((type(v) ~= 'table') or
@@ -135,7 +136,7 @@ function Context:__newindex (k, v)
             v = get_random_seed()
         end
         local c = rawget(self, '_c')
-        ffi.C.pumas_random_initialise(c, v)
+        clib.pumas_random_initialise(c, v)
 
         rawset(self, '_random_seed', v)
     elseif k == 'recorder' then
@@ -188,7 +189,7 @@ do
         end
 
         local extended_state = ffi.cast(pumas_state_extended_ptr, state_._c)
-        ffi.C.pumas_state_extended_reset(extended_state, self._c)
+        clib.pumas_state_extended_reset(extended_state, self._c)
 
         local ok, m = medium.update(self._physics)
         if not ok then
@@ -198,7 +199,7 @@ do
         end
         self._geometry:_update(self)
         self._c.event = self.event.value
-        call(ffi.C.pumas_context_transport, self._c, state_._c,
+        call(clib.pumas_context_transport, self._c, state_._c,
             self._cache.event, self._cache.media)
         local media = compat.table_new(2, 0)
 
@@ -225,7 +226,7 @@ local function medium_callback (self, state_)
     end
 
     local extended_state = ffi.cast(pumas_state_extended_ptr, state_._c)
-    ffi.C.pumas_state_extended_reset(extended_state, self._c)
+    clib.pumas_state_extended_reset(extended_state, self._c)
 
     self._geometry:_update(self)
     self._c.medium(self._c, state_._c, self._cache.media,
@@ -343,13 +344,13 @@ do
         end
 
         local ptr = ffi.new('struct pumas_context *[1]')
-        call(ffi.C.pumas_context_create, ptr, physics._c[0],
+        call(clib.pumas_context_create, ptr, physics._c[0],
                 ffi.sizeof('struct pumas_user_data'))
         local c = ptr[0]
-        ffi.gc(c, function () ffi.C.pumas_context_destroy(ptr) end)
+        ffi.gc(c, function () clib.pumas_context_destroy(ptr) end)
 
-        c.random = ffi.C.pumas_random_uniform01
-        c.medium = ffi.C.pumas_geometry_medium
+        c.random = clib.pumas_random_uniform01
+        c.medium = clib.pumas_geometry_medium
 
         local user_data = ffi.cast('struct pumas_user_data *', c.user_data)
         user_data.geometry.top = nil

@@ -6,6 +6,7 @@
 local lfs = require('lfs')
 local ffi = require('ffi')
 local call = require('pumas.call')
+local clib = require('pumas.clib')
 local context = require('pumas.context')
 local elements = require('pumas.elements')
 local error = require('pumas.error')
@@ -17,22 +18,11 @@ local physics = {}
 
 
 -------------------------------------------------------------------------------
--- Forward some Physics constants
--------------------------------------------------------------------------------
--- XXX get this from C/PUMAS directly
-physics.MUON_C_TAU = 658.654
-physics.TAU_C_TAU = 87.03E-06
-physics.ELECTRON_MASS = 0.510998910E-03
-physics.MUON_MASS = 0.10565839
-physics.TAU_MASS = 1.77682
-
-
--------------------------------------------------------------------------------
 -- Conversion between particles C type and strings
 -------------------------------------------------------------------------------
 local function particle_ctype (name, raise_error)
     if name == nil then
-        return ffi.C.PUMAS_PARTICLE_MUON
+        return clib.PUMAS_PARTICLE_MUON
     else
         if type(name) ~= 'string' then
             raise_error{
@@ -44,9 +34,9 @@ local function particle_ctype (name, raise_error)
 
         local tmp = name:lower()
         if tmp == 'muon' then
-            return ffi.C.PUMAS_PARTICLE_MUON
+            return clib.PUMAS_PARTICLE_MUON
         elseif tmp == "tau" then
-            return ffi.C.PUMAS_PARTICLE_TAU
+            return clib.PUMAS_PARTICLE_TAU
         else
             raise_error{
                 argname = 'particle',
@@ -59,9 +49,9 @@ end
 
 
 local function particle_string (ctype)
-    if ctype == ffi.C.PUMAS_PARTICLE_MUON then
+    if ctype == clib.PUMAS_PARTICLE_MUON then
         return 'muon'
-    elseif ctype == ffi.C.PUMAS_PARTICLE_TAU then
+    elseif ctype == clib.PUMAS_PARTICLE_TAU then
         return 'tau'
     end
 end
@@ -85,7 +75,7 @@ do
 
     local function new (cls, args)
         local c = ffi.new('struct pumas_physics *[1]')
-        ffi.gc(c, ffi.C.pumas_physics_destroy)
+        ffi.gc(c, clib.pumas_physics_destroy)
 
         if args == nil then
             error.raise{
@@ -107,7 +97,7 @@ do
         -- Load the physics tables
         if tp == 'table' then
             local particle = particle_ctype(args.particle, raise_error)
-            call(ffi.C.pumas_physics_create, c, particle, args.mdf, args.dedx)
+            call(clib.pumas_physics_create, c, particle, args.mdf, args.dedx)
         else
             local path = args
             local mode, errmsg = lfs.attributes(path, 'mode')
@@ -122,7 +112,7 @@ do
                 raise_error('could not open file '..path)
             end
 
-            errmsg = call.protected(ffi.C.pumas_physics_load, c, f)
+            errmsg = call.protected(clib.pumas_physics_load, c, f)
             f:close()
             if errmsg then
                 raise_error{
@@ -141,7 +131,7 @@ do
         local particle = ffi.new('enum pumas_particle [1]')
         local lifetime = ffi.new('double [1]')
         local mass = ffi.new('double [1]')
-        local rc = ffi.C.pumas_physics_particle(c[0], particle, lifetime,
+        local rc = clib.pumas_physics_particle(c[0], particle, lifetime,
             mass)
         if rc == 0 then
             self.particle = {
@@ -182,7 +172,7 @@ do
             raise_error('could not open file '..path)
         end
 
-        local errmsg = call.protected(ffi.C.pumas_physics_dump, self._c[0], f)
+        local errmsg = call.protected(clib.pumas_physics_dump, self._c[0], f)
         f:close()
         if errmsg then
             raise_error{
@@ -192,6 +182,9 @@ do
         end
     end
 end
+
+
+-- XXX add an interface to tables, properties and DCSs
 
 
 -------------------------------------------------------------------------------
@@ -301,7 +294,7 @@ function physics.build (args)
     particle = particle_ctype(particle, raise_error)
 
     if energies == nil then
-        if particle == ffi.C.PUMAS_PARTICLE_MUON
+        if particle == clib.PUMAS_PARTICLE_MUON
         then energies = 'pdg'
         else energies = {min = 1E+02, max = 1E+12, n = 201}
         end
@@ -563,8 +556,8 @@ function physics.build (args)
 
     -- Generate the energy loss tables
     local physics_ = ffi.new('struct pumas_physics *[1]')
-    ffi.gc(physics_, ffi.C.pumas_physics_destroy)
-    call(ffi.C.pumas_physics_create_tabulation, physics_, particle, mdf)
+    ffi.gc(physics_, clib.pumas_physics_destroy)
+    call(clib.pumas_physics_create_tabulation, physics_, particle, mdf)
 
     local data = ffi.new('struct pumas_physics_tabulation_data')
     local outdir
@@ -578,17 +571,17 @@ function physics.build (args)
     for name, material in pairs(materials) do
         local m = data.material
         local index = ffi.new('int [1]')
-        ffi.C.pumas_physics_material_index(physics_[0], name, index)
+        clib.pumas_physics_material_index(physics_[0], name, index)
         m.index = index[0]
         m.density = material.density
         m.I = material.I * 1E-09
         if material.state == nil then
-            m.state = ffi.C.PUMAS_PHYSICS_STATE_UNKNOWN
+            m.state = clib.PUMAS_PHYSICS_STATE_UNKNOWN
         else
             m.state = ({
-                solid  = ffi.C.PUMAS_PHYSICS_STATE_SOLID,
-                liquid = ffi.C.PUMAS_PHYSICS_STATE_LIQUID,
-                gaz    = ffi.C.PUMAS_PHYSICS_STATE_GAZ
+                solid  = clib.PUMAS_PHYSICS_STATE_SOLID,
+                liquid = clib.PUMAS_PHYSICS_STATE_LIQUID,
+                gaz    = clib.PUMAS_PHYSICS_STATE_GAZ
             })[material.state:lower()]
         end
         m.a = material.a
@@ -599,12 +592,12 @@ function physics.build (args)
         m.delta0 = material.delta0
 
         errormsg = call.protected(
-            ffi.C.pumas_physics_tabulate, physics_[0], data)
+            clib.pumas_physics_tabulate, physics_[0], data)
         if errormsg then break end
     end
-    ffi.C.pumas_physics_tabulation_clear(physics_[0], data)
+    clib.pumas_physics_tabulation_clear(physics_[0], data)
     if errormsg then
-        ffi.C.pumas_physics_destroy(physics_)
+        clib.pumas_physics_destroy(physics_)
         raise_error{
             description = errormsg
         }
@@ -613,23 +606,21 @@ function physics.build (args)
     if compile then
         -- Generate a binary dump
         local dump
-        ffi.C.pumas_physics_destroy(physics_)
-        call(ffi.C.pumas_physics_create, physics_, particle, mdf, path)
+        clib.pumas_physics_destroy(physics_)
+        call(clib.pumas_physics_create, physics_, particle, mdf, path)
         dump = path..os.PATHSEP..project..'.pumas'
         local file = io.open(dump, 'w+')
-        call(ffi.C.pumas_physics_dump, physics_[0], file)
+        call(clib.pumas_physics_dump, physics_[0], file)
         file:close()
     end
 
-    ffi.C.pumas_physics_destroy(physics_)
+    clib.pumas_physics_destroy(physics_)
 end
 
 
 -------------------------------------------------------------------------------
 -- Register the subpackage
 -------------------------------------------------------------------------------
--- XXX add an interface to tables, properties and DCSs
-
 function physics.register_to (t)
     t.build = physics.build
     t.Physics = physics.Physics

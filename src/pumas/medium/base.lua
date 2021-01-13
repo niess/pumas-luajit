@@ -4,6 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
+local clib = require('pumas.clib')
 local error = require('pumas.error')
 
 local base = {}
@@ -37,9 +38,9 @@ do
 
         for _, medium in pairs(media_table) do
             if medium.material and (medium.material ~= 'Transparent') then
-                local rc = ffi.C.pumas_physics_material_index(physics._c[0],
+                local rc = clib.pumas_physics_material_index(physics._c[0],
                     medium.material, index)
-                if rc ~= ffi.C.PUMAS_RETURN_SUCCESS then
+                if rc ~= clib.PUMAS_RETURN_SUCCESS then
                     return false, medium
                 else
                     local m = ffi.cast('struct pumas_medium *', medium._c)

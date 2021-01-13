@@ -4,6 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
+local clib = require('pumas.clib')
 local error = require('pumas.error')
 local base = require('pumas.geometry.base')
 local metatype = require('pumas.metatype')
@@ -20,7 +21,7 @@ local InfiniteGeometry = {}
 local function new (self)
     local c = ffi.cast('struct pumas_geometry_infinite *',
         ffi.C.calloc(1, ffi.sizeof('struct pumas_geometry_infinite')))
-    c.base.get = ffi.C.pumas_geometry_infinite_get
+    c.base.get = clib.pumas_geometry_infinite_get
     c.base.destroy = ffi.C.free
     if self._medium ~= nil then
         c.medium = ffi.cast('struct pumas_medium *', self._medium._c)

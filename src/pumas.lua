@@ -3,66 +3,16 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi') -- XXX support vanilla Lua with cffi?
-local lfs = require('lfs')
-local os = require('pumas.os')
-require('pumas.header.api')
-require('pumas.header.extensions')
-require('pumas.header.gull')
-require('pumas.header.turtle')
+local clib = require('pumas.clib')
 
 local pumas = {}
-
-
--------------------------------------------------------------------------------
--- Prototypes of some standard C functions
--------------------------------------------------------------------------------
-ffi.cdef [[
-void * calloc(size_t, size_t);
-void free(void *);
-size_t fwrite(const void * ptr, size_t size, size_t nmemb,
-    struct FILE * stream);
-void * malloc(size_t);
-]]
-
-
--------------------------------------------------------------------------------
--- Load the C libraries and their extensions if not embedded in the runtime
--------------------------------------------------------------------------------
-do
-    local ok = pcall(function () return ffi.C.pumas_error_initialise end)
-    if not ok then
-        local _, path = ... -- Lua 5.2
-        if path == nil then
-            path = debug.getinfo(1, 'S').source:sub(2) -- Lua 5.1
-        end
-        local dirname = path:match('(.*'..os.PATHSEP..')') or ''
-
-        local libname = 'libpumas_extended.'..os.LIBEXT
-        if love then
-            -- For love2d the module is expected be located in the source
-            dirname = love.filesystem.getSource()..dirname
-            path = dirname..table.concat({'pumas', libname}, os.PATHSEP)
-        else
-            -- For Lua modules the C library is installed under lib/ while
-            -- this source is under share/.
-            -- XXX this is likely OS specific
-            local version = _VERSION:match('[0-9.]+')
-            path = dirname..table.concat(
-                {'..', '..', '..', 'lib', 'lua', version, 'pumas', libname},
-                os.PATHSEP)
-        end
-
-        ffi.load(path, true)
-    end
-end
 
 
 -------------------------------------------------------------------------------
 -- Set the PUMAS library version tag
 -------------------------------------------------------------------------------
 do
-    local tag = ffi.C.pumas_version()
+    local tag = clib.pumas_version()
     local major = math.floor(tag / 1000)
     local minor = tag - major
     pumas.version = string.format('%d.%d', major, minor)
@@ -94,10 +44,13 @@ register('pumas.physics')
 register('pumas.recorder')
 register('pumas.state')
 
+pumas.constants = require('pumas.constants')
+
 
 -------------------------------------------------------------------------------
 -- Register all API functions
 -------------------------------------------------------------------------------
+-- XXX what if only a sub-package is imported?
 do
     local error_ = require('pumas.error')
     for k, v in pairs(pumas) do

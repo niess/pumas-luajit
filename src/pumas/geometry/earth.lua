@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
 local call = require('pumas.call')
+local clib = require('pumas.clib')
 local compat = require('pumas.compat')
 local error = require('pumas.error')
 local base = require('pumas.geometry.base')
@@ -27,9 +28,9 @@ local pumas_geometry_ptr = ffi.typeof('struct pumas_geometry *')
 local function new (self)
     local c = ffi.cast(ctype_ptr, ffi.C.calloc(1, ffi.sizeof(ctype)))
 
-    c.base.get = ffi.C.pumas_geometry_earth_get
-    c.base.reset = ffi.C.pumas_geometry_earth_reset
-    c.base.destroy = ffi.C.pumas_geometry_earth_destroy
+    c.base.get = clib.pumas_geometry_earth_get
+    c.base.reset = clib.pumas_geometry_earth_reset
+    c.base.destroy = clib.pumas_geometry_earth_destroy
     c.media = self._media
     c.n_layers = #self._layers
 
@@ -95,7 +96,7 @@ local function new (self)
             }
         end
 
-        c.base.magnet = ffi.C.pumas_geometry_earth_magnet
+        c.base.magnet = clib.pumas_geometry_earth_magnet
     else
         c.magnet.snapshot[0] = nil
     end

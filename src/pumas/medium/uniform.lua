@@ -4,6 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
+local clib = require('pumas.clib')
 local error = require('pumas.error')
 local materials = require('pumas.materials')
 local base = require('pumas.medium.base')
@@ -73,7 +74,7 @@ do
             end
         end
 
-        ffi.C.pumas_medium_uniform_initialise(self._c, -1, density, magnet)
+        clib.pumas_medium_uniform_initialise(self._c, -1, density, magnet)
 
         return setmetatable(self, cls)
     end

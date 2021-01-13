@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
 local call = require('pumas.call')
+local clib = require('pumas.clib')
 local enum = require('pumas.enum')
 local error = require('pumas.error')
 local medium = require('pumas.medium')
@@ -81,13 +82,13 @@ end
 do
     local function new (cls, callback, period)
         local ptr = ffi.new('struct pumas_recorder *[1]')
-        call(ffi.C.pumas_recorder_create, ptr, 0)
+        call(clib.pumas_recorder_create, ptr, 0)
         local c = ptr[0]
         ffi.gc(c, function ()
             if c.record ~= nil then
                 c.record:free()
             end
-            ffi.C.pumas_recorder_destroy(ptr)
+            clib.pumas_recorder_destroy(ptr)
         end)
 
         local self = setmetatable({_c = c}, cls)

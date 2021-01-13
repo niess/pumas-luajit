@@ -3,7 +3,7 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
+local clib = require('pumas.clib')
 local error = require('pumas.error')
 local physics = require('pumas.physics')
 
@@ -208,12 +208,12 @@ function flux.MuonFlux (model, options)
             end
         end
 
-        local data = ffi.C.pumas_flux_tabulation_data[1]
+        local data = clib.pumas_flux_tabulation_data[1]
         -- XXX interpolate with altitude
 
         return function (kinetic, cos_theta, charge)
             if charge == nil then charge = 0 end
-            return ffi.C.pumas_flux_tabulation_get(data, kinetic, cos_theta,
+            return clib.pumas_flux_tabulation_get(data, kinetic, cos_theta,
                                                    charge) * normalisation
         end
     end

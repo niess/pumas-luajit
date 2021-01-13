@@ -4,6 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
+local clib = require('pumas.clib')
 local transform = require('pumas.coordinates.transform')
 local error = require('pumas.error')
 local type_ = require('pumas.coordinates.type')
@@ -42,7 +43,7 @@ function frame.LocalFrame (origin)
     end
 
     local self = transform.Transform()
-    ffi.C.pumas_coordinates_frame_initialise_local(
+    clib.pumas_coordinates_frame_initialise_local(
         self, origin, geodetic)
 
     return self

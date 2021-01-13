@@ -3,7 +3,7 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
+local clib = require('pumas.clib')
 local error = require('pumas.error')
 local base = require('pumas.medium.base')
 
@@ -45,7 +45,7 @@ end
 -------------------------------------------------------------------------------
 do
     local m = setmetatable({
-        _c = ffi.C.PUMAS_MEDIUM_TRANSPARENT,
+        _c = clib.PUMAS_MEDIUM_TRANSPARENT,
         material = 'Transparent'
     }, TransparentMedium)
 

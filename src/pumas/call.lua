@@ -4,13 +4,14 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
+local clib = require('pumas.clib')
 local error = require('pumas.error')
 
 
 -------------------------------------------------------------------------------
 -- Initialise the C error handler
 -------------------------------------------------------------------------------
-ffi.C.pumas_error_initialise()
+clib.pumas_error_initialise()
 
 
 -------------------------------------------------------------------------------
@@ -26,7 +27,7 @@ local raise_error = error.ErrorFunction{header = 'C library error'}
 
 local function ccall (_, func,...)
     if func(...) ~= 0 then
-        local msg = ffi.string(ffi.C.pumas_error_get())
+        local msg = ffi.string(clib.pumas_error_get())
         raise_error(msg:match(pattern))
     end
 end
@@ -37,7 +38,7 @@ end
 -------------------------------------------------------------------------------
 local function pccall (func,...)
     if func(...) ~= 0 then
-        local msg = ffi.string(ffi.C.pumas_error_get())
+        local msg = ffi.string(clib.pumas_error_get())
         return msg:match(pattern)
     end
 end

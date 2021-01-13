@@ -234,6 +234,8 @@ end
 -------------------------------------------------------------------------------
 -- Register the subpackage
 -------------------------------------------------------------------------------
+-- XXX Add composites
+
 function materials.register_to (t)
     t.Material = materials.Material
     t.MATERIALS = materials.MATERIALS

@@ -3,7 +3,7 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local ffi = require('ffi')
+local clib = require('pumas.clib')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
 
@@ -136,22 +136,22 @@ end
 local function set_daughters (mother, c_mother)
     for _, daughter in ipairs(mother._daughters) do
         local c_daughter = daughter:_new()
-        ffi.C.pumas_geometry_push(c_mother, c_daughter)
+        clib.pumas_geometry_push(c_mother, c_daughter)
         set_daughters(daughter, c_daughter)
     end
 end
 
 
 function base.BaseGeometry.__index:_update (context)
-    ffi.C.pumas_geometry_reset(context._c)
+    clib.pumas_geometry_reset(context._c)
 
-    if (ffi.C.pumas_geometry_get(context._c) ~= nil) and self._valid then
+    if (clib.pumas_geometry_get(context._c) ~= nil) and self._valid then
         return
     end
 
     local c = self:_new()
     set_daughters(self, c)
-    ffi.C.pumas_geometry_set(context._c, c)
+    clib.pumas_geometry_set(context._c, c)
     self._valid = true
 end
 
