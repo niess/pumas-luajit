@@ -51,7 +51,11 @@ build = {
       ['pumas.os'] = 'src/pumas/os.lua',
       ['pumas.recorder'] = 'src/pumas/recorder.lua',
       ['pumas.state'] = 'src/pumas/state.lua',
-      ['pumas.physics'] = 'src/pumas/physics.lua'
+      ['pumas.physics'] = 'src/pumas/physics.lua',
+      ['pumas.physics.build'] = 'src/pumas/physics/build.lua',
+      ['pumas.physics.type'] = 'src/pumas/physics/physics.lua'
+      ['pumas.physics.tables'] = 'src/pumas/physics/tabulated.lua',
+      ['pumas.physics.utils'] = 'src/pumas/physics/utils.lua',
    },
    install = {
        lib = {

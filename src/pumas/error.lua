@@ -46,13 +46,16 @@ do
         if type(v) == 'function' then
             api_functions[v] = k
         elseif type(v) == 'table' then
-            if rawget(v, '__index') then
-                local mt = getmetatable(v)
-                if mt and mt.__call then
-                    api_functions[mt.__call] = k..'.__call'
-                end
+            local mt = getmetatable(v)
+            if mt and mt.__call then
+                api_functions[mt.__call] = k..'.__call'
+            end
 
+            if rawget(v, '__index') then
                 register_meta(k, v, '__index')
+            end
+
+            if rawget(v, '__newindex') then
                 register_meta(k, v, '__newindex')
             end
         end

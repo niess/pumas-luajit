@@ -11,7 +11,7 @@ LUAJIT_REPO=     "https://github.com/openresty/luajit2.git"
 LUAJIT_VERSION=  "v2.1-20200102"
 
 PUMAS_REPO=      "https://github.com/niess/pumas.git"
-PUMAS_VERSION=   "e1c5519"
+PUMAS_VERSION=   "8655b4c"
 
 TURTLE_REPO=     "https://github.com/niess/turtle.git"
 TURTLE_VERSION=  "2c2ecdf"
@@ -246,6 +246,9 @@ $(OBJS_DIR)/$(CROSS)pumas_header_%.lua.o: pumas/header/%.lua $(LUAJIT_EXE) | $(O
 $(OBJS_DIR)/$(CROSS)pumas_medium_%.lua.o: pumas/medium/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
 	@$(call jit_compile,pumas.medium.$*,$<,$@)
 
+$(OBJS_DIR)/$(CROSS)pumas_physics_%.lua.o: pumas/physics/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
+	@$(call jit_compile,pumas.physics.$*,$<,$@)
+
 $(OBJS_DIR)/$(CROSS)pumas.lua.o: pumas.lua $(LUAJIT_EXE) | $(OBJS_DIR)
 	@$(call jit_compile,pumas,$<,$@)
 
@@ -319,6 +322,10 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_metatype.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_os.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_physics.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_physics_build.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_physics_physics.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_physics_tabulated.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_physics_utils.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_recorder.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_state.lua.o \
 	      $(OBJS_DIR)/$(CROSS)runtime.lua.o \
