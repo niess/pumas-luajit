@@ -50,6 +50,7 @@ end
 elements.ELEMENTS = require('pumas.data.elements')
 
 for k, v in pairs(elements.ELEMENTS) do
+    v.I = v.I * 1E-09 -- XXX Use GeV directly
     elements.ELEMENTS[k] = setmetatable(v, Element)
 end
 

@@ -10,6 +10,7 @@ local clib = require('pumas.clib')
 local context = require('pumas.context')
 local error = require('pumas.error')
 local os = require('pumas.os')
+local readonly = require('pumas.readonly')
 local tabulated = require('pumas.physics.tabulated')
 local utils = require('pumas.physics.utils')
 
@@ -87,37 +88,64 @@ do
         physics_version = physics_version + 1
 
         -- Update the particle properties
+        -- XXX lazy loading instead
         local particle = ffi.new('enum pumas_particle [1]')
         local lifetime = ffi.new('double [1]')
         local mass = ffi.new('double [1]')
         local rc = clib.pumas_physics_particle(c[0], particle, lifetime,
             mass)
         if rc == 0 then
-            self.particle = {
+            self.particle = readonly({
                 name = utils.particle_string(particle[0]),
                 lifetime = tonumber(lifetime[0]),
                 mass = tonumber(mass[0])
-            }
+            }, 'particle')
         end
+
+        -- Build the elements index
+        -- XXX lazy loading instead
+        local elements = {}
+        do
+            local name = ffi.new('const char *[1]')
+            local properties = ffi.new('double [3]')
+
+            local n = tonumber(clib.pumas_physics_element_length(c[0]))
+            for i = 0, n - 1 do
+                clib.pumas_physics_element_name(c[0], i, name)
+                clib.pumas_physics_element_properties(c[0], i, properties,
+                    properties + 1, properties + 2)
+
+                local k = ffi.string(name[0])
+                elements[k] = readonly(
+                    {Z = tonumber(properties[0]), A = tonumber(properties[1]),
+                    I = tonumber(properties[2])}, "Element' table '"..k,
+                    'Element')
+            end
+        end
+        self.elements = readonly(elements, 'elements')
 
         -- Build the materials index
-        local n = tonumber(clib.pumas_physics_material_length(c[0]))
+        -- XXX lazy loading instead
         local materials = {}
-        for i = 0, n - 1 do
-            local m = tabulated.TabulatedMaterial(self, i)
-            materials[m.name] = m
+        do
+            local n = tonumber(clib.pumas_physics_material_length(c[0]))
+            for i = 0, n - 1 do
+                -- XXX HERE make materials readonly as well
+                local m = tabulated.TabulatedMaterial(self, i)
+                materials[m.name] = m
+            end
         end
-        self.materials = materials
+        self.materials = readonly(materials, 'materials')
 
         -- Wrap the DCS
-        self.dcs = {
+        self.dcs = readonly({
             bremsstrahlung = clib.pumas_physics_dcs_get(
                 c[0], clib.PUMAS_PROCESS_BREMSSTRAHLUNG),
             pair_production = clib.pumas_physics_dcs_get(
                 c[0], clib.PUMAS_PROCESS_PAIR_PRODUCTION),
             photonuclear = clib.pumas_physics_dcs_get(
                 c[0], clib.PUMAS_PROCESS_PHOTONUCLEAR)
-        }
+        }, 'dcs')
 
         return self
     end

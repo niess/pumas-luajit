@@ -39,12 +39,13 @@ do
             }
         end
 
-        local formula, composition, density, state, I, a, k, x0, x1, Cbar,
-              delta0
+        local formula, composition, density, ELEMENTS, state, I, a, k, x0, x1,
+            Cbar, delta0
         for key, value in pairs(args) do
             if     key == 'formula' then formula = value
             elseif key == 'composition' then composition = value
             elseif key == 'density' then density = value
+            elseif key == 'elements' then ELEMENTS = value
             elseif key == 'state' then state = value
             elseif key == 'I' then I = value
             elseif key == 'a' then a = value
@@ -69,6 +70,10 @@ do
             delta0 = 0
         end
 
+        if not ELEMENTS then
+            ELEMENTS = elements.ELEMENTS
+        end
+
         local self = {}
 
         if formula then
@@ -82,7 +87,7 @@ do
             local compo, norm = {}, 0
             for symbol, count in formula:gmatch('(%u%l?)(%d*)') do
                 count = tonumber(count) or 1
-                local wi = count * elements.ELEMENTS[symbol].A
+                local wi = count * ELEMENTS[symbol].A
                 table.insert(compo, {symbol, wi})
                 norm = norm + wi
             end
@@ -106,7 +111,7 @@ do
         local ZoA, mee = 0, 0
         for _, value in ipairs(self.composition) do
             local symbol, wi = unpack(value)
-            local e = elements.ELEMENTS[symbol]
+            local e = ELEMENTS[symbol]
             if e == nil then
                 raise_error{description = "unknown element '"..symbol.."'"}
             end
@@ -226,6 +231,7 @@ end
 materials.MATERIALS = require('pumas.data.materials')
 for k, v in pairs(materials.MATERIALS) do
     v.density = v.density * 1E+03 -- XXX use kg / m^3
+    v.I = v.I * 1E-09             -- XXX use GeV
                                   -- XXX Add update tools / pdg package (?)
     materials.MATERIALS[k] = materials.Material(v)
 end

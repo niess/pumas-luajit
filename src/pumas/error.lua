@@ -82,7 +82,7 @@ function error_.raise (args)
                                   args.bad_member.."'")
             elseif args.not_mutable ~= nil then
                 table.insert(msg, "cannot modify '"..args.not_mutable..
-                                  " for '"..args.type.."'")
+                                  "' for '"..args.type.."'")
             else
                 table.insert(msg, "an unknown error occured related to '"..
                                   args.type.."'")

@@ -279,7 +279,7 @@ local function tabulate_materials (_, args)
         local align3 = e.I >= 100 and '' or ' '
         xml:push(
             '  <element name="%s"%s Z="%d"%s A="%.6f" I="%.1f"%s />',
-            symbol, align1, e.Z, align2, e.A, e.I, align3)
+            symbol, align1, e.Z, align2, e.A, e.I * 1E+09, align3)
     end
 
     for _, name in ipairs(mlist) do
@@ -350,7 +350,7 @@ local function tabulate_materials (_, args)
         clib.pumas_physics_material_index(physics_[0], name, index)
         m.index = index[0]
         m.density = material.density
-        m.I = material.I * 1E-09
+        m.I = material.I
         if material.state == nil then
             m.state = clib.PUMAS_PHYSICS_STATE_UNKNOWN
         else

@@ -8,6 +8,7 @@ local call = require('pumas.call')
 local compat = require('pumas.compat')
 local clib = require('pumas.clib')
 local error = require('pumas.error')
+local materials_ = require('pumas.materials')
 local metatype = require('pumas.metatype')
 
 local tables = {}
@@ -123,19 +124,21 @@ do
             rawset(self, 'table', t)
             return t
         else
+            local prop = rawget(self, '_properties')
+            prop = prop and prop [k]
+            if prop then return prop end
+
             local func = index[k]
-            if func then
-                return func
-            else
-                error.raise{fname = 'TabulatedMaterial', bad_member = k}
-            end
+            if func then return func end
+
+            error.raise{['type'] = 'TabulatedMaterial', bad_member = k}
         end
     end
 end
 
 
 function TabulatedMaterial.__newindex (_, k, _)
-    error.raise{fname = 'TabulatedMaterial', bad_member = k}
+    error.raise{['type'] = 'TabulatedMaterial', not_mutable = k}
 end
 
 
@@ -182,17 +185,55 @@ do
         end
 
         local m = clib.pumas_physics_composite_length(physics_._c[0])
-        local components
-        if index >= n - m then
-            components = {} -- XXX parse the components and build the wrappers
+        local properties, composite
+        if index < n - m then
+            -- This is a base material. Let us fetch its properties
+            composite = false
+
+            local n_elements=  ffi.new('int [1]')
+            local density = ffi.new('double [1]')
+            local I = ffi.new('double [1]')
+            local density_effect =
+                ffi.new('struct pumas_physics_density_effect[1]')
+            clib.pumas_physics_material_properties(physics_._c[0], index,
+                n_elements, density, I, density_effect, nil, nil)
+
+            n_elements = tonumber(n_elements[0])
+            local indices = ffi.new('int [?]', n_elements)
+            local fractions = ffi.new('double [?]', n_elements)
+            clib.pumas_physics_material_properties(physics_._c[0], index,
+                nil, nil, nil, nil, indices, fractions)
+
+            local name_ = ffi.new('const char *[1]')
+            local composition = compat.table_new(n_elements, 0)
+            for i = 1, n_elements do
+                clib.pumas_physics_element_name(physics_._c[0],
+                    indices[i - 1], name_)
+                composition[i] = {ffi.string(name_[0]), fractions[i - 1]}
+            end
+            -- XXX make these tables readonly
+
+            properties = materials_.Material{
+                density = density[0], I = I[0],
+                a = density_effect[0].a, k = density_effect[0].k,
+                x0 = density_effect[0].x0, x1 = density_effect[0].x1,
+                Cbar = density_effect[0].Cbar,
+                delta0 = density_effect[0].delta0,
+                composition = composition, elements = physics_.elements}
+        else
+            -- This is a composite material. Let us fetch its properties
+            -- XXX parse the components and build the wrappers
+            composite = true
         end
 
         local self = {_physics = physics_, _index = index, _name = name,
-            components = components}
+            _properties = properties, _composite = composite}
         return setmetatable(self, cls)
     end
 
     tables.TabulatedMaterial = setmetatable(TabulatedMaterial, {__call = new})
+
+    error.register('physics.TabulatedMaterial', TabulatedMaterial)
 end
 
 

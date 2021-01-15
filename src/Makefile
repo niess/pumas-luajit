@@ -326,6 +326,7 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_physics_physics.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_physics_tabulated.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_physics_utils.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_readonly.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_recorder.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_state.lua.o \
 	      $(OBJS_DIR)/$(CROSS)runtime.lua.o \
