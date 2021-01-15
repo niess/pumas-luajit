@@ -285,8 +285,9 @@ local function tabulate_materials (_, args)
     for _, name in ipairs(mlist) do
         xml:push('')
         local dedx = utils.snakify(name)..'.txt'
-        xml:push('  <material name="%s" file="%s">', name, dedx)
         local m = materials[name]
+        xml:push('  <material name="%s" file="%s" density="%.5f">',
+            name, dedx, m.density * 1E-03)
 
         local padmax2 = 0
         for _, v in ipairs(m.composition) do
@@ -315,10 +316,9 @@ local function tabulate_materials (_, args)
             xml:push('')
             xml:push('  <composite name="%s">', name)
             for _, v in ipairs(compo) do
-                local m = materials[v[1]]
                 local pad = string.rep(" ", padmax2 - #v[1])
-                xml:push('    <component name="%s"%s fraction="%f" \z
-                    density="%f" />', v[1], pad, v[2], m.density * 1E-03)
+                xml:push('    <component name="%s"%s fraction="%f" />',
+                    v[1], pad, v[2])
             end
             xml:push('  </composite>')
         end
@@ -360,12 +360,12 @@ local function tabulate_materials (_, args)
                 gaz    = clib.PUMAS_PHYSICS_STATE_GAZ
             })[material.state:lower()]
         end
-        m.a = material.a
-        m.k = material.k
-        m.x0 = material.x0
-        m.x1 = material.x1
-        m.Cbar = material.Cbar
-        m.delta0 = material.delta0
+        m.density_effect.a = material.a
+        m.density_effect.k = material.k
+        m.density_effect.x0 = material.x0
+        m.density_effect.x1 = material.x1
+        m.density_effect.Cbar = material.Cbar
+        m.density_effect.delta0 = material.delta0
 
         errormsg = call.protected(
             clib.pumas_physics_tabulate, physics_[0], data)
