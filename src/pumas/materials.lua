@@ -93,8 +93,7 @@ do
             end
             norm = 1 / norm
             for _, value in ipairs(compo) do
-                local _, wi = unpack(value)
-                value[2] = wi * norm
+                value[2] = value[2] * norm
             end
             self.composition = compo
         elseif composition then
@@ -110,7 +109,7 @@ do
 
         local ZoA, mee = 0, 0
         for _, value in ipairs(self.composition) do
-            local symbol, wi = unpack(value)
+            local symbol, wi = value[1], value[2]
             local e = ELEMENTS[symbol]
             if e == nil then
                 raise_error{description = "unknown element '"..symbol.."'"}

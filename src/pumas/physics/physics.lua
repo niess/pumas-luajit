@@ -95,7 +95,7 @@ do
         local rc = clib.pumas_physics_particle(c[0], particle, lifetime,
             mass)
         if rc == 0 then
-            self.particle = readonly({
+            self.particle = readonly.Readonly({
                 name = utils.particle_string(particle[0]),
                 lifetime = tonumber(lifetime[0]),
                 mass = tonumber(mass[0])
@@ -116,13 +116,14 @@ do
                     properties + 1, properties + 2)
 
                 local k = ffi.string(name[0])
-                elements[k] = readonly(
+                -- XXX HERE Wrap as tabulatedMaterial.properties instead?
+                elements[k] = readonly.Readonly(
                     {Z = tonumber(properties[0]), A = tonumber(properties[1]),
                     I = tonumber(properties[2])}, "Element' table '"..k,
                     'Element')
             end
         end
-        self.elements = readonly(elements, 'elements')
+        self.elements = readonly.Readonly(elements, 'elements')
 
         -- Build the materials index
         -- XXX lazy loading instead
@@ -130,15 +131,14 @@ do
         do
             local n = tonumber(clib.pumas_physics_material_length(c[0]))
             for i = 0, n - 1 do
-                -- XXX HERE make materials readonly as well
                 local m = tabulated.TabulatedMaterial(self, i)
                 materials[m.name] = m
             end
         end
-        self.materials = readonly(materials, 'materials')
+        self.materials = readonly.Readonly(materials, 'materials')
 
         -- Wrap the DCS
-        self.dcs = readonly({
+        self.dcs = readonly.Readonly({
             bremsstrahlung = clib.pumas_physics_dcs_get(
                 c[0], clib.PUMAS_PROCESS_BREMSSTRAHLUNG),
             pair_production = clib.pumas_physics_dcs_get(

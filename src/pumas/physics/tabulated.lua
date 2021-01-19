@@ -10,8 +10,9 @@ local clib = require('pumas.clib')
 local error = require('pumas.error')
 local materials_ = require('pumas.materials')
 local metatype = require('pumas.metatype')
+local readonly = require('pumas.readonly')
 
-local tables = {}
+local tabulated = {}
 
 
 -------------------------------------------------------------------------------
@@ -209,9 +210,10 @@ do
             for i = 1, n_elements do
                 clib.pumas_physics_element_name(physics_._c[0],
                     indices[i - 1], name_)
-                composition[i] = {ffi.string(name_[0]), fractions[i - 1]}
+                composition[i] = readonly.Readonly{
+                    ffi.string(name_[0]), fractions[i - 1]}
             end
-            -- XXX make these tables readonly
+            composition = readonly.Readonly(composition, 'composition')
 
             properties = materials_.Material{
                 density = density[0], I = I[0],
@@ -231,7 +233,8 @@ do
         return setmetatable(self, cls)
     end
 
-    tables.TabulatedMaterial = setmetatable(TabulatedMaterial, {__call = new})
+    tabulated.TabulatedMaterial = setmetatable(
+        TabulatedMaterial, {__call = new})
 
     error.register('physics.TabulatedMaterial', TabulatedMaterial)
 end
@@ -240,4 +243,4 @@ end
 -------------------------------------------------------------------------------
 -- Return the sub-package
 -------------------------------------------------------------------------------
-return tables
+return tabulated

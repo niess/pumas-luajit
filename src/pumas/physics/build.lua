@@ -273,7 +273,7 @@ local function tabulate_materials (_, args)
     end)
 
     for _, v in ipairs(elist) do
-        local symbol, e = unpack(v)
+        local symbol, e = v[1], v[2]
         local align1 = string.rep(' ', padmax - #symbol)
         local align2 = e.Z >= 10 and '' or ' '
         local align3 = e.I >= 100 and '' or ' '
@@ -296,7 +296,7 @@ local function tabulate_materials (_, args)
         end
 
         for _, value in ipairs(m.composition) do
-            local symbol, wi = unpack(value)
+            local symbol, wi = value[1], value[2]
             local pad = string.rep(" ", padmax2 - #symbol)
             xml:push(
                 '    <component name="%s"%s fraction="%6f" />',
