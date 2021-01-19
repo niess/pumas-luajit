@@ -145,7 +145,6 @@ do
             self.elements = compo
         elseif composition then
             -- Use the provided composition
-            -- XXX Use named keys instead?
             if type(composition) ~= 'table' then
                 raise_error{argname = 'composition', expected = 'a table',
                     got = metatype.a(composition)}

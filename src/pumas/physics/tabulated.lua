@@ -10,9 +10,45 @@ local clib = require('pumas.clib')
 local error = require('pumas.error')
 local materials_ = require('pumas.materials')
 local metatype = require('pumas.metatype')
+local composite = require('pumas.physics.composite')
 local readonly = require('pumas.readonly')
 
 local tabulated = {}
+
+
+-------------------------------------------------------------------------------
+-- Utility functions providing providing some material properties
+-------------------------------------------------------------------------------
+local function parse_composition (index, n_elements, c)
+    local indices = ffi.new('int [?]', n_elements)
+    local fractions = ffi.new('double [?]', n_elements)
+    clib.pumas_physics_material_properties(c, index,
+        nil, nil, nil, nil, indices, fractions)
+
+    local name_ = ffi.new('const char *[1]')
+    local composition = compat.table_new(0, n_elements)
+    for i = 1, n_elements do
+        clib.pumas_physics_element_name(c, indices[i - 1], name_)
+        composition[ffi.string(name_[0])] = tonumber(fractions[i - 1])
+    end
+    return readonly.Readonly(composition, 'elements')
+end
+
+
+local function parse_composite (physics_, index)
+    local n_elements=  ffi.new('int [1]')
+    local density = ffi.new('double [1]')
+    clib.pumas_physics_material_properties(physics_._c[0], index,
+        n_elements, density, nil, nil, nil, nil)
+
+    n_elements = tonumber(n_elements[0])
+    local composition = parse_composition(index, n_elements, physics_._c[0])
+
+    local ZoA, I = materials_.compute_ZoA_and_I(
+        composition, physics_.elements)
+
+    return tonumber(density[0]), composition, ZoA, I
+end
 
 
 -------------------------------------------------------------------------------
@@ -37,83 +73,151 @@ do
         end
     end
 
+    local function get_or_update_table (self, property, mode, t)
+        local n, is_update
+        if t then
+            is_update = true
+            t = readonly.rawget(t)
+            n = #t
+        else
+            is_update = false
+            n = tonumber(clib.pumas_physics_table_length(self.physics._c[0]))
+            t = compat.table_new(n, 0)
+        end
+
+        local c_property = clib['PUMAS_PROPERTY_'..property:upper()]
+        mode = toindex(mode)
+        for i = 0, n - 1 do
+            clib.pumas_physics_table_value(self.physics._c[0], c_property, mode,
+                self._index, i, value)
+            t[i + 1] = tonumber(value[0])
+        end
+
+        if not is_update then
+            return readonly.Readonly(t, property, 'PhysicsTable')
+            -- XXX Use a C type instead?
+        end
+    end
+
+    local function get_or_update_all_tables (self, t)
+        local is_update
+        if t then
+            is_update = true
+            t = readonly.rawget(t)
+        else
+            is_update = false
+            t = {}
+        end
+
+        for _, k in pairs{'cross_section', 'kinetic_energy',
+            'magnetic_rotation'} do
+            t[k] = get_or_update_table(self, k)
+        end
+
+        for _, mode in pairs{'csda', 'hybrid'} do
+            local v
+            if is_update then
+                v = readonly.rawget(t[mode])
+            else
+                v = {}
+            end
+            for _, k in pairs{'energy_loss', 'grammage', 'proper_time'} do
+                v[k] = get_or_update_table(self, k, mode)
+            end
+            if not is_update then
+                t[mode] = readonly.Readonly(v, mode)
+            end
+        end
+
+        if not is_update then
+            t.detailed = t.hybrid
+            return readonly.Readonly(t)
+        end
+    end
+
+    local function update (self, fname)
+        if not self then
+            fname = fname or 'TabulatedMaterial'
+            error.raise{fname = fname, argnum = 1,
+                expected = 'a TabulatedMaterial table', got = metatype.a(self)}
+        end
+
+        if self._properties.composite and
+            self._properties.materials._needs_update then
+            local fractions = ffi.new('double [?]',
+                self._properties.materials._n)
+            for i, k in ipairs(self._properties.materials._names) do
+                fractions[i - 1] = self._properties.materials._fractions[k]
+            end
+            clib.pumas_physics_composite_update(self._physics._c[0],
+                self._index, fractions)
+
+            local density, composition, ZoA, I = parse_composite(
+                self._physics, self._index)
+            self._properties.density = density
+            self._properties.elements = composition
+            self._properties.ZoA = ZoA
+            self._properties.I = I
+
+            local tables = rawget(self, 'table')
+            if tables then
+                get_or_update_all_tables(self, tables)
+            end
+
+            self._properties.materials._needs_update = false
+        end
+    end
+
     local index = {
         cross_section = function (self, kinetic)
+            update(self, 'cross_section')
             call(clib.pumas_physics_property_cross_section, self._physics._c[0],
                 self._index, kinetic, value)
             return tonumber(value[0])
         end,
 
         energy_loss = function (self, kinetic, mode)
+            update(self, 'energy_loss')
             call(clib.pumas_physics_property_energy_loss, self.physics._c[0],
                 toindex(mode, 'energy_loss'), self._index, kinetic, value)
             return tonumber(value[0])
         end,
 
         grammage = function (self, kinetic, mode)
+            update(self, 'grammage')
             call(clib.pumas_physics_property_grammage, self.physics._c[0],
                 toindex(mode, 'grammage'), self._index, kinetic, value)
             return tonumber(value[0])
         end,
 
         kinetic_energy = function (self, grammage, mode)
+            update(self, 'kinetic_energy')
             call(clib.pumas_physics_property_kinetic_energy, self.physics._c[0],
                 toindex(mode, 'kinetic_energy'), self._index, grammage, value)
             return tonumber(value[0])
         end,
 
         magnetic_rotation = function (self, kinetic)
+            update(self, 'magnetic_rotation')
             call(clib.pumas_physics_property_magnetic_rotation,
                 self.physics._c[0], self._index, kinetic, value)
             return tonumber(value[0])
         end,
 
         proper_time = function (self, kinetic, mode)
+            update(self, 'proper_time')
             call(clib.pumas_physics_property_proper_time, self.physics._c[0],
                 toindex(mode, 'proper_time'), self._index, kinetic, value)
             return tonumber(value[0])
         end,
 
         scattering_length = function (self, kinetic)
+            update(self, 'scattering_length')
             call(clib.pumas_physics_property_scattering_length,
                 self.physics._c[0], self._index, kinetic, value)
             return tonumber(value[0])
         end
     }
-
-    local function get_table (self, property, mode)
-        local n = tonumber(clib.pumas_physics_table_length(self.physics._c[0]))
-        local t = compat.table_new(n, 0)
-        property = clib['PUMAS_PROPERTY_'..property:upper()]
-        mode = toindex(mode)
-        for i = 0, n - 1 do
-            clib.pumas_physics_table_value(self.physics._c[0], property, mode,
-                self._index, i, value)
-            t[i + 1] = tonumber(value[0])
-        end
-
-        return t
-    end
-
-    local function get_all_tables (self)
-        local t = {}
-
-        for _, k in pairs{'cross_section', 'kinetic_energy',
-            'magnetic_rotation'} do
-            t[k] = get_table(self, k)
-        end
-
-        for _, mode in pairs{'csda', 'hybrid'} do
-            local v = {}
-            for _, k in pairs{'energy_loss', 'grammage', 'proper_time'} do
-                v[k] = get_table(self, k, mode)
-            end
-            t[mode] = v
-        end
-        t.detailed = t.hybrid
-
-        return t
-    end
 
     function TabulatedMaterial:__index (k)
         if k == 'name' then
@@ -121,10 +225,16 @@ do
         elseif k == 'physics' then
             return self._physics
         elseif k == 'table' then
-            local t = get_all_tables(self)
+            local t = get_or_update_all_tables(self)
             rawset(self, 'table', t)
             return t
+        elseif k == '_update' then
+            return update
         else
+            if (k ~= 'materials') and (k ~= 'composite') then
+                update(self)
+            end
+
             local prop = rawget(self, '_properties')
             prop = prop and prop [k]
             if prop then return prop end
@@ -153,21 +263,6 @@ end
 -------------------------------------------------------------------------------
 do
     local raise_error = error.ErrorFunction{fname = 'TabulatedMaterial'}
-
-    local function parse_composition (index, n_elements, c)
-        local indices = ffi.new('int [?]', n_elements)
-        local fractions = ffi.new('double [?]', n_elements)
-        clib.pumas_physics_material_properties(c, index,
-            nil, nil, nil, nil, indices, fractions)
-
-        local name_ = ffi.new('const char *[1]')
-        local composition = compat.table_new(0, n_elements)
-        for i = 1, n_elements do
-            clib.pumas_physics_element_name(c, indices[i - 1], name_)
-            composition[ffi.string(name_[0])] = fractions[i - 1]
-        end
-        return readonly.Readonly(composition, 'elements')
-    end
 
     local function new (cls, physics_, arg)
         if metatype(physics_) ~= 'Physics' then
@@ -231,26 +326,16 @@ do
                 ZoA = ZoA}
         else
             -- This is a composite material. Let us fetch its properties
-            -- XXX parse the components and build the wrappers
-            local n_elements=  ffi.new('int [1]')
-            local density = ffi.new('double [1]')
-            clib.pumas_physics_material_properties(physics_._c[0], index,
-                n_elements, density, nil, nil, nil, nil)
-
-            n_elements = tonumber(n_elements[0])
-            local composition = parse_composition(
-                index, n_elements, physics_._c[0])
-
-            local ZoA, I = materials_.compute_ZoA_and_I(
-                composition, physics_.elements)
+            local density, composition, ZoA, I = parse_composite(
+                physics_, index)
 
             properties = {
                 composite = true,
-                density = tonumber(density[0]),
+                density = density,
                 I = I,
                 elements = composition,
-                ZoA = ZoA
-                -- XXX Add materials composition
+                ZoA = ZoA,
+                materials = composite.CompositeMaterials(physics_, index)
             }
         end
 

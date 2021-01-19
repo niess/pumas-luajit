@@ -54,6 +54,7 @@ build = {
       ['pumas.state'] = 'src/pumas/state.lua',
       ['pumas.physics'] = 'src/pumas/physics.lua',
       ['pumas.physics.build'] = 'src/pumas/physics/build.lua',
+      ['pumas.physics.build'] = 'src/pumas/physics/composite.lua',
       ['pumas.physics.physics'] = 'src/pumas/physics/physics.lua'
       ['pumas.physics.tabulated'] = 'src/pumas/physics/tabulated.lua',
       ['pumas.physics.utils'] = 'src/pumas/physics/utils.lua',

@@ -126,6 +126,7 @@ do
 
         -- Build the materials index
         -- XXX lazy loading instead
+        -- XXX Split material and composites? HERE!!!
         local materials = {}
         do
             local n = tonumber(clib.pumas_physics_material_length(c[0]))
@@ -135,6 +136,7 @@ do
             end
         end
         self.materials = readonly.Readonly(materials, 'materials')
+        self._update_composites = false
 
         -- Wrap the DCS
         self.dcs = readonly.Readonly({
@@ -187,6 +189,20 @@ do
         end
     end
 end
+
+
+-------------------------------------------------------------------------------
+-- Inner routine for updating the physics when composites change
+-------------------------------------------------------------------------------
+function Physics.__index:_update ()
+    if self._update_composites then
+        for _, v in pairs(self.materials) do
+            v:_update()
+        end
+        self._update_composites = false
+    end
+end
+
 
 
 -------------------------------------------------------------------------------

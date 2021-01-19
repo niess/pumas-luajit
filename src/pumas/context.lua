@@ -164,9 +164,10 @@ function Context:__newindex (k, v)
                     ffi.sizeof('struct pumas_state_extended'))
                 v(geometry, wrapped_state, wrapped_medium, step)
             end
+    elseif k == 'physics' then
+        error.raise{['type'] = 'Context', not_mutable = k}
     else
-        error.raise{fname = 'Context', argname = k,
-            description = 'no such member'}
+        error.raise{['type'] = 'Context', bad_member = k}
     end
 end
 
@@ -191,6 +192,7 @@ do
         local extended_state = ffi.cast(pumas_state_extended_ptr, state_._c)
         clib.pumas_state_extended_reset(extended_state, self._c)
 
+        self._physics:_update()
         local ok, m = medium.update(self._physics)
         if not ok then
             raise_error{

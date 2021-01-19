@@ -10,10 +10,15 @@ local readonly = {}
 
 if math.mod then
     -- Using Lua(JIT) 5.1 API
-    readonly.Readonly = function (_, t) return t end
+    -- XXX Add a pairs/ipairs method for 5.1 compat?
+    function readonly.Readonly (_, t) return t end
+
+    function readonly.rawget (t) return t end
 else
     -- Using Lua 5.2 API or LuaJIT with partial compatibility
     local instances = setmetatable({}, {__mode = 'k'})
+
+    function readonly.rawget (t) return instances[t].table end
 
     local Readonly = {}
     Readonly.__metatable = 'readonly'
