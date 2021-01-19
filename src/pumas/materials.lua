@@ -11,6 +11,54 @@ local materials = {}
 
 
 -------------------------------------------------------------------------------
+-- Utility functions for computing stats over atomic element components
+-------------------------------------------------------------------------------
+function materials.compute_ZoA (elements_, ELEMENTS, raise_error)
+    ELEMENTS = ELEMENTS or elements.ELEMENTS
+    local ZoA = 0
+    for symbol, wi in pairs(elements_) do
+        local e = ELEMENTS[symbol]
+        if e == nil then
+            local description = "unknown element '"..symbol.."'"
+            if raise_error then
+                raise_error{description = description}
+            else
+                error.raise{fname = 'compute_ZoA', argnum = 1,
+                    description = description}
+            end
+        end
+        local tmp = wi * e.Z / e.A
+        ZoA = ZoA + tmp
+    end
+
+    return ZoA
+end
+
+function materials.compute_ZoA_and_I (elements_, ELEMENTS, raise_error)
+    ELEMENTS = ELEMENTS or elements.ELEMENTS
+    local ZoA, mee = 0, 0
+    for symbol, wi in pairs(elements_) do
+        local e = ELEMENTS[symbol]
+        if e == nil then
+            local description = "unknown element '"..symbol.."'"
+            if raise_error then
+                raise_error{description = description}
+            else
+                error.raise{fname = 'compute_ZoA_and_I', argnum = 1,
+                    description = description}
+            end
+        end
+        local tmp = wi * e.Z / e.A
+        ZoA = ZoA + tmp
+        mee = mee + tmp * math.log(e.I)
+    end
+    local I = math.exp(mee / ZoA) * 1.13 -- 13% rule, see Groom et al.
+
+    return ZoA, I
+end
+
+
+-------------------------------------------------------------------------------
 -- The Material metatype
 -------------------------------------------------------------------------------
 local Material = {__index = {}}
@@ -30,7 +78,7 @@ do
         end
     end
 
-    local function new (cls, args)
+    local function new (cls, args, ELEMENTS)
         if type(args) ~= 'table' then
             raise_error{
                 argnum = 1,
@@ -39,13 +87,12 @@ do
             }
         end
 
-        local formula, composition, density, ELEMENTS, state, I, a, k, x0, x1,
-            Cbar, delta0
+        local formula, composition, density, state, I, a, k, x0, x1, Cbar,
+            delta0
         for key, value in pairs(args) do
             if     key == 'formula' then formula = value
-            elseif key == 'composition' then composition = value
+            elseif key == 'elements' then composition = value
             elseif key == 'density' then density = value
-            elseif key == 'elements' then ELEMENTS = value
             elseif key == 'state' then state = value
             elseif key == 'I' then I = value
             elseif key == 'a' then a = value
@@ -88,14 +135,14 @@ do
             for symbol, count in formula:gmatch('(%u%l?)(%d*)') do
                 count = tonumber(count) or 1
                 local wi = count * ELEMENTS[symbol].A
-                table.insert(compo, {symbol, wi})
+                compo[symbol] = wi
                 norm = norm + wi
             end
             norm = 1 / norm
             for _, value in ipairs(compo) do
                 value[2] = value[2] * norm
             end
-            self.composition = compo
+            self.elements = compo
         elseif composition then
             -- Use the provided composition
             -- XXX Use named keys instead?
@@ -103,29 +150,20 @@ do
                 raise_error{argname = 'composition', expected = 'a table',
                     got = metatype.a(composition)}
             end
-            self.composition = composition
+            self.elements = composition -- XXX copy or not?
         else
             raise_error{description = "missing 'composition' or 'formula'"}
         end
 
-        local ZoA, mee = 0, 0
-        for _, value in ipairs(self.composition) do
-            local symbol, wi = value[1], value[2]
-            local e = ELEMENTS[symbol]
-            if e == nil then
-                raise_error{description = "unknown element '"..symbol.."'"}
-            end
-            local tmp = wi * e.Z / e.A
-            ZoA = ZoA + tmp
-            mee = mee + tmp * math.log(e.I)
-        end
-        self.ZoA = ZoA
         if I then
-            check_number('I', I, 'eV')
+            check_number('I', I, 'GeV')
+            self.I = I
+            self.ZoA = materials.compute_ZoA(
+                self.elements, ELEMENTS, raise_error)
         else
-            I = math.exp(mee / ZoA) * 1.13 -- 13% rule, see Groom et al.
+            self.ZoA, self.I = materials.compute_ZoA_and_I(
+                self.elements, ELEMENTS, raise_error)
         end
-        self.I = I
         self.density = density
 
         if state then
@@ -162,7 +200,7 @@ do
         if Cbar then
             check_number('Cbar', Cbar)
         else
-            local hwp = 28.816E-09 * math.sqrt(density * 1E-03 * ZoA)
+            local hwp = 28.816E-09 * math.sqrt(density * 1E-03 * self.ZoA)
             Cbar = 2 * math.log(self.I / hwp)
         end
         self.Cbar = Cbar
@@ -230,18 +268,29 @@ end
 -------------------------------------------------------------------------------
 materials.MATERIALS = require('pumas.data.materials')
 for k, v in pairs(materials.MATERIALS) do
+    -- XXX Patch the composition / elements data
+    local composition = v.composition
+    for _, component in ipairs(composition) do
+        local symbol, wi = unpack(component)
+        composition[symbol] = wi
+    end
+    for i = 1, #v.composition do
+        composition[i] = nil
+    end
+    v.composition = nil
+    v.elements = composition
+    v.ZoA = materials.compute_ZoA(composition)
+
     v.density = v.density * 1E+03 -- XXX use kg / m^3
     v.I = v.I * 1E-09             -- XXX use GeV
                                   -- XXX Add update tools / pdg package (?)
-    materials.MATERIALS[k] = materials.Material(v)
+    materials.MATERIALS[k] = setmetatable(v, materials.Material)
 end
 
 
 -------------------------------------------------------------------------------
 -- Register the subpackage
 -------------------------------------------------------------------------------
--- XXX Add composites
-
 function materials.register_to (t)
     t.Material = materials.Material
     t.MATERIALS = materials.MATERIALS

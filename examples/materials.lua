@@ -13,8 +13,7 @@ local t0 = os.clock()
 
 pumas.build{
     materials = {'StandardRock', 'WaterLiquid', 'AirDry1Atm'},
-    composites = {WetRock = {{'StandardRock', 0.788},
-                             {'WaterLiquid', 0.212}}},
+    composites = {WetRock = {StandardRock = 0.7, WaterLiquid = 0.3}},
     path = 'share/materials/standard'
 }
 

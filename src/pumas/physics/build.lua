@@ -212,13 +212,13 @@ local function tabulate_materials (_, args)
             }
         end
         for name, composition in pairs(composites) do
-            for _, v in ipairs(composition) do
-                local m = materials[v[1]]
+            for tag, _ in pairs(composition) do
+                local m = materials[tag]
                 if not m then
                     raise_error{
                         argname = 'composites',
-                        description = "missing material '"..v[1]..
-                                      "' for composite '"..name "'"
+                        description = "missing material '"..tag..
+                                      "' for composite '"..name.."'"
                     }
                 end
             end
@@ -235,8 +235,7 @@ local function tabulate_materials (_, args)
                 got =  metatype.a(material)
             }
         end
-        for _, v in pairs(material.composition) do
-            local name = v[1]
+        for name, _ in pairs(material.elements) do
             if not composition[name] then
                 local element = elements.ELEMENTS[name]
                 if not element then
@@ -276,31 +275,37 @@ local function tabulate_materials (_, args)
         local symbol, e = v[1], v[2]
         local align1 = string.rep(' ', padmax - #symbol)
         local align2 = e.Z >= 10 and '' or ' '
-        local align3 = e.I >= 100 and '' or ' '
+        local align3 = e.A >= 10 and '' or ' '
+        local align4 = e.I >= 100E-09 and '' or ' '
         xml:push(
-            '  <element name="%s"%s Z="%d"%s A="%.6f" I="%.1f"%s />',
-            symbol, align1, e.Z, align2, e.A, e.I * 1E+09, align3)
+            '  <element name="%s"%s Z="%d"%s A="%.6f"%s I="%.1f"%s />',
+            symbol, align1, e.Z, align2, e.A, align3, e.I * 1E+09, align4)
     end
 
     for _, name in ipairs(mlist) do
         xml:push('')
         local dedx = utils.snakify(name)..'.txt'
         local m = materials[name]
-        xml:push('  <material name="%s" file="%s" density="%.5f">',
+        xml:push('  <material name="%s" file="%s" density="%.7g">',
             name, dedx, m.density * 1E-03)
 
         local padmax2 = 0
-        for _, v in ipairs(m.composition) do
-            local n = #v[1]
+        for symbol, _ in pairs(m.elements) do
+            local n = #symbol
             if n > padmax2 then padmax2 = n end
         end
 
-        for _, value in ipairs(m.composition) do
-            local symbol, wi = value[1], value[2]
-            local pad = string.rep(" ", padmax2 - #symbol)
+        local tmp = {}
+        for symbol, wi in pairs(m.elements) do
+            table.insert(tmp, {wi, symbol})
+        end
+        table.sort(tmp, function (a, b) return a[1] >= b[1] end)
+
+        for _, v in ipairs(tmp) do
+            local pad = string.rep(" ", padmax2 - #v[2])
             xml:push(
-                '    <component name="%s"%s fraction="%6f" />',
-                symbol, pad, wi)
+                '    <component name="%s"%s fraction="%.7g" />',
+                v[2], pad, v[1])
         end
         xml:push('  </material>')
     end
@@ -308,17 +313,24 @@ local function tabulate_materials (_, args)
     if composites then
         for name, compo in pairs(composites) do
             local padmax2 = 0
-            for _, v in ipairs(compo) do
-                local n = #v[1]
+            for tag, _ in pairs(compo) do
+                local n = #tag
                 if n > padmax2 then padmax2 = n end
             end
 
             xml:push('')
             xml:push('  <composite name="%s">', name)
-            for _, v in ipairs(compo) do
-                local pad = string.rep(" ", padmax2 - #v[1])
-                xml:push('    <component name="%s"%s fraction="%f" />',
-                    v[1], pad, v[2])
+
+            local tmp = {}
+            for tag, fraction in pairs(compo) do
+                table.insert(tmp, {fraction, tag})
+            end
+            table.sort(tmp, function (a, b) return a[1] >= b[1] end)
+
+            for _, v in ipairs(tmp) do
+                local pad = string.rep(" ", padmax2 - #v[2])
+                xml:push('    <component name="%s"%s fraction="%.7g" />',
+                    v[2], pad, v[1])
             end
             xml:push('  </composite>')
         end

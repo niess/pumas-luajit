@@ -161,25 +161,12 @@ do
             nil, nil, nil, nil, indices, fractions)
 
         local name_ = ffi.new('const char *[1]')
-        local composition = compat.table_new(n_elements, 0)
+        local composition = compat.table_new(0, n_elements)
         for i = 1, n_elements do
             clib.pumas_physics_element_name(c, indices[i - 1], name_)
-            composition[i] = readonly.Readonly{
-                ffi.string(name_[0]), fractions[i - 1]}
+            composition[ffi.string(name_[0])] = fractions[i - 1]
         end
-        return readonly.Readonly(composition, 'composition')
-    end
-
-    local function compute_ZoA (composition, elements)
-        local ZoA = 0
-        for _, value in ipairs(composition) do
-            local symbol, wi = value[1], value[2]
-            local e = elements[symbol]
-            local tmp = wi * e.Z / e.A
-            ZoA = ZoA + tmp
-        end
-
-        return ZoA
+        return readonly.Readonly(composition, 'elements')
     end
 
     local function new (cls, physics_, arg)
@@ -228,6 +215,7 @@ do
             n_elements = tonumber(n_elements[0])
             local composition = parse_composition(
                 index, n_elements, physics_._c[0])
+            local ZoA = materials_.compute_ZoA(composition, physics_.elements)
 
             properties = {
                 composite = false,
@@ -239,8 +227,8 @@ do
                 x1 = tonumber(density_effect[0].x1),
                 Cbar = tonumber(density_effect[0].Cbar),
                 delta0 = tonumber(density_effect[0].delta0),
-                composition = composition,
-                elements = physics_.elements}
+                elements = composition,
+                ZoA = ZoA}
         else
             -- This is a composite material. Let us fetch its properties
             -- XXX parse the components and build the wrappers
@@ -253,11 +241,16 @@ do
             local composition = parse_composition(
                 index, n_elements, physics_._c[0])
 
+            local ZoA, I = materials_.compute_ZoA_and_I(
+                composition, physics_.elements)
+
             properties = {
                 composite = true,
                 density = tonumber(density[0]),
-                composition = composition,
-                ZoA = compute_ZoA(composition, physics_.elements)
+                I = I,
+                elements = composition,
+                ZoA = ZoA
+                -- XXX Add materials composition
             }
         end
 
