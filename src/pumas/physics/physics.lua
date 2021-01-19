@@ -116,7 +116,6 @@ do
                     properties + 1, properties + 2)
 
                 local k = ffi.string(name[0])
-                -- XXX HERE Wrap as tabulatedMaterial.properties instead?
                 elements[k] = readonly.Readonly(
                     {Z = tonumber(properties[0]), A = tonumber(properties[1]),
                     I = tonumber(properties[2])}, "Element' table '"..k,

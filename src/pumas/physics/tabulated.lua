@@ -154,6 +154,34 @@ end
 do
     local raise_error = error.ErrorFunction{fname = 'TabulatedMaterial'}
 
+    local function parse_composition (index, n_elements, c)
+        local indices = ffi.new('int [?]', n_elements)
+        local fractions = ffi.new('double [?]', n_elements)
+        clib.pumas_physics_material_properties(c, index,
+            nil, nil, nil, nil, indices, fractions)
+
+        local name_ = ffi.new('const char *[1]')
+        local composition = compat.table_new(n_elements, 0)
+        for i = 1, n_elements do
+            clib.pumas_physics_element_name(c, indices[i - 1], name_)
+            composition[i] = readonly.Readonly{
+                ffi.string(name_[0]), fractions[i - 1]}
+        end
+        return readonly.Readonly(composition, 'composition')
+    end
+
+    local function compute_ZoA (composition, elements)
+        local ZoA = 0
+        for _, value in ipairs(composition) do
+            local symbol, wi = value[1], value[2]
+            local e = elements[symbol]
+            local tmp = wi * e.Z / e.A
+            ZoA = ZoA + tmp
+        end
+
+        return ZoA
+    end
+
     local function new (cls, physics_, arg)
         if metatype(physics_) ~= 'Physics' then
             raise_error{argnum = 1, expected = 'a Physics table',
@@ -186,11 +214,9 @@ do
         end
 
         local m = clib.pumas_physics_composite_length(physics_._c[0])
-        local properties, composite
+        local properties
         if index < n - m then
             -- This is a base material. Let us fetch its properties
-            composite = false
-
             local n_elements=  ffi.new('int [1]')
             local density = ffi.new('double [1]')
             local I = ffi.new('double [1]')
@@ -200,36 +226,43 @@ do
                 n_elements, density, I, density_effect, nil, nil)
 
             n_elements = tonumber(n_elements[0])
-            local indices = ffi.new('int [?]', n_elements)
-            local fractions = ffi.new('double [?]', n_elements)
-            clib.pumas_physics_material_properties(physics_._c[0], index,
-                nil, nil, nil, nil, indices, fractions)
+            local composition = parse_composition(
+                index, n_elements, physics_._c[0])
 
-            local name_ = ffi.new('const char *[1]')
-            local composition = compat.table_new(n_elements, 0)
-            for i = 1, n_elements do
-                clib.pumas_physics_element_name(physics_._c[0],
-                    indices[i - 1], name_)
-                composition[i] = readonly.Readonly{
-                    ffi.string(name_[0]), fractions[i - 1]}
-            end
-            composition = readonly.Readonly(composition, 'composition')
-
-            properties = materials_.Material{
-                density = density[0], I = I[0],
-                a = density_effect[0].a, k = density_effect[0].k,
-                x0 = density_effect[0].x0, x1 = density_effect[0].x1,
-                Cbar = density_effect[0].Cbar,
-                delta0 = density_effect[0].delta0,
-                composition = composition, elements = physics_.elements}
+            properties = {
+                composite = false,
+                density = tonumber(density[0]),
+                I = tonumber(I[0]),
+                a = tonumber(density_effect[0].a),
+                k = tonumber(density_effect[0].k),
+                x0 = tonumber(density_effect[0].x0),
+                x1 = tonumber(density_effect[0].x1),
+                Cbar = tonumber(density_effect[0].Cbar),
+                delta0 = tonumber(density_effect[0].delta0),
+                composition = composition,
+                elements = physics_.elements}
         else
             -- This is a composite material. Let us fetch its properties
             -- XXX parse the components and build the wrappers
-            composite = true
+            local n_elements=  ffi.new('int [1]')
+            local density = ffi.new('double [1]')
+            clib.pumas_physics_material_properties(physics_._c[0], index,
+                n_elements, density, nil, nil, nil, nil)
+
+            n_elements = tonumber(n_elements[0])
+            local composition = parse_composition(
+                index, n_elements, physics_._c[0])
+
+            properties = {
+                composite = true,
+                density = tonumber(density[0]),
+                composition = composition,
+                ZoA = compute_ZoA(composition, physics_.elements)
+            }
         end
 
         local self = {_physics = physics_, _index = index, _name = name,
-            _properties = properties, _composite = composite}
+            _properties = properties}
         return setmetatable(self, cls)
     end
 
