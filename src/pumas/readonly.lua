@@ -7,56 +7,87 @@ local error = require('pumas.error')
 
 local readonly = {}
 
+-------------------------------------------------------------------------------
+-- Local bookmarking of readonly tables
+-------------------------------------------------------------------------------
+local instances = setmetatable({}, {__mode = 'k'})
 
-if math.mod then
-    -- Using Lua(JIT) 5.1 API
-    -- XXX Add a pairs/ipairs method for 5.1 compat?
-    function readonly.Readonly (_, t) return t end
+function readonly.rawget (t) return instances[t].table end
 
-    function readonly.rawget (t) return t end
-else
-    -- Using Lua 5.2 API or LuaJIT with partial compatibility
-    local instances = setmetatable({}, {__mode = 'k'})
 
-    function readonly.rawget (t) return instances[t].table end
+-------------------------------------------------------------------------------
+-- The Readonly metatype
+-------------------------------------------------------------------------------
+local Readonly = {}
 
-    local Readonly = {}
-    Readonly.__metatable = 'readonly'
+Readonly.__metatable = 'readonly'
 
-    function Readonly:__index (k)
-        self = instances[self]
-        if k == '__metatype' then
-            return self.metatype
-        else
-            return self.table[k]
+
+do
+    -- Vanilla Lua 5.1 does not have the __pairs and __ipairs metamethods.
+    -- Therefore we provide explicit iterators
+    local function ipairs_ (self)
+        if self == nil then
+            error.raise{fname = 'ipairs', argnum = 1, expected = 'a table',
+                got = 'nil'}
         end
-    end
 
-    function Readonly:__newindex (k)
-        self = instances[self]
-        error.raise{['type'] = self.type, not_mutable = k}
-    end
-
-    function Readonly:__len ()
-        self = instances[self.table]
-        return #self.table
-    end
-
-    function Readonly:__tostring ()
-        self = instances[self]
-        return tostring(self.table)
-    end
-
-    function Readonly:__pairs ()
-        self = instances[self]
-        return pairs(self.table)
-    end
-
-    function Readonly:__ipairs ()
         self = instances[self]
         return ipairs(self.table)
     end
 
+    local function pairs_ (self)
+        if self == nil then
+            error.raise{fname = 'pairs', argnum = 1, expected = 'a table',
+                got = 'nil'}
+        end
+
+        self = instances[self]
+        return pairs(self.table)
+    end
+
+    error.register('Readonly.__ipairs', ipairs_)
+    error.register('Readonly.__pairs', pairs_)
+
+    function Readonly:__index (k)
+        if k == 'ipairs' then
+            return ipairs_
+        elseif k == 'pairs' then
+            return pairs_
+        else
+            self = instances[self]
+            if k == '__metatype' then
+                return self.metatype
+            else
+                return self.table[k]
+            end
+        end
+    end
+end
+
+
+function Readonly:__newindex (k)
+    self = instances[self]
+    error.raise{['type'] = self.type, not_mutable = k}
+end
+
+
+function Readonly:__len ()
+    self = instances[self.table]
+    return #self.table
+end
+
+
+function Readonly:__tostring ()
+    self = instances[self]
+    return tostring(self.table)
+end
+
+
+-------------------------------------------------------------------------------
+-- The Readonly constructor
+-------------------------------------------------------------------------------
+do
     local function wrap (cls, t, type_, metatype)
         if not type_ then type_ = 'table' end
 
@@ -67,7 +98,12 @@ else
     end
 
     readonly.Readonly = setmetatable(Readonly, {__call = wrap})
+
     error.register('Readonly', Readonly)
 end
 
+
+-------------------------------------------------------------------------------
+-- Return the sub-package
+-------------------------------------------------------------------------------
 return readonly
