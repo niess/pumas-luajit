@@ -126,16 +126,21 @@ do
 
         -- Build the materials index
         -- XXX lazy loading instead
-        -- XXX Split material and composites? HERE!!!
-        local materials = {}
+        local materials, composites = {}, {}
         do
             local n = tonumber(clib.pumas_physics_material_length(c[0]))
-            for i = 0, n - 1 do
-                local m = tabulated.TabulatedMaterial(self, i)
-                materials[m.name] = m
+            local m = tonumber(clib.pumas_physics_composite_length(c[0]))
+            for i = 0, n - m - 1 do
+                local mat = tabulated.TabulatedMaterial(self, i)
+                materials[mat.name] = mat
+            end
+            for i = n - m, n - 1 do
+                local comp = tabulated.TabulatedMaterial(self, i)
+                composites[comp.name] = comp
             end
         end
         self.materials = readonly.Readonly(materials, 'materials')
+        self.composites = readonly.Readonly(composites, 'composites')
         self._update_composites = false
 
         -- Wrap the DCS
@@ -196,7 +201,7 @@ end
 -------------------------------------------------------------------------------
 function Physics.__index:_update ()
     if self._update_composites then
-        for _, v in pairs(self.materials) do
+        for _, v in pairs(self.composites) do
             v:_update()
         end
         self._update_composites = false
