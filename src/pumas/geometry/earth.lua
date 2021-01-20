@@ -34,7 +34,7 @@ local function new (self)
     c.media = self._media
     c.n_layers = #self._layers
 
-    call(ffi.C.turtle_stepper_create, c.stepper)
+    call(clib.turtle_stepper_create, c.stepper)
 
     if self._geoid_undulations then
         local undulations
@@ -44,7 +44,7 @@ local function new (self)
             undulations = topography.TopographyData(self._geoid_undulations)
         end
 
-        ffi.C.turtle_stepper_geoid_set(c.stepper[0], undulations._c)
+        clib.turtle_stepper_geoid_set(c.stepper[0], undulations._c)
         rawset(self, '_undulations', undulations)
     end
 
@@ -52,7 +52,7 @@ local function new (self)
         local _, data = unpack(layer)
 
         if i > 1 then
-            call(ffi.C.turtle_stepper_add_layer, c.stepper[0])
+            call(clib.turtle_stepper_add_layer, c.stepper[0])
         end
 
         for j = #data, 1, -1 do

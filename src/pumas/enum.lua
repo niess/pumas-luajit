@@ -30,7 +30,7 @@ do
     do
         local mapping = {}
         for _, k in ipairs(tags) do
-            mapping[k] = ffi.C['PUMAS_EVENT_'..k:upper()]
+            mapping[k] = tonumber(ffi.C['PUMAS_EVENT_'..k:upper()])
         end
 
         function get_value (k)
@@ -63,7 +63,7 @@ do
         if select('#', ...) then
             for _, k in ipairs({...}) do
                 local b = get_value(k)
-                self.value = bit.bor(self.value, b)
+                self.value = bit.bor(tonumber(self.value), b)
             end
         end
         return self
@@ -86,7 +86,7 @@ do
         if b == 0 then
             return self.value == 0
         else
-            return bit.band(self.value, b) ~= 0
+            return bit.band(tonumber(self.value), b) ~= 0
         end
     end
 
@@ -95,9 +95,9 @@ do
         if b == 0 then
             self.value = 0
         elseif v then
-            self.value = bit.bor(self.value, b)
+            self.value = bit.bor(tonumber(self.value), b)
         else
-            self.value = bit.band(self.value, bit.bnot(b))
+            self.value = bit.band(tonumber(self.value), bit.bnot(b))
         end
     end
 
@@ -110,9 +110,9 @@ do
         for _, k in ipairs(tags) do
             local b = get_value(k)
             if b ~= 0 then
-                if bit.band(self.value, b) == b then
+                if bit.band(tonumber(self.value), b) == b then
                     table.insert(t, k)
-                    self.value = bit.band(self.value, bit.bnot(b))
+                    self.value = bit.band(tonumber(self.value), bit.bnot(b))
                 end
             end
         end

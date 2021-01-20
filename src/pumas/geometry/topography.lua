@@ -6,6 +6,7 @@
 local ffi = require('ffi')
 local lfs = require('lfs')
 local call = require('pumas.call')
+local clib = require('pumas.clib')
 local compat = require('pumas.compat')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
@@ -103,33 +104,33 @@ end
 -- Wrapper for turtle_stack struct
 -------------------------------------------------------------------------------
 local mt_stack = WrappedData(
-    ffi.C.turtle_stepper_add_stack,
-    ffi.C.turtle_stack_elevation)
+    clib.turtle_stepper_add_stack,
+    clib.turtle_stack_elevation)
 
 
 -------------------------------------------------------------------------------
 -- Wrapper for turtle_map struct
 -------------------------------------------------------------------------------
 local mt_map = WrappedData(
-    ffi.C.turtle_stepper_add_map,
+    clib.turtle_stepper_add_map,
     function (self, x, y, z, inside)
-        local projection = ffi.C.turtle_map_projection(self)
+        local projection = clib.turtle_map_projection(self)
 
         if projection ~= nil then
             local xmap = ffi.new('double [1]')
             local ymap = ffi.new('double [1]')
-            ffi.C.turtle_projection_project(projection, x, y, xmap, ymap)
+            clib.turtle_projection_project(projection, x, y, xmap, ymap)
             x, y = xmap[0], ymap[0]
         end
 
-        return ffi.C.turtle_map_elevation(self, x, y, z, inside)
+        return clib.turtle_map_elevation(self, x, y, z, inside)
     end)
 
 
 -------------------------------------------------------------------------------
 -- Wrapper for flat topography
 -------------------------------------------------------------------------------
-local mt_flat = WrappedData(ffi.C.turtle_stepper_add_flat)
+local mt_flat = WrappedData(clib.turtle_stepper_add_flat)
 
 
 -------------------------------------------------------------------------------
@@ -152,16 +153,16 @@ do
                 }
             elseif mode == 'directory' then
                 ptr = ffi.new('struct turtle_stack *[1]')
-                call(ffi.C.turtle_stack_create, ptr, data, 0, nil, nil)
+                call(clib.turtle_stack_create, ptr, data, 0, nil, nil)
                 c = ptr[0]
-                ffi.gc(c, function () ffi.C.turtle_stack_destroy(ptr) end)
-                call(ffi.C.turtle_stack_load, c)
+                ffi.gc(c, function () clib.turtle_stack_destroy(ptr) end)
+                call(clib.turtle_stack_load, c)
                 metatype_ = mt_stack
             else
                 ptr = ffi.new('struct turtle_map *[1]')
-                call(ffi.C.turtle_map_load, ptr, data)
+                call(clib.turtle_map_load, ptr, data)
                 c = ptr[0]
-                ffi.gc(c, function () ffi.C.turtle_map_destroy(ptr) end)
+                ffi.gc(c, function () clib.turtle_map_destroy(ptr) end)
                 metatype_ = mt_map
             end
         elseif data_type == 'number' then
