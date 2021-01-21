@@ -1,20 +1,20 @@
 GULL_REPO=       "https://github.com/niess/gull.git"
-GULL_VERSION=    "286ace5"
+GULL_VERSION=    "286ace553a4328a4c61448817e40a799bd8fc50a"
 
 INSPECT_REPO=    "https://github.com/kikito/inspect.lua.git"
-INSPECT_VERSION= "b611db6"
+INSPECT_VERSION= "b611db6bfa9c12ce35dd4972032fbbd2ad5ba965"
 
 LFS_REPO=        "https://github.com/keplerproject/luafilesystem.git"
-LFS_VERSION=     "04bdaf9"
+LFS_VERSION=     "7c6e1b013caec0602ca4796df3b1d7253a2dd258"
 
 LUAJIT_REPO=     "https://github.com/openresty/luajit2.git"
 LUAJIT_VERSION=  "v2.1-20200102"
 
 PUMAS_REPO=      "https://github.com/niess/pumas.git"
-PUMAS_VERSION=   "6417ea3"
+PUMAS_VERSION=   "6417ea3479c12fccc77770e74df01d109d3143cf"
 
 TURTLE_REPO=     "https://github.com/niess/turtle.git"
-TURTLE_VERSION=  "2c2ecdf"
+TURTLE_VERSION=  "2c2ecdf89bfc341d64f0ec981008f5fc5c498861"
 
 CC=     gcc
 CFLAGS= -O3 -fPIC
@@ -33,12 +33,15 @@ LUAJIT_EXE=        $(BUILD_DIR)/bin/luajit
 LUAJIT_NATIVE_LIB= $(BUILD_DIR)/lib/libluajit-5.1.a
 LUAJIT_LIB=        $(BUILD_DIR)/lib/libluajit-$(CROSS)5.1.a
 
-define git_clone #([$1] = destination, [$2] = url, [$3] = tag)
+define git_fetch #([$1] = destination, [$2] = url, [$3] = tag)
 	if [ ! -d "$1" ]; then \
-	    echo "CLONE     $$(basename $1)" && \
-	    git clone -q "$2" "$1" && \
+	    echo "FETCH     $$(basename $1)" && \
+	    mkdir -p "$1" && \
 	    cd "$1" && \
-	    git checkout -q "$3"; \
+	    git init -q . && \
+	    git remote add origin "$2" && \
+	    git fetch -q --depth 1 origin "$3" && \
+	    git reset -q --hard FETCH_HEAD ; \
 	fi
 endef
 
@@ -107,7 +110,7 @@ clean:
 	rm -rf bin include lib objs share pumas/*.h.lua
 
 $(LUAJIT_SRC):
-	@$(call git_clone,$@,$(LUAJIT_REPO),$(LUAJIT_VERSION))
+	@$(call git_fetch,$@,$(LUAJIT_REPO),$(LUAJIT_VERSION))
 
 $(LUAJIT_EXE) $(LUAJIT_NATIVE_LIB): $(LUAJIT_SRC)
 	@$(MAKE) -C $< PREFIX=$(BUILD_DIR) CROSS= $(LUAJIT_OPTIONS)
@@ -134,7 +137,7 @@ LFS_SRC= $(BUILD_DIR)/src/lfs
 LFS_OBJ= $(OBJS_DIR)/$(CROSS)lfs.c.o
 
 $(LFS_SRC)/src/lfs.c $(LFS_SRC)/src/lfs.h:
-	@$(call git_clone,$(LFS_SRC),$(LFS_REPO),$(LFS_VERSION))
+	@$(call git_fetch,$(LFS_SRC),$(LFS_REPO),$(LFS_VERSION))
 
 $(LFS_OBJ): $(LFS_SRC)/src/lfs.c $(LFS_SRC)/src/lfs.h | $(OBJS_DIR)
 	@echo "CC        $$(basename $@)"
@@ -146,7 +149,7 @@ GULL_OBJ= $(OBJS_DIR)/$(CROSS)gull.c.o
 GULL_DAT= $(GULL_SRC)/share/data
 
 $(GULL_SRC)/src/gull.c $(GULL_INC)/gull.h $(GULL_DAT)/IGRF13.COF:
-	@$(call git_clone,$(GULL_SRC),$(GULL_REPO),$(GULL_VERSION))
+	@$(call git_fetch,$(GULL_SRC),$(GULL_REPO),$(GULL_VERSION))
 
 $(GULL_OBJ): $(GULL_SRC)/src/gull.c $(GULL_INC)/gull.h | $(OBJS_DIR)
 	@echo "CC        $$(basename $@)"
@@ -157,7 +160,7 @@ PUMAS_INC= $(PUMAS_SRC)/include
 PUMAS_OBJ= $(OBJS_DIR)/$(CROSS)pumas.c.o
 
 $(PUMAS_SRC)/src/pumas.c $(PUMAS_INC)/pumas.h:
-	@$(call git_clone,$(PUMAS_SRC),$(PUMAS_REPO),$(PUMAS_VERSION))
+	@$(call git_fetch,$(PUMAS_SRC),$(PUMAS_REPO),$(PUMAS_VERSION))
 
 $(PUMAS_OBJ): $(PUMAS_SRC)/src/pumas.c $(PUMAS_INC)/pumas.h | $(OBJS_DIR)
 	@echo "CC        $$(basename $@)"
@@ -189,7 +192,7 @@ TURTLE_OBJS= $(OBJS_DIR)/$(CROSS)deps_jsmn.c.o \
 $(TURTLE_SRC)/src/deps/%.c $(TURTLE_SRC)/src/deps/%.h \
 $(TURTLE_SRC)/src/turtle/%.c $(TURTLE_SRC)/src/turtle/%.h \
 $(TURTLE_SRC)/src/turtle/io/%.c $(TURTLE_INC)/%.h:
-	@$(call git_clone,$(TURTLE_SRC),$(TURTLE_REPO),$(TURTLE_VERSION))
+	@$(call git_fetch,$(TURTLE_SRC),$(TURTLE_REPO),$(TURTLE_VERSION))
 
 $(OBJS_DIR)/$(CROSS)deps_%.c.o: $(TURTLE_SRC)/src/deps/%.c \
 	                        $(TURTLE_SRC)/src/deps/%.h | $(OBJS_DIR)
@@ -220,7 +223,7 @@ $(EXTENSIONS_OBJ): pumas_extensions.c pumas_extensions.h | \
 INSPECT_SRC= $(BUILD_DIR)/src/inspect
 
 $(INSPECT_SRC)/inspect.lua:
-	@$(call git_clone,$(INSPECT_SRC),$(INSPECT_REPO),$(INSPECT_VERSION))
+	@$(call git_fetch,$(INSPECT_SRC),$(INSPECT_REPO),$(INSPECT_VERSION))
 
 $(OBJS_DIR)/$(CROSS)inspect.lua.o: $(INSPECT_SRC)/inspect.lua $(LUAJIT_EXE) | $(OBJS_DIR)
 	@$(call jit_compile,inspect,$<,$@)
