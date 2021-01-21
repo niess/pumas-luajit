@@ -43,7 +43,7 @@ do
 
         local love = _G.love
         if love then
-            -- For love2d the module is expected be located in the source
+            -- For love2d the module is expected to be located in the source
             -- XXX Could love.filesystem be used instead of lfs?
             dirname = love.filesystem.getSource()..dirname
             path = dirname..libname

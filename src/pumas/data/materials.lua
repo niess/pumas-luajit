@@ -1,2456 +1,2786 @@
 -- Tabulated materials from the Particle Data Group (PDG)
--- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/index.html
+-- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/index.html
 
 return {
 
     -- A-150 tissue-equivalent plastic
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/a-150_tissue-equivalent_plastic.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/a-150_tissue-equivalent_plastic.html
     A150TissueEquivalentPlastic = {
-        Cbar = 3.11, I = 65.1, a = 0.1078, composition = {{"H", 0.101327}, {"C",
-        0.775501}, {"N", 0.035057}, {"O", 0.052316}, {"F", 0.017422}, {"Ca",
-        0.018378}}, delta0 = 0, density = 1.127, k = 3.4442, x0 = 0.1329,
-        x1 = 2.6234
+        ZoA = 0.5489578, x0 = 0.1329, I = 6.51E-08, x1 = 2.6234, density = 1127,
+        delta0 = 0, state = 'liquid', k = 3.4442, a = 0.1078, Cbar = 3.11,
+        elements = {O = 0.052316, N = 0.035057, Ca = 0.018378, H = 0.101327,
+        C = 0.775501, F = 0.017422}
     },
 
     -- Acetone
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/acetone.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/acetone.html
     Acetone = {
-        Cbar = 3.4341, I = 64.2, a = 0.111, composition = {{"H", 0.104122},
-        {"C", 0.620405}, {"O", 0.275473}}, delta0 = 0, density = 0.7899,
-        k = 3.4047, x0 = 0.2197, x1 = 2.6928
+        ZoA = 0.55089, x0 = 0.2197, I = 6.42E-08, x1 = 2.6928, density = 789.9,
+        delta0 = 0, state = 'liquid', k = 3.4047, a = 0.111, Cbar = 3.4341,
+        elements = {H = 0.104122, C = 0.620405, O = 0.275473}
     },
 
     -- Acetylene CHCH
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/acetylene_CHCH.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/acetylene_CHCH.html
     AcetyleneCHCH = {
-        Cbar = 9.8419, I = 58.2, a = 0.1217, composition = {{"H", 0.077418},
-        {"C", 0.922582}}, delta0 = 0, density = 0.001097, k = 3.4277,
-        x0 = 1.6017, x1 = 4.0074
+        ZoA = 0.5376265, x0 = 1.6017, I = 5.82E-08, x1 = 4.0074,
+        density = 1.097, delta0 = 0, state = 'gaz', k = 3.4277, a = 0.1217,
+        Cbar = 9.8419, elements = {C = 0.922582, H = 0.077418}
     },
 
     -- Actinium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/actinium_Ac.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/actinium_Ac.html
     Actinium = {
-        Cbar = 6.3742, I = 841, a = 0.0857, composition = {{"Ac", 1}},
-        delta0 = 0.14, density = 10.07, k = 3.2683, x0 = 0.4559, x1 = 3.7966
+        ZoA = 0.3920221, x0 = 0.4559, I = 8.41E-07, x1 = 3.7966,
+        density = 10070, delta0 = 0.14, state = 'liquid', k = 3.2683,
+        a = 0.0857, Cbar = 6.3742, elements = {Ac = 1}
     },
 
     -- Adenine
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/adenine.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/adenine.html
     Adenine = {
-        Cbar = 3.1724, I = 71.4, a = 0.2091, composition = {{"H", 0.037294},
-        {"C", 0.44443}, {"N", 0.518275}}, delta0 = 0, density = 1.35,
-        k = 3.0271, x0 = 0.1295, x1 = 2.4219
+        ZoA = 0.5179918, x0 = 0.1295, I = 7.14E-08, x1 = 2.4219, density = 1350,
+        delta0 = 0, state = 'liquid', k = 3.0271, a = 0.2091, Cbar = 3.1724,
+        elements = {H = 0.037294, C = 0.44443, N = 0.518275}
     },
 
     -- Adipose tissue ICRP
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/adipose_tissue_ICRP.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/adipose_tissue_ICRP.html
     AdiposeTissueICRP = {
-        Cbar = 3.2367, I = 63.2, a = 0.1028, composition = {{"H", 0.119477},
-        {"C", 0.63724}, {"N", 0.00797}, {"O", 0.232333}, {"Na", 0.0005}, {"Mg",
-        2e-05}, {"P", 0.00016}, {"S", 0.00073}, {"Cl", 0.00119}, {"K", 0.00032},
-        {"Ca", 2e-05}, {"Fe", 2e-05}, {"Zn", 2e-05}}, delta0 = 0,
-        density = 0.92, k = 3.4817, x0 = 0.1827, x1 = 2.653
+        ZoA = 0.55838, x0 = 0.1827, I = 6.32E-08, x1 = 2.653, density = 920,
+        delta0 = 0, state = 'liquid', k = 3.4817, a = 0.1028, Cbar = 3.2367,
+        elements = {K = 0.00032, O = 0.232333, S = 0.00073, H = 0.119477,
+        P = 0.00016, Fe = 2E-05, Zn = 2E-05, Ca = 2E-05, Na = 0.0005,
+        Cl = 0.00119, Mg = 2E-05, C = 0.63724, N = 0.00797}
     },
 
     -- Ag halides in phot emulsion
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ag_halides_in_phot_emulsion.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ag_halides_in_phot_emulsion.html
     AgHalidesInPhotEmulsion = {
-        Cbar = 5.6166, I = 487.1, a = 0.2459, composition = {{"Br", 0.422895},
-        {"Ag", 0.573748}, {"I", 0.003357}}, delta0 = 0, density = 6.47,
-        k = 2.6814, x0 = 0.0353, x1 = 3.2117
+        ZoA = 0.4366328, x0 = 0.0353, I = 4.871E-07, x1 = 3.2117,
+        density = 6470, delta0 = 0, state = 'liquid', k = 2.6814, a = 0.2459,
+        Cbar = 5.6166, elements = {I = 0.003357, Br = 0.422895, Ag = 0.573748}
     },
 
     -- Air dry 1 atm
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/air_dry_1_atm.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/air_dry_1_atm.html
     AirDry1Atm = {
-        Cbar = 10.5961, I = 85.7, a = 0.1091, composition = {{"C", 0.000124},
-        {"N", 0.755267}, {"O", 0.231781}, {"Ar", 0.012827}}, delta0 = 0,
-        density = 0.001205, k = 3.3994, x0 = 1.7418, x1 = 4.2759
+        ZoA = 0.4991766, x0 = 1.7418, I = 8.57E-08, x1 = 4.2759,
+        density = 1.205, delta0 = 0, state = 'gaz', k = 3.3994, a = 0.1091,
+        Cbar = 10.5961, elements = {Ar = 0.012827, O = 0.231781, C = 0.000124,
+        N = 0.755267}
     },
 
     -- Alanine
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/alanine.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/alanine.html
     Alanine = {
-        Cbar = 3.0965, I = 71.9, a = 0.1148, composition = {{"H", 0.07919},
-        {"C", 0.404439}, {"N", 0.157213}, {"O", 0.359159}}, delta0 = 0,
-        density = 1.42, k = 3.3526, x0 = 0.1354, x1 = 2.6336
+        ZoA = 0.5386981, x0 = 0.1354, I = 7.19E-08, x1 = 2.6336, density = 1420,
+        delta0 = 0, state = 'liquid', k = 3.3526, a = 0.1148, Cbar = 3.0965,
+        elements = {O = 0.359159, H = 0.07919, C = 0.404439, N = 0.157213}
     },
 
     -- Aluminum
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/aluminum_Al.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/aluminum_Al.html
     Aluminum = {
-        Cbar = 4.2395, I = 166, a = 0.0802, composition = {{"Al", 1}},
-        delta0 = 0.12, density = 2.699, k = 3.6345, x0 = 0.1708, x1 = 3.0127
+        ZoA = 0.4818116, x0 = 0.1708, I = 1.66E-07, x1 = 3.0127, density = 2699,
+        delta0 = 0.12, state = 'liquid', k = 3.6345, a = 0.0802, Cbar = 4.2395,
+        elements = {Al = 1}
     },
 
     -- Aluminum oxide sapphire
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/aluminum_oxide_sapphire.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/aluminum_oxide_sapphire.html
     AluminumOxideSapphire = {
-        Cbar = 3.5682, I = 145.2, a = 0.085, composition = {{"O", 0.470749},
-        {"Al", 0.529251}}, delta0 = 0, density = 3.97, k = 3.5458, x0 = 0.0402,
-        x1 = 2.8665
+        ZoA = 0.4903841, x0 = 0.0402, I = 1.452E-07, x1 = 2.8665,
+        density = 3970, delta0 = 0, state = 'liquid', k = 3.5458, a = 0.085,
+        Cbar = 3.5682, elements = {Al = 0.529251, O = 0.470749}
     },
 
     -- Amber
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/amber.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/amber.html
     Amber = {
-        Cbar = 3.0701, I = 63.2, a = 0.1193, composition = {{"H", 0.10593},
-        {"C", 0.788973}, {"O", 0.105096}}, delta0 = 0, density = 1.1,
-        k = 3.4098, x0 = 0.1335, x1 = 2.561
+        ZoA = 0.5516984, x0 = 0.1335, I = 6.32E-08, x1 = 2.561, density = 1100,
+        delta0 = 0, state = 'liquid', k = 3.4098, a = 0.1193, Cbar = 3.0701,
+        elements = {H = 0.10593, C = 0.788973, O = 0.105096}
     },
 
     -- Americium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/americium_Am.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/americium_Am.html
     Americium = {
-        Cbar = 6.2813, I = 934, a = 0.2031, composition = {{"Am", 1}},
-        delta0 = 0.14, density = 13.67, k = 2.7615, x0 = 0.2274, x1 = 3.5021
+        ZoA = 0.3908484, x0 = 0.2274, I = 9.34E-07, x1 = 3.5021,
+        density = 13670, delta0 = 0.14, state = 'liquid', k = 2.7615,
+        a = 0.2031, Cbar = 6.2813, elements = {Am = 1}
     },
 
     -- Ammonia
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ammonia.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ammonia.html
     Ammonia = {
-        Cbar = 9.8763, I = 53.7, a = 0.0831, composition = {{"H", 0.177547},
-        {"N", 0.822453}}, delta0 = 0, density = 0.000826, k = 3.6464,
-        x0 = 1.6822, x1 = 4.1158
+        ZoA = 0.5870308, x0 = 1.6822, I = 5.37E-08, x1 = 4.1158,
+        density = 0.826, delta0 = 0, state = 'gaz', k = 3.6464, a = 0.0831,
+        Cbar = 9.8763, elements = {N = 0.822453, H = 0.177547}
     },
 
     -- Aniline
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/aniline.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/aniline.html
     Aniline = {
-        Cbar = 3.2622, I = 66.2, a = 0.1313, composition = {{"H", 0.075759},
-        {"C", 0.773838}, {"N", 0.150403}}, delta0 = 0, density = 1.023,
-        k = 3.3434, x0 = 0.1618, x1 = 2.5805
+        ZoA = 0.5368395, x0 = 0.1618, I = 6.62E-08, x1 = 2.5805, density = 1023,
+        delta0 = 0, state = 'liquid', k = 3.3434, a = 0.1313, Cbar = 3.2622,
+        elements = {H = 0.075759, C = 0.773838, N = 0.150403}
     },
 
     -- Anthracene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/anthracene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/anthracene.html
     Anthracene = {
-        Cbar = 3.1514, I = 69.5, a = 0.1468, composition = {{"H", 0.05655},
-        {"C", 0.94345}}, delta0 = 0, density = 1.283, k = 3.2831, x0 = 0.1146,
-        x1 = 2.5213
+        ZoA = 0.5273631, x0 = 0.1146, I = 6.95E-08, x1 = 2.5213, density = 1283,
+        delta0 = 0, state = 'liquid', k = 3.2831, a = 0.1468, Cbar = 3.1514,
+        elements = {C = 0.94345, H = 0.05655}
     },
 
     -- Antimony
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/antimony_Sb.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/antimony_Sb.html
     Antimony = {
-        Cbar = 5.6241, I = 487, a = 0.1665, composition = {{"Sb", 1}},
-        delta0 = 0.14, density = 6.691, k = 2.9319, x0 = 0.3189, x1 = 3.3489
+        ZoA = 0.4188568, x0 = 0.3189, I = 4.87E-07, x1 = 3.3489, density = 6691,
+        delta0 = 0.14, state = 'liquid', k = 2.9319, a = 0.1665, Cbar = 5.6241,
+        elements = {Sb = 1}
     },
 
     -- Argon gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/argon_gas_Ar.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/argon_gas_Ar.html
     ArgonGas = {
-        Cbar = 11.948, I = 188, a = 0.1971, composition = {{"Ar", 1}},
-        delta0 = 0, density = 0.001662, k = 2.9618, x0 = 1.7635, x1 = 4.4855
+        ZoA = 0.4505846, x0 = 1.7635, I = 1.88E-07, x1 = 4.4855,
+        density = 1.662, delta0 = 0, state = 'gaz', k = 2.9618, a = 0.1971,
+        Cbar = 11.948, elements = {Ar = 1}
     },
 
     -- Arsenic
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/arsenic_As.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/arsenic_As.html
     Arsenic = {
-        Cbar = 5.051, I = 347, a = 0.0663, composition = {{"As", 1}},
-        delta0 = 0.08, density = 5.73, k = 3.4176, x0 = 0.1767, x1 = 3.5702
+        ZoA = 0.4404604, x0 = 0.1767, I = 3.47E-07, x1 = 3.5702, density = 5730,
+        delta0 = 0.08, state = 'liquid', k = 3.4176, a = 0.0663, Cbar = 5.051,
+        elements = {As = 1}
+    },
+
+    -- Astatine
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/astatine_At.html
+    Astatine = {
+        ZoA = 0.404787, x0 = 0.7833, I = 8.25E-07, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.3118, Cbar = 7.0039,
+        elements = {At = 1}
     },
 
     -- B-100 Bone-equivalent plastic
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/b-100_Bone-equivalent_plastic.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/b-100_Bone-equivalent_plastic.html
     B100BoneEquivalentPlastic = {
-        Cbar = 3.4528, I = 85.9, a = 0.0527, composition = {{"H", 0.065471},
-        {"C", 0.536945}, {"N", 0.0215}, {"O", 0.032085}, {"F", 0.167411}, {"Ca",
-        0.176589}}, delta0 = 0, density = 1.45, k = 3.7365, x0 = 0.1252,
-        x1 = 3.042
+        ZoA = 0.5273535, x0 = 0.1252, I = 8.59E-08, x1 = 3.042, density = 1450,
+        delta0 = 0, state = 'liquid', k = 3.7365, a = 0.0527, Cbar = 3.4528,
+        elements = {O = 0.032085, N = 0.0215, Ca = 0.176589, H = 0.065471,
+        C = 0.536945, F = 0.167411}
     },
 
     -- Bakelite
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/bakelite.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bakelite.html
     Bakelite = {
-        Cbar = 3.2582, I = 72.4, a = 0.1271, composition = {{"H", 0.057441},
-        {"C", 0.774591}, {"O", 0.167968}}, delta0 = 0, density = 1.25,
-        k = 3.347, x0 = 0.1471, x1 = 2.6055
+        ZoA = 0.5278805, x0 = 0.1471, I = 7.24E-08, x1 = 2.6055, density = 1250,
+        delta0 = 0, state = 'liquid', k = 3.347, a = 0.1271, Cbar = 3.2582,
+        elements = {H = 0.057441, C = 0.774591, O = 0.167968}
     },
 
     -- Barium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/barium_Ba.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/barium_Ba.html
     Barium = {
-        Cbar = 6.3153, I = 491, a = 0.1827, composition = {{"Ba", 1}},
-        delta0 = 0.14, density = 3.5, k = 2.8906, x0 = 0.419, x1 = 3.4547
+        ZoA = 0.4077828, x0 = 0.419, I = 4.91E-07, x1 = 3.4547, density = 3500,
+        delta0 = 0.14, state = 'liquid', k = 2.8906, a = 0.1827, Cbar = 6.3153,
+        elements = {Ba = 1}
     },
 
     -- Barium fluoride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/barium_fluoride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/barium_fluoride.html
     BariumFluoride = {
-        Cbar = 5.4116, I = 375.9, a = 0.1599, composition = {{"F", 0.21672},
-        {"Ba", 0.78328}}, delta0 = 0, density = 4.893, k = 2.8867, x0 = 0.0099,
-        x1 = 3.387
+        ZoA = 0.4220736, x0 = 0.0099, I = 3.759E-07, x1 = 3.387, density = 4893,
+        delta0 = 0, state = 'liquid', k = 2.8867, a = 0.1599, Cbar = 5.4116,
+        elements = {Ba = 0.78328, F = 0.21672}
     },
 
     -- Barium sulfate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/barium_sulfate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/barium_sulfate.html
     BariumSulfate = {
-        Cbar = 4.8923, I = 285.7, a = 0.1175, composition = {{"O", 0.274212},
-        {"S", 0.137368}, {"Ba", 0.58842}}, delta0 = 0, density = 4.5,
-        k = 3.0427, x0 = 0.0128, x1 = 3.4069
+        ZoA = 0.4456033, x0 = 0.0128, I = 2.857E-07, x1 = 3.4069,
+        density = 4500, delta0 = 0, state = 'liquid', k = 3.0427, a = 0.1175,
+        Cbar = 4.8923, elements = {O = 0.274212, S = 0.137368, Ba = 0.58842}
     },
 
     -- Benzene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/benzene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/benzene.html
     Benzene = {
-        Cbar = 3.3269, I = 63.4, a = 0.1652, composition = {{"H", 0.077418},
-        {"C", 0.922582}}, delta0 = 0, density = 0.8787, k = 3.2174, x0 = 0.171,
-        x1 = 2.5091
+        ZoA = 0.5376265, x0 = 0.171, I = 6.34E-08, x1 = 2.5091, density = 878.7,
+        delta0 = 0, state = 'liquid', k = 3.2174, a = 0.1652, Cbar = 3.3269,
+        elements = {C = 0.922582, H = 0.077418}
     },
 
     -- Berkelium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/berkelium_Bk.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/berkelium_Bk.html
     Berkelium = {
-        Cbar = 3.9886, I = 952, a = 0.2556, composition = {{"Bk", 1}},
-        delta0 = 0, density = 9.86, k = 3, x0 = 0.0509, x1 = 2.5
+        ZoA = 0.3926013, x0 = 0.0509, I = 9.52E-07, x1 = 2.5, density = 9860,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2556, Cbar = 3.9886,
+        elements = {Bk = 1}
     },
 
     -- Beryllium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/beryllium_Be.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/beryllium_Be.html
     Beryllium = {
-        Cbar = 2.7847, I = 63.7, a = 0.8039, composition = {{"Be", 1}},
-        delta0 = 0.14, density = 1.848, k = 2.4339, x0 = 0.0592, x1 = 1.6922
+        ZoA = 0.4438438, x0 = 0.0592, I = 6.37E-08, x1 = 1.6922, density = 1848,
+        delta0 = 0.14, state = 'liquid', k = 2.4339, a = 0.8039, Cbar = 2.7847,
+        elements = {Be = 1}
     },
 
     -- Beryllium oxide BeO
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/beryllium_oxide_BeO.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/beryllium_oxide_BeO.html
     BerylliumOxide = {
-        Cbar = 2.9801, I = 93.2, a = 0.1076, composition = {{"Be", 0.36032},
-        {"O", 0.63968}}, delta0 = 0, density = 3.01, k = 3.4927, x0 = 0.0241,
-        x1 = 2.5846
+        ZoA = 0.4797798, x0 = 0.0241, I = 9.32E-08, x1 = 2.5846, density = 3010,
+        delta0 = 0, state = 'liquid', k = 3.4927, a = 0.1076, Cbar = 2.9801,
+        elements = {Be = 0.36032, O = 0.63968}
     },
 
     -- Bismuth
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/bismuth_Bi.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bismuth_Bi.html
     Bismuth = {
-        Cbar = 6.3505, I = 823, a = 0.0941, composition = {{"Bi", 1}},
-        delta0 = 0.14, density = 9.747, k = 3.1671, x0 = 0.4152, x1 = 3.8248
+        ZoA = 0.3971672, x0 = 0.4152, I = 8.23E-07, x1 = 3.8248, density = 9747,
+        delta0 = 0.14, state = 'liquid', k = 3.1671, a = 0.0941, Cbar = 6.3505,
+        elements = {Bi = 1}
     },
 
     -- Bismuth germanate BGO
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/bismuth_germanate_BGO.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bismuth_germanate_BGO.html
     BismuthGermanate = {
-        Cbar = 5.7409, I = 534.1, a = 0.0957, composition = {{"O", 0.154126},
-        {"Ge", 0.17482}, {"Bi", 0.671054}}, delta0 = 0, density = 7.13,
-        k = 3.0781, x0 = 0.0456, x1 = 3.7816
+        ZoA = 0.4206107, x0 = 0.0456, I = 5.341E-07, x1 = 3.7816,
+        density = 7130, delta0 = 0, state = 'liquid', k = 3.0781, a = 0.0957,
+        Cbar = 5.7409, elements = {O = 0.154126, Bi = 0.671054, Ge = 0.17482}
     },
 
     -- Bismuth silicate BSO
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/bismuth_silicate_BSO.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bismuth_silicate_BSO.html
     BismuthSilicate = {
-        Cbar = 5.9374, I = 519.2, a = 0.2187, composition = {{"O", 0.172629},
-        {"Si", 0.075759}, {"Bi", 0.751613}}, delta0 = 0, density = 7.12, k = 3,
-        x0 = 0.4077, x1 = 3.0557
+        ZoA = 0.4225985, x0 = 0.4077, I = 5.192E-07, x1 = 3.0557,
+        density = 7120, delta0 = 0, state = 'liquid', k = 3, a = 0.2187,
+        Cbar = 5.9374, elements = {Si = 0.075759, O = 0.172629, Bi = 0.751613}
     },
 
     -- Blood ICRP
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/blood_ICRP.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/blood_ICRP.html
     BloodICRP = {
-        Cbar = 3.4581, I = 75.2, a = 0.0849, composition = {{"H", 0.101866},
-        {"C", 0.10002}, {"N", 0.02964}, {"O", 0.759414}, {"Na", 0.00185}, {"Mg",
-        4e-05}, {"Si", 3e-05}, {"P", 0.00035}, {"S", 0.00185}, {"Cl", 0.00278},
-        {"K", 0.00163}, {"Ca", 6e-05}, {"Fe", 0.00046}, {"Zn", 1e-05}},
-        delta0 = 0, density = 1.06, k = 3.5406, x0 = 0.2239, x1 = 2.8017
+        ZoA = 0.5498747, x0 = 0.2239, I = 7.52E-08, x1 = 2.8017, density = 1060,
+        delta0 = 0, state = 'liquid', k = 3.5406, a = 0.0849, Cbar = 3.4581,
+        elements = {K = 0.00163, O = 0.759414, S = 0.00185, H = 0.101866,
+        Fe = 0.00046, P = 0.00035, Si = 3E-05, Zn = 1E-05, Ca = 6E-05,
+        Na = 0.00185, Cl = 0.00278, Mg = 4E-05, C = 0.10002, N = 0.02964}
+    },
+
+    -- Bohrium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bohrium_Bh.html
+    Bohrium = {
+        ZoA = 0.3961012, x0 = 0.6345, I = 1.087E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2739, Cbar = 6.5475,
+        elements = {Bh = 1}
     },
 
     -- Boron
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/boron_B.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/boron_B.html
     Boron = {
-        Cbar = 2.8477, I = 76, a = 0.5622, composition = {{"B", 1}},
-        delta0 = 0.14, density = 2.37, k = 2.4512, x0 = 0.0305, x1 = 1.9688
+        ZoA = 0.4622354, x0 = 0.0305, I = 7.6E-08, x1 = 1.9688, density = 2370,
+        delta0 = 0.14, state = 'liquid', k = 2.4512, a = 0.5622, Cbar = 2.8477,
+        elements = {B = 1}
     },
 
     -- Boron carbide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/boron_carbide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/boron_carbide.html
     BoronCarbide = {
-        Cbar = 2.9859, I = 84.7, a = 0.3709, composition = {{"B", 0.78261},
-        {"C", 0.21739}}, delta0 = 0, density = 2.52, k = 2.8076, x0 = 0.0093,
-        x1 = 2.1006
+        ZoA = 0.4703473, x0 = 0.0093, I = 8.47E-08, x1 = 2.1006, density = 2520,
+        delta0 = 0, state = 'liquid', k = 2.8076, a = 0.3709, Cbar = 2.9859,
+        elements = {B = 0.78261, C = 0.21739}
     },
 
     -- Boron oxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/boron_oxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/boron_oxide.html
     BoronOxide = {
-        Cbar = 3.6027, I = 99.6, a = 0.1155, composition = {{"B", 0.310551},
-        {"O", 0.689449}}, delta0 = 0, density = 1.812, k = 3.3832, x0 = 0.1843,
-        x1 = 2.7379
+        ZoA = 0.4882872, x0 = 0.1843, I = 9.96E-08, x1 = 2.7379, density = 1812,
+        delta0 = 0, state = 'liquid', k = 3.3832, a = 0.1155, Cbar = 3.6027,
+        elements = {B = 0.310551, O = 0.689449}
     },
 
     -- Borosilicate glass Pyrex Corning 7740
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/borosilicate_glass_Pyrex_Corning_7740.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/borosilicate_glass_Pyrex_Corning_7740.html
     BorosilicateGlassPyrexCorning7740 = {
-        Cbar = 3.9708, I = 134, a = 0.0827, composition = {{"B", 0.040061},
-        {"O", 0.539564}, {"Na", 0.028191}, {"Al", 0.011644}, {"Si", 0.37722},
-        {"K", 0.003321}}, delta0 = 0, density = 2.23, k = 3.5224, x0 = 0.1479,
-        x1 = 2.9933
+        ZoA = 0.4970599, x0 = 0.1479, I = 1.34E-07, x1 = 2.9933, density = 2230,
+        delta0 = 0, state = 'liquid', k = 3.5224, a = 0.0827, Cbar = 3.9708,
+        elements = {B = 0.040061, O = 0.539564, Na = 0.028191, Al = 0.011644,
+        K = 0.003321, Si = 0.37722}
     },
 
     -- Brain ICRP
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/brain_ICRP.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/brain_ICRP.html
     BrainICRP = {
-        Cbar = 3.4279, I = 73.3, a = 0.0825, composition = {{"H", 0.110667},
-        {"C", 0.12542}, {"N", 0.01328}, {"O", 0.737723}, {"Na", 0.00184}, {"Mg",
-        0.00015}, {"P", 0.00354}, {"S", 0.00177}, {"Cl", 0.00236}, {"K",
-        0.0031}, {"Ca", 9e-05}, {"Fe", 5e-05}, {"Zn", 1e-05}}, delta0 = 0,
-        density = 1.03, k = 3.5585, x0 = 0.2206, x1 = 2.8021
+        ZoA = 0.5541432, x0 = 0.2206, I = 7.33E-08, x1 = 2.8021, density = 1030,
+        delta0 = 0, state = 'liquid', k = 3.5585, a = 0.0825, Cbar = 3.4279,
+        elements = {K = 0.0031, O = 0.737723, S = 0.00177, H = 0.110667,
+        P = 0.00354, Fe = 5E-05, Zn = 1E-05, Ca = 9E-05, Na = 0.00184,
+        Cl = 0.00236, Mg = 0.00015, C = 0.12542, N = 0.01328}
     },
 
     -- Bromine gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/bromine_gas.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bromine_gas.html
     BromineGas = {
-        Cbar = 11.7307, I = 343, a = 0.0633, composition = {{"Br", 1}},
-        delta0 = 0, density = 0.007072, k = 3.467, x0 = 1.5262, x1 = 4.9899
+        ZoA = 0.4380251, x0 = 1.5262, I = 3.43E-07, x1 = 4.9899,
+        density = 7.072, delta0 = 0, state = 'gaz', k = 3.467, a = 0.0633,
+        Cbar = 11.7307, elements = {Br = 1}
     },
 
     -- Butane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/butane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/butane.html
     Butane = {
-        Cbar = 8.5651, I = 48.3, a = 0.1085, composition = {{"H", 0.173408},
-        {"C", 0.826592}}, delta0 = 0, density = 0.002489, k = 3.4884,
-        x0 = 1.3792, x1 = 3.7528
+        ZoA = 0.5848367, x0 = 1.3792, I = 4.83E-08, x1 = 3.7528,
+        density = 2.489, delta0 = 0, state = 'gaz', k = 3.4884, a = 0.1085,
+        Cbar = 8.5651, elements = {C = 0.826592, H = 0.173408}
     },
 
     -- C-552 air-equivalent plastic
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/C-552_air-equivalent_plastic.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/C-552_air-equivalent_plastic.html
     C552AirEquivalentPlastic = {
-        Cbar = 3.3338, I = 86.8, a = 0.1049, composition = {{"H", 0.02468},
-        {"C", 0.50161}, {"O", 0.004527}, {"F", 0.465209}, {"Si", 0.003973}},
-        delta0 = 0, density = 1.76, k = 3.4344, x0 = 0.151, x1 = 2.7083
+        ZoA = 0.4996714, x0 = 0.151, I = 8.68E-08, x1 = 2.7083, density = 1760,
+        delta0 = 0, state = 'liquid', k = 3.4344, a = 0.1049, Cbar = 3.3338,
+        elements = {Si = 0.003973, F = 0.465209, H = 0.02468, C = 0.50161,
+        O = 0.004527}
     },
 
     -- Cadmium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cadmium_Cd.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cadmium_Cd.html
     Cadmium = {
-        Cbar = 5.2727, I = 469, a = 0.2461, composition = {{"Cd", 1}},
-        delta0 = 0.14, density = 8.65, k = 2.6772, x0 = 0.1281, x1 = 3.1667
+        ZoA = 0.4269931, x0 = 0.1281, I = 4.69E-07, x1 = 3.1667, density = 8650,
+        delta0 = 0.14, state = 'liquid', k = 2.6772, a = 0.2461, Cbar = 5.2727,
+        elements = {Cd = 1}
     },
 
     -- Cadmium telluride CdTe
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cadmium_telluride_CdTe.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cadmium_telluride_CdTe.html
     CadmiumTelluride = {
-        Cbar = 5.9096, I = 539.3, a = 0.2484, composition = {{"Cd", 0.468355},
-        {"Te", 0.531645}}, delta0 = 0, density = 6.2, k = 2.6665, x0 = 0.0438,
-        x1 = 3.2836
+        ZoA = 0.4166371, x0 = 0.0438, I = 5.393E-07, x1 = 3.2836,
+        density = 6200, delta0 = 0, state = 'liquid', k = 2.6665, a = 0.2484,
+        Cbar = 5.9096, elements = {Te = 0.531645, Cd = 0.468355}
     },
 
     -- Cadmium tungstate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cadmium_tungstate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cadmium_tungstate.html
     CadmiumTungstate = {
-        Cbar = 5.3594, I = 468.3, a = 0.1286, composition = {{"O", 0.177644},
-        {"Cd", 0.312027}, {"W", 0.510329}}, delta0 = 0, density = 7.9,
-        k = 2.915, x0 = 0.0123, x1 = 3.5941
+        ZoA = 0.4274778, x0 = 0.0123, I = 4.683E-07, x1 = 3.5941,
+        density = 7900, delta0 = 0, state = 'liquid', k = 2.915, a = 0.1286,
+        Cbar = 5.3594, elements = {Cd = 0.312027, O = 0.177644, W = 0.510329}
     },
 
     -- Caesium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/caesium_Cs.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/caesium_Cs.html
     Caesium = {
-        Cbar = 6.9135, I = 488, a = 0.1823, composition = {{"Cs", 1}},
-        delta0 = 0.14, density = 1.873, k = 2.8866, x0 = 0.5473, x1 = 3.5914
+        ZoA = 0.4138294, x0 = 0.5473, I = 4.88E-07, x1 = 3.5914, density = 1873,
+        delta0 = 0.14, state = 'liquid', k = 2.8866, a = 0.1823, Cbar = 6.9135,
+        elements = {Cs = 1}
     },
 
     -- Calcium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/calcium_Ca.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_Ca.html
     Calcium = {
-        Cbar = 5.0396, I = 191, a = 0.1564, composition = {{"Ca", 1}},
-        delta0 = 0.14, density = 1.55, k = 3.0745, x0 = 0.3228, x1 = 3.1191
+        ZoA = 0.4990219, x0 = 0.3228, I = 1.91E-07, x1 = 3.1191, density = 1550,
+        delta0 = 0.14, state = 'liquid', k = 3.0745, a = 0.1564, Cbar = 5.0396,
+        elements = {Ca = 1}
     },
 
     -- Calcium carbonate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/calcium_carbonate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_carbonate.html
     CalciumCarbonate = {
-        Cbar = 3.7738, I = 136.4, a = 0.083, composition = {{"C", 0.120003},
-        {"O", 0.479554}, {"Ca", 0.400443}}, delta0 = 0, density = 2.8,
-        k = 3.412, x0 = 0.0492, x1 = 3.0549
+        ZoA = 0.4995649, x0 = 0.0492, I = 1.364E-07, x1 = 3.0549,
+        density = 2800, delta0 = 0, state = 'liquid', k = 3.412, a = 0.083,
+        Cbar = 3.7738, elements = {O = 0.479554, C = 0.120003, Ca = 0.400443}
     },
 
     -- Calcium fluoride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/calcium_fluoride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_fluoride.html
     CalciumFluoride = {
-        Cbar = 4.0653, I = 166, a = 0.0694, composition = {{"F", 0.486659},
-        {"Ca", 0.513341}}, delta0 = 0, density = 3.18, k = 3.5263, x0 = 0.0676,
-        x1 = 3.1683
+        ZoA = 0.4867105, x0 = 0.0676, I = 1.66E-07, x1 = 3.1683, density = 3180,
+        delta0 = 0, state = 'liquid', k = 3.5263, a = 0.0694, Cbar = 4.0653,
+        elements = {Ca = 0.513341, F = 0.486659}
     },
 
     -- Calcium oxide CaO
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/calcium_oxide_CaO.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_oxide_CaO.html
     CalciumOxide = {
-        Cbar = 4.1209, I = 176.1, a = 0.1213, composition = {{"O", 0.285299},
-        {"Ca", 0.714701}}, delta0 = 0, density = 3.3, k = 3.1936, x0 = 0.0172,
-        x1 = 3.0171
+        ZoA = 0.4993072, x0 = 0.0172, I = 1.761E-07, x1 = 3.0171,
+        density = 3300, delta0 = 0, state = 'liquid', k = 3.1936, a = 0.1213,
+        Cbar = 4.1209, elements = {Ca = 0.714701, O = 0.285299}
     },
 
     -- Calcium sulfate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/calcium_sulfate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_sulfate.html
     CalciumSulfate = {
-        Cbar = 3.9388, I = 152.3, a = 0.0771, composition = {{"O", 0.470095},
-        {"S", 0.235497}, {"Ca", 0.294408}}, delta0 = 0, density = 2.96,
-        k = 3.4495, x0 = 0.0587, x1 = 3.1229
+        ZoA = 0.4994818, x0 = 0.0587, I = 1.523E-07, x1 = 3.1229,
+        density = 2960, delta0 = 0, state = 'liquid', k = 3.4495, a = 0.0771,
+        Cbar = 3.9388, elements = {O = 0.470095, S = 0.235497, Ca = 0.294408}
     },
 
     -- Calcium tungstate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/calcium_tungstate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_tungstate.html
     CalciumTungstate = {
-        Cbar = 5.2603, I = 395, a = 0.0621, composition = {{"O", 0.22227},
-        {"Ca", 0.139202}, {"W", 0.638529}}, delta0 = 0, density = 6.062,
-        k = 3.2649, x0 = 0.0323, x1 = 3.8932
+        ZoA = 0.4376265, x0 = 0.0323, I = 3.95E-07, x1 = 3.8932, density = 6062,
+        delta0 = 0, state = 'liquid', k = 3.2649, a = 0.0621, Cbar = 5.2603,
+        elements = {O = 0.22227, Ca = 0.139202, W = 0.638529}
     },
 
     -- Californium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/californium_Cf.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/californium_Cf.html
     Californium = {
-        Cbar = 4.0236, I = 966, a = 0.258, composition = {{"Cf", 1}},
-        delta0 = 0, density = 15.1, k = 3, x0 = 0.0623, x1 = 2.5
+        ZoA = 0.3903138, x0 = 0.0623, I = 9.66E-07, x1 = 2.5, density = 15100,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.258, Cbar = 4.0236,
+        elements = {Cf = 1}
     },
 
     -- Carbon amorphous
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/carbon_amorphous_C.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_amorphous_C.html
     CarbonAmorphous = {
-        Cbar = 2.9925, I = 78, a = 0.2024, composition = {{"C", 1}},
-        delta0 = 0.1, density = 2, k = 3.0036, x0 = 0.0351, x1 = 2.486
+        ZoA = 0.4995504, x0 = 0.0351, I = 7.8E-08, x1 = 2.486, density = 2000,
+        delta0 = 0.1, state = 'liquid', k = 3.0036, a = 0.2024, Cbar = 2.9925,
+        elements = {C = 1}
     },
 
     -- Carbon compact
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/carbon_compact_C.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_compact_C.html
     CarbonCompact = {
-        Cbar = 2.868, I = 78, a = 0.2614, composition = {{"C", 1}},
-        delta0 = 0.12, density = 2.265, k = 2.8697, x0 = 0.0178, x1 = 2.3415
+        ZoA = 0.4995504, x0 = 0.0178, I = 7.8E-08, x1 = 2.3415, density = 2265,
+        delta0 = 0.12, state = 'liquid', k = 2.8697, a = 0.2614, Cbar = 2.868,
+        elements = {C = 1}
     },
 
     -- Carbon dioxide gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/carbon_dioxide_gas.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_dioxide_gas.html
     CarbonDioxideGas = {
-        Cbar = 10.1537, I = 85, a = 0.1177, composition = {{"C", 0.272916},
-        {"O", 0.727084}}, delta0 = 0, density = 0.001842, k = 3.3227,
-        x0 = 1.6294, x1 = 4.1825
+        ZoA = 0.4998932, x0 = 1.6294, I = 8.5E-08, x1 = 4.1825, density = 1.842,
+        delta0 = 0, state = 'gaz', k = 3.3227, a = 0.1177, Cbar = 10.1537,
+        elements = {C = 0.272916, O = 0.727084}
     },
 
     -- Carbon gem diamond
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/carbon_gem_diamond.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_gem_diamond.html
     CarbonGemDiamond = {
-        Cbar = 2.4271, I = 78, a = 0.2614, composition = {{"C", 1}},
-        delta0 = 0.12, density = 3.52, k = 2.8697, x0 = 0.1135, x1 = 2.2458
+        ZoA = 0.4995504, x0 = 0.1135, I = 7.8E-08, x1 = 2.2458, density = 3520,
+        delta0 = 0.12, state = 'liquid', k = 2.8697, a = 0.2614, Cbar = 2.4271,
+        elements = {C = 1}
     },
 
     -- Carbon graphite
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/carbon_graphite_C.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_graphite_C.html
     CarbonGraphite = {
-        Cbar = 2.8926, I = 78, a = 0.2076, composition = {{"C", 1}},
-        delta0 = 0.14, density = 2.21, k = 2.9532, x0 = 0.009, x1 = 2.4817
+        ZoA = 0.4995504, x0 = 0.009, I = 7.8E-08, x1 = 2.4817, density = 2210,
+        delta0 = 0.14, state = 'liquid', k = 2.9532, a = 0.2076, Cbar = 2.8926,
+        elements = {C = 1}
     },
 
     -- Carbon tetrachloride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/carbon_tetrachloride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_tetrachloride.html
     CarbonTetrachloride = {
-        Cbar = 4.7712, I = 166.3, a = 0.1902, composition = {{"C", 0.078083},
-        {"Cl", 0.921917}}, delta0 = 0, density = 1.594, k = 3.0116, x0 = 0.1773,
-        x1 = 2.9165
+        ZoA = 0.4810706, x0 = 0.1773, I = 1.663E-07, x1 = 2.9165,
+        density = 1594, delta0 = 0, state = 'liquid', k = 3.0116, a = 0.1902,
+        Cbar = 4.7712, elements = {C = 0.078083, Cl = 0.921917}
     },
 
     -- Carbon tetrafluoride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/carbon_tetrafluoride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_tetrafluoride.html
     CarbonTetrafluoride = {
-        Cbar = 10.0858, I = 115, a = 0.1855, composition = {{"C", 0.136548},
-        {"F", 0.86345}}, delta0 = 0, density = 0.00378, k = 3, x0 = 1.7, x1 = 4
+        ZoA = 0.4772497, x0 = 1.7, I = 1.15E-07, x1 = 4, density = 3.78,
+        delta0 = 0, state = 'gaz', k = 3, a = 0.1855, Cbar = 10.0858,
+        elements = {C = 0.136548, F = 0.86345}
     },
 
     -- Cellulose
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cellulose.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cellulose.html
     Cellulose = {
-        Cbar = 3.2647, I = 77.6, a = 0.1115, composition = {{"H", 0.062162},
-        {"C", 0.444462}, {"O", 0.493376}}, delta0 = 0, density = 1.42,
-        k = 3.381, x0 = 0.158, x1 = 2.6778
+        ZoA = 0.5303558, x0 = 0.158, I = 7.76E-08, x1 = 2.6778, density = 1420,
+        delta0 = 0, state = 'liquid', k = 3.381, a = 0.1115, Cbar = 3.2647,
+        elements = {H = 0.062162, C = 0.444462, O = 0.493376}
     },
 
     -- Cellulose acetate butyrate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cellulose_acetate_butyrate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cellulose_acetate_butyrate.html
     CelluloseAcetateButyrate = {
-        Cbar = 3.3497, I = 74.6, a = 0.1144, composition = {{"H", 0.067125},
-        {"C", 0.545403}, {"O", 0.387472}}, delta0 = 0, density = 1.2,
-        k = 3.3738, x0 = 0.1794, x1 = 2.6809
+        ZoA = 0.5327468, x0 = 0.1794, I = 7.46E-08, x1 = 2.6809, density = 1200,
+        delta0 = 0, state = 'liquid', k = 3.3738, a = 0.1144, Cbar = 3.3497,
+        elements = {H = 0.067125, C = 0.545403, O = 0.387472}
     },
 
     -- Cellulose nitrate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cellulose_nitrate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cellulose_nitrate.html
     CelluloseNitrate = {
-        Cbar = 3.4762, I = 87, a = 0.1181, composition = {{"H", 0.029216}, {"C",
-        0.271296}, {"N", 0.121276}, {"O", 0.578212}}, delta0 = 0,
-        density = 1.49, k = 3.3237, x0 = 0.1897, x1 = 2.7253
+        ZoA = 0.5142155, x0 = 0.1897, I = 8.7E-08, x1 = 2.7253, density = 1490,
+        delta0 = 0, state = 'liquid', k = 3.3237, a = 0.1181, Cbar = 3.4762,
+        elements = {O = 0.578212, H = 0.029216, C = 0.271296, N = 0.121276}
     },
 
     -- Ceric sulfate dosimeter solution
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ceric_sulfate_dosimeter_solution.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ceric_sulfate_dosimeter_solution.html
     CericSulfateDosimeterSolution = {
-        Cbar = 3.5212, I = 76.7, a = 0.0767, composition = {{"H", 0.107596},
-        {"N", 0.0008}, {"O", 0.874976}, {"S", 0.014627}, {"Ce", 0.002001}},
-        delta0 = 0, density = 1.03, k = 3.5607, x0 = 0.2363, x1 = 2.8769
+        ZoA = 0.5527018, x0 = 0.2363, I = 7.67E-08, x1 = 2.8769, density = 1030,
+        delta0 = 0, state = 'liquid', k = 3.5607, a = 0.0767, Cbar = 3.5212,
+        elements = {O = 0.874976, S = 0.014627, N = 0.0008, H = 0.107596,
+        Ce = 0.002001}
     },
 
     -- Cerium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cerium_Ce.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cerium_Ce.html
     Cerium = {
-        Cbar = 5.7669, I = 523, a = 0.1889, composition = {{"Ce", 1}},
-        delta0 = 0.14, density = 6.77, k = 2.8592, x0 = 0.2676, x1 = 3.3395
+        ZoA = 0.4139427, x0 = 0.2676, I = 5.23E-07, x1 = 3.3395, density = 6770,
+        delta0 = 0.14, state = 'liquid', k = 2.8592, a = 0.1889, Cbar = 5.7669,
+        elements = {Ce = 1}
     },
 
     -- Cerium fluoride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cerium_fluoride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cerium_fluoride.html
     CeriumFluoride = {
-        Cbar = 5.0079, I = 348.4, a = 0.1862, composition = {{"Ce", 0.710847},
-        {"F", 0.289153}}, delta0 = 0, density = 6.16, k = 3, x0 = 0.2, x1 = 3
+        ZoA = 0.4312287, x0 = 0.2, I = 3.484E-07, x1 = 3, density = 6160,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1862, Cbar = 5.0079,
+        elements = {F = 0.289153, Ce = 0.710847}
     },
 
     -- Cesium fluoride CsF
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cesium_fluoride_CsF.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cesium_fluoride_CsF.html
     CesiumFluoride = {
-        Cbar = 5.9046, I = 440.7, a = 0.2205, composition = {{"F", 0.125069},
-        {"Cs", 0.874931}}, delta0 = 0, density = 4.115, k = 2.728, x0 = 0.0084,
-        x1 = 3.3374
+        ZoA = 0.4213204, x0 = 0.0084, I = 4.407E-07, x1 = 3.3374,
+        density = 4115, delta0 = 0, state = 'liquid', k = 2.728, a = 0.2205,
+        Cbar = 5.9046, elements = {Cs = 0.874931, F = 0.125069}
     },
 
     -- Cesium iodide CsI
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cesium_iodide_CsI.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cesium_iodide_CsI.html
     CesiumIodide = {
-        Cbar = 6.2807, I = 553.1, a = 0.2538, composition = {{"I", 0.488451},
-        {"Cs", 0.511549}}, delta0 = 0, density = 4.51, k = 2.6657, x0 = 0.0395,
-        x1 = 3.3353
+        ZoA = 0.41569, x0 = 0.0395, I = 5.531E-07, x1 = 3.3353, density = 4510,
+        delta0 = 0, state = 'liquid', k = 2.6657, a = 0.2538, Cbar = 6.2807,
+        elements = {I = 0.488451, Cs = 0.511549}
     },
 
     -- Chlorine gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/chlorine_gas.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/chlorine_gas.html
     ChlorineGas = {
-        Cbar = 11.147, I = 174, a = 0.1985, composition = {{"Cl", 1}},
-        delta0 = 0, density = 0.00298, k = 2.9702, x0 = 1.5566, x1 = 4.3005
+        ZoA = 0.4795054, x0 = 1.5566, I = 1.74E-07, x1 = 4.3005, density = 2.98,
+        delta0 = 0, state = 'gaz', k = 2.9702, a = 0.1985, Cbar = 11.147,
+        elements = {Cl = 1}
     },
 
     -- Chlorobenzene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/chlorobenzene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/chlorobenzene.html
     Chlorobenzene = {
-        Cbar = 3.8201, I = 89.1, a = 0.0986, composition = {{"H", 0.044772},
-        {"C", 0.640254}, {"Cl", 0.314974}}, delta0 = 0, density = 1.106,
-        k = 3.3797, x0 = 0.1714, x1 = 2.9272
+        ZoA = 0.5152567, x0 = 0.1714, I = 8.91E-08, x1 = 2.9272, density = 1106,
+        delta0 = 0, state = 'liquid', k = 3.3797, a = 0.0986, Cbar = 3.8201,
+        elements = {H = 0.044772, C = 0.640254, Cl = 0.314974}
     },
 
     -- Chloroform
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/chloroform.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/chloroform.html
     Chloroform = {
-        Cbar = 4.7055, I = 156, a = 0.1696, composition = {{"H", 0.008443},
-        {"C", 0.100613}, {"Cl", 0.890944}}, delta0 = 0, density = 1.483,
-        k = 3.0627, x0 = 0.1786, x1 = 2.9581
+        ZoA = 0.4858439, x0 = 0.1786, I = 1.56E-07, x1 = 2.9581, density = 1483,
+        delta0 = 0, state = 'liquid', k = 3.0627, a = 0.1696, Cbar = 4.7055,
+        elements = {H = 0.008443, C = 0.100613, Cl = 0.890944}
     },
 
     -- Chromium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/chromium_Cr.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/chromium_Cr.html
     Chromium = {
-        Cbar = 4.1781, I = 257, a = 0.1542, composition = {{"Cr", 1}},
-        delta0 = 0.14, density = 7.18, k = 2.9896, x0 = 0.034, x1 = 3.0451
+        ZoA = 0.4615722, x0 = 0.034, I = 2.57E-07, x1 = 3.0451, density = 7180,
+        delta0 = 0.14, state = 'liquid', k = 2.9896, a = 0.1542, Cbar = 4.1781,
+        elements = {Cr = 1}
     },
 
     -- Cobalt
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cobalt_Co.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cobalt_Co.html
     Cobalt = {
-        Cbar = 4.2601, I = 297, a = 0.1447, composition = {{"Co", 1}},
-        delta0 = 0.12, density = 8.9, k = 2.9502, x0 = 0.0187, x1 = 3.179
+        ZoA = 0.4581458, x0 = 0.0187, I = 2.97E-07, x1 = 3.179, density = 8900,
+        delta0 = 0.12, state = 'liquid', k = 2.9502, a = 0.1447, Cbar = 4.2601,
+        elements = {Co = 1}
     },
 
     -- Compact bone ICRU
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/compact_bone_ICRU.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/compact_bone_ICRU.html
     CompactBoneICRU = {
-        Cbar = 3.339, I = 91.9, a = 0.0582, composition = {{"H", 0.063984},
-        {"C", 0.278}, {"N", 0.027}, {"O", 0.410016}, {"Mg", 0.002}, {"P", 0.07},
-        {"S", 0.002}, {"Ca", 0.147}}, delta0 = 0, density = 1.85, k = 3.6419,
-        x0 = 0.0944, x1 = 3.0201
+        ZoA = 0.5300584, x0 = 0.0944, I = 9.19E-08, x1 = 3.0201, density = 1850,
+        delta0 = 0, state = 'liquid', k = 3.6419, a = 0.0582, Cbar = 3.339,
+        elements = {Ca = 0.147, O = 0.410016, S = 0.002, N = 0.027, Mg = 0.002,
+        H = 0.063984, C = 0.278, P = 0.07}
+    },
+
+    -- Copernicium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/copernicium_Cn.html
+    Copernicium = {
+        ZoA = 0.3927385, x0 = 0.6774, I = 1.156E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2841, Cbar = 6.6791,
+        elements = {Cn = 1}
     },
 
     -- Copper
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/copper_Cu.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/copper_Cu.html
     Copper = {
-        Cbar = 4.419, I = 322, a = 0.1434, composition = {{"Cu", 1}},
-        delta0 = 0.08, density = 8.96, k = 2.9044, x0 = 0.0254, x1 = 3.2792
+        ZoA = 0.4563602, x0 = 0.0254, I = 3.22E-07, x1 = 3.2792, density = 8960,
+        delta0 = 0.08, state = 'liquid', k = 2.9044, a = 0.1434, Cbar = 4.419,
+        elements = {Cu = 1}
     },
 
     -- Cortical bone ICRP
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cortical_bone_ICRP.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cortical_bone_ICRP.html
     CorticalBoneICRP = {
-        Cbar = 3.6488, I = 106.4, a = 0.062, composition = {{"H", 0.047234},
-        {"C", 0.14433}, {"N", 0.04199}, {"O", 0.446096}, {"Mg", 0.0022}, {"P",
-        0.10497}, {"S", 0.00315}, {"Ca", 0.20993}, {"Zn", 0.0001}}, delta0 = 0,
-        density = 1.85, k = 3.5919, x0 = 0.1161, x1 = 3.0919
+        ZoA = 0.5212671, x0 = 0.1161, I = 1.064E-07, x1 = 3.0919,
+        density = 1850, delta0 = 0, state = 'liquid', k = 3.5919, a = 0.062,
+        Cbar = 3.6488, elements = {O = 0.446096, S = 0.00315, H = 0.047234,
+        P = 0.10497, Zn = 0.0001, N = 0.04199, C = 0.14433, Ca = 0.20993,
+        Mg = 0.0022}
     },
 
     -- Curium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/curium_Cm.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/curium_Cm.html
     Curium = {
-        Cbar = 6.3097, I = 939, a = 0.2026, composition = {{"Cm", 1}},
-        delta0 = 0.14, density = 13.51, k = 2.7579, x0 = 0.2484, x1 = 3.516
+        ZoA = 0.3885539, x0 = 0.2484, I = 9.39E-07, x1 = 3.516, density = 13510,
+        delta0 = 0.14, state = 'liquid', k = 2.7579, a = 0.2026, Cbar = 6.3097,
+        elements = {Cm = 1}
     },
 
     -- Cyclohexane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/cyclohexane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cyclohexane.html
     Cyclohexane = {
-        Cbar = 3.1544, I = 56.4, a = 0.1204, composition = {{"H", 0.143711},
-        {"C", 0.856289}}, delta0 = 0, density = 0.779, k = 3.4278, x0 = 0.1728,
-        x1 = 2.5549
+        ZoA = 0.570231, x0 = 0.1728, I = 5.64E-08, x1 = 2.5549, density = 779,
+        delta0 = 0, state = 'liquid', k = 3.4278, a = 0.1204, Cbar = 3.1544,
+        elements = {C = 0.856289, H = 0.143711}
+    },
+
+    -- Darmstadtium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/darmstadtium_Ds.html
+    Darmstadtium = {
+        ZoA = 0.3912293, x0 = 0.6632, I = 1.129E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2807, Cbar = 6.6357,
+        elements = {Ds = 1}
     },
 
     -- Deuterium gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/deuterium_gas.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/deuterium_gas.html
     DeuteriumGas = {
-        Cbar = 9.6543, I = 19.2, a = 0.1409, composition = {{"D", 1}},
-        delta0 = 0, density = 0.0001677, k = 5.7273, x0 = 1.8793, x1 = 3.2872
+        ZoA = 0.4964997, x0 = 1.8793, I = 1.92E-08, x1 = 3.2872,
+        density = 0.1677, delta0 = 0, state = 'gaz', k = 5.7273, a = 0.1409,
+        Cbar = 9.6543, elements = {D = 1}
     },
 
     -- Deuterium oxide liquid
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/deuterium_oxide_liquid.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/deuterium_oxide_liquid.html
     DeuteriumOxideLiquid = {
-        Cbar = 3.5017, I = 79.7, a = 0.0912, composition = {{"D", 0.201133},
-        {"O", 0.798867}}, delta0 = 0, density = 1.107, k = 3.4773, x0 = 0.24,
-        x1 = 2.8004
+        ZoA = 0.4993134, x0 = 0.24, I = 7.97E-08, x1 = 2.8004, density = 1107,
+        delta0 = 0, state = 'liquid', k = 3.4773, a = 0.0912, Cbar = 3.5017,
+        elements = {D = 0.201133, O = 0.798867}
     },
 
     -- 12-dichlorobenzene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/12-dichlorobenzene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/12-dichlorobenzene.html
     Dichlorobenzene = {
-        Cbar = 4.0348, I = 106.5, a = 0.1601, composition = {{"H", 0.027425},
-        {"C", 0.490233}, {"Cl", 0.482342}}, delta0 = 0, density = 1.305,
-        k = 3.0836, x0 = 0.1587, x1 = 2.8276
+        ZoA = 0.5033701, x0 = 0.1587, I = 1.065E-07, x1 = 2.8276,
+        density = 1305, delta0 = 0, state = 'liquid', k = 3.0836, a = 0.1601,
+        Cbar = 4.0348, elements = {H = 0.027425, C = 0.490233, Cl = 0.482342}
     },
 
     -- Dichlorodiethyl ether
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/dichlorodiethyl_ether.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/dichlorodiethyl_ether.html
     DichlorodiethylEther = {
-        Cbar = 4.0135, I = 103.3, a = 0.068, composition = {{"H", 0.056381},
-        {"C", 0.335942}, {"O", 0.111874}, {"Cl", 0.495802}}, delta0 = 0,
-        density = 1.22, k = 3.525, x0 = 0.1773, x1 = 3.1586
+        ZoA = 0.5173938, x0 = 0.1773, I = 1.033E-07, x1 = 3.1586,
+        density = 1220, delta0 = 0, state = 'liquid', k = 3.525, a = 0.068,
+        Cbar = 4.0135, elements = {O = 0.111874, H = 0.056381, C = 0.335942,
+        Cl = 0.495802}
     },
 
     -- 12-dichloroethane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/12-dichloroethane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/12-dichloroethane.html
     Dichloroethane = {
-        Cbar = 4.1849, I = 111.9, a = 0.1338, composition = {{"H", 0.04074},
-        {"C", 0.242746}, {"Cl", 0.716515}}, delta0 = 0, density = 1.235,
-        k = 3.1675, x0 = 0.1375, x1 = 2.9529
+        ZoA = 0.5052253, x0 = 0.1375, I = 1.119E-07, x1 = 2.9529,
+        density = 1235, delta0 = 0, state = 'liquid', k = 3.1675, a = 0.1338,
+        Cbar = 4.1849, elements = {H = 0.04074, C = 0.242746, Cl = 0.716515}
     },
 
     -- Diethyl ether
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/diethyl_ether.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/diethyl_ether.html
     DiethylEther = {
-        Cbar = 3.3721, I = 60, a = 0.1055, composition = {{"H", 0.135978}, {"C",
-        0.648171}, {"O", 0.215851}}, delta0 = 0, density = 0.7138, k = 3.4586,
-        x0 = 0.2231, x1 = 2.6745
+        ZoA = 0.5665295, x0 = 0.2231, I = 6E-08, x1 = 2.6745, density = 713.8,
+        delta0 = 0, state = 'liquid', k = 3.4586, a = 0.1055, Cbar = 3.3721,
+        elements = {H = 0.135978, C = 0.648171, O = 0.215851}
     },
 
     -- Dimethyl sulfoxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/dimethyl_sulfoxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/dimethyl_sulfoxide.html
     DimethylSulfoxide = {
-        Cbar = 3.9844, I = 98.6, a = 0.0662, composition = {{"H", 0.077403},
-        {"C", 0.307467}, {"O", 0.204782}, {"S", 0.410348}}, delta0 = 0,
-        density = 1.101, k = 3.5708, x0 = 0.2021, x1 = 3.1263
+        ZoA = 0.537481, x0 = 0.2021, I = 9.86E-08, x1 = 3.1263, density = 1101,
+        delta0 = 0, state = 'liquid', k = 3.5708, a = 0.0662, Cbar = 3.9844,
+        elements = {S = 0.410348, H = 0.077403, C = 0.307467, O = 0.204782}
+    },
+
+    -- Dubnium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/dubnium_Db.html
+    Dubnium = {
+        ZoA = 0.3916069, x0 = 0.6224, I = 1.061E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2711, Cbar = 6.5105,
+        elements = {Db = 1}
     },
 
     -- Dysprosium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/dysprosium_Dy.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/dysprosium_Dy.html
     Dysprosium = {
-        Cbar = 5.9182, I = 628, a = 0.2466, composition = {{"Dy", 1}},
-        delta0 = 0.14, density = 8.551, k = 2.5849, x0 = 0.0822, x1 = 3.4474
+        ZoA = 0.4061538, x0 = 0.0822, I = 6.28E-07, x1 = 3.4474, density = 8551,
+        delta0 = 0.14, state = 'liquid', k = 2.5849, a = 0.2466, Cbar = 5.9182,
+        elements = {Dy = 1}
+    },
+
+    -- E-Glass
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/E-Glass.html
+    EGlass = {
+        ZoA = 0.4968594, x0 = 0.2, I = 1.434E-07, x1 = 3, density = 2610,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.138, Cbar = 3.9495,
+        elements = {B = 0.031058, O = 0.488551, Mg = 0.018094, Al = 0.074093,
+        Ca = 0.135793, Si = 0.252411}
+    },
+
+    -- Einsteinium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/einsteinium_Es.html
+    Einsteinium = {
+        ZoA = 0.3927278, x0 = 0.5697, I = 9.8E-07, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2595, Cbar = 6.3488,
+        elements = {Es = 1}
+    },
+
+    -- Epotek-301-1
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Epotek-301-1.html
+    Epotek3011 = {
+        ZoA = 0.5340374, x0 = 0.2, I = 7.67E-08, x1 = 2, density = 1190,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.427, Cbar = 3.4112,
+        elements = {O = 0.231531, H = 0.069894, C = 0.68964, N = 0.008936}
     },
 
     -- Erbium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/erbium_Er.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/erbium_Er.html
     Erbium = {
-        Cbar = 5.9565, I = 658, a = 0.2482, composition = {{"Er", 1}},
-        delta0 = 0.14, density = 9.026, k = 2.5573, x0 = 0.0658, x1 = 3.4932
+        ZoA = 0.4065551, x0 = 0.0658, I = 6.58E-07, x1 = 3.4932, density = 9026,
+        delta0 = 0.14, state = 'liquid', k = 2.5573, a = 0.2482, Cbar = 5.9565,
+        elements = {Er = 1}
     },
 
     -- Ethane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ethane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ethane.html
     Ethane = {
-        Cbar = 9.0965, I = 45.4, a = 0.0963, composition = {{"H", 0.201115},
-        {"C", 0.798885}}, delta0 = 0, density = 0.001263, k = 3.6095,
-        x0 = 1.509, x1 = 3.8726
+        ZoA = 0.5984637, x0 = 1.509, I = 4.54E-08, x1 = 3.8726, density = 1.263,
+        delta0 = 0, state = 'gaz', k = 3.6095, a = 0.0963, Cbar = 9.0965,
+        elements = {C = 0.798885, H = 0.201115}
     },
 
     -- Ethanol
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ethanol.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ethanol.html
     Ethanol = {
-        Cbar = 3.3699, I = 62.9, a = 0.0988, composition = {{"H", 0.131269},
-        {"C", 0.521438}, {"O", 0.347294}}, delta0 = 0, density = 0.7893,
-        k = 3.4834, x0 = 0.2218, x1 = 2.7052
+        ZoA = 0.564276, x0 = 0.2218, I = 6.29E-08, x1 = 2.7052, density = 789.3,
+        delta0 = 0, state = 'liquid', k = 3.4834, a = 0.0988, Cbar = 3.3699,
+        elements = {H = 0.131269, C = 0.521438, O = 0.347294}
     },
 
     -- Ethyl cellulose
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ethyl_cellulose.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ethyl_cellulose.html
     EthylCellulose = {
-        Cbar = 3.2415, I = 69.3, a = 0.1108, composition = {{"H", 0.090027},
-        {"C", 0.585182}, {"O", 0.324791}}, delta0 = 0, density = 1.13,
-        k = 3.4098, x0 = 0.1683, x1 = 2.6527
+        ZoA = 0.543981, x0 = 0.1683, I = 6.93E-08, x1 = 2.6527, density = 1130,
+        delta0 = 0, state = 'liquid', k = 3.4098, a = 0.1108, Cbar = 3.2415,
+        elements = {H = 0.090027, C = 0.585182, O = 0.324791}
     },
 
     -- Ethylene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ethylene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ethylene.html
     Ethylene = {
-        Cbar = 9.438, I = 50.7, a = 0.1064, composition = {{"H", 0.143711},
-        {"C", 0.856289}}, delta0 = 0, density = 0.001175, k = 3.5387,
-        x0 = 1.5528, x1 = 3.9327
+        ZoA = 0.570231, x0 = 1.5528, I = 5.07E-08, x1 = 3.9327, density = 1.175,
+        delta0 = 0, state = 'gaz', k = 3.5387, a = 0.1064, Cbar = 9.438,
+        elements = {C = 0.856289, H = 0.143711}
     },
 
     -- Europium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/europium_Eu.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/europium_Eu.html
     Europium = {
-        Cbar = 6.2276, I = 580, a = 0.2445, composition = {{"Eu", 1}},
-        delta0 = 0.14, density = 5.244, k = 2.6245, x0 = 0.1888, x1 = 3.4633
+        ZoA = 0.4145719, x0 = 0.1888, I = 5.8E-07, x1 = 3.4633, density = 5244,
+        delta0 = 0.14, state = 'liquid', k = 2.6245, a = 0.2445, Cbar = 6.2276,
+        elements = {Eu = 1}
     },
 
     -- Eye lens ICRP
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/eye_lens_ICRP.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/eye_lens_ICRP.html
     EyeLensICRP = {
-        Cbar = 3.372, I = 73.3, a = 0.0969, composition = {{"H", 0.099269},
-        {"C", 0.19371}, {"N", 0.05327}, {"O", 0.653751}}, delta0 = 0,
-        density = 1.1, k = 3.455, x0 = 0.207, x1 = 2.7446
+        ZoA = 0.5486918, x0 = 0.207, I = 7.33E-08, x1 = 2.7446, density = 1100,
+        delta0 = 0, state = 'liquid', k = 3.455, a = 0.0969, Cbar = 3.372,
+        elements = {O = 0.653751, H = 0.099269, C = 0.19371, N = 0.05327}
+    },
+
+    -- Fermium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/fermium_Fm.html
+    Fermium = {
+        ZoA = 0.3889613, x0 = 0.5821, I = 9.94E-07, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2622, Cbar = 6.3868,
+        elements = {Fm = 1}
     },
 
     -- Ferric oxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ferric_oxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ferric_oxide.html
     FerricOxide = {
-        Cbar = 4.2245, I = 227.3, a = 0.1048, composition = {{"O", 0.300567},
-        {"Fe", 0.699433}}, delta0 = 0, density = 5.2, k = 3.1313, x0 = 0.0074,
-        x1 = 3.2573
+        ZoA = 0.475927, x0 = 0.0074, I = 2.273E-07, x1 = 3.2573, density = 5200,
+        delta0 = 0, state = 'liquid', k = 3.1313, a = 0.1048, Cbar = 4.2245,
+        elements = {Fe = 0.699433, O = 0.300567}
     },
 
     -- Ferroboride FeB
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ferroboride_FeB.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ferroboride_FeB.html
     Ferroboride = {
-        Cbar = 4.2057, I = 261, a = 0.1291, composition = {{"B", 0.162174},
-        {"Fe", 0.837826}}, delta0 = 0, density = 7.15, k = 3.024, x0 = 0.0988,
-        x1 = 3.1749
+        ZoA = 0.4650315, x0 = 0.0988, I = 2.61E-07, x1 = 3.1749, density = 7150,
+        delta0 = 0, state = 'liquid', k = 3.024, a = 0.1291, Cbar = 4.2057,
+        elements = {B = 0.162174, Fe = 0.837826}
     },
 
     -- Ferrous oxide FeO
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ferrous_oxide_FeO.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ferrous_oxide_FeO.html
     FerrousOxide = {
-        Cbar = 4.3175, I = 248.6, a = 0.1296, composition = {{"O", 0.222689},
-        {"Fe", 0.777311}}, delta0 = 0, density = 5.7, k = 3.0168, x0 = 0.0279,
-        x1 = 3.2002
+        ZoA = 0.4732441, x0 = 0.0279, I = 2.486E-07, x1 = 3.2002,
+        density = 5700, delta0 = 0, state = 'liquid', k = 3.0168, a = 0.1296,
+        Cbar = 4.3175, elements = {Fe = 0.777311, O = 0.222689}
     },
 
     -- Ferrous sulfate dosimeter solution
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ferrous_sulfate_dosimeter_solution.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ferrous_sulfate_dosimeter_solution.html
     FerrousSulfateDosimeterSolution = {
-        Cbar = 3.5183, I = 76.4, a = 0.0876, composition = {{"H", 0.108259},
-        {"N", 2.7e-05}, {"O", 0.878636}, {"Na", 2.2e-05}, {"S", 0.012968},
-        {"Cl", 3.4e-05}, {"Fe", 5.4e-05}}, delta0 = 0, density = 1.024,
-        k = 3.4923, x0 = 0.2378, x1 = 2.8254
+        ZoA = 0.5531987, x0 = 0.2378, I = 7.64E-08, x1 = 2.8254, density = 1024,
+        delta0 = 0, state = 'liquid', k = 3.4923, a = 0.0876, Cbar = 3.5183,
+        elements = {Fe = 5.4E-05, O = 0.878636, S = 0.012968, Na = 2.2E-05,
+        H = 0.108259, N = 2.7E-05, Cl = 3.4E-05}
+    },
+
+    -- Flerovium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/flerovium_Fl.html
+    Flerovium = {
+        ZoA = 0.3942045, x0 = 0.6923, I = 1.185E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2878, Cbar = 6.7249,
+        elements = {Fl = 1}
     },
 
     -- Fluorine gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/fluorine_gas.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/fluorine_gas.html
     FluorineGas = {
-        Cbar = 10.9653, I = 115, a = 0.1108, composition = {{"F", 1}},
-        delta0 = 0, density = 0.00158, k = 3.2962, x0 = 1.8433, x1 = 4.4096
+        ZoA = 0.4737241, x0 = 1.8433, I = 1.15E-07, x1 = 4.4096, density = 1.58,
+        delta0 = 0, state = 'gaz', k = 3.2962, a = 0.1108, Cbar = 10.9653,
+        elements = {F = 1}
     },
 
     -- Francium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/francium_Fr.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/francium_Fr.html
     Francium = {
-        Cbar = 8.0292, I = 827, a = 0.4321, composition = {{"Fr", 1}},
-        delta0 = 0, density = 1.87, k = 3, x0 = 1.1175, x1 = 3
+        ZoA = 0.3900995, x0 = 1.1175, I = 8.27E-07, x1 = 3, density = 1870,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.4321, Cbar = 8.0292,
+        elements = {Fr = 1}
     },
 
     -- Freon-12
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/Freon-12.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Freon-12.html
     Freon12 = {
-        Cbar = 4.8251, I = 143, a = 0.0798, composition = {{"C", 0.099335},
-        {"F", 0.314247}, {"Cl", 0.586418}}, delta0 = 0, density = 1.12,
-        k = 3.4626, x0 = 0.3035, x1 = 3.2659
+        ZoA = 0.4796798, x0 = 0.3035, I = 1.43E-07, x1 = 3.2659, density = 1120,
+        delta0 = 0, state = 'liquid', k = 3.4626, a = 0.0798, Cbar = 4.8251,
+        elements = {F = 0.314247, C = 0.099335, Cl = 0.586418}
     },
 
     -- Freon-13
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/Freon-13.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Freon-13.html
     Freon13 = {
-        Cbar = 4.7483, I = 126.6, a = 0.0724, composition = {{"C", 0.114983},
-        {"F", 0.545622}, {"Cl", 0.339396}}, delta0 = 0, density = 0.95,
-        k = 3.5551, x0 = 0.3659, x1 = 3.2337
+        ZoA = 0.4786563, x0 = 0.3659, I = 1.266E-07, x1 = 3.2337, density = 950,
+        delta0 = 0, state = 'liquid', k = 3.5551, a = 0.0724, Cbar = 4.7483,
+        elements = {F = 0.545622, C = 0.114983, Cl = 0.339396}
     },
 
     -- Freon-13b1
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/Freon-13b1.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Freon-13b1.html
     Freon13b1 = {
-        Cbar = 5.3555, I = 210.5, a = 0.0393, composition = {{"C", 0.080659},
-        {"F", 0.382749}, {"Br", 0.536592}}, delta0 = 0, density = 1.5,
-        k = 3.7194, x0 = 0.3522, x1 = 3.7554
+        ZoA = 0.4566514, x0 = 0.3522, I = 2.105E-07, x1 = 3.7554,
+        density = 1500, delta0 = 0, state = 'liquid', k = 3.7194, a = 0.0393,
+        Cbar = 5.3555, elements = {F = 0.382749, C = 0.080659, Br = 0.536592}
     },
 
     -- Freon-13i1
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/Freon-13i1.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Freon-13i1.html
     Freon13i1 = {
-        Cbar = 5.8774, I = 293.5, a = 0.0911, composition = {{"C", 0.061309},
-        {"F", 0.290924}, {"I", 0.647767}}, delta0 = 0, density = 1.8,
-        k = 3.1658, x0 = 0.2847, x1 = 3.728
+        ZoA = 0.4389771, x0 = 0.2847, I = 2.935E-07, x1 = 3.728, density = 1800,
+        delta0 = 0, state = 'liquid', k = 3.1658, a = 0.0911, Cbar = 5.8774,
+        elements = {I = 0.647767, F = 0.290924, C = 0.061309}
+    },
+
+    -- G10
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/G10.html
+    G10 = {
+        ZoA = 0.6336556, x0 = 0.2, I = 1.104E-07, x1 = 3, density = 1800,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1297, Cbar = 3.7685,
+        elements = {B = 0.01864, O = 0.385764, H = 0.275853, Si = 0.151423,
+        Mg = 0.010842, N = 0.027945, Ca = 0.081496, C = 0.003583,
+        Al = 0.044453}
     },
 
     -- Gadolinium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/gadolinium_Gd.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gadolinium_Gd.html
     Gadolinium = {
-        Cbar = 5.8737, I = 591, a = 0.2511, composition = {{"Gd", 1}},
-        delta0 = 0.14, density = 7.901, k = 2.5977, x0 = 0.1058, x1 = 3.3932
+        ZoA = 0.4069875, x0 = 0.1058, I = 5.91E-07, x1 = 3.3932, density = 7901,
+        delta0 = 0.14, state = 'liquid', k = 2.5977, a = 0.2511, Cbar = 5.8737,
+        elements = {Gd = 1}
     },
 
     -- Gadolinium oxysulfide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/gadolinium_oxysulfide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gadolinium_oxysulfide.html
     GadoliniumOxysulfide = {
-        Cbar = 5.5347, I = 493.3, a = 0.2216, composition = {{"O", 0.084528},
-        {"S", 0.08469}, {"Gd", 0.830782}}, delta0 = 0, density = 7.44, k = 2.63,
-        x0 = 0.1774, x1 = 3.4045
+        ZoA = 0.4226422, x0 = 0.1774, I = 4.933E-07, x1 = 3.4045,
+        density = 7440, delta0 = 0, state = 'liquid', k = 2.63, a = 0.2216,
+        Cbar = 5.5347, elements = {O = 0.084528, S = 0.08469, Gd = 0.830782}
     },
 
     -- Gadolinium silicate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/gadolinium_silicate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gadolinium_silicate.html
     GadoliniumSilicate = {
-        Cbar = 5.2267, I = 405.4, a = 0.1961, composition = {{"Gd", 0.744233},
-        {"Si", 0.066462}, {"O", 0.189305}}, delta0 = 0, density = 6.71, k = 3,
-        x0 = 0.2039, x1 = 3
+        ZoA = 0.43068, x0 = 0.2039, I = 4.054E-07, x1 = 3, density = 6710,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1961, Cbar = 5.2267,
+        elements = {Si = 0.066462, Gd = 0.744233, O = 0.189305}
     },
 
     -- Gallium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/gallium_Ga.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gallium_Ga.html
     Gallium = {
-        Cbar = 4.9353, I = 334, a = 0.0944, composition = {{"Ga", 1}},
-        delta0 = 0.14, density = 5.904, k = 3.1314, x0 = 0.2267, x1 = 3.5434
+        ZoA = 0.4446159, x0 = 0.2267, I = 3.34E-07, x1 = 3.5434, density = 5904,
+        delta0 = 0.14, state = 'liquid', k = 3.1314, a = 0.0944, Cbar = 4.9353,
+        elements = {Ga = 1}
     },
 
     -- Gallium arsenide GaAs
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/gallium_arsenide_GaAs.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gallium_arsenide_GaAs.html
     GalliumArsenide = {
-        Cbar = 5.3299, I = 384.9, a = 0.0715, composition = {{"Ga", 0.482019},
-        {"As", 0.517981}}, delta0 = 0, density = 5.31, k = 3.3356, x0 = 0.1764,
-        x1 = 3.642
+        ZoA = 0.4424635, x0 = 0.1764, I = 3.849E-07, x1 = 3.642, density = 5310,
+        delta0 = 0, state = 'liquid', k = 3.3356, a = 0.0715, Cbar = 5.3299,
+        elements = {Ga = 0.482019, As = 0.517981}
     },
 
     -- Gel in photographic emulsion
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/gel_in_photographic_emulsion.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gel_in_photographic_emulsion.html
     GelInPhotographicEmulsion = {
-        Cbar = 3.2687, I = 74.8, a = 0.101, composition = {{"H", 0.08118}, {"C",
-        0.41606}, {"N", 0.11124}, {"O", 0.38064}, {"S", 0.01088}}, delta0 = 0,
-        density = 1.291, k = 3.4418, x0 = 0.1709, x1 = 2.7058
+        ZoA = 0.5396714, x0 = 0.1709, I = 7.48E-08, x1 = 2.7058, density = 1291,
+        delta0 = 0, state = 'liquid', k = 3.4418, a = 0.101, Cbar = 3.2687,
+        elements = {O = 0.38064, S = 0.01088, N = 0.11124, H = 0.08118,
+        C = 0.41606}
     },
 
     -- Germanium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/germanium_Ge.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/germanium_Ge.html
     Germanium = {
-        Cbar = 5.1411, I = 350, a = 0.0719, composition = {{"Ge", 1}},
-        delta0 = 0.14, density = 5.323, k = 3.3306, x0 = 0.3376, x1 = 3.6096
+        ZoA = 0.4405887, x0 = 0.3376, I = 3.5E-07, x1 = 3.6096, density = 5323,
+        delta0 = 0.14, state = 'liquid', k = 3.3306, a = 0.0719, Cbar = 5.1411,
+        elements = {Ge = 1}
     },
 
     -- Glucose dextrose monohydrate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/glucose_dextrose_monohydrate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/glucose_dextrose_monohydrate.html
     GlucoseDextroseMonohydrate = {
-        Cbar = 3.1649, I = 77.2, a = 0.1078, composition = {{"H", 0.071204},
-        {"C", 0.363652}, {"O", 0.565144}}, delta0 = 0, density = 1.54,
-        k = 3.3946, x0 = 0.1411, x1 = 2.67
+        ZoA = 0.5348367, x0 = 0.1411, I = 7.72E-08, x1 = 2.67, density = 1540,
+        delta0 = 0, state = 'liquid', k = 3.3946, a = 0.1078, Cbar = 3.1649,
+        elements = {H = 0.071204, C = 0.363652, O = 0.565144}
     },
 
     -- Glutamine
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/glutamine.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/glutamine.html
     Glutamine = {
-        Cbar = 3.1167, I = 73.3, a = 0.1193, composition = {{"H", 0.068965},
-        {"C", 0.410926}, {"N", 0.191681}, {"O", 0.328427}}, delta0 = 0,
-        density = 1.46, k = 3.3254, x0 = 0.1347, x1 = 2.6301
+        ZoA = 0.5336603, x0 = 0.1347, I = 7.33E-08, x1 = 2.6301, density = 1460,
+        delta0 = 0, state = 'liquid', k = 3.3254, a = 0.1193, Cbar = 3.1167,
+        elements = {O = 0.328427, H = 0.068965, C = 0.410926, N = 0.191681}
     },
 
     -- Glycerol
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/glycerol.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/glycerol.html
     Glycerol = {
-        Cbar = 3.2267, I = 72.6, a = 0.1017, composition = {{"H", 0.087554},
-        {"C", 0.391262}, {"O", 0.521185}}, delta0 = 0, density = 1.261,
-        k = 3.4481, x0 = 0.1653, x1 = 2.6862
+        ZoA = 0.5428578, x0 = 0.1653, I = 7.26E-08, x1 = 2.6862, density = 1261,
+        delta0 = 0, state = 'liquid', k = 3.4481, a = 0.1017, Cbar = 3.2267,
+        elements = {H = 0.087554, C = 0.391262, O = 0.521185}
     },
 
     -- Gold
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/gold_Au.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gold_Au.html
     Gold = {
-        Cbar = 5.5747, I = 790, a = 0.0976, composition = {{"Au", 1}},
-        delta0 = 0.14, density = 19.32, k = 3.1101, x0 = 0.2021, x1 = 3.6979
+        ZoA = 0.4010824, x0 = 0.2021, I = 7.9E-07, x1 = 3.6979, density = 19320,
+        delta0 = 0.14, state = 'liquid', k = 3.1101, a = 0.0976, Cbar = 5.5747,
+        elements = {Au = 1}
     },
 
     -- Guanine
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/guanine.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/guanine.html
     Guanine = {
-        Cbar = 3.1171, I = 75, a = 0.2053, composition = {{"H", 0.033346}, {"C",
-        0.39738}, {"N", 0.463407}, {"O", 0.105867}}, delta0 = 0, density = 1.58,
-        k = 3.0186, x0 = 0.1163, x1 = 2.4296
+        ZoA = 0.5160899, x0 = 0.1163, I = 7.5E-08, x1 = 2.4296, density = 1580,
+        delta0 = 0, state = 'liquid', k = 3.0186, a = 0.2053, Cbar = 3.1171,
+        elements = {O = 0.105867, H = 0.033346, C = 0.39738, N = 0.463407}
     },
 
     -- Gypsum plaster of Paris
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/gypsum_plaster_of_Paris.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gypsum_plaster_of_Paris.html
     GypsumPlasterOfParis = {
-        Cbar = 3.8382, I = 129.7, a = 0.0695, composition = {{"H", 0.023416},
-        {"O", 0.557572}, {"S", 0.186215}, {"Ca", 0.232797}}, delta0 = 0,
-        density = 2.32, k = 3.5134, x0 = 0.0995, x1 = 3.1206
+        ZoA = 0.5111004, x0 = 0.0995, I = 1.297E-07, x1 = 3.1206,
+        density = 2320, delta0 = 0, state = 'liquid', k = 3.5134, a = 0.0695,
+        Cbar = 3.8382, elements = {Ca = 0.232797, O = 0.557572, S = 0.186215,
+        H = 0.023416}
     },
 
     -- Hafnium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/hafnium_Hf.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/hafnium_Hf.html
     Hafnium = {
-        Cbar = 5.7139, I = 705, a = 0.2292, composition = {{"Hf", 1}},
-        delta0 = 0.14, density = 13.31, k = 2.6155, x0 = 0.1965, x1 = 3.4337
+        ZoA = 0.4033794, x0 = 0.1965, I = 7.05E-07, x1 = 3.4337,
+        density = 13310, delta0 = 0.14, state = 'liquid', k = 2.6155,
+        a = 0.2292, Cbar = 5.7139, elements = {Hf = 1}
+    },
+
+    -- Hassium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/hassium_Hs.html
+    Hassium = {
+        ZoA = 0.4012871, x0 = 0.6392, I = 1.102E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.275, Cbar = 6.5619,
+        elements = {Hs = 1}
     },
 
     -- Heavymet in ATLAS calorimeter
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/heavymet_in_ATLAS_calorimeter.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/heavymet_in_ATLAS_calorimeter.html
     HeavymetInATLASCalorimeter = {
-        Cbar = 5.4059, I = 727, a = 0.1551, composition = {{"Ni", 0.035}, {"Cu",
-        0.015}, {"W", 0.95}}, delta0 = 0.14, density = 19.3, k = 2.8447,
-        x0 = 0.2167, x1 = 3.496
+        ZoA = 0.405938, x0 = 0.2167, I = 7.27E-07, x1 = 3.496, density = 19300,
+        delta0 = 0.14, state = 'liquid', k = 2.8447, a = 0.1551, Cbar = 5.4059,
+        elements = {Ni = 0.035, W = 0.95, Cu = 0.015}
     },
 
     -- Heavymet in Rochester gamma stop
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/heavymet_in_Rochester_gamma_stop.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/heavymet_in_Rochester_gamma_stop.html
     HeavymetInRochesterGammaStop = {
-        Cbar = 5.4059, I = 727, a = 0.1551, composition = {{"Ni", 0.06}, {"Cu",
-        0.04}, {"W", 0.9}}, delta0 = 0.14, density = 19.3, k = 2.8447,
-        x0 = 0.2167, x1 = 3.496
+        ZoA = 0.4091473, x0 = 0.2167, I = 7.27E-07, x1 = 3.496, density = 19300,
+        delta0 = 0.14, state = 'liquid', k = 2.8447, a = 0.1551, Cbar = 5.4059,
+        elements = {Ni = 0.06, W = 0.9, Cu = 0.04}
     },
 
     -- Helium gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/helium_gas_He.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/helium_gas_He.html
     HeliumGas = {
-        Cbar = 11.1393, I = 41.8, a = 0.1344, composition = {{"He", 1}},
-        delta0 = 0, density = 0.0001663, k = 5.8347, x0 = 2.2017, x1 = 3.6122
+        ZoA = 0.4996752, x0 = 2.2017, I = 4.18E-08, x1 = 3.6122,
+        density = 0.1663, delta0 = 0, state = 'gaz', k = 5.8347, a = 0.1344,
+        Cbar = 11.1393, elements = {He = 1}
     },
 
     -- Holmium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/holmium_Ho.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/holmium_Ho.html
     Holmium = {
-        Cbar = 5.9587, I = 650, a = 0.2464, composition = {{"Ho", 1}},
-        delta0 = 0.14, density = 8.795, k = 2.5726, x0 = 0.0761, x1 = 3.4782
+        ZoA = 0.4062329, x0 = 0.0761, I = 6.5E-07, x1 = 3.4782, density = 8795,
+        delta0 = 0.14, state = 'liquid', k = 2.5726, a = 0.2464, Cbar = 5.9587,
+        elements = {Ho = 1}
     },
 
     -- Hydrogen gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/hydrogen_gas.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/hydrogen_gas.html
     HydrogenGas = {
-        Cbar = 9.5834, I = 19.2, a = 0.1409, composition = {{"H", 1}},
-        delta0 = 0, density = 8.376e-05, k = 5.7273, x0 = 1.8639, x1 = 3.2718
+        ZoA = 0.991375, x0 = 1.8639, I = 1.92E-08, x1 = 3.2718,
+        density = 0.08376, delta0 = 0, state = 'gaz', k = 5.7273, a = 0.1409,
+        Cbar = 9.5834, elements = {H = 1}
     },
 
     -- Indium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/indium_In.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/indium_In.html
     Indium = {
-        Cbar = 5.5211, I = 488, a = 0.2388, composition = {{"In", 1}},
-        delta0 = 0.14, density = 7.31, k = 2.7144, x0 = 0.2406, x1 = 3.2032
+        ZoA = 0.4267624, x0 = 0.2406, I = 4.88E-07, x1 = 3.2032, density = 7310,
+        delta0 = 0.14, state = 'liquid', k = 2.7144, a = 0.2388, Cbar = 5.5211,
+        elements = {In = 1}
     },
 
     -- Iodine
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/iodine_I.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/iodine_I.html
     Iodine = {
-        Cbar = 5.9488, I = 491, a = 0.2377, composition = {{"I", 1}},
-        delta0 = 0, density = 4.93, k = 2.7276, x0 = 0.0549, x1 = 3.2596
+        ZoA = 0.4176385, x0 = 0.0549, I = 4.91E-07, x1 = 3.2596, density = 4930,
+        delta0 = 0, state = 'liquid', k = 2.7276, a = 0.2377, Cbar = 5.9488,
+        elements = {I = 1}
     },
 
     -- Iridium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/iridium_Ir.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/iridium_Ir.html
     Iridium = {
-        Cbar = 5.3418, I = 757, a = 0.1269, composition = {{"Ir", 1}},
-        delta0 = 0.1, density = 22.42, k = 2.9658, x0 = 0.0819, x1 = 3.548
+        ZoA = 0.4005889, x0 = 0.0819, I = 7.57E-07, x1 = 3.548, density = 22420,
+        delta0 = 0.1, state = 'liquid', k = 2.9658, a = 0.1269, Cbar = 5.3418,
+        elements = {Ir = 1}
     },
 
     -- Iron
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/iron_Fe.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/iron_Fe.html
     Iron = {
-        Cbar = 4.2911, I = 286, a = 0.1468, composition = {{"Fe", 1}},
-        delta0 = 0.12, density = 7.874, k = 2.9632, x0 = 0.0012, x1 = 3.1531
+        ZoA = 0.4655727, x0 = 0.0012, I = 2.86E-07, x1 = 3.1531, density = 7874,
+        delta0 = 0.12, state = 'liquid', k = 2.9632, a = 0.1468, Cbar = 4.2911,
+        elements = {Fe = 1}
     },
 
     -- Krypton gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/krypton_gas_Kr.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/krypton_gas_Kr.html
     KryptonGas = {
-        Cbar = 12.5094, I = 352, a = 0.0745, composition = {{"Kr", 1}},
-        delta0 = 0, density = 0.003486, k = 3.4051, x0 = 1.7153, x1 = 5.0743
+        ZoA = 0.4296035, x0 = 1.7153, I = 3.52E-07, x1 = 5.0743,
+        density = 3.486, delta0 = 0, state = 'gaz', k = 3.4051, a = 0.0745,
+        Cbar = 12.5094, elements = {Kr = 1}
     },
 
     -- Lanthanum
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lanthanum_La.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_La.html
     Lanthanum = {
-        Cbar = 5.7865, I = 501, a = 0.1859, composition = {{"La", 1}},
-        delta0 = 0.14, density = 6.145, k = 2.8828, x0 = 0.3164, x1 = 3.3296
+        ZoA = 0.4103524, x0 = 0.3164, I = 5.01E-07, x1 = 3.3296, density = 6145,
+        delta0 = 0.14, state = 'liquid', k = 2.8828, a = 0.1859, Cbar = 5.7865,
+        elements = {La = 1}
     },
 
     -- Lanthanum bromide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lanthanum_bromide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_bromide.html
     LanthanumBromide = {
-        Cbar = 5.6997, I = 454.5, a = 0.2197, composition = {{"La", 0.366875},
-        {"Br", 0.633124}}, delta0 = 0, density = 5.29, k = 3, x0 = 0.3581,
-        x1 = 3
+        ZoA = 0.4278722, x0 = 0.3581, I = 4.545E-07, x1 = 3, density = 5290,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2197, Cbar = 5.6997,
+        elements = {Br = 0.633124, La = 0.366875}
     },
 
     -- Lanthanum chloride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lanthanum_chloride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_chloride.html
     LanthanumChloride = {
-        Cbar = 5.3428, I = 329.5, a = 0.2016, composition = {{"La", 0.56635},
-        {"Cl", 0.43365}}, delta0 = 0, density = 3.86, k = 3, x0 = 0.2418,
-        x1 = 3
+        ZoA = 0.4403406, x0 = 0.2418, I = 3.295E-07, x1 = 3, density = 3860,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2016, Cbar = 5.3428,
+        elements = {Cl = 0.43365, La = 0.56635}
     },
 
     -- Lanthanum fluoride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lanthanum_fluoride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_fluoride.html
     LanthanumFluoride = {
-        Cbar = 4.986, I = 336.3, a = 0.1852, composition = {{"La", 0.709061},
-        {"F", 0.290939}}, delta0 = 0, density = 5.9, k = 3, x0 = 0.2, x1 = 3
+        ZoA = 0.4287897, x0 = 0.2, I = 3.363E-07, x1 = 3, density = 5900,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1852, Cbar = 4.986,
+        elements = {F = 0.290939, La = 0.709061}
     },
 
     -- Lanthanum oxybromide LaOBr
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lanthanum_oxybromide_LaOBr.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_oxybromide_LaOBr.html
     LanthanumOxybromide = {
-        Cbar = 5.4666, I = 439.7, a = 0.1783, composition = {{"O", 0.068138},
-        {"Br", 0.340294}, {"La", 0.591568}}, delta0 = 0, density = 6.28,
-        k = 2.8457, x0 = 0.035, x1 = 3.3288
+        ZoA = 0.4258791, x0 = 0.035, I = 4.397E-07, x1 = 3.3288, density = 6280,
+        delta0 = 0, state = 'liquid', k = 2.8457, a = 0.1783, Cbar = 5.4666,
+        elements = {O = 0.068138, Br = 0.340294, La = 0.591568}
     },
 
     -- Lanthanum oxysulfide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lanthanum_oxysulfide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_oxysulfide.html
     LanthanumOxysulfide = {
-        Cbar = 5.447, I = 421.2, a = 0.215, composition = {{"O", 0.0936}, {"S",
-        0.093778}, {"La", 0.812622}}, delta0 = 0, density = 5.86, k = 2.7298,
-        x0 = 0.0906, x1 = 3.2664
+        ZoA = 0.4270567, x0 = 0.0906, I = 4.212E-07, x1 = 3.2664,
+        density = 5860, delta0 = 0, state = 'liquid', k = 2.7298, a = 0.215,
+        Cbar = 5.447, elements = {O = 0.0936, S = 0.093778, La = 0.812622}
+    },
+
+    -- Lawrencium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lawrencium_Lr.html
+    Lawrencium = {
+        ZoA = 0.3929648, x0 = 0.6045, I = 1.034E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2671, Cbar = 6.4555,
+        elements = {Lr = 1}
     },
 
     -- Lead
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lead_Pb.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lead_Pb.html
     Lead = {
-        Cbar = 6.2018, I = 823, a = 0.0936, composition = {{"Pb", 1}},
-        delta0 = 0.14, density = 11.35, k = 3.1608, x0 = 0.3776, x1 = 3.8073
+        ZoA = 0.3957338, x0 = 0.3776, I = 8.23E-07, x1 = 3.8073,
+        density = 11350, delta0 = 0.14, state = 'liquid', k = 3.1608,
+        a = 0.0936, Cbar = 6.2018, elements = {Pb = 1}
     },
 
     -- Lead fluoride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lead_fluoride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lead_fluoride.html
     LeadFluoride = {
-        Cbar = 6.0333, I = 635.4, a = 0.2389, composition = {{"Pb", 0.845035},
-        {"F", 0.154965}}, delta0 = 0, density = 7.77, k = 3, x0 = 0.4668,
-        x1 = 3
+        ZoA = 0.4078196, x0 = 0.4668, I = 6.354E-07, x1 = 3, density = 7770,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2389, Cbar = 6.0333,
+        elements = {Pb = 0.845035, F = 0.154965}
     },
 
     -- Lead glass
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lead_glass.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lead_glass.html
     LeadGlass = {
-        Cbar = 5.8476, I = 526.4, a = 0.0954, composition = {{"O", 0.156453},
-        {"Si", 0.080866}, {"Ti", 0.008092}, {"As", 0.002651}, {"Pb", 0.751938}},
-        delta0 = 0, density = 6.22, k = 3.074, x0 = 0.0614, x1 = 3.8146
+        ZoA = 0.4209939, x0 = 0.0614, I = 5.264E-07, x1 = 3.8146,
+        density = 6220, delta0 = 0, state = 'liquid', k = 3.074, a = 0.0954,
+        Cbar = 5.8476, elements = {Si = 0.080866, O = 0.156453, Ti = 0.008092,
+        Pb = 0.751938, As = 0.002651}
     },
 
     -- Lead oxide PbO
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lead_oxide_PbO.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lead_oxide_PbO.html
     LeadOxide = {
-        Cbar = 6.2162, I = 766.7, a = 0.1964, composition = {{"O", 0.071682},
-        {"Pb", 0.928318}}, delta0 = 0, density = 9.53, k = 2.7299, x0 = 0.0356,
-        x1 = 3.5456
+        ZoA = 0.4032094, x0 = 0.0356, I = 7.667E-07, x1 = 3.5456,
+        density = 9530, delta0 = 0, state = 'liquid', k = 2.7299, a = 0.1964,
+        Cbar = 6.2162, elements = {Pb = 0.928318, O = 0.071682}
     },
 
     -- Lead tungstate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lead_tungstate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lead_tungstate.html
     LeadTungstate = {
-        Cbar = 5.8528, I = 600.7, a = 0.2276, composition = {{"Pb", 0.455347},
-        {"W", 0.404011}, {"O", 0.140462}}, delta0 = 0, density = 8.3, k = 3,
-        x0 = 0.4068, x1 = 3.0023
+        ZoA = 0.4130535, x0 = 0.4068, I = 6.007E-07, x1 = 3.0023,
+        density = 8300, delta0 = 0, state = 'liquid', k = 3, a = 0.2276,
+        Cbar = 5.8528, elements = {Pb = 0.455347, O = 0.140462, W = 0.404011}
     },
 
     -- Liquid argon
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_argon.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_argon.html
     LiquidArgon = {
-        Cbar = 5.2146, I = 188, a = 0.1956, composition = {{"Ar", 1}},
-        delta0 = 0, density = 1.396, k = 3, x0 = 0.2, x1 = 3
+        ZoA = 0.4505846, x0 = 0.2, I = 1.88E-07, x1 = 3, density = 1396,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1956, Cbar = 5.2146,
+        elements = {Ar = 1}
     },
 
     -- Liquid bromine
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_bromine.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_bromine.html
     LiquidBromine = {
-        Cbar = 5.7268, I = 357, a = 0.2211, composition = {{"Br", 1}},
-        delta0 = 0, density = 3.103, k = 3, x0 = 0.3669, x1 = 3
+        ZoA = 0.4380251, x0 = 0.3669, I = 3.57E-07, x1 = 3, density = 3103,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2211, Cbar = 5.7268,
+        elements = {Br = 1}
     },
 
     -- Liquid chlorine
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_chlorine.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_chlorine.html
     LiquidChlorine = {
-        Cbar = 4.8776, I = 174, a = 0.1802, composition = {{"Cl", 1}},
-        delta0 = 0, density = 1.574, k = 3, x0 = 0.2, x1 = 3
+        ZoA = 0.4795054, x0 = 0.2, I = 1.74E-07, x1 = 3, density = 1574,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1802, Cbar = 4.8776,
+        elements = {Cl = 1}
     },
 
     -- Liquid deuterium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_deuterium.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_deuterium.html
     LiquidDeuterium = {
-        Cbar = 3.1288, I = 21.8, a = 0.1348, composition = {{"D", 1}},
-        delta0 = 0, density = 0.1638, k = 5.6249, x0 = 0.4467, x1 = 1.8923
+        ZoA = 0.4964997, x0 = 0.4467, I = 2.18E-08, x1 = 1.8923,
+        density = 163.8, delta0 = 0, state = 'liquid', k = 5.6249, a = 0.1348,
+        Cbar = 3.1288, elements = {D = 1}
     },
 
     -- Liquid fluorine
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_fluorine.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_fluorine.html
     LiquidFluorine = {
-        Cbar = 4.105, I = 115, a = 0.145, composition = {{"F", 1}}, delta0 = 0,
-        density = 1.507, k = 3, x0 = 0.2, x1 = 3
+        ZoA = 0.4737241, x0 = 0.2, I = 1.15E-07, x1 = 3, density = 1507,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.145, Cbar = 4.105,
+        elements = {F = 1}
     },
 
     -- Liquid helium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_helium.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_helium.html
     LiquidHelium = {
-        Cbar = 4.518, I = 41.8, a = 0.6571, composition = {{"He", 1}},
-        delta0 = 0, density = 0.1249, k = 3, x0 = 0.4729, x1 = 2
+        ZoA = 0.4996752, x0 = 0.4729, I = 4.18E-08, x1 = 2, density = 124.9,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.6571, Cbar = 4.518,
+        elements = {He = 1}
     },
 
     -- Liquid hydrogen
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_hydrogen.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_hydrogen.html
     LiquidHydrogen = {
-        Cbar = 3.0977, I = 21.8, a = 0.1348, composition = {{"H", 1}},
-        delta0 = 0, density = 0.0708, k = 5.6249, x0 = 0.44, x1 = 1.8856
+        ZoA = 0.991375, x0 = 0.44, I = 2.18E-08, x1 = 1.8856, density = 70.8,
+        delta0 = 0, state = 'gaz', k = 5.6249, a = 0.1348, Cbar = 3.0977,
+        elements = {H = 1}
     },
 
     -- Liquid krypton
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_krypton_Kr.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_krypton_Kr.html
     LiquidKrypton = {
-        Cbar = 5.9674, I = 352, a = 0.2349, composition = {{"Kr", 1}},
-        delta0 = 0, density = 2.418, k = 3, x0 = 0.4454, x1 = 3
+        ZoA = 0.4296035, x0 = 0.4454, I = 3.52E-07, x1 = 3, density = 2418,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2349, Cbar = 5.9674,
+        elements = {Kr = 1}
     },
 
     -- Liquid neon
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_neon.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_neon.html
     LiquidNeon = {
-        Cbar = 4.6345, I = 137, a = 0.1692, composition = {{"Ne", 1}},
-        delta0 = 0, density = 1.204, k = 3, x0 = 0.2, x1 = 3
+        ZoA = 0.4955451, x0 = 0.2, I = 1.37E-07, x1 = 3, density = 1204,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1692, Cbar = 4.6345,
+        elements = {Ne = 1}
     },
 
     -- Liquid nitrogen
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_nitrogen.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_nitrogen.html
     LiquidNitrogen = {
-        Cbar = 3.9996, I = 82, a = 0.5329, composition = {{"N", 1}}, delta0 = 0,
-        density = 0.807, k = 3, x0 = 0.3039, x1 = 2
+        ZoA = 0.499743, x0 = 0.3039, I = 8.2E-08, x1 = 2, density = 807,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.5329, Cbar = 3.9996,
+        elements = {N = 1}
     },
 
     -- Liquid oxygen
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_oxygen.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_oxygen.html
     LiquidOxygen = {
-        Cbar = 3.9471, I = 95, a = 0.5223, composition = {{"O", 1}}, delta0 = 0,
-        density = 1.141, k = 3, x0 = 0.2868, x1 = 2
+        ZoA = 0.5000219, x0 = 0.2868, I = 9.5E-08, x1 = 2, density = 1141,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.5223, Cbar = 3.9471,
+        elements = {O = 1}
     },
 
     -- Liquid propane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_propane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_propane.html
     LiquidPropane = {
-        Cbar = 3.4162, I = 52, a = 0.1033, composition = {{"H", 0.182855}, {"C",
-        0.817145}}, delta0 = 0, density = 0.493, k = 3.562, x0 = 0.2564,
-        x1 = 2.6271
+        ZoA = 0.589483, x0 = 0.2564, I = 5.2E-08, x1 = 2.6271, density = 493,
+        delta0 = 0, state = 'liquid', k = 3.562, a = 0.1033, Cbar = 3.4162,
+        elements = {C = 0.817145, H = 0.182855}
     },
 
     -- Liquid xenon
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/liquid_xenon_Xe.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_xenon_Xe.html
     LiquidXenon = {
-        Cbar = 6.4396, I = 482, a = 0.2659, composition = {{"Xe", 1}},
-        delta0 = 0, density = 2.953, k = 3, x0 = 0.5993, x1 = 3
+        ZoA = 0.4112907, x0 = 0.5993, I = 4.82E-07, x1 = 3, density = 2953,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2659, Cbar = 6.4396,
+        elements = {Xe = 1}
     },
 
     -- Lithium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lithium_Li.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_Li.html
     Lithium = {
-        Cbar = 3.1221, I = 40, a = 0.9514, composition = {{"Li", 1}},
-        delta0 = 0.14, density = 0.534, k = 2.4993, x0 = 0.1304, x1 = 1.6397
+        ZoA = 0.4321521, x0 = 0.1304, I = 4E-08, x1 = 1.6397, density = 534,
+        delta0 = 0.14, state = 'liquid', k = 2.4993, a = 0.9514, Cbar = 3.1221,
+        elements = {Li = 1}
     },
 
     -- Lithium amide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lithium_amide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_amide.html
     LithiumAmide = {
-        Cbar = 2.7961, I = 55.5, a = 0.0874, composition = {{"H", 0.087783},
-        {"Li", 0.302262}, {"N", 0.609955}}, delta0 = 0, density = 1.178,
-        k = 3.7534, x0 = 0.0198, x1 = 2.5152
+        ZoA = 0.5224698, x0 = 0.0198, I = 5.55E-08, x1 = 2.5152, density = 1178,
+        delta0 = 0, state = 'liquid', k = 3.7534, a = 0.0874, Cbar = 2.7961,
+        elements = {H = 0.087783, N = 0.609955, Li = 0.302262}
     },
 
     -- Lithium carbonate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lithium_carbonate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_carbonate.html
     LithiumCarbonate = {
-        Cbar = 3.2029, I = 87.9, a = 0.0994, composition = {{"Li", 0.187871},
-        {"C", 0.16255}, {"O", 0.649579}}, delta0 = 0, density = 2.11,
-        k = 3.5417, x0 = 0.0551, x1 = 2.6598
+        ZoA = 0.4871945, x0 = 0.0551, I = 8.79E-08, x1 = 2.6598, density = 2110,
+        delta0 = 0, state = 'liquid', k = 3.5417, a = 0.0994, Cbar = 3.2029,
+        elements = {O = 0.649579, C = 0.16255, Li = 0.187871}
     },
 
     -- Lithium fluoride LiF
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lithium_fluoride_LiF.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_fluoride_LiF.html
     LithiumFluoride = {
-        Cbar = 3.1667, I = 94, a = 0.0759, composition = {{"Li", 0.267585},
-        {"F", 0.732415}}, delta0 = 0, density = 2.635, k = 3.7478, x0 = 0.0171,
-        x1 = 2.7049
+        ZoA = 0.4626001, x0 = 0.0171, I = 9.4E-08, x1 = 2.7049, density = 2635,
+        delta0 = 0, state = 'liquid', k = 3.7478, a = 0.0759, Cbar = 3.1667,
+        elements = {F = 0.732415, Li = 0.267585}
     },
 
     -- Lithium hydride LiH
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lithium_hydride_LiH.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_hydride_LiH.html
     LithiumHydride = {
-        Cbar = 2.358, I = 36.5, a = 0.9057, composition = {{"H", 0.126797},
-        {"Li", 0.873203}}, delta0 = 0, density = 0.82, k = 2.5849, x0 = 0.0988,
-        x1 = 1.4515
+        ZoA = 0.5030599, x0 = 0.0988, I = 3.65E-08, x1 = 1.4515, density = 820,
+        delta0 = 0, state = 'liquid', k = 2.5849, a = 0.9057, Cbar = 2.358,
+        elements = {Li = 0.873203, H = 0.126797}
     },
 
     -- Lithium iodide LiI
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lithium_iodide_LiI.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_iodide_LiI.html
     LithiumIodide = {
-        Cbar = 6.2671, I = 485.1, a = 0.2327, composition = {{"Li", 0.051858},
-        {"I", 0.948142}}, delta0 = 0, density = 3.494, k = 2.7146, x0 = 0.0892,
-        x1 = 3.3702
+        ZoA = 0.4183912, x0 = 0.0892, I = 4.851E-07, x1 = 3.3702,
+        density = 3494, delta0 = 0, state = 'liquid', k = 2.7146, a = 0.2327,
+        Cbar = 6.2671, elements = {I = 0.948142, Li = 0.051858}
     },
 
     -- Lithium oxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lithium_oxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_oxide.html
     LithiumOxide = {
-        Cbar = 2.934, I = 73.6, a = 0.0803, composition = {{"Li", 0.46457},
-        {"O", 0.53543}}, delta0 = 0, density = 2.013, k = 3.7878, x0 = 0.0511,
-        x1 = 2.5874
+        ZoA = 0.4684916, x0 = 0.0511, I = 7.36E-08, x1 = 2.5874, density = 2013,
+        delta0 = 0, state = 'liquid', k = 3.7878, a = 0.0803, Cbar = 2.934,
+        elements = {O = 0.53543, Li = 0.46457}
     },
 
     -- Lithium tetraborate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lithium_tetraborate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_tetraborate.html
     LithiumTetraborate = {
-        Cbar = 3.2093, I = 94.6, a = 0.1107, composition = {{"Li", 0.082085},
-        {"B", 0.25568}, {"O", 0.662235}}, delta0 = 0, density = 2.44,
-        k = 3.4389, x0 = 0.0737, x1 = 2.6502
+        ZoA = 0.4847895, x0 = 0.0737, I = 9.46E-08, x1 = 2.6502, density = 2440,
+        delta0 = 0, state = 'liquid', k = 3.4389, a = 0.1107, Cbar = 3.2093,
+        elements = {B = 0.25568, O = 0.662235, Li = 0.082085}
+    },
+
+    -- Livermorium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/livermorium_Lv.html
+    Livermorium = {
+        ZoA = 0.3956276, x0 = 0.7064, I = 1.213E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2913, Cbar = 6.7681,
+        elements = {Lv = 1}
     },
 
     -- Lung ICRP
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lung_ICRP.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lung_ICRP.html
     LungICRP = {
-        Cbar = 3.4708, I = 75.3, a = 0.0859, composition = {{"H", 0.101278},
-        {"C", 0.10231}, {"N", 0.02865}, {"O", 0.757072}, {"Na", 0.00184}, {"Mg",
-        0.00073}, {"P", 0.0008}, {"S", 0.00225}, {"Cl", 0.00266}, {"K",
-        0.00194}, {"Ca", 9e-05}, {"Fe", 0.00037}, {"Zn", 1e-05}}, delta0 = 0,
-        density = 1.05, k = 3.5353, x0 = 0.2261, x1 = 2.8001
+        ZoA = 0.5495746, x0 = 0.2261, I = 7.53E-08, x1 = 2.8001, density = 1050,
+        delta0 = 0, state = 'liquid', k = 3.5353, a = 0.0859, Cbar = 3.4708,
+        elements = {K = 0.00194, O = 0.757072, S = 0.00225, H = 0.101278,
+        P = 0.0008, Fe = 0.00037, Zn = 1E-05, Ca = 9E-05, Na = 0.00184,
+        Cl = 0.00266, Mg = 0.00073, C = 0.10231, N = 0.02865}
     },
 
     -- Lutetium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lutetium_Lu.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lutetium_Lu.html
     Lutetium = {
-        Cbar = 5.9784, I = 694, a = 0.2403, composition = {{"Lu", 1}},
-        delta0 = 0.14, density = 9.841, k = 2.5643, x0 = 0.156, x1 = 3.5218
+        ZoA = 0.4057908, x0 = 0.156, I = 6.94E-07, x1 = 3.5218, density = 9841,
+        delta0 = 0.14, state = 'liquid', k = 2.5643, a = 0.2403, Cbar = 5.9784,
+        elements = {Lu = 1}
     },
 
     -- Lutetium aluminum oxide 1
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lutetium_aluminum_oxide_1.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lutetium_aluminum_oxide_1.html
     LutetiumAluminumOxide1 = {
-        Cbar = 5.0967, I = 423.2, a = 0.1902, composition = {{"Lu", 0.700017},
-        {"Al", 0.107949}, {"O", 0.192034}}, delta0 = 0, density = 8.3, k = 3,
-        x0 = 0.2, x1 = 3
+        ZoA = 0.4320927, x0 = 0.2, I = 4.232E-07, x1 = 3, density = 8300,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1902, Cbar = 5.0967,
+        elements = {Al = 0.107949, Lu = 0.700017, O = 0.192034}
     },
 
     -- Lutetium aluminum oxide 2
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lutetium_aluminum_oxide_2.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lutetium_aluminum_oxide_2.html
     LutetiumAluminumOxide2 = {
-        Cbar = 4.9994, I = 365.9, a = 0.1858, composition = {{"Lu", 0.616224},
-        {"Al", 0.158379}, {"O", 0.225396}}, delta0 = 0, density = 6.73, k = 3,
-        x0 = 0.2, x1 = 3
+        ZoA = 0.4390698, x0 = 0.2, I = 3.659E-07, x1 = 3, density = 6730,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1858, Cbar = 4.9994,
+        elements = {Al = 0.158379, Lu = 0.616224, O = 0.225396}
     },
 
     -- Lutetium fluoride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lutetium_fluoride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lutetium_fluoride.html
     LutetiumFluoride = {
-        Cbar = 5.2803, I = 458.7, a = 0.1986, composition = {{"Lu", 0.754291},
-        {"F", 0.245709}}, delta0 = 0, density = 8.3, k = 3, x0 = 0.2214, x1 = 3
+        ZoA = 0.4224826, x0 = 0.2214, I = 4.587E-07, x1 = 3, density = 8300,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1986, Cbar = 5.2803,
+        elements = {Lu = 0.754291, F = 0.245709}
     },
 
     -- Lutetium silicon oxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/lutetium_silicon_oxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lutetium_silicon_oxide.html
     LutetiumSiliconOxide = {
-        Cbar = 5.4394, I = 472, a = 0.2062, composition = {{"Lu", 0.76402},
-        {"Si", 0.06132}, {"O", 0.17466}}, delta0 = 0, density = 7.4, k = 3,
-        x0 = 0.2732, x1 = 3
+        ZoA = 0.4279328, x0 = 0.2732, I = 4.72E-07, x1 = 3, density = 7400,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2062, Cbar = 5.4394,
+        elements = {Si = 0.06132, O = 0.17466, Lu = 0.76402}
     },
 
     -- M3 WAX
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/M3_WAX.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/M3_WAX.html
     M3WAX = {
-        Cbar = 3.254, I = 67.9, a = 0.0786, composition = {{"H", 0.114318},
-        {"C", 0.655823}, {"O", 0.092183}, {"Mg", 0.134792}, {"Ca", 0.002883}},
-        delta0 = 0, density = 1.05, k = 3.6412, x0 = 0.1523, x1 = 2.7529
+        ZoA = 0.5550295, x0 = 0.1523, I = 6.79E-08, x1 = 2.7529, density = 1050,
+        delta0 = 0, state = 'liquid', k = 3.6412, a = 0.0786, Cbar = 3.254,
+        elements = {O = 0.092183, Mg = 0.134792, H = 0.114318, C = 0.655823,
+        Ca = 0.002883}
     },
 
     -- Magnesium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/magnesium_Mg.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/magnesium_Mg.html
     Magnesium = {
-        Cbar = 4.5297, I = 156, a = 0.0816, composition = {{"Mg", 1}},
-        delta0 = 0.08, density = 1.74, k = 3.6166, x0 = 0.1499, x1 = 3.0668
+        ZoA = 0.4937134, x0 = 0.1499, I = 1.56E-07, x1 = 3.0668, density = 1740,
+        delta0 = 0.08, state = 'liquid', k = 3.6166, a = 0.0816, Cbar = 4.5297,
+        elements = {Mg = 1}
     },
 
     -- Magnesium carbonate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/magnesium_carbonate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/magnesium_carbonate.html
     MagnesiumCarbonate = {
-        Cbar = 3.4319, I = 118, a = 0.0922, composition = {{"C", 0.142455},
-        {"O", 0.569278}, {"Mg", 0.288267}}, delta0 = 0, density = 2.958,
-        k = 3.5003, x0 = 0.086, x1 = 2.7997
+        ZoA = 0.4981362, x0 = 0.086, I = 1.18E-07, x1 = 2.7997, density = 2958,
+        delta0 = 0, state = 'liquid', k = 3.5003, a = 0.0922, Cbar = 3.4319,
+        elements = {O = 0.569278, C = 0.142455, Mg = 0.288267}
     },
 
     -- Magnesium fluoride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/magnesium_fluoride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/magnesium_fluoride.html
     MagnesiumFluoride = {
-        Cbar = 3.7105, I = 134.3, a = 0.0793, composition = {{"F", 0.609883},
-        {"Mg", 0.390117}}, delta0 = 0, density = 3, k = 3.6485, x0 = 0.1369,
-        x1 = 2.863
+        ZoA = 0.4815223, x0 = 0.1369, I = 1.343E-07, x1 = 2.863, density = 3000,
+        delta0 = 0, state = 'liquid', k = 3.6485, a = 0.0793, Cbar = 3.7105,
+        elements = {Mg = 0.390117, F = 0.609883}
     },
 
     -- Magnesium oxide MgO
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/magnesium_oxide_MgO.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/magnesium_oxide_MgO.html
     MagnesiumOxide = {
-        Cbar = 3.6404, I = 143.8, a = 0.0831, composition = {{"O", 0.396964},
-        {"Mg", 0.603036}}, delta0 = 0, density = 3.58, k = 3.5968, x0 = 0.0575,
-        x1 = 2.858
+        ZoA = 0.4962176, x0 = 0.0575, I = 1.438E-07, x1 = 2.858, density = 3580,
+        delta0 = 0, state = 'liquid', k = 3.5968, a = 0.0831, Cbar = 3.6404,
+        elements = {Mg = 0.603036, O = 0.396964}
     },
 
     -- Magnesium tetraborate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/magnesium_tetraborate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/magnesium_tetraborate.html
     MagnesiumTetraborate = {
-        Cbar = 3.4328, I = 108.3, a = 0.097, composition = {{"B", 0.240837},
-        {"O", 0.62379}, {"Mg", 0.135373}}, delta0 = 0, density = 2.53,
-        k = 3.4893, x0 = 0.1147, x1 = 2.7635
+        ZoA = 0.4900675, x0 = 0.1147, I = 1.083E-07, x1 = 2.7635,
+        density = 2530, delta0 = 0, state = 'liquid', k = 3.4893, a = 0.097,
+        Cbar = 3.4328, elements = {B = 0.240837, O = 0.62379, Mg = 0.135373}
     },
 
     -- Manganese
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/manganese_Mn.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/manganese_Mn.html
     Manganese = {
-        Cbar = 4.2702, I = 272, a = 0.1497, composition = {{"Mn", 1}},
-        delta0 = 0.14, density = 7.44, k = 2.9796, x0 = 0.0447, x1 = 3.1074
+        ZoA = 0.4550584, x0 = 0.0447, I = 2.72E-07, x1 = 3.1074, density = 7440,
+        delta0 = 0.14, state = 'liquid', k = 2.9796, a = 0.1497, Cbar = 4.2702,
+        elements = {Mn = 1}
+    },
+
+    -- Meitnerium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/meitnerium_Mt.html
+    Meitnerium = {
+        ZoA = 0.3918664, x0 = 0.6522, I = 1.115E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2781, Cbar = 6.6019,
+        elements = {Mt = 1}
+    },
+
+    -- Mendelevium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/mendelevium_Md.html
+    Mendelevium = {
+        ZoA = 0.3913242, x0 = 0.5886, I = 1.007E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2636, Cbar = 6.4068,
+        elements = {Md = 1}
     },
 
     -- Mercuric iodide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/mercuric_iodide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/mercuric_iodide.html
     MercuricIodide = {
-        Cbar = 6.3787, I = 684.5, a = 0.2151, composition = {{"I", 0.55856},
-        {"Hg", 0.44144}}, delta0 = 0, density = 6.36, k = 2.7264, x0 = 0.104,
-        x1 = 3.4728
+        ZoA = 0.4093311, x0 = 0.104, I = 6.845E-07, x1 = 3.4728, density = 6360,
+        delta0 = 0, state = 'liquid', k = 2.7264, a = 0.2151, Cbar = 6.3787,
+        elements = {I = 0.55856, Hg = 0.44144}
     },
 
     -- Mercury
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/mercury_Hg.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/mercury_Hg.html
     Mercury = {
-        Cbar = 5.9605, I = 800, a = 0.1101, composition = {{"Hg", 1}},
-        delta0 = 0.14, density = 13.55, k = 3.0519, x0 = 0.2756, x1 = 3.7275
+        ZoA = 0.3988195, x0 = 0.2756, I = 8E-07, x1 = 3.7275, density = 13550,
+        delta0 = 0.14, state = 'liquid', k = 3.0519, a = 0.1101, Cbar = 5.9605,
+        elements = {Hg = 1}
     },
 
     -- Methane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/methane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/methane.html
     Methane = {
-        Cbar = 9.5243, I = 41.7, a = 0.0925, composition = {{"H", 0.251306},
-        {"C", 0.748694}}, delta0 = 0, density = 0.0006672, k = 3.6257,
-        x0 = 1.6263, x1 = 3.9716
+        ZoA = 0.6231489, x0 = 1.6263, I = 4.17E-08, x1 = 3.9716,
+        density = 0.6672, delta0 = 0, state = 'gaz', k = 3.6257, a = 0.0925,
+        Cbar = 9.5243, elements = {C = 0.748694, H = 0.251306}
     },
 
     -- Methanol
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/methanol.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/methanol.html
     Methanol = {
-        Cbar = 3.516, I = 67.6, a = 0.0897, composition = {{"H", 0.125822},
-        {"C", 0.374852}, {"O", 0.499326}}, delta0 = 0, density = 0.7914,
-        k = 3.5477, x0 = 0.2529, x1 = 2.7639
+        ZoA = 0.5616682, x0 = 0.2529, I = 6.76E-08, x1 = 2.7639,
+        density = 791.4, delta0 = 0, state = 'liquid', k = 3.5477, a = 0.0897,
+        Cbar = 3.516, elements = {H = 0.125822, C = 0.374852, O = 0.499326}
     },
 
     -- Mix D wax
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/mix_D_wax.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/mix_D_wax.html
     MixDWax = {
-        Cbar = 3.078, I = 60.9, a = 0.0749, composition = {{"H", 0.13404}, {"C",
-        0.77796}, {"O", 0.03502}, {"Mg", 0.038594}, {"Ti", 0.014386}},
-        delta0 = 0, density = 0.99, k = 3.6823, x0 = 0.1371, x1 = 2.7145
+        ZoA = 0.5646912, x0 = 0.1371, I = 6.09E-08, x1 = 2.7145, density = 990,
+        delta0 = 0, state = 'liquid', k = 3.6823, a = 0.0749, Cbar = 3.078,
+        elements = {O = 0.03502, Mg = 0.038594, H = 0.13404, C = 0.77796,
+        Ti = 0.014386}
     },
 
     -- Mn-dimethyl formamide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/mn-dimethyl_formamide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/mn-dimethyl_formamide.html
     MnDimethylFormamide = {
-        Cbar = 3.3311, I = 66.6, a = 0.1147, composition = {{"H", 0.096523},
-        {"C", 0.492965}, {"N", 0.191625}, {"O", 0.218887}}, delta0 = 0,
-        density = 0.9487, k = 3.371, x0 = 0.1977, x1 = 2.6686
+        ZoA = 0.5471629, x0 = 0.1977, I = 6.66E-08, x1 = 2.6686,
+        density = 948.7, delta0 = 0, state = 'liquid', k = 3.371, a = 0.1147,
+        Cbar = 3.3311, elements = {O = 0.218887, H = 0.096523, C = 0.492965,
+        N = 0.191625}
     },
 
     -- Molybdenum
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/molybdenum_Mo.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/molybdenum_Mo.html
     Molybdenum = {
-        Cbar = 4.8793, I = 424, a = 0.1053, composition = {{"Mo", 1}},
-        delta0 = 0.14, density = 10.22, k = 3.2549, x0 = 0.2267, x1 = 3.2784
+        ZoA = 0.4377234, x0 = 0.2267, I = 4.24E-07, x1 = 3.2784,
+        density = 10220, delta0 = 0.14, state = 'liquid', k = 3.2549,
+        a = 0.1053, Cbar = 4.8793, elements = {Mo = 1}
+    },
+
+    -- Moscovium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/moscovium_Mc.html
+    Moscovium = {
+        ZoA = 0.3976569, x0 = 0.696, I = 1.199E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2887, Cbar = 6.7363,
+        elements = {Mc = 1}
     },
 
     -- Ms20 tissue substitute
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ms20_tissue_substitute.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ms20_tissue_substitute.html
     Ms20TissueSubstitute = {
-        Cbar = 3.5341, I = 75.1, a = 0.0829, composition = {{"H", 0.081192},
-        {"C", 0.583442}, {"N", 0.017798}, {"O", 0.186381}, {"Mg", 0.130287},
-        {"Cl", 0.0009}}, delta0 = 0, density = 1, k = 3.6061, x0 = 0.1997,
-        x1 = 2.8033
+        ZoA = 0.5387954, x0 = 0.1997, I = 7.51E-08, x1 = 2.8033, density = 1000,
+        delta0 = 0, state = 'liquid', k = 3.6061, a = 0.0829, Cbar = 3.5341,
+        elements = {O = 0.186381, N = 0.017798, Mg = 0.130287, H = 0.081192,
+        C = 0.583442, Cl = 0.0009}
     },
 
     -- Muscle-equivalent liquid without sucrose
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/muscle-equivalent_liquid_without_sucrose.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/muscle-equivalent_liquid_without_sucrose.html
     MuscleEquivalentLiquidWithoutSucrose = {
-        Cbar = 3.4216, I = 74.2, a = 0.0914, composition = {{"H", 0.101969},
-        {"C", 0.120058}, {"N", 0.035451}, {"O", 0.742522}}, delta0 = 0,
-        density = 1.07, k = 3.4982, x0 = 0.2187, x1 = 2.768
+        ZoA = 0.5500582, x0 = 0.2187, I = 7.42E-08, x1 = 2.768, density = 1070,
+        delta0 = 0, state = 'liquid', k = 3.4982, a = 0.0914, Cbar = 3.4216,
+        elements = {O = 0.742522, H = 0.101969, C = 0.120058, N = 0.035451}
     },
 
     -- Muscle-equivalent liquid with sucrose
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/muscle-equivalent_liquid_with_sucrose.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/muscle-equivalent_liquid_with_sucrose.html
     MuscleEquivalentLiquidWithSucrose = {
-        Cbar = 3.391, I = 74.3, a = 0.0948, composition = {{"H", 0.098234},
-        {"C", 0.156214}, {"N", 0.035451}, {"O", 0.7101}}, delta0 = 0,
-        density = 1.11, k = 3.4699, x0 = 0.2098, x1 = 2.755
+        ZoA = 0.5482054, x0 = 0.2098, I = 7.43E-08, x1 = 2.755, density = 1110,
+        delta0 = 0, state = 'liquid', k = 3.4699, a = 0.0948, Cbar = 3.391,
+        elements = {O = 0.7101, H = 0.098234, C = 0.156214, N = 0.035451}
     },
 
     -- Naphtalene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/naphtalene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/naphtalene.html
     Naphtalene = {
-        Cbar = 3.2274, I = 68.4, a = 0.1477, composition = {{"H", 0.062909},
-        {"C", 0.937091}}, delta0 = 0, density = 1.145, k = 3.2654, x0 = 0.1374,
-        x1 = 2.5429
+        ZoA = 0.5304906, x0 = 0.1374, I = 6.84E-08, x1 = 2.5429, density = 1145,
+        delta0 = 0, state = 'liquid', k = 3.2654, a = 0.1477, Cbar = 3.2274,
+        elements = {C = 0.937091, H = 0.062909}
     },
 
     -- N-butyl alcohol
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/n-butyl_alcohol.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/n-butyl_alcohol.html
     NButylAlcohol = {
-        Cbar = 3.2425, I = 59.9, a = 0.1008, composition = {{"H", 0.135978},
-        {"C", 0.648171}, {"O", 0.215851}}, delta0 = 0, density = 0.8098,
-        k = 3.5139, x0 = 0.1937, x1 = 2.6439
+        ZoA = 0.5665295, x0 = 0.1937, I = 5.99E-08, x1 = 2.6439,
+        density = 809.8, delta0 = 0, state = 'liquid', k = 3.5139, a = 0.1008,
+        Cbar = 3.2425, elements = {H = 0.135978, C = 0.648171, O = 0.215851}
     },
 
     -- Neodymium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/neodymium_Nd.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/neodymium_Nd.html
     Neodymium = {
-        Cbar = 5.8135, I = 546, a = 0.2353, composition = {{"Nd", 1}},
-        delta0 = 0.14, density = 7.008, k = 2.705, x0 = 0.195, x1 = 3.3029
+        ZoA = 0.4159676, x0 = 0.195, I = 5.46E-07, x1 = 3.3029, density = 7008,
+        delta0 = 0.14, state = 'liquid', k = 2.705, a = 0.2353, Cbar = 5.8135,
+        elements = {Nd = 1}
     },
 
     -- Neon gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/neon_gas_Ne.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/neon_gas_Ne.html
     NeonGas = {
-        Cbar = 11.9041, I = 137, a = 0.0806, composition = {{"Ne", 1}},
-        delta0 = 0, density = 0.0008385, k = 3.5771, x0 = 2.0735, x1 = 4.6421
+        ZoA = 0.4955451, x0 = 2.0735, I = 1.37E-07, x1 = 4.6421,
+        density = 0.8385, delta0 = 0, state = 'gaz', k = 3.5771, a = 0.0806,
+        Cbar = 11.9041, elements = {Ne = 1}
     },
 
     -- Neptunium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/neptunium_Np.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/neptunium_Np.html
     Neptunium = {
-        Cbar = 5.8149, I = 902, a = 0.1974, composition = {{"Np", 1}},
-        delta0 = 0.14, density = 20.25, k = 2.8082, x0 = 0.1869, x1 = 3.369
+        ZoA = 0.3923256, x0 = 0.1869, I = 9.02E-07, x1 = 3.369, density = 20250,
+        delta0 = 0.14, state = 'liquid', k = 2.8082, a = 0.1974, Cbar = 5.8149,
+        elements = {Np = 1}
     },
 
     -- N-heptane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/n-heptane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/n-heptane.html
     NHeptane = {
-        Cbar = 3.1978, I = 54.4, a = 0.1125, composition = {{"H", 0.160937},
-        {"C", 0.839063}}, delta0 = 0, density = 0.6838, k = 3.4885, x0 = 0.1928,
-        x1 = 2.5706
+        ZoA = 0.5787032, x0 = 0.1928, I = 5.44E-08, x1 = 2.5706,
+        density = 683.8, delta0 = 0, state = 'liquid', k = 3.4885, a = 0.1125,
+        Cbar = 3.1978, elements = {C = 0.839063, H = 0.160937}
     },
 
     -- N-hexane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/n-hexane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/n-hexane.html
     NHexane = {
-        Cbar = 3.2156, I = 54, a = 0.1108, composition = {{"H", 0.163741}, {"C",
-        0.836259}}, delta0 = 0, density = 0.6603, k = 3.5027, x0 = 0.1984,
-        x1 = 2.5757
+        ZoA = 0.5800823, x0 = 0.1984, I = 5.4E-08, x1 = 2.5757, density = 660.3,
+        delta0 = 0, state = 'liquid', k = 3.5027, a = 0.1108, Cbar = 3.2156,
+        elements = {C = 0.836259, H = 0.163741}
     },
 
     -- Nickel
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/nickel_Ni.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nickel_Ni.html
     Nickel = {
-        Cbar = 4.3115, I = 311, a = 0.165, composition = {{"Ni", 1}},
-        delta0 = 0.1, density = 8.902, k = 2.843, x0 = 0.0566, x1 = 3.1851
+        ZoA = 0.4770553, x0 = 0.0566, I = 3.11E-07, x1 = 3.1851, density = 8902,
+        delta0 = 0.1, state = 'liquid', k = 2.843, a = 0.165, Cbar = 4.3115,
+        elements = {Ni = 1}
+    },
+
+    -- Nihonium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nihonium_Nh.html
+    Nihonium = {
+        ZoA = 0.3948536, x0 = 0.6818, I = 1.171E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2852, Cbar = 6.6925,
+        elements = {Nh = 1}
     },
 
     -- Niobium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/niobium_Nb.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/niobium_Nb.html
     Niobium = {
-        Cbar = 5.0141, I = 417, a = 0.1388, composition = {{"Nb", 1}},
-        delta0 = 0.14, density = 8.57, k = 3.093, x0 = 0.1785, x1 = 3.2201
+        ZoA = 0.4413044, x0 = 0.1785, I = 4.17E-07, x1 = 3.2201, density = 8570,
+        delta0 = 0.14, state = 'liquid', k = 3.093, a = 0.1388, Cbar = 5.0141,
+        elements = {Nb = 1}
     },
 
     -- Nitrobenzene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/nitrobenzene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nitrobenzene.html
     Nitrobenzene = {
-        Cbar = 3.4073, I = 75.8, a = 0.1273, composition = {{"H", 0.040935},
-        {"C", 0.585374}, {"N", 0.113773}, {"O", 0.259918}}, delta0 = 0,
-        density = 1.199, k = 3.3091, x0 = 0.1777, x1 = 2.663
+        ZoA = 0.5198277, x0 = 0.1777, I = 7.58E-08, x1 = 2.663, density = 1199,
+        delta0 = 0, state = 'liquid', k = 3.3091, a = 0.1273, Cbar = 3.4073,
+        elements = {O = 0.259918, H = 0.040935, C = 0.585374, N = 0.113773}
     },
 
     -- Nitrogen gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/nitrogen_gas.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nitrogen_gas.html
     NitrogenGas = {
-        Cbar = 10.54, I = 82, a = 0.1535, composition = {{"N", 1}}, delta0 = 0,
-        density = 0.001165, k = 3.2125, x0 = 1.7378, x1 = 4.1323
+        ZoA = 0.499743, x0 = 1.7378, I = 8.2E-08, x1 = 4.1323, density = 1.165,
+        delta0 = 0, state = 'gaz', k = 3.2125, a = 0.1535, Cbar = 10.54,
+        elements = {N = 1}
     },
 
     -- Nitrous oxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/nitrous_oxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nitrous_oxide.html
     NitrousOxide = {
-        Cbar = 10.1575, I = 84.9, a = 0.1199, composition = {{"N", 0.636483},
-        {"O", 0.363517}}, delta0 = 0, density = 0.001831, k = 3.3318,
-        x0 = 1.6477, x1 = 4.1565
+        ZoA = 0.4998444, x0 = 1.6477, I = 8.49E-08, x1 = 4.1565,
+        density = 1.831, delta0 = 0, state = 'gaz', k = 3.3318, a = 0.1199,
+        Cbar = 10.1575, elements = {O = 0.363517, N = 0.636483}
+    },
+
+    -- Nobelium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nobelium_No.html
+    Nobelium = {
+        ZoA = 0.3936689, x0 = 0.595, I = 1.02E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.265, Cbar = 6.4264,
+        elements = {No = 1}
     },
 
     -- N-pentane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/n-pentane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/n-pentane.html
     NPentane = {
-        Cbar = 3.2504, I = 53.6, a = 0.1081, composition = {{"H", 0.167635},
-        {"C", 0.832365}}, delta0 = 0, density = 0.6262, k = 3.5265, x0 = 0.2086,
-        x1 = 2.5855
+        ZoA = 0.5819974, x0 = 0.2086, I = 5.36E-08, x1 = 2.5855,
+        density = 626.2, delta0 = 0, state = 'liquid', k = 3.5265, a = 0.1081,
+        Cbar = 3.2504, elements = {C = 0.832365, H = 0.167635}
     },
 
     -- N-propyl alcohol
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/n-propyl_alcohol.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/n-propyl_alcohol.html
     NPropylAlcohol = {
-        Cbar = 3.2915, I = 61.1, a = 0.0964, composition = {{"H", 0.134173},
-        {"C", 0.599595}, {"O", 0.266232}}, delta0 = 0, density = 0.8035,
-        k = 3.5415, x0 = 0.2046, x1 = 2.6681
+        ZoA = 0.5656655, x0 = 0.2046, I = 6.11E-08, x1 = 2.6681,
+        density = 803.5, delta0 = 0, state = 'liquid', k = 3.5415, a = 0.0964,
+        Cbar = 3.2915, elements = {H = 0.134173, C = 0.599595, O = 0.266232}
     },
 
     -- Nylon du Pont Elvamide 8062M
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/Nylon_du_Pont_Elvamide_8062M.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Nylon_du_Pont_Elvamide_8062M.html
     NylonDuPontElvamide8062M = {
-        Cbar = 3.125, I = 64.3, a = 0.1151, composition = {{"H", 0.103509},
-        {"C", 0.648415}, {"N", 0.099536}, {"O", 0.148539}}, delta0 = 0,
-        density = 1.08, k = 3.4044, x0 = 0.1503, x1 = 2.6004
+        ZoA = 0.5505474, x0 = 0.1503, I = 6.43E-08, x1 = 2.6004, density = 1080,
+        delta0 = 0, state = 'liquid', k = 3.4044, a = 0.1151, Cbar = 3.125,
+        elements = {O = 0.148539, H = 0.103509, C = 0.648415, N = 0.099536}
     },
 
     -- Nylon type 11 Rilsan
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/Nylon_type_11_Rilsan.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Nylon_type_11_Rilsan.html
     NylonType11Rilsan = {
-        Cbar = 2.7514, I = 61.6, a = 0.1487, composition = {{"H", 0.115476},
-        {"C", 0.720819}, {"N", 0.076417}, {"O", 0.087289}}, delta0 = 0,
-        density = 1.425, k = 3.2576, x0 = 0.0678, x1 = 2.4281
+        ZoA = 0.5564007, x0 = 0.0678, I = 6.16E-08, x1 = 2.4281, density = 1425,
+        delta0 = 0, state = 'liquid', k = 3.2576, a = 0.1487, Cbar = 2.7514,
+        elements = {O = 0.087289, H = 0.115476, C = 0.720819, N = 0.076417}
     },
 
     -- Nylon type 6-10
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/Nylon_type_6-10.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Nylon_type_6-10.html
     NylonType610 = {
-        Cbar = 3.0333, I = 63.2, a = 0.1185, composition = {{"H", 0.107062},
-        {"C", 0.680449}, {"N", 0.099189}, {"O", 0.1133}}, delta0 = 0,
-        density = 1.14, k = 3.3912, x0 = 0.1304, x1 = 2.5681
+        ZoA = 0.5522787, x0 = 0.1304, I = 6.32E-08, x1 = 2.5681, density = 1140,
+        delta0 = 0, state = 'liquid', k = 3.3912, a = 0.1185, Cbar = 3.0333,
+        elements = {O = 0.1133, H = 0.107062, C = 0.680449, N = 0.099189}
     },
 
     -- Nylon type 6 6-6
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/Nylon_type_6_6-6.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Nylon_type_6_6-6.html
     NylonType666 = {
-        Cbar = 3.0289, I = 63.9, a = 0.1182, composition = {{"H", 0.097976},
-        {"C", 0.636856}, {"N", 0.123779}, {"O", 0.141389}}, delta0 = 0,
-        density = 1.18, k = 3.3826, x0 = 0.1261, x1 = 2.5759
+        ZoA = 0.5478279, x0 = 0.1261, I = 6.39E-08, x1 = 2.5759, density = 1180,
+        delta0 = 0, state = 'liquid', k = 3.3826, a = 0.1182, Cbar = 3.0289,
+        elements = {O = 0.141389, H = 0.097976, C = 0.636856, N = 0.123779}
     },
 
     -- Octane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/octane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/octane.html
     Octane = {
-        Cbar = 3.1834, I = 54.7, a = 0.1139, composition = {{"H", 0.158821},
-        {"C", 0.841179}}, delta0 = 0, density = 0.7026, k = 3.4776, x0 = 0.1882,
-        x1 = 2.5664
+        ZoA = 0.5776625, x0 = 0.1882, I = 5.47E-08, x1 = 2.5664,
+        density = 702.6, delta0 = 0, state = 'liquid', k = 3.4776, a = 0.1139,
+        Cbar = 3.1834, elements = {C = 0.841179, H = 0.158821}
     },
 
     -- Oganesson
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/oganesson_Og.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/oganesson_Og.html
     Oganesson = {
-        Cbar = 13.8662, I = 1242, a = 0.0703, composition = {{"Og", 1}},
-        delta0 = 0, density = 0.012, k = 3, x0 = 2.0204, x1 = 1.9972
+        ZoA = 0.4010686, x0 = 2.0204, I = 1.242E-06, x1 = 1.9972, density = 12,
+        delta0 = 0, state = 'gaz', k = 3, a = 0.0703, Cbar = 13.8662,
+        elements = {Og = 1}
     },
 
     -- Osmium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/osmium_Os.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/osmium_Os.html
     Osmium = {
-        Cbar = 5.3083, I = 746, a = 0.1275, composition = {{"Os", 1}},
-        delta0 = 0.1, density = 22.57, k = 2.9608, x0 = 0.0891, x1 = 3.5414
+        ZoA = 0.3995101, x0 = 0.0891, I = 7.46E-07, x1 = 3.5414,
+        density = 22570, delta0 = 0.1, state = 'liquid', k = 2.9608, a = 0.1275,
+        Cbar = 5.3083, elements = {Os = 1}
     },
 
     -- Oxygen gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/oxygen_gas.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/oxygen_gas.html
     OxygenGas = {
-        Cbar = 10.7004, I = 95, a = 0.1178, composition = {{"O", 1}},
-        delta0 = 0, density = 0.001332, k = 3.2913, x0 = 1.7541, x1 = 4.3213
+        ZoA = 0.5000219, x0 = 1.7541, I = 9.5E-08, x1 = 4.3213, density = 1.332,
+        delta0 = 0, state = 'gaz', k = 3.2913, a = 0.1178, Cbar = 10.7004,
+        elements = {O = 1}
     },
 
     -- Palladium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/palladium_Pd.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/palladium_Pd.html
     Palladium = {
-        Cbar = 4.9358, I = 470, a = 0.2418, composition = {{"Pd", 1}},
-        delta0 = 0.14, density = 12.02, k = 2.7239, x0 = 0.0563, x1 = 3.0555
+        ZoA = 0.4322455, x0 = 0.0563, I = 4.7E-07, x1 = 3.0555, density = 12020,
+        delta0 = 0.14, state = 'liquid', k = 2.7239, a = 0.2418, Cbar = 4.9358,
+        elements = {Pd = 1}
     },
 
     -- Paraffin
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/paraffin.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/paraffin.html
     Paraffin = {
-        Cbar = 2.9551, I = 55.9, a = 0.1209, composition = {{"H", 0.148605},
-        {"C", 0.851395}}, delta0 = 0, density = 0.93, k = 3.4288, x0 = 0.1289,
-        x1 = 2.5084
+        ZoA = 0.572638, x0 = 0.1289, I = 5.59E-08, x1 = 2.5084, density = 930,
+        delta0 = 0, state = 'liquid', k = 3.4288, a = 0.1209, Cbar = 2.9551,
+        elements = {C = 0.851395, H = 0.148605}
+    },
+
+    -- Parylene
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/parylene.html
+    Parylene = {
+        ZoA = 0.5376289, x0 = 0.2, I = 6.6E-08, x1 = 2, density = 1060,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.3941, Cbar = 3.2197,
+        elements = {C = 0.922577, H = 0.077423}
     },
 
     -- Phosphorus
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/phosphorus_P.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/phosphorus_P.html
     Phosphorus = {
-        Cbar = 4.5214, I = 173, a = 0.2361, composition = {{"P", 1}},
-        delta0 = 0.14, density = 2.2, k = 2.9158, x0 = 0.1696, x1 = 2.7815
+        ZoA = 0.4842803, x0 = 0.1696, I = 1.73E-07, x1 = 2.7815, density = 2200,
+        delta0 = 0.14, state = 'liquid', k = 2.9158, a = 0.2361, Cbar = 4.5214,
+        elements = {P = 1}
     },
 
     -- Photographic emulsion
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/photographic_emulsion.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/photographic_emulsion.html
     PhotographicEmulsion = {
-        Cbar = 5.3319, I = 331, a = 0.124, composition = {{"H", 0.0141}, {"C",
-        0.072261}, {"N", 0.01932}, {"O", 0.066101}, {"S", 0.00189}, {"Br",
-        0.349103}, {"Ag", 0.474105}, {"I", 0.00312}}, delta0 = 0,
-        density = 3.815, k = 3.0094, x0 = 0.1009, x1 = 3.4866
+        ZoA = 0.4545213, x0 = 0.1009, I = 3.31E-07, x1 = 3.4866, density = 3815,
+        delta0 = 0, state = 'liquid', k = 3.0094, a = 0.124, Cbar = 5.3319,
+        elements = {I = 0.00312, O = 0.066101, S = 0.00189, N = 0.01932,
+        Br = 0.349103, H = 0.0141, C = 0.072261, Ag = 0.474105}
     },
 
     -- Plate glass
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/plate_glass.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/plate_glass.html
     PlateGlass = {
-        Cbar = 4.0602, I = 145.4, a = 0.0768, composition = {{"O", 0.4598},
-        {"Na", 0.096441}, {"Si", 0.336553}, {"Ca", 0.107205}}, delta0 = 0,
-        density = 2.4, k = 3.5381, x0 = 0.1237, x1 = 3.0649
+        ZoA = 0.4973163, x0 = 0.1237, I = 1.454E-07, x1 = 3.0649,
+        density = 2400, delta0 = 0, state = 'liquid', k = 3.5381, a = 0.0768,
+        Cbar = 4.0602, elements = {Si = 0.336553, O = 0.4598, Ca = 0.107205,
+        Na = 0.096441}
     },
 
     -- Platinum
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/platinum_Pt.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/platinum_Pt.html
     Platinum = {
-        Cbar = 5.4732, I = 790, a = 0.1113, composition = {{"Pt", 1}},
-        delta0 = 0.12, density = 21.45, k = 3.0417, x0 = 0.1484, x1 = 3.6212
+        ZoA = 0.3998257, x0 = 0.1484, I = 7.9E-07, x1 = 3.6212, density = 21450,
+        delta0 = 0.12, state = 'liquid', k = 3.0417, a = 0.1113, Cbar = 5.4732,
+        elements = {Pt = 1}
     },
 
     -- Plutonium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/plutonium_Pu.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/plutonium_Pu.html
     Plutonium = {
-        Cbar = 5.8748, I = 921, a = 0.2042, composition = {{"Pu", 1}},
-        delta0 = 0.14, density = 19.84, k = 2.7679, x0 = 0.1557, x1 = 3.3981
+        ZoA = 0.3851449, x0 = 0.1557, I = 9.21E-07, x1 = 3.3981,
+        density = 19840, delta0 = 0.14, state = 'liquid', k = 2.7679,
+        a = 0.2042, Cbar = 5.8748, elements = {Pu = 1}
     },
 
     -- Plutonium dioxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/plutonium_dioxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/plutonium_dioxide.html
     PlutoniumDioxide = {
-        Cbar = 5.9719, I = 746.5, a = 0.2059, composition = {{"O", 0.118055},
-        {"Pu", 0.881945}}, delta0 = 0, density = 11.46, k = 2.6522, x0 = 0.2311,
-        x1 = 3.5554
+        ZoA = 0.3987067, x0 = 0.2311, I = 7.465E-07, x1 = 3.5554,
+        density = 11460, delta0 = 0, state = 'liquid', k = 2.6522, a = 0.2059,
+        Cbar = 5.9719, elements = {Pu = 0.881945, O = 0.118055}
     },
 
     -- Polonium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polonium_Po.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polonium_Po.html
     Polonium = {
-        Cbar = 6.4003, I = 830, a = 0.0928, composition = {{"Po", 1}},
-        delta0 = 0.14, density = 9.32, k = 3.183, x0 = 0.4267, x1 = 3.8293
+        ZoA = 0.4019485, x0 = 0.4267, I = 8.3E-07, x1 = 3.8293, density = 9320,
+        delta0 = 0.14, state = 'liquid', k = 3.183, a = 0.0928, Cbar = 6.4003,
+        elements = {Po = 1}
     },
 
     -- Polyacrylonitrile
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyacrylonitrile.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyacrylonitrile.html
     Polyacrylonitrile = {
-        Cbar = 3.2459, I = 69.6, a = 0.1628, composition = {{"H", 0.056983},
-        {"C", 0.679056}, {"N", 0.263962}}, delta0 = 0, density = 1.17,
-        k = 3.1975, x0 = 0.1504, x1 = 2.5159
+        ZoA = 0.5276274, x0 = 0.1504, I = 6.96E-08, x1 = 2.5159, density = 1170,
+        delta0 = 0, state = 'liquid', k = 3.1975, a = 0.1628, Cbar = 3.2459,
+        elements = {H = 0.056983, C = 0.679056, N = 0.263962}
     },
 
     -- Polycarbonate Lexan
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polycarbonate_Lexan.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polycarbonate_Lexan.html
     PolycarbonateLexan = {
-        Cbar = 3.3201, I = 73.1, a = 0.1286, composition = {{"H", 0.055491},
-        {"C", 0.755751}, {"O", 0.188758}}, delta0 = 0, density = 1.2,
-        k = 3.3288, x0 = 0.1606, x1 = 2.6225
+        ZoA = 0.5269312, x0 = 0.1606, I = 7.31E-08, x1 = 2.6225, density = 1200,
+        delta0 = 0, state = 'liquid', k = 3.3288, a = 0.1286, Cbar = 3.3201,
+        elements = {H = 0.055491, C = 0.755751, O = 0.188758}
     },
 
     -- Polychlorostyrene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polychlorostyrene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polychlorostyrene.html
     Polychlorostyrene = {
-        Cbar = 3.4659, I = 81.7, a = 0.0753, composition = {{"H", 0.061869},
-        {"C", 0.696325}, {"Cl", 0.241806}}, delta0 = 0, density = 1.3,
-        k = 3.5441, x0 = 0.1238, x1 = 2.9241
+        ZoA = 0.5251321, x0 = 0.1238, I = 8.17E-08, x1 = 2.9241, density = 1300,
+        delta0 = 0, state = 'liquid', k = 3.5441, a = 0.0753, Cbar = 3.4659,
+        elements = {H = 0.061869, C = 0.696325, Cl = 0.241806}
     },
 
     -- Polyethylene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyethylene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyethylene.html
     Polyethylene = {
-        Cbar = 3.0563, I = 57.4, a = 0.1211, composition = {{"H", 0.143711},
-        {"C", 0.856289}}, delta0 = 0, density = 0.89, k = 3.4292, x0 = 0.1489,
-        x1 = 2.5296
+        ZoA = 0.570231, x0 = 0.1489, I = 5.74E-08, x1 = 2.5296, density = 890,
+        delta0 = 0, state = 'liquid', k = 3.4292, a = 0.1211, Cbar = 3.0563,
+        elements = {C = 0.856289, H = 0.143711}
     },
 
     -- Polyethylene terephthalate Mylar
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyethylene_terephthalate_Mylar.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyethylene_terephthalate_Mylar.html
     PolyethyleneTerephthalateMylar = {
-        Cbar = 3.3262, I = 78.7, a = 0.1268, composition = {{"H", 0.041959},
-        {"C", 0.625017}, {"O", 0.333025}}, delta0 = 0, density = 1.4,
-        k = 3.3076, x0 = 0.1562, x1 = 2.6507
+        ZoA = 0.5203444, x0 = 0.1562, I = 7.87E-08, x1 = 2.6507, density = 1400,
+        delta0 = 0, state = 'liquid', k = 3.3076, a = 0.1268, Cbar = 3.3262,
+        elements = {H = 0.041959, C = 0.625017, O = 0.333025}
     },
 
     -- Polyimide film
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyimide_film.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyimide_film.html
     PolyimideFilm = {
-        Cbar = 3.3497, I = 79.6, a = 0.1597, composition = {{"H", 0.026362},
-        {"C", 0.691133}, {"N", 0.07327}, {"O", 0.209235}}, delta0 = 0,
-        density = 1.42, k = 3.1921, x0 = 0.1509, x1 = 2.5631
+        ZoA = 0.5126286, x0 = 0.1509, I = 7.96E-08, x1 = 2.5631, density = 1420,
+        delta0 = 0, state = 'liquid', k = 3.1921, a = 0.1597, Cbar = 3.3497,
+        elements = {O = 0.209235, H = 0.026362, C = 0.691133, N = 0.07327}
     },
 
     -- Polymethylmethacrylate acrylic
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polymethylmethacrylate_acrylic.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polymethylmethacrylate_acrylic.html
     PolymethylmethacrylateAcrylic = {
-        Cbar = 3.3297, I = 74, a = 0.1143, composition = {{"H", 0.080538}, {"C",
-        0.599848}, {"O", 0.319614}}, delta0 = 0, density = 1.19, k = 3.3836,
-        x0 = 0.1824, x1 = 2.6681
+        ZoA = 0.5393117, x0 = 0.1824, I = 7.4E-08, x1 = 2.6681, density = 1190,
+        delta0 = 0, state = 'liquid', k = 3.3836, a = 0.1143, Cbar = 3.3297,
+        elements = {H = 0.080538, C = 0.599848, O = 0.319614}
     },
 
     -- Polyoxymethylene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyoxymethylene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyoxymethylene.html
     Polyoxymethylene = {
-        Cbar = 3.2514, I = 77.4, a = 0.1081, composition = {{"H", 0.067135},
-        {"C", 0.400017}, {"O", 0.532848}}, delta0 = 0, density = 1.425,
-        k = 3.4002, x0 = 0.1584, x1 = 2.6838
+        ZoA = 0.5328203, x0 = 0.1584, I = 7.74E-08, x1 = 2.6838, density = 1425,
+        delta0 = 0, state = 'liquid', k = 3.4002, a = 0.1081, Cbar = 3.2514,
+        elements = {H = 0.067135, C = 0.400017, O = 0.532848}
     },
 
     -- Polypropylene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polypropylene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polypropylene.html
     Polypropylene = {
-        Cbar = 3.0395, I = 57.4, a = 0.1211, composition = {{"H", 0.143711},
-        {"C", 0.856289}}, delta0 = 0, density = 0.905, k = 3.4292, x0 = 0.1452,
-        x1 = 2.5259
+        ZoA = 0.570231, x0 = 0.1452, I = 5.74E-08, x1 = 2.5259, density = 905,
+        delta0 = 0, state = 'liquid', k = 3.4292, a = 0.1211, Cbar = 3.0395,
+        elements = {C = 0.856289, H = 0.143711}
     },
 
     -- Polystyrene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polystyrene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polystyrene.html
     Polystyrene = {
-        Cbar = 3.2999, I = 68.7, a = 0.1645, composition = {{"H", 0.077418},
-        {"C", 0.922582}}, delta0 = 0, density = 1.06, k = 3.2224, x0 = 0.1647,
-        x1 = 2.5031
+        ZoA = 0.5376265, x0 = 0.1647, I = 6.87E-08, x1 = 2.5031, density = 1060,
+        delta0 = 0, state = 'liquid', k = 3.2224, a = 0.1645, Cbar = 3.2999,
+        elements = {C = 0.922582, H = 0.077418}
     },
 
     -- Polytetrafluoroethylene Teflon
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polytetrafluoroethylene_Teflon.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polytetrafluoroethylene_Teflon.html
     PolytetrafluoroethyleneTeflon = {
-        Cbar = 3.4161, I = 99.1, a = 0.1061, composition = {{"C", 0.240183},
-        {"F", 0.759817}}, delta0 = 0, density = 2.2, k = 3.4046, x0 = 0.1648,
-        x1 = 2.7404
+        ZoA = 0.4799271, x0 = 0.1648, I = 9.91E-08, x1 = 2.7404, density = 2200,
+        delta0 = 0, state = 'liquid', k = 3.4046, a = 0.1061, Cbar = 3.4161,
+        elements = {C = 0.240183, F = 0.759817}
     },
 
     -- Polytrifluorochloroethylene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polytrifluorochloroethylene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polytrifluorochloroethylene.html
     Polytrifluorochloroethylene = {
-        Cbar = 3.8551, I = 120.7, a = 0.0773, composition = {{"C", 0.20625},
-        {"F", 0.489354}, {"Cl", 0.304395}}, delta0 = 0, density = 2.1,
-        k = 3.5085, x0 = 0.1714, x1 = 3.0265
+        ZoA = 0.4808101, x0 = 0.1714, I = 1.207E-07, x1 = 3.0265,
+        density = 2100, delta0 = 0, state = 'liquid', k = 3.5085, a = 0.0773,
+        Cbar = 3.8551, elements = {F = 0.489354, C = 0.20625, Cl = 0.304395}
     },
 
     -- Polyvinylacetate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyvinylacetate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinylacetate.html
     Polyvinylacetate = {
-        Cbar = 3.3309, I = 73.7, a = 0.1144, composition = {{"H", 0.070245},
-        {"C", 0.558066}, {"O", 0.371689}}, delta0 = 0, density = 1.19,
-        k = 3.3762, x0 = 0.1769, x1 = 2.6747
+        ZoA = 0.5342739, x0 = 0.1769, I = 7.37E-08, x1 = 2.6747, density = 1190,
+        delta0 = 0, state = 'liquid', k = 3.3762, a = 0.1144, Cbar = 3.3309,
+        elements = {H = 0.070245, C = 0.558066, O = 0.371689}
     },
 
     -- Polyvinyl alcohol
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyvinyl_alcohol.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinyl_alcohol.html
     PolyvinylAlcohol = {
-        Cbar = 3.1115, I = 69.7, a = 0.1118, composition = {{"H", 0.091517},
-        {"C", 0.545298}, {"O", 0.363185}}, delta0 = 0, density = 1.3,
-        k = 3.3893, x0 = 0.1401, x1 = 2.6315
+        ZoA = 0.544732, x0 = 0.1401, I = 6.97E-08, x1 = 2.6315, density = 1300,
+        delta0 = 0, state = 'liquid', k = 3.3893, a = 0.1118, Cbar = 3.1115,
+        elements = {H = 0.091517, C = 0.545298, O = 0.363185}
     },
 
     -- Polyvinyl butyral
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyvinyl_butyral.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinyl_butyral.html
     PolyvinylButyral = {
-        Cbar = 3.1865, I = 67.2, a = 0.1154, composition = {{"H", 0.092802},
-        {"C", 0.680561}, {"O", 0.226637}}, delta0 = 0, density = 1.12,
-        k = 3.3983, x0 = 0.1555, x1 = 2.6186
+        ZoA = 0.5452996, x0 = 0.1555, I = 6.72E-08, x1 = 2.6186, density = 1120,
+        delta0 = 0, state = 'liquid', k = 3.3983, a = 0.1154, Cbar = 3.1865,
+        elements = {H = 0.092802, C = 0.680561, O = 0.226637}
     },
 
     -- Polyvinylchloride PVC
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyvinylchloride_PVC.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinylchloride_PVC.html
     PolyvinylchloridePVC = {
-        Cbar = 4.0532, I = 108.2, a = 0.1244, composition = {{"H", 0.04838},
-        {"C", 0.38436}, {"Cl", 0.56726}}, delta0 = 0, density = 1.3, k = 3.2104,
-        x0 = 0.1559, x1 = 2.9415
+        ZoA = 0.5119741, x0 = 0.1559, I = 1.082E-07, x1 = 2.9415,
+        density = 1300, delta0 = 0, state = 'liquid', k = 3.2104, a = 0.1244,
+        Cbar = 4.0532, elements = {H = 0.04838, C = 0.38436, Cl = 0.56726}
     },
 
     -- Polyvinylidene chloride Saran
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyvinylidene_chloride_Saran.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinylidene_chloride_Saran.html
     PolyvinylideneChlorideSaran = {
-        Cbar = 4.2506, I = 134.3, a = 0.1547, composition = {{"H", 0.020793},
-        {"C", 0.247793}, {"Cl", 0.731413}}, delta0 = 0, density = 1.7,
-        k = 3.102, x0 = 0.1314, x1 = 2.9009
+        ZoA = 0.4951152, x0 = 0.1314, I = 1.343E-07, x1 = 2.9009,
+        density = 1700, delta0 = 0, state = 'liquid', k = 3.102, a = 0.1547,
+        Cbar = 4.2506, elements = {H = 0.020793, C = 0.247793, Cl = 0.731413}
     },
 
     -- Polyvinylidene fluoride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyvinylidene_fluoride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinylidene_fluoride.html
     PolyvinylideneFluoride = {
-        Cbar = 3.3793, I = 88.8, a = 0.1032, composition = {{"H", 0.03148},
-        {"C", 0.375141}, {"F", 0.593379}}, delta0 = 0, density = 1.76, k = 3.42,
-        x0 = 0.1717, x1 = 2.7375
+        ZoA = 0.4997083, x0 = 0.1717, I = 8.88E-08, x1 = 2.7375, density = 1760,
+        delta0 = 0, state = 'liquid', k = 3.42, a = 0.1032, Cbar = 3.3793,
+        elements = {H = 0.03148, C = 0.375141, F = 0.593379}
     },
 
     -- Polyvinyl pyrrolidone
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyvinyl_pyrrolidone.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinyl_pyrrolidone.html
     PolyvinylPyrrolidone = {
-        Cbar = 3.1017, I = 67.7, a = 0.125, composition = {{"H", 0.081616},
-        {"C", 0.648407}, {"N", 0.126024}, {"O", 0.143953}}, delta0 = 0,
-        density = 1.25, k = 3.3326, x0 = 0.1324, x1 = 2.5867
+        ZoA = 0.5397833, x0 = 0.1324, I = 6.77E-08, x1 = 2.5867, density = 1250,
+        delta0 = 0, state = 'liquid', k = 3.3326, a = 0.125, Cbar = 3.1017,
+        elements = {O = 0.143953, H = 0.081616, C = 0.648407, N = 0.126024}
     },
 
     -- Polyvinyltoluene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/polyvinyltoluene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinyltoluene.html
     Polyvinyltoluene = {
-        Cbar = 3.1997, I = 64.7, a = 0.161, composition = {{"H", 0.085}, {"C",
-        0.915}}, delta0 = 0, density = 1.032, k = 3.2393, x0 = 0.1464,
-        x1 = 2.4855
+        ZoA = 0.5413555, x0 = 0.1464, I = 6.47E-08, x1 = 2.4855, density = 1032,
+        delta0 = 0, state = 'liquid', k = 3.2393, a = 0.161, Cbar = 3.1997,
+        elements = {C = 0.915, H = 0.085}
     },
 
     -- Potassium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/potassium_K.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/potassium_K.html
     Potassium = {
-        Cbar = 5.6423, I = 190, a = 0.1983, composition = {{"K", 1}},
-        delta0 = 0.1, density = 0.862, k = 2.9233, x0 = 0.3851, x1 = 3.1724
+        ZoA = 0.4859546, x0 = 0.3851, I = 1.9E-07, x1 = 3.1724, density = 862,
+        delta0 = 0.1, state = 'liquid', k = 2.9233, a = 0.1983, Cbar = 5.6423,
+        elements = {K = 1}
     },
 
     -- Potassium iodide KI
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/potassium_iodide_KI.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/potassium_iodide_KI.html
     PotassiumIodide = {
-        Cbar = 6.1088, I = 431.9, a = 0.2205, composition = {{"K", 0.235528},
-        {"I", 0.764472}}, delta0 = 0, density = 3.13, k = 2.7558, x0 = 0.1044,
-        x1 = 3.3442
+        ZoA = 0.4337289, x0 = 0.1044, I = 4.319E-07, x1 = 3.3442,
+        density = 3130, delta0 = 0, state = 'liquid', k = 2.7558, a = 0.2205,
+        Cbar = 6.1088, elements = {K = 0.235528, I = 0.764472}
     },
 
     -- Potassium oxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/potassium_oxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/potassium_oxide.html
     PotassiumOxide = {
-        Cbar = 4.6463, I = 189.9, a = 0.1679, composition = {{"O", 0.169852},
-        {"K", 0.830148}}, delta0 = 0, density = 2.32, k = 3.0121, x0 = 0.048,
-        x1 = 3.011
+        ZoA = 0.488344, x0 = 0.048, I = 1.899E-07, x1 = 3.011, density = 2320,
+        delta0 = 0, state = 'liquid', k = 3.0121, a = 0.1679, Cbar = 4.6463,
+        elements = {K = 0.830148, O = 0.169852}
     },
 
     -- Praseodymium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/praseodymium_Pr.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/praseodymium_Pr.html
     Praseodymium = {
-        Cbar = 5.8003, I = 535, a = 0.2326, composition = {{"Pr", 1}},
-        delta0 = 0.14, density = 6.773, k = 2.7331, x0 = 0.2313, x1 = 3.2753
+        ZoA = 0.4187129, x0 = 0.2313, I = 5.35E-07, x1 = 3.2753, density = 6773,
+        delta0 = 0.14, state = 'liquid', k = 2.7331, a = 0.2326, Cbar = 5.8003,
+        elements = {Pr = 1}
     },
 
     -- Promethium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/promethium_Pm.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/promethium_Pm.html
     Promethium = {
-        Cbar = 5.8163, I = 560, a = 0.2428, composition = {{"Pm", 1}},
-        delta0 = 0.14, density = 7.264, k = 2.6674, x0 = 0.1614, x1 = 3.3186
+        ZoA = 0.4209422, x0 = 0.1614, I = 5.6E-07, x1 = 3.3186, density = 7264,
+        delta0 = 0.14, state = 'liquid', k = 2.6674, a = 0.2428, Cbar = 5.8163,
+        elements = {Pm = 1}
     },
 
     -- Propane
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/propane.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/propane.html
     Propane = {
-        Cbar = 8.7939, I = 47.1, a = 0.0992, composition = {{"H", 0.182855},
-        {"C", 0.817145}}, delta0 = 0, density = 0.001868, k = 3.592,
-        x0 = 1.4339, x1 = 3.8011
+        ZoA = 0.589483, x0 = 1.4339, I = 4.71E-08, x1 = 3.8011, density = 1.868,
+        delta0 = 0, state = 'gaz', k = 3.592, a = 0.0992, Cbar = 8.7939,
+        elements = {C = 0.817145, H = 0.182855}
     },
 
     -- Protactinium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/protactinium_Pa.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/protactinium_Pa.html
     Protactinium = {
-        Cbar = 6.0327, I = 878, a = 0.1477, composition = {{"Pa", 1}},
-        delta0 = 0.14, density = 15.37, k = 2.9845, x0 = 0.3144, x1 = 3.5079
+        ZoA = 0.393878, x0 = 0.3144, I = 8.78E-07, x1 = 3.5079, density = 15370,
+        delta0 = 0.14, state = 'liquid', k = 2.9845, a = 0.1477, Cbar = 6.0327,
+        elements = {Pa = 1}
     },
 
     -- Pyridine
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/pyridine.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/pyridine.html
     Pyridine = {
-        Cbar = 3.3148, I = 66.2, a = 0.164, composition = {{"H", 0.06371}, {"C",
-        0.759217}, {"N", 0.177073}}, delta0 = 0, density = 0.9819, k = 3.1977,
-        x0 = 0.167, x1 = 2.5245
+        ZoA = 0.5309187, x0 = 0.167, I = 6.62E-08, x1 = 2.5245, density = 981.9,
+        delta0 = 0, state = 'liquid', k = 3.1977, a = 0.164, Cbar = 3.3148,
+        elements = {H = 0.06371, C = 0.759217, N = 0.177073}
     },
 
     -- Radium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/radium_Ra.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/radium_Ra.html
     Radium = {
-        Cbar = 7.0452, I = 826, a = 0.088, composition = {{"Ra", 1}},
-        delta0 = 0.14, density = 5, k = 3.2454, x0 = 0.5991, x1 = 3.9428
+        ZoA = 0.3893375, x0 = 0.5991, I = 8.26E-07, x1 = 3.9428, density = 5000,
+        delta0 = 0.14, state = 'liquid', k = 3.2454, a = 0.088, Cbar = 7.0452,
+        elements = {Ra = 1}
     },
 
     -- Radon
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/radon_Rn.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/radon_Rn.html
     Radon = {
-        Cbar = 13.2839, I = 794, a = 0.208, composition = {{"Rn", 1}},
-        delta0 = 0, density = 0.009066, k = 2.7409, x0 = 1.5368, x1 = 4.9889
+        ZoA = 0.387356, x0 = 1.5368, I = 7.94E-07, x1 = 4.9889, density = 9.066,
+        delta0 = 0, state = 'gaz', k = 2.7409, a = 0.208, Cbar = 13.2839,
+        elements = {Rn = 1}
     },
 
     -- Rhenium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/rhenium_Re.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rhenium_Re.html
     Rhenium = {
-        Cbar = 5.3445, I = 736, a = 0.1518, composition = {{"Re", 1}},
-        delta0 = 0.08, density = 21.02, k = 2.8627, x0 = 0.0559, x1 = 3.4845
+        ZoA = 0.4027776, x0 = 0.0559, I = 7.36E-07, x1 = 3.4845,
+        density = 21020, delta0 = 0.08, state = 'liquid', k = 2.8627,
+        a = 0.1518, Cbar = 5.3445, elements = {Re = 1}
     },
 
     -- Rhodium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/rhodium_Rh.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rhodium_Rh.html
     Rhodium = {
-        Cbar = 4.8008, I = 449, a = 0.192, composition = {{"Rh", 1}},
-        delta0 = 0.14, density = 12.41, k = 2.8633, x0 = 0.0576, x1 = 3.1069
+        ZoA = 0.4372923, x0 = 0.0576, I = 4.49E-07, x1 = 3.1069,
+        density = 12410, delta0 = 0.14, state = 'liquid', k = 2.8633, a = 0.192,
+        Cbar = 4.8008, elements = {Rh = 1}
+    },
+
+    -- Roentgenium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/roentgenium_Rg.html
+    Roentgenium = {
+        ZoA = 0.3933813, x0 = 0.6672, I = 1.143E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2816, Cbar = 6.6477,
+        elements = {Rg = 1}
     },
 
     -- Rubber butyl
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/rubber_butyl.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rubber_butyl.html
     RubberButyl = {
-        Cbar = 2.9915, I = 56.5, a = 0.1211, composition = {{"H", 0.143711},
-        {"C", 0.856289}}, delta0 = 0, density = 0.92, k = 3.4296, x0 = 0.1347,
-        x1 = 2.5154
+        ZoA = 0.570231, x0 = 0.1347, I = 5.65E-08, x1 = 2.5154, density = 920,
+        delta0 = 0, state = 'liquid', k = 3.4296, a = 0.1211, Cbar = 2.9915,
+        elements = {C = 0.856289, H = 0.143711}
     },
 
     -- Rubber natural
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/rubber_natural.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rubber_natural.html
     RubberNatural = {
-        Cbar = 3.1272, I = 59.8, a = 0.1506, composition = {{"H", 0.118371},
-        {"C", 0.881629}}, delta0 = 0, density = 0.92, k = 3.2879, x0 = 0.1512,
-        x1 = 2.4815
+        ZoA = 0.5577682, x0 = 0.1512, I = 5.98E-08, x1 = 2.4815, density = 920,
+        delta0 = 0, state = 'liquid', k = 3.2879, a = 0.1506, Cbar = 3.1272,
+        elements = {C = 0.881629, H = 0.118371}
     },
 
     -- Rubber neoprene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/rubber_neoprene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rubber_neoprene.html
     RubberNeoprene = {
-        Cbar = 3.7911, I = 93, a = 0.0976, composition = {{"H", 0.05692}, {"C",
-        0.542646}, {"Cl", 0.400434}}, delta0 = 0, density = 1.23, k = 3.3632,
-        x0 = 0.1501, x1 = 2.9461
+        ZoA = 0.5195184, x0 = 0.1501, I = 9.3E-08, x1 = 2.9461, density = 1230,
+        delta0 = 0, state = 'liquid', k = 3.3632, a = 0.0976, Cbar = 3.7911,
+        elements = {H = 0.05692, C = 0.542646, Cl = 0.400434}
     },
 
     -- Rubidium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/rubidium_Rb.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rubidium_Rb.html
     Rubidium = {
-        Cbar = 6.4776, I = 363, a = 0.0726, composition = {{"Rb", 1}},
-        delta0 = 0.14, density = 1.532, k = 3.4177, x0 = 0.5737, x1 = 3.7995
+        ZoA = 0.4329116, x0 = 0.5737, I = 3.63E-07, x1 = 3.7995, density = 1532,
+        delta0 = 0.14, state = 'liquid', k = 3.4177, a = 0.0726, Cbar = 6.4776,
+        elements = {Rb = 1}
     },
 
     -- Ruthenium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ruthenium_Ru.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ruthenium_Ru.html
     Ruthenium = {
-        Cbar = 4.7694, I = 441, a = 0.1934, composition = {{"Ru", 1}},
-        delta0 = 0.14, density = 12.41, k = 2.8707, x0 = 0.0599, x1 = 3.0834
+        ZoA = 0.4353332, x0 = 0.0599, I = 4.41E-07, x1 = 3.0834,
+        density = 12410, delta0 = 0.14, state = 'liquid', k = 2.8707,
+        a = 0.1934, Cbar = 4.7694, elements = {Ru = 1}
+    },
+
+    -- Rutherfordium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rutherfordium_Rf.html
+    Rutherfordium = {
+        ZoA = 0.3893352, x0 = 0.6157, I = 1.047E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2696, Cbar = 6.4898,
+        elements = {Rf = 1}
     },
 
     -- Samarium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/samarium_Sm.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/samarium_Sm.html
     Samarium = {
-        Cbar = 5.8517, I = 574, a = 0.247, composition = {{"Sm", 1}},
-        delta0 = 0.14, density = 7.52, k = 2.6403, x0 = 0.1503, x1 = 3.3443
+        ZoA = 0.4123382, x0 = 0.1503, I = 5.74E-07, x1 = 3.3443, density = 7520,
+        delta0 = 0.14, state = 'liquid', k = 2.6403, a = 0.247, Cbar = 5.8517,
+        elements = {Sm = 1}
     },
 
     -- Scandium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/scandium_Sc.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/scandium_Sc.html
     Scandium = {
-        Cbar = 4.6949, I = 216, a = 0.1575, composition = {{"Sc", 1}},
-        delta0 = 0.1, density = 2.989, k = 3.0517, x0 = 0.164, x1 = 3.0593
+        ZoA = 0.4671244, x0 = 0.164, I = 2.16E-07, x1 = 3.0593, density = 2989,
+        delta0 = 0.1, state = 'liquid', k = 3.0517, a = 0.1575, Cbar = 4.6949,
+        elements = {Sc = 1}
+    },
+
+    -- Seaborgium
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/seaborgium_Sg.html
+    Seaborgium = {
+        ZoA = 0.3938632, x0 = 0.6309, I = 1.074E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2731, Cbar = 6.5365,
+        elements = {Sg = 1}
     },
 
     -- Selenium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/selenium_Se.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/selenium_Se.html
     Selenium = {
-        Cbar = 5.321, I = 348, a = 0.0657, composition = {{"Se", 1}},
-        delta0 = 0.1, density = 4.5, k = 3.4317, x0 = 0.2258, x1 = 3.6264
+        ZoA = 0.4305334, x0 = 0.2258, I = 3.48E-07, x1 = 3.6264, density = 4500,
+        delta0 = 0.1, state = 'liquid', k = 3.4317, a = 0.0657, Cbar = 5.321,
+        elements = {Se = 1}
     },
 
     -- Shielding concrete
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/shielding_concrete.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/shielding_concrete.html
     ShieldingConcrete = {
-        Cbar = 3.9464, I = 135.2, a = 0.0751, composition = {{"H", 0.01}, {"C",
-        0.001}, {"O", 0.529107}, {"Na", 0.016}, {"Mg", 0.002}, {"Al", 0.033872},
-        {"Si", 0.337021}, {"K", 0.013}, {"Ca", 0.044}, {"Fe", 0.014}},
-        delta0 = 0, density = 2.3, k = 3.5467, x0 = 0.1301, x1 = 3.0466
+        ZoA = 0.5027312, x0 = 0.1301, I = 1.352E-07, x1 = 3.0466,
+        density = 2300, delta0 = 0, state = 'liquid', k = 3.5467, a = 0.0751,
+        Cbar = 3.9464, elements = {K = 0.013, O = 0.529107, Al = 0.033872,
+        Si = 0.337021, Fe = 0.014, Na = 0.016, Ca = 0.044, Mg = 0.002,
+        C = 0.001, H = 0.01}
     },
 
     -- Silica aerogel
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/silica_aerogel.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silica_aerogel.html
     SilicaAerogel = {
-        Cbar = 6.4507, I = 139.2, a = 0.2668, composition = {{"O", 0.543192},
-        {"Si", 0.453451}, {"H", 0.003357}}, delta0 = 0, density = 0.2, k = 3,
-        x0 = 0.6029, x1 = 3
+        ZoA = 0.5009712, x0 = 0.6029, I = 1.392E-07, x1 = 3, density = 200,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2668, Cbar = 6.4507,
+        elements = {Si = 0.453451, O = 0.543192, H = 0.003357}
     },
 
     -- Silicon
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/silicon_Si.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silicon_Si.html
     Silicon = {
-        Cbar = 4.4355, I = 173, a = 0.1492, composition = {{"Si", 1}},
-        delta0 = 0.14, density = 2.329, k = 3.2546, x0 = 0.2015, x1 = 2.8716
+        ZoA = 0.4984779, x0 = 0.2015, I = 1.73E-07, x1 = 2.8716, density = 2329,
+        delta0 = 0.14, state = 'liquid', k = 3.2546, a = 0.1492, Cbar = 4.4355,
+        elements = {Si = 1}
     },
 
     -- Silicon dioxide fused quartz
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/silicon_dioxide_fused_quartz.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silicon_dioxide_fused_quartz.html
     SiliconDioxideFusedQuartz = {
-        Cbar = 4.056, I = 139.2, a = 0.0841, composition = {{"O", 0.532565},
-        {"Si", 0.467435}}, delta0 = 0, density = 2.2, k = 3.5064, x0 = 0.15,
-        x1 = 3.014
+        ZoA = 0.4993001, x0 = 0.15, I = 1.392E-07, x1 = 3.014, density = 2200,
+        delta0 = 0, state = 'liquid', k = 3.5064, a = 0.0841, Cbar = 4.056,
+        elements = {Si = 0.467435, O = 0.532565}
     },
 
     -- Silver
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/silver_Ag.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silver_Ag.html
     Silver = {
-        Cbar = 5.063, I = 470, a = 0.2458, composition = {{"Ag", 1}},
-        delta0 = 0.14, density = 10.5, k = 2.6899, x0 = 0.0657, x1 = 3.1074
+        ZoA = 0.4357177, x0 = 0.0657, I = 4.7E-07, x1 = 3.1074, density = 10500,
+        delta0 = 0.14, state = 'liquid', k = 2.6899, a = 0.2458, Cbar = 5.063,
+        elements = {Ag = 1}
     },
 
     -- Silver bromide AgBr
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/silver_bromide_AgBr.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silver_bromide_AgBr.html
     SilverBromide = {
-        Cbar = 5.6139, I = 486.6, a = 0.2458, composition = {{"Br", 0.425537},
-        {"Ag", 0.574463}}, delta0 = 0, density = 6.473, k = 2.682, x0 = 0.0352,
-        x1 = 3.2109
+        ZoA = 0.4366996, x0 = 0.0352, I = 4.866E-07, x1 = 3.2109,
+        density = 6473, delta0 = 0, state = 'liquid', k = 2.682, a = 0.2458,
+        Cbar = 5.6139, elements = {Br = 0.425537, Ag = 0.574463}
     },
 
     -- Silver chloride AgCl
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/silver_chloride_AgCl.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silver_chloride_AgCl.html
     SilverChloride = {
-        Cbar = 5.3437, I = 398.4, a = 0.2297, composition = {{"Cl", 0.247368},
-        {"Ag", 0.752632}}, delta0 = 0, density = 5.56, k = 2.7041, x0 = 0.0139,
-        x1 = 3.2022
+        ZoA = 0.4465494, x0 = 0.0139, I = 3.984E-07, x1 = 3.2022,
+        density = 5560, delta0 = 0, state = 'liquid', k = 2.7041, a = 0.2297,
+        Cbar = 5.3437, elements = {Ag = 0.752632, Cl = 0.247368}
     },
 
     -- Silver iodide AgI
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/silver_iodide_AgI.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silver_iodide_AgI.html
     SilverIodide = {
-        Cbar = 5.9342, I = 543.5, a = 0.2506, composition = {{"Ag", 0.459458},
-        {"I", 0.540542}}, delta0 = 0, density = 6.01, k = 2.6572, x0 = 0.0148,
-        x1 = 3.2908
+        ZoA = 0.4259452, x0 = 0.0148, I = 5.435E-07, x1 = 3.2908,
+        density = 6010, delta0 = 0, state = 'liquid', k = 2.6572, a = 0.2506,
+        Cbar = 5.9342, elements = {I = 0.540542, Ag = 0.459458}
     },
 
     -- Skeletal muscle ICRP
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/skeletal_muscle_ICRP.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/skeletal_muscle_ICRP.html
     SkeletalMuscleICRP = {
-        Cbar = 3.4809, I = 75.3, a = 0.0864, composition = {{"H", 0.100637},
-        {"C", 0.10783}, {"N", 0.02768}, {"O", 0.754773}, {"Na", 0.00075}, {"Mg",
-        0.00019}, {"P", 0.0018}, {"S", 0.00241}, {"Cl", 0.00079}, {"K",
-        0.00302}, {"Ca", 3e-05}, {"Fe", 4e-05}, {"Zn", 5e-05}}, delta0 = 0,
-        density = 1.04, k = 3.533, x0 = 0.2282, x1 = 2.7999
+        ZoA = 0.5493013, x0 = 0.2282, I = 7.53E-08, x1 = 2.7999, density = 1040,
+        delta0 = 0, state = 'liquid', k = 3.533, a = 0.0864, Cbar = 3.4809,
+        elements = {K = 0.00302, O = 0.754773, S = 0.00241, H = 0.100637,
+        P = 0.0018, Fe = 4E-05, Zn = 5E-05, Ca = 3E-05, Na = 0.00075,
+        Cl = 0.00079, Mg = 0.00019, C = 0.10783, N = 0.02768}
     },
 
     -- Skin ICRP
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/skin_ICRP.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/skin_ICRP.html
     SkinICRP = {
-        Cbar = 3.3546, I = 72.7, a = 0.0946, composition = {{"H", 0.100588},
-        {"C", 0.22825}, {"N", 0.04642}, {"O", 0.619002}, {"Na", 7e-05}, {"Mg",
-        6e-05}, {"P", 0.00033}, {"S", 0.00159}, {"Cl", 0.00267}, {"K", 0.00085},
-        {"Ca", 0.00015}, {"Fe", 1e-05}, {"Zn", 1e-05}}, delta0 = 0,
-        density = 1.1, k = 3.4643, x0 = 0.2019, x1 = 2.7526
+        ZoA = 0.5492492, x0 = 0.2019, I = 7.27E-08, x1 = 2.7526, density = 1100,
+        delta0 = 0, state = 'liquid', k = 3.4643, a = 0.0946, Cbar = 3.3546,
+        elements = {K = 0.00085, O = 0.619002, S = 0.00159, H = 0.100588,
+        P = 0.00033, Fe = 1E-05, Zn = 1E-05, Ca = 0.00015, Na = 7E-05,
+        Cl = 0.00267, Mg = 6E-05, C = 0.22825, N = 0.04642}
     },
 
     -- Sodium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/sodium_Na.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_Na.html
     Sodium = {
-        Cbar = 5.0526, I = 149, a = 0.0777, composition = {{"Na", 1}},
-        delta0 = 0.08, density = 0.971, k = 3.6452, x0 = 0.288, x1 = 3.1962
+        ZoA = 0.4784731, x0 = 0.288, I = 1.49E-07, x1 = 3.1962, density = 971,
+        delta0 = 0.08, state = 'liquid', k = 3.6452, a = 0.0777, Cbar = 5.0526,
+        elements = {Na = 1}
     },
 
     -- Sodium carbonate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/sodium_carbonate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_carbonate.html
     SodiumCarbonate = {
-        Cbar = 3.7178, I = 125, a = 0.0872, composition = {{"C", 0.113323},
-        {"O", 0.452861}, {"Na", 0.433815}}, delta0 = 0, density = 2.532,
-        k = 3.5638, x0 = 0.1287, x1 = 2.8591
+        ZoA = 0.4906197, x0 = 0.1287, I = 1.25E-07, x1 = 2.8591, density = 2532,
+        delta0 = 0, state = 'liquid', k = 3.5638, a = 0.0872, Cbar = 3.7178,
+        elements = {O = 0.452861, C = 0.113323, Na = 0.433815}
     },
 
     -- Sodium chloride NaCl
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/sodium_chloride_NaCl.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_chloride_NaCl.html
     SodiumChloride = {
-        Cbar = 4.4227, I = 175.3, a = 0.1596, composition = {{"Na", 0.393375},
-        {"Cl", 0.606626}}, delta0 = 0, density = 2.17, k = 3, x0 = 0.1995,
-        x1 = 2.9995
+        ZoA = 0.4790998, x0 = 0.1995, I = 1.753E-07, x1 = 2.9995,
+        density = 2170, delta0 = 0, state = 'liquid', k = 3, a = 0.1596,
+        Cbar = 4.4227, elements = {Cl = 0.606626, Na = 0.393375}
     },
 
     -- Sodium iodide NaI
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/sodium_iodide_NaI.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_iodide_NaI.html
     SodiumIodide = {
-        Cbar = 6.0572, I = 452, a = 0.1252, composition = {{"Na", 0.153373},
-        {"I", 0.846627}}, delta0 = 0, density = 3.667, k = 3.0398, x0 = 0.1203,
-        x1 = 3.592
+        ZoA = 0.4269689, x0 = 0.1203, I = 4.52E-07, x1 = 3.592, density = 3667,
+        delta0 = 0, state = 'liquid', k = 3.0398, a = 0.1252, Cbar = 6.0572,
+        elements = {I = 0.846627, Na = 0.153373}
     },
 
     -- Sodium monoxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/sodium_monoxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_monoxide.html
     SodiumMonoxide = {
-        Cbar = 4.1892, I = 148.8, a = 0.075, composition = {{"O", 0.258143},
-        {"Na", 0.741857}}, delta0 = 0, density = 2.27, k = 3.6943, x0 = 0.1652,
-        x1 = 2.9793
+        ZoA = 0.4840357, x0 = 0.1652, I = 1.488E-07, x1 = 2.9793,
+        density = 2270, delta0 = 0, state = 'liquid', k = 3.6943, a = 0.075,
+        Cbar = 4.1892, elements = {Na = 0.741857, O = 0.258143}
     },
 
     -- Sodium nitrate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/sodium_nitrate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_nitrate.html
     SodiumNitrate = {
-        Cbar = 3.6502, I = 114.6, a = 0.0939, composition = {{"N", 0.164795},
-        {"O", 0.56472}, {"Na", 0.270485}}, delta0 = 0, density = 2.261,
-        k = 3.5097, x0 = 0.1534, x1 = 2.8221
+        ZoA = 0.4941473, x0 = 0.1534, I = 1.146E-07, x1 = 2.8221,
+        density = 2261, delta0 = 0, state = 'liquid', k = 3.5097, a = 0.0939,
+        Cbar = 3.6502, elements = {O = 0.56472, Na = 0.270485, N = 0.164795}
     },
 
     -- Soft tissue ICRP
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/soft_tissue_ICRP.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/soft_tissue_ICRP.html
     SoftTissueICRP = {
-        Cbar = 3.4354, I = 72.3, a = 0.0893, composition = {{"H", 0.104472},
-        {"C", 0.23219}, {"N", 0.02488}, {"O", 0.630238}, {"Na", 0.00113}, {"Mg",
-        0.00013}, {"P", 0.00133}, {"S", 0.00199}, {"Cl", 0.00134}, {"K",
-        0.00199}, {"Ca", 0.00023}, {"Fe", 5e-05}, {"Zn", 3e-05}}, delta0 = 0,
-        density = 1, k = 3.511, x0 = 0.2211, x1 = 2.7799
+        ZoA = 0.5511313, x0 = 0.2211, I = 7.23E-08, x1 = 2.7799, density = 1000,
+        delta0 = 0, state = 'liquid', k = 3.511, a = 0.0893, Cbar = 3.4354,
+        elements = {K = 0.00199, O = 0.630238, S = 0.00199, H = 0.104472,
+        P = 0.00133, Fe = 5E-05, Zn = 3E-05, Ca = 0.00023, Na = 0.00113,
+        Cl = 0.00134, Mg = 0.00013, C = 0.23219, N = 0.02488}
     },
 
     -- Soft tissue ICRU four-component
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/soft_tissue_ICRU_four-component.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/soft_tissue_ICRU_four-component.html
     SoftTissueICRUFourComponent = {
-        Cbar = 3.5087, I = 74.9, a = 0.0963, composition = {{"H", 0.101172},
-        {"C", 0.111}, {"N", 0.026}, {"O", 0.761828}}, delta0 = 0, density = 1,
-        k = 3.4371, x0 = 0.2377, x1 = 2.7908
+        ZoA = 0.5496735, x0 = 0.2377, I = 7.49E-08, x1 = 2.7908, density = 1000,
+        delta0 = 0, state = 'liquid', k = 3.4371, a = 0.0963, Cbar = 3.5087,
+        elements = {O = 0.761828, H = 0.101172, C = 0.111, N = 0.026}
     },
 
     -- Solid carbon dioxide dry ice
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/solid_carbon_dioxide_dry_ice.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/solid_carbon_dioxide_dry_ice.html
     SolidCarbonDioxideDryIce = {
-        Cbar = 3.4513, I = 85, a = 0.4339, composition = {{"C", 0.272916}, {"O",
-        0.727084}}, delta0 = 0, density = 1.563, k = 3, x0 = 0.2, x1 = 2
+        ZoA = 0.4998932, x0 = 0.2, I = 8.5E-08, x1 = 2, density = 1563,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.4339, Cbar = 3.4513,
+        elements = {C = 0.272916, O = 0.727084}
     },
 
     -- Standard rock
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/standard_rock.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/standard_rock.html
     StandardRock = {
-        Cbar = 3.7738, I = 136.4, a = 0.083, composition = {{"Rk", 1}},
-        delta0 = 0, density = 2.65, k = 3.412, x0 = 0.0492, x1 = 3.0549
+        ZoA = 0.5, x0 = 0.0492, I = 1.364E-07, x1 = 3.0549, density = 2650,
+        delta0 = 0, state = 'liquid', k = 3.412, a = 0.083, Cbar = 3.7738,
+        elements = {Rk = 1}
     },
 
     -- Stilbene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/stilbene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/stilbene.html
     Stilbene = {
-        Cbar = 3.368, I = 67.7, a = 0.1666, composition = {{"H", 0.067101},
-        {"C", 0.932899}}, delta0 = 0, density = 0.9707, k = 3.2168, x0 = 0.1734,
-        x1 = 2.5142
+        ZoA = 0.5325523, x0 = 0.1734, I = 6.77E-08, x1 = 2.5142,
+        density = 970.7, delta0 = 0, state = 'liquid', k = 3.2168, a = 0.1666,
+        Cbar = 3.368, elements = {C = 0.932899, H = 0.067101}
     },
 
     -- Striated muscle ICRU
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/striated_muscle_ICRU.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/striated_muscle_ICRU.html
     StriatedMuscleICRU = {
-        Cbar = 3.4636, I = 74.7, a = 0.0851, composition = {{"H", 0.101997},
-        {"C", 0.123}, {"N", 0.035}, {"O", 0.729003}, {"Na", 0.0008}, {"Mg",
-        0.0002}, {"P", 0.002}, {"S", 0.005}, {"K", 0.005}}, delta0 = 0,
-        density = 1.04, k = 3.5383, x0 = 0.2249, x1 = 2.8032
+        ZoA = 0.5509452, x0 = 0.2249, I = 7.47E-08, x1 = 2.8032, density = 1040,
+        delta0 = 0, state = 'liquid', k = 3.5383, a = 0.0851, Cbar = 3.4636,
+        elements = {K = 0.005, O = 0.729003, S = 0.005, H = 0.101997, P = 0.002,
+        Na = 0.0008, Mg = 0.0002, C = 0.123, N = 0.035}
     },
 
     -- Strontium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/strontium_Sr.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/strontium_Sr.html
     Strontium = {
-        Cbar = 5.9867, I = 366, a = 0.0716, composition = {{"Sr", 1}},
-        delta0 = 0.14, density = 2.54, k = 3.4435, x0 = 0.4585, x1 = 3.6778
+        ZoA = 0.433686, x0 = 0.4585, I = 3.66E-07, x1 = 3.6778, density = 2540,
+        delta0 = 0.14, state = 'liquid', k = 3.4435, a = 0.0716, Cbar = 5.9867,
+        elements = {Sr = 1}
     },
 
     -- Sucrose
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/sucrose.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sucrose.html
     Sucrose = {
-        Cbar = 3.1526, I = 77.5, a = 0.113, composition = {{"H", 0.064779},
-        {"C", 0.42107}, {"O", 0.514151}}, delta0 = 0, density = 1.581,
-        k = 3.363, x0 = 0.1341, x1 = 2.6558
+        ZoA = 0.5316527, x0 = 0.1341, I = 7.75E-08, x1 = 2.6558, density = 1581,
+        delta0 = 0, state = 'liquid', k = 3.363, a = 0.113, Cbar = 3.1526,
+        elements = {H = 0.064779, C = 0.42107, O = 0.514151}
     },
 
     -- Sulfur
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/sulfur_S.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sulfur_S.html
     Sulfur = {
-        Cbar = 4.6659, I = 180, a = 0.3399, composition = {{"S", 1}},
-        delta0 = 0.14, density = 2, k = 2.6456, x0 = 0.158, x1 = 2.7159
+        ZoA = 0.4989787, x0 = 0.158, I = 1.8E-07, x1 = 2.7159, density = 2000,
+        delta0 = 0.14, state = 'liquid', k = 2.6456, a = 0.3399, Cbar = 4.6659,
+        elements = {S = 1}
     },
 
     -- Tantalum
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/tantalum_Ta.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tantalum_Ta.html
     Tantalum = {
-        Cbar = 5.5262, I = 718, a = 0.178, composition = {{"Ta", 1}},
-        delta0 = 0.14, density = 16.65, k = 2.7623, x0 = 0.2117, x1 = 3.4805
+        ZoA = 0.4034308, x0 = 0.2117, I = 7.18E-07, x1 = 3.4805,
+        density = 16650, delta0 = 0.14, state = 'liquid', k = 2.7623, a = 0.178,
+        Cbar = 5.5262, elements = {Ta = 1}
     },
 
     -- Technetium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/technetium_Tc.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/technetium_Tc.html
     Technetium = {
-        Cbar = 4.7769, I = 428, a = 0.1657, composition = {{"Tc", 1}},
-        delta0 = 0.14, density = 11.5, k = 2.9738, x0 = 0.0949, x1 = 3.1253
+        ZoA = 0.4391914, x0 = 0.0949, I = 4.28E-07, x1 = 3.1253,
+        density = 11500, delta0 = 0.14, state = 'liquid', k = 2.9738,
+        a = 0.1657, Cbar = 4.7769, elements = {Tc = 1}
     },
 
     -- Tellurium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/tellurium_Te.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tellurium_Te.html
     Tellurium = {
-        Cbar = 5.7131, I = 485, a = 0.1382, composition = {{"Te", 1}},
-        delta0 = 0.14, density = 6.24, k = 3.0354, x0 = 0.3296, x1 = 3.4418
+        ZoA = 0.4075139, x0 = 0.3296, I = 4.85E-07, x1 = 3.4418, density = 6240,
+        delta0 = 0.14, state = 'liquid', k = 3.0354, a = 0.1382, Cbar = 5.7131,
+        elements = {Te = 1}
+    },
+
+    -- Tennessine
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tennessine_Ts.html
+    Tennessine = {
+        ZoA = 0.3976738, x0 = 0.712, I = 1.227E-06, x1 = 3, density = 14000,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2927, Cbar = 6.7851,
+        elements = {Ts = 1}
     },
 
     -- Terbium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/terbium_Tb.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/terbium_Tb.html
     Terbium = {
-        Cbar = 5.9044, I = 614, a = 0.2445, composition = {{"Tb", 1}},
-        delta0 = 0.14, density = 8.23, k = 2.6056, x0 = 0.0947, x1 = 3.4224
+        ZoA = 0.408998, x0 = 0.0947, I = 6.14E-07, x1 = 3.4224, density = 8230,
+        delta0 = 0.14, state = 'liquid', k = 2.6056, a = 0.2445, Cbar = 5.9044,
+        elements = {Tb = 1}
     },
 
     -- Terphenyl
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/terphenyl.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/terphenyl.html
     Terphenyl = {
-        Cbar = 3.2639, I = 71.7, a = 0.1496, composition = {{"H", 0.044543},
-        {"C", 0.955457}}, delta0 = 0, density = 1.234, k = 3.2685, x0 = 0.1322,
-        x1 = 2.5429
+        ZoA = 0.5214577, x0 = 0.1322, I = 7.17E-08, x1 = 2.5429, density = 1234,
+        delta0 = 0, state = 'liquid', k = 3.2685, a = 0.1496, Cbar = 3.2639,
+        elements = {C = 0.955457, H = 0.044543}
     },
 
     -- Testes ICRP
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/testes_ICRP.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/testes_ICRP.html
     TestesICRP = {
-        Cbar = 3.4698, I = 75, a = 0.0853, composition = {{"H", 0.104166}, {"C",
-        0.09227}, {"N", 0.01994}, {"O", 0.773884}, {"Na", 0.00226}, {"Mg",
-        0.00011}, {"P", 0.00125}, {"S", 0.00146}, {"Cl", 0.00244}, {"K",
-        0.00208}, {"Ca", 0.0001}, {"Fe", 2e-05}, {"Zn", 2e-05}}, delta0 = 0,
-        density = 1.04, k = 3.5428, x0 = 0.2274, x1 = 2.7988
+        ZoA = 0.5510036, x0 = 0.2274, I = 7.5E-08, x1 = 2.7988, density = 1040,
+        delta0 = 0, state = 'liquid', k = 3.5428, a = 0.0853, Cbar = 3.4698,
+        elements = {K = 0.00208, O = 0.773884, S = 0.00146, H = 0.104166,
+        P = 0.00125, Fe = 2E-05, Zn = 2E-05, Ca = 0.0001, Na = 0.00226,
+        Cl = 0.00244, Mg = 0.00011, C = 0.09227, N = 0.01994}
     },
 
     -- Tetrachloroethylene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/tetrachloroethylene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tetrachloroethylene.html
     Tetrachloroethylene = {
-        Cbar = 4.6619, I = 159.2, a = 0.1859, composition = {{"C", 0.144856},
-        {"Cl", 0.855144}}, delta0 = 0, density = 1.625, k = 3.0156, x0 = 0.1713,
-        x1 = 2.9083
+        ZoA = 0.482409, x0 = 0.1713, I = 1.592E-07, x1 = 2.9083, density = 1625,
+        delta0 = 0, state = 'liquid', k = 3.0156, a = 0.1859, Cbar = 4.6619,
+        elements = {C = 0.144856, Cl = 0.855144}
     },
 
     -- Thallium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/thallium_Tl.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/thallium_Tl.html
     Thallium = {
-        Cbar = 6.1365, I = 810, a = 0.0945, composition = {{"Tl", 1}},
-        delta0 = 0.14, density = 11.72, k = 3.145, x0 = 0.3491, x1 = 3.8044
+        ZoA = 0.3963167, x0 = 0.3491, I = 8.1E-07, x1 = 3.8044, density = 11720,
+        delta0 = 0.14, state = 'liquid', k = 3.145, a = 0.0945, Cbar = 6.1365,
+        elements = {Tl = 1}
     },
 
     -- Thallium chloride TlCl
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/thallium_chloride_TlCl.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/thallium_chloride_TlCl.html
     ThalliumChloride = {
-        Cbar = 6.3009, I = 690.3, a = 0.186, composition = {{"Cl", 0.147822},
-        {"Tl", 0.852187}}, delta0 = 0, density = 7.004, k = 2.769, x0 = 0.0705,
-        x1 = 3.5716
+        ZoA = 0.4086174, x0 = 0.0705, I = 6.903E-07, x1 = 3.5716,
+        density = 7004, delta0 = 0, state = 'liquid', k = 2.769, a = 0.186,
+        Cbar = 6.3009, elements = {Tl = 0.852187, Cl = 0.147822}
     },
 
     -- Thorium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/thorium_Th.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/thorium_Th.html
     Thorium = {
-        Cbar = 6.2473, I = 847, a = 0.0865, composition = {{"Th", 1}},
-        delta0 = 0.14, density = 11.72, k = 3.261, x0 = 0.4202, x1 = 3.7681
+        ZoA = 0.3878675, x0 = 0.4202, I = 8.47E-07, x1 = 3.7681,
+        density = 11720, delta0 = 0.14, state = 'liquid', k = 3.261, a = 0.0865,
+        Cbar = 6.2473, elements = {Th = 1}
     },
 
     -- Thulium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/thulium_Tm.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/thulium_Tm.html
     Thulium = {
-        Cbar = 5.9677, I = 674, a = 0.2489, composition = {{"Tm", 1}},
-        delta0 = 0.14, density = 9.321, k = 2.5469, x0 = 0.0812, x1 = 3.5085
+        ZoA = 0.4084435, x0 = 0.0812, I = 6.74E-07, x1 = 3.5085, density = 9321,
+        delta0 = 0.14, state = 'liquid', k = 2.5469, a = 0.2489, Cbar = 5.9677,
+        elements = {Tm = 1}
     },
 
     -- Tin
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/tin_Sn.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tin_Sn.html
     Tin = {
-        Cbar = 5.534, I = 488, a = 0.1869, composition = {{"Sn", 1}},
-        delta0 = 0.14, density = 7.31, k = 2.8576, x0 = 0.2879, x1 = 3.2959
+        ZoA = 0.421191, x0 = 0.2879, I = 4.88E-07, x1 = 3.2959, density = 7310,
+        delta0 = 0.14, state = 'liquid', k = 2.8576, a = 0.1869, Cbar = 5.534,
+        elements = {Sn = 1}
     },
 
     -- Tissue-equivalent gas Methane based
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/tissue-equivalent_gas_Methane_based.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tissue-equivalent_gas_Methane_based.html
     TissueEquivalentGasMethaneBased = {
-        Cbar = 9.95, I = 61.2, a = 0.0995, composition = {{"H", 0.101869}, {"C",
-        0.456179}, {"N", 0.035172}, {"O", 0.40678}}, delta0 = 0,
-        density = 0.001064, k = 3.4708, x0 = 1.6442, x1 = 4.1399
+        ZoA = 0.5498506, x0 = 1.6442, I = 6.12E-08, x1 = 4.1399,
+        density = 1.064, delta0 = 0, state = 'gaz', k = 3.4708, a = 0.0995,
+        Cbar = 9.95, elements = {O = 0.40678, H = 0.101869, C = 0.456179,
+        N = 0.035172}
     },
 
     -- Tissue-equivalent gas Propane based
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/tissue-equivalent_gas_Propane_based.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tissue-equivalent_gas_Propane_based.html
     TissueEquivalentGasPropaneBased = {
-        Cbar = 9.3529, I = 59.5, a = 0.098, composition = {{"H", 0.102672},
-        {"C", 0.56894}, {"N", 0.035022}, {"O", 0.293366}}, delta0 = 0,
-        density = 0.001826, k = 3.5159, x0 = 1.5139, x1 = 3.9916
+        ZoA = 0.5501921, x0 = 1.5139, I = 5.95E-08, x1 = 3.9916,
+        density = 1.826, delta0 = 0, state = 'gaz', k = 3.5159, a = 0.098,
+        Cbar = 9.3529, elements = {O = 0.293366, H = 0.102672, C = 0.56894,
+        N = 0.035022}
     },
 
     -- Titanium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/titanium_Ti.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/titanium_Ti.html
     Titanium = {
-        Cbar = 4.445, I = 233, a = 0.1566, composition = {{"Ti", 1}},
-        delta0 = 0.12, density = 4.54, k = 3.0302, x0 = 0.0957, x1 = 3.0386
+        ZoA = 0.4596059, x0 = 0.0957, I = 2.33E-07, x1 = 3.0386, density = 4540,
+        delta0 = 0.12, state = 'liquid', k = 3.0302, a = 0.1566, Cbar = 4.445,
+        elements = {Ti = 1}
     },
 
     -- Titanium dioxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/titanium_dioxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/titanium_dioxide.html
     TitaniumDioxide = {
-        Cbar = 3.9522, I = 179.5, a = 0.0857, composition = {{"O", 0.400592},
-        {"Ti", 0.599408}}, delta0 = 0, density = 4.26, k = 3.3267, x0 = 0.0119,
-        x1 = 3.1647
+        ZoA = 0.4757962, x0 = 0.0119, I = 1.795E-07, x1 = 3.1647,
+        density = 4260, delta0 = 0, state = 'liquid', k = 3.3267, a = 0.0857,
+        Cbar = 3.9522, elements = {Ti = 0.599408, O = 0.400592}
     },
 
     -- Toluene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/toluene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/toluene.html
     Toluene = {
-        Cbar = 3.3026, I = 62.5, a = 0.1328, composition = {{"H", 0.08751},
-        {"C", 0.91249}}, delta0 = 0, density = 0.8669, k = 3.3558, x0 = 0.1722,
-        x1 = 2.5728
+        ZoA = 0.54259, x0 = 0.1722, I = 6.25E-08, x1 = 2.5728, density = 866.9,
+        delta0 = 0, state = 'liquid', k = 3.3558, a = 0.1328, Cbar = 3.3026,
+        elements = {C = 0.91249, H = 0.08751}
     },
 
     -- Trichloroethylene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/trichloroethylene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/trichloroethylene.html
     Trichloroethylene = {
-        Cbar = 4.6148, I = 148.1, a = 0.1827, composition = {{"H", 0.007671},
-        {"C", 0.182831}, {"Cl", 0.809498}}, delta0 = 0, density = 1.46,
-        k = 3.0137, x0 = 0.1803, x1 = 2.914
+        ZoA = 0.4870968, x0 = 0.1803, I = 1.481E-07, x1 = 2.914, density = 1460,
+        delta0 = 0, state = 'liquid', k = 3.0137, a = 0.1827, Cbar = 4.6148,
+        elements = {H = 0.007671, C = 0.182831, Cl = 0.809498}
     },
 
     -- Triethyl phosphate
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/triethyl_phosphate.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/triethyl_phosphate.html
     TriethylPhosphate = {
-        Cbar = 3.6242, I = 81.2, a = 0.0692, composition = {{"H", 0.082998},
-        {"C", 0.395628}, {"O", 0.351334}, {"P", 0.17004}}, delta0 = 0,
-        density = 1.07, k = 3.6302, x0 = 0.2054, x1 = 2.9428
+        ZoA = 0.53794, x0 = 0.2054, I = 8.12E-08, x1 = 2.9428, density = 1070,
+        delta0 = 0, state = 'liquid', k = 3.6302, a = 0.0692, Cbar = 3.6242,
+        elements = {O = 0.351334, H = 0.082998, C = 0.395628, P = 0.17004}
     },
 
     -- Tungsten
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/tungsten_W.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tungsten_W.html
     Tungsten = {
-        Cbar = 5.4059, I = 727, a = 0.1551, composition = {{"W", 1}},
-        delta0 = 0.14, density = 19.3, k = 2.8447, x0 = 0.2167, x1 = 3.496
+        ZoA = 0.4025217, x0 = 0.2167, I = 7.27E-07, x1 = 3.496, density = 19300,
+        delta0 = 0.14, state = 'liquid', k = 2.8447, a = 0.1551, Cbar = 5.4059,
+        elements = {W = 1}
     },
 
     -- Tungsten hexafluoride
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/tungsten_hexafluoride.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tungsten_hexafluoride.html
     TungstenHexafluoride = {
-        Cbar = 5.9881, I = 354.4, a = 0.0366, composition = {{"F", 0.382723},
-        {"W", 0.617277}}, delta0 = 0, density = 2.4, k = 3.5134, x0 = 0.302,
-        x1 = 4.2602
+        ZoA = 0.4297725, x0 = 0.302, I = 3.544E-07, x1 = 4.2602, density = 2400,
+        delta0 = 0, state = 'liquid', k = 3.5134, a = 0.0366, Cbar = 5.9881,
+        elements = {W = 0.617277, F = 0.382723}
     },
 
     -- Uranium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/uranium_U.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/uranium_U.html
     Uranium = {
-        Cbar = 5.8694, I = 890, a = 0.1968, composition = {{"U", 1}},
-        delta0 = 0.14, density = 18.95, k = 2.8171, x0 = 0.226, x1 = 3.3721
+        ZoA = 0.3865075, x0 = 0.226, I = 8.9E-07, x1 = 3.3721, density = 18950,
+        delta0 = 0.14, state = 'liquid', k = 2.8171, a = 0.1968, Cbar = 5.8694,
+        elements = {U = 1}
     },
 
     -- Uranium dicarbide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/uranium_dicarbide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/uranium_dicarbide.html
     UraniumDicarbide = {
-        Cbar = 6.0247, I = 752, a = 0.2112, composition = {{"C", 0.091669},
-        {"U", 0.908331}}, delta0 = 0, density = 11.28, k = 2.6577, x0 = 0.2191,
-        x1 = 3.5208
+        ZoA = 0.3968701, x0 = 0.2191, I = 7.52E-07, x1 = 3.5208,
+        density = 11280, delta0 = 0, state = 'liquid', k = 2.6577, a = 0.2112,
+        Cbar = 6.0247, elements = {C = 0.091669, U = 0.908331}
     },
 
     -- Uranium monocarbide UC
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/uranium_monocarbide_UC.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/uranium_monocarbide_UC.html
     UraniumMonocarbide = {
-        Cbar = 6.121, I = 862, a = 0.2297, composition = {{"C", 0.048036}, {"U",
-        0.951964}}, delta0 = 0, density = 13.63, k = 2.6169, x0 = 0.2524,
-        x1 = 3.4941
+        ZoA = 0.3919377, x0 = 0.2524, I = 8.62E-07, x1 = 3.4941,
+        density = 13630, delta0 = 0, state = 'liquid', k = 2.6169, a = 0.2297,
+        Cbar = 6.121, elements = {C = 0.048036, U = 0.951964}
     },
 
     -- Uranium oxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/uranium_oxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/uranium_oxide.html
     UraniumOxide = {
-        Cbar = 5.9605, I = 720.6, a = 0.2046, composition = {{"O", 0.118502},
-        {"U", 0.881498}}, delta0 = 0, density = 10.96, k = 2.6711, x0 = 0.1938,
-        x1 = 3.5292
+        ZoA = 0.3999592, x0 = 0.1938, I = 7.206E-07, x1 = 3.5292,
+        density = 10960, delta0 = 0, state = 'liquid', k = 2.6711, a = 0.2046,
+        Cbar = 5.9605, elements = {U = 0.881498, O = 0.118502}
     },
 
     -- Urea
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/urea.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/urea.html
     Urea = {
-        Cbar = 3.2032, I = 72.8, a = 0.1161, composition = {{"H", 0.067131},
-        {"C", 0.199999}, {"N", 0.466459}, {"O", 0.266411}}, delta0 = 0,
-        density = 1.323, k = 3.3461, x0 = 0.1603, x1 = 2.6525
+        ZoA = 0.5327825, x0 = 0.1603, I = 7.28E-08, x1 = 2.6525, density = 1323,
+        delta0 = 0, state = 'liquid', k = 3.3461, a = 0.1161, Cbar = 3.2032,
+        elements = {O = 0.266411, H = 0.067131, C = 0.199999, N = 0.466459}
     },
 
     -- Valine
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/valine.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/valine.html
     Valine = {
-        Cbar = 3.1059, I = 67.7, a = 0.1139, composition = {{"H", 0.094641},
-        {"C", 0.512645}, {"N", 0.119565}, {"O", 0.27315}}, delta0 = 0,
-        density = 1.23, k = 3.3774, x0 = 0.1441, x1 = 2.6227
+        ZoA = 0.5462495, x0 = 0.1441, I = 6.77E-08, x1 = 2.6227, density = 1230,
+        delta0 = 0, state = 'liquid', k = 3.3774, a = 0.1139, Cbar = 3.1059,
+        elements = {O = 0.27315, H = 0.094641, C = 0.512645, N = 0.119565}
     },
 
     -- Vanadium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/vanadium_V.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/vanadium_V.html
     Vanadium = {
-        Cbar = 4.2659, I = 245, a = 0.1544, composition = {{"V", 1}},
-        delta0 = 0.14, density = 6.11, k = 3.0163, x0 = 0.0691, x1 = 3.0322
+        ZoA = 0.4514983, x0 = 0.0691, I = 2.45E-07, x1 = 3.0322, density = 6110,
+        delta0 = 0.14, state = 'liquid', k = 3.0163, a = 0.1544, Cbar = 4.2659,
+        elements = {V = 1}
     },
 
     -- Viton fluoroelastomer
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/viton_fluoroelastomer.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/viton_fluoroelastomer.html
     VitonFluoroelastomer = {
-        Cbar = 3.5943, I = 98.6, a = 0.0997, composition = {{"H", 0.009417},
-        {"C", 0.280555}, {"F", 0.710028}}, delta0 = 0, density = 1.8,
-        k = 3.4556, x0 = 0.2106, x1 = 2.7874
+        ZoA = 0.4858445, x0 = 0.2106, I = 9.86E-08, x1 = 2.7874, density = 1800,
+        delta0 = 0, state = 'liquid', k = 3.4556, a = 0.0997, Cbar = 3.5943,
+        elements = {H = 0.009417, C = 0.280555, F = 0.710028}
     },
 
     -- Water ice
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/water_ice.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/water_ice.html
     WaterIce = {
-        Cbar = 3.5873, I = 79.7, a = 0.0912, composition = {{"H", 0.111894},
-        {"O", 0.888106}}, delta0 = 0, density = 0.918, k = 3.4773, x0 = 0.2586,
-        x1 = 2.819
+        ZoA = 0.5550013, x0 = 0.2586, I = 7.97E-08, x1 = 2.819, density = 918,
+        delta0 = 0, state = 'liquid', k = 3.4773, a = 0.0912, Cbar = 3.5873,
+        elements = {O = 0.888106, H = 0.111894}
     },
 
     -- Water liquid
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/water_liquid.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/water_liquid.html
     WaterLiquid = {
-        Cbar = 3.5017, I = 79.7, a = 0.0912, composition = {{"H", 0.111894},
-        {"O", 0.888106}}, delta0 = 0, density = 1, k = 3.4773, x0 = 0.24,
-        x1 = 2.8004
+        ZoA = 0.5550013, x0 = 0.24, I = 7.97E-08, x1 = 2.8004, density = 1000,
+        delta0 = 0, state = 'liquid', k = 3.4773, a = 0.0912, Cbar = 3.5017,
+        elements = {O = 0.888106, H = 0.111894}
     },
 
     -- Water vapor
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/water_vapor.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/water_vapor.html
     WaterVapor = {
-        Cbar = 10.5962, I = 71.6, a = 0.081, composition = {{"H", 0.111894},
-        {"O", 0.888106}}, delta0 = 0, density = 0.0007562, k = 3.5901,
-        x0 = 1.7952, x1 = 4.3437
+        ZoA = 0.5550013, x0 = 1.7952, I = 7.16E-08, x1 = 4.3437,
+        density = 0.7562, delta0 = 0, state = 'gaz', k = 3.5901, a = 0.081,
+        Cbar = 10.5962, elements = {O = 0.888106, H = 0.111894}
     },
 
     -- Xenon gas
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/xenon_gas_Xe.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/xenon_gas_Xe.html
     XenonGas = {
-        Cbar = 12.7285, I = 482, a = 0.2331, composition = {{"Xe", 1}},
-        delta0 = 0, density = 0.005483, k = 2.7414, x0 = 1.5631, x1 = 4.7372
+        ZoA = 0.4112907, x0 = 1.5631, I = 4.82E-07, x1 = 4.7372,
+        density = 5.483, delta0 = 0, state = 'gaz', k = 2.7414, a = 0.2331,
+        Cbar = 12.7285, elements = {Xe = 1}
     },
 
     -- Xylene
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/xylene.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/xylene.html
     Xylene = {
-        Cbar = 3.2698, I = 61.8, a = 0.1322, composition = {{"H", 0.094935},
-        {"C", 0.905065}}, delta0 = 0, density = 0.87, k = 3.3564, x0 = 0.1695,
-        x1 = 2.5675
+        ZoA = 0.5462418, x0 = 0.1695, I = 6.18E-08, x1 = 2.5675, density = 870,
+        delta0 = 0, state = 'liquid', k = 3.3564, a = 0.1322, Cbar = 3.2698,
+        elements = {C = 0.905065, H = 0.094935}
     },
 
     -- Ytterbium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/ytterbium_Yb.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ytterbium_Yb.html
     Ytterbium = {
-        Cbar = 6.3071, I = 684, a = 0.253, composition = {{"Yb", 1}},
-        delta0 = 0.14, density = 6.903, k = 2.5141, x0 = 0.1144, x1 = 3.6191
+        ZoA = 0.404498, x0 = 0.1144, I = 6.84E-07, x1 = 3.6191, density = 6903,
+        delta0 = 0.14, state = 'liquid', k = 2.5141, a = 0.253, Cbar = 6.3071,
+        elements = {Yb = 1}
     },
 
     -- Yttrium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/yttrium_Y.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/yttrium_Y.html
     Yttrium = {
-        Cbar = 5.4801, I = 379, a = 0.0714, composition = {{"Y", 1}},
-        delta0 = 0.14, density = 4.469, k = 3.4585, x0 = 0.3608, x1 = 3.5542
+        ZoA = 0.4386665, x0 = 0.3608, I = 3.79E-07, x1 = 3.5542, density = 4469,
+        delta0 = 0.14, state = 'liquid', k = 3.4585, a = 0.0714, Cbar = 5.4801,
+        elements = {Y = 1}
     },
 
     -- Yttrium aluminum oxide 1
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/yttrium_aluminum_oxide_1.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/yttrium_aluminum_oxide_1.html
     YttriumAluminumOxide1 = {
-        Cbar = 4.2973, I = 239.3, a = 0.1538, composition = {{"Y", 0.542487},
-        {"Al", 0.164636}, {"O", 0.292876}}, delta0 = 0, density = 5.5, k = 3,
-        x0 = 0.2, x1 = 3
+        ZoA = 0.4637388, x0 = 0.2, I = 2.393E-07, x1 = 3, density = 5500,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1538, Cbar = 4.2973,
+        elements = {Y = 0.542487, Al = 0.164636, O = 0.292876}
     },
 
     -- Yttrium aluminum oxide 2
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/yttrium_aluminum_oxide_2.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/yttrium_aluminum_oxide_2.html
     YttriumAluminumOxide2 = {
-        Cbar = 4.2884, I = 218, a = 0.1534, composition = {{"Y", 0.449308},
-        {"Al", 0.227263}, {"O", 0.323428}}, delta0 = 0, density = 4.56, k = 3,
-        x0 = 0.2, x1 = 3
+        ZoA = 0.4683154, x0 = 0.2, I = 2.18E-07, x1 = 3, density = 4560,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1534, Cbar = 4.2884,
+        elements = {Y = 0.449308, Al = 0.227263, O = 0.323428}
     },
 
     -- Yttrium bromide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/yttrium_bromide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/yttrium_bromide.html
     YttriumBromide = {
-        Cbar = 5.4697, I = 410, a = 0.2077, composition = {{"Y", 0.270545},
-        {"Br", 0.729455}}, delta0 = 0, density = 5.29, k = 3, x0 = 0.2831,
-        x1 = 3
+        ZoA = 0.4381986, x0 = 0.2831, I = 4.1E-07, x1 = 3, density = 5290,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.2077, Cbar = 5.4697,
+        elements = {Y = 0.270545, Br = 0.729455}
     },
 
     -- Yttrium silicon oxide
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/yttrium_silicon_oxide.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/yttrium_silicon_oxide.html
     YttriumSiliconOxide = {
-        Cbar = 4.6447, I = 258.1, a = 0.1696, composition = {{"Y", 0.621949},
-        {"Si", 0.098237}, {"O", 0.279813}}, delta0 = 0, density = 4.54, k = 3,
-        x0 = 0.2, x1 = 3
+        ZoA = 0.4617098, x0 = 0.2, I = 2.581E-07, x1 = 3, density = 4540,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.1696, Cbar = 4.6447,
+        elements = {Y = 0.621949, O = 0.279813, Si = 0.098237}
     },
 
     -- Zinc
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/zinc_Zn.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/zinc_Zn.html
     Zinc = {
-        Cbar = 4.6906, I = 330, a = 0.1471, composition = {{"Zn", 1}},
-        delta0 = 0.08, density = 7.133, k = 2.8652, x0 = 0.0049, x1 = 3.3668
+        ZoA = 0.4588419, x0 = 0.0049, I = 3.3E-07, x1 = 3.3668, density = 7133,
+        delta0 = 0.08, state = 'liquid', k = 2.8652, a = 0.1471, Cbar = 4.6906,
+        elements = {Zn = 1}
     },
 
     -- Zirconium
-    -- Ref: http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/zirconium_Zr.html
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/zirconium_Zr.html
     Zirconium = {
-        Cbar = 5.1774, I = 393, a = 0.0718, composition = {{"Zr", 1}},
-        delta0 = 0.14, density = 6.506, k = 3.4533, x0 = 0.2957, x1 = 3.489
+        ZoA = 0.4384801, x0 = 0.2957, I = 3.93E-07, x1 = 3.489, density = 6506,
+        delta0 = 0.14, state = 'liquid', k = 3.4533, a = 0.0718, Cbar = 5.1774,
+        elements = {Zr = 1}
     },
 
 }

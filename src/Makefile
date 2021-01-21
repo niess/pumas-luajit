@@ -318,6 +318,7 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_medium_uniform.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_metatype.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_os.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_pdg.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_physics.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_physics_build.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_physics_composite.lua.o \

@@ -267,22 +267,6 @@ end
 -------------------------------------------------------------------------------
 materials.MATERIALS = require('pumas.data.materials')
 for k, v in pairs(materials.MATERIALS) do
-    -- XXX Patch the composition / elements data
-    local composition = v.composition
-    for _, component in ipairs(composition) do
-        local symbol, wi = unpack(component)
-        composition[symbol] = wi
-    end
-    for i = 1, #v.composition do
-        composition[i] = nil
-    end
-    v.composition = nil
-    v.elements = composition
-    v.ZoA = materials.compute_ZoA(composition)
-
-    v.density = v.density * 1E+03 -- XXX use kg / m^3
-    v.I = v.I * 1E-09             -- XXX use GeV
-                                  -- XXX Add update tools / pdg package (?)
     materials.MATERIALS[k] = setmetatable(v, materials.Material)
 end
 

@@ -24,7 +24,7 @@ end
 -------------------------------------------------------------------------------
 local function register (pkg)
     local p = require(pkg)
-    if p.register_to then
+    if p and p.register_to then
         p.register_to(pumas)
     end
 end
@@ -40,6 +40,7 @@ register('pumas.enum')
 register('pumas.materials')
 register('pumas.medium')
 register('pumas.metatype')
+register('pumas.pdg')
 register('pumas.physics')
 register('pumas.recorder')
 register('pumas.state')
