@@ -252,12 +252,6 @@ $(OBJS_DIR)/$(CROSS)pumas_physics_%.lua.o: pumas/physics/%.lua $(LUAJIT_EXE) | $
 $(OBJS_DIR)/$(CROSS)pumas.lua.o: pumas.lua $(LUAJIT_EXE) | $(OBJS_DIR)
 	@$(call jit_compile,pumas,$<,$@)
 
-$(OBJS_DIR)/$(CROSS)runtime_%.lua.o: runtime/%.lua $(LUAJIT_EXE) | $(OBJS_DIR)
-	@$(call jit_compile,runtime.$*,$<,$@)
-
-$(OBJS_DIR)/$(CROSS)runtime.lua.o: runtime/init.lua $(LUAJIT_EXE) | $(OBJS_DIR)
-	@$(call jit_compile,runtime,$<,$@)
-
 .PRECIOUS: pumas/header/api.lua
 pumas/header/api.lua: $(PUMAS_INC)/pumas.h | $(LUAJIT_EXE) $(PUMAS_OBJ)
 	@$(call wrap_header,$<,$@)
@@ -331,7 +325,6 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_recorder.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_state.lua.o \
 	      $(OBJS_DIR)/$(CROSS)runtime.lua.o \
-	      $(OBJS_DIR)/$(CROSS)runtime_repl.lua.o \
 	      $(OBJS_DIR)/$(CROSS)strict.lua.o
 RUNTIME_LIB=  $(BUILD_DIR)/lib/libruntime-$(CROSS)5.1.a
 

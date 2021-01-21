@@ -98,16 +98,8 @@ int main(int argc, char * argv[])
         lua_pushstring(L, RUNTIME_VERSION);
         lua_setglobal(L, "_RUNTIME_VERSION");
 
-        /* Load the runtime patcher, look for pre-loaded packages and start
-         * the REPL
-         */
-        const int rc = execute(L, "                                            \
-            local runtime = require('runtime')                                 \
-            runtime.__preload__()                                              \
-            pumas = require('pumas')                                           \
-            local repl = require('runtime.repl')                               \
-            repl.__main__()                                                    \
-        ");
+        /* Load the runtime wrapper and start the REPL */
+        const int rc = execute(L, "require('runtime').repl()");
 
         lua_close(L);
         exit(rc);
