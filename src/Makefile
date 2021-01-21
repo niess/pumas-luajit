@@ -327,8 +327,7 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_readonly.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_recorder.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_state.lua.o \
-	      $(OBJS_DIR)/$(CROSS)runtime.lua.o \
-	      $(OBJS_DIR)/$(CROSS)strict.lua.o
+	      $(OBJS_DIR)/$(CROSS)runtime.lua.o
 RUNTIME_LIB=  $(BUILD_DIR)/lib/libruntime-$(CROSS)5.1.a
 
 $(RUNTIME_LIB): $(RUNTIME_OBJS)
