@@ -1,0 +1,55 @@
+site_name: PUMAS LuaJIT
+site_description: A LuaJIT wrapper for PUMAS
+site_author: Valentin Niess
+copyright: LGPL-3.0
+
+repo_url: https://github.com/niess/pumas-luajit.git
+edit_uri: edit/master/docs/docs
+
+nav:
+  - Home: index.md
+  - Lua API:
+    - build: api/build.md
+    - CartesianPoint: api/CartesianPoint.md
+    - CartesianVector: api/CartesianVector.md
+    - constants: api/constants.md
+    - Context: api/Context.md
+    - EarthGeometry: api/EarthGeometry.md
+    - Elements: api/Element.md
+    - ELEMENTS: api/ELEMENTS.md
+    - Event: api/Event.md
+    - GeodeticPoint: api/GeodeticPoint.md
+    - GradientMedium: api/GradientMedium.md
+    - HorizontalVector: api/HorizontalVector.md
+    - InfiniteGeometry: api/InfiniteGeometry.md
+    - LocalFrame: api/LocalFrame.md
+    - Material: api/Material.md
+    - MATERIALS: api/MATERIALS.md
+    - MEDIUM_TRANSPARENT: api/MEDIUM_TRANSPARENT.md
+    - MuonFlux: api/MuonFlux.md
+    - pdg: api/pdg.md
+    - Physics: api/Physics.md
+    - PolytopeGeometry: api/PolytopeGeometry.md
+    - SphericalPoint: api/SphericalPoint.md
+    - Recorder: api/Recorder.md
+    - SphericalVector: api/SphericalVector.md
+    - State: api/State.md
+    - TopographyData: api/TopographyData.md
+    - TopographyDataSet: api/TopographyDataSet.md
+    - Transform: api/Transform.md
+    - UniformMedium: api/UniformMedium.md
+    - version: api/version.md
+
+theme:
+  name: readthedocs
+  navigation_depth: 2
+  highlightjs: true
+  hljs_languages:
+    - lua
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+
+extra_css: [extra.css]

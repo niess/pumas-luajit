@@ -1,5 +1,6 @@
 build-*
 bin
+docs/site
 *.rock
 share
 src/pumas/data/igrf13.lua

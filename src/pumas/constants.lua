@@ -12,6 +12,7 @@ local constants = {}
 -------------------------------------------------------------------------------
 -- Get constants from the PUMAS library
 -------------------------------------------------------------------------------
+-- XXX Make the table Readonly?
 do
     local value = ffi.new('double [1]')
 

@@ -30,6 +30,8 @@ local function tabulate_materials (_, args)
         }
     end
 
+    -- XXX Simplify path / project
+
     local materials, composites, project, path, particle, energies, compile
     for k, v in pairs(args) do
         if     k == 'materials' then materials = v
