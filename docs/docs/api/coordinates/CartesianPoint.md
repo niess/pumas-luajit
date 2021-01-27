@@ -7,9 +7,9 @@ _A metatype for representing a 3D point using Cartesian coordinates._
 
 |Name|Type|Description|
 |----|----|-----------|
-|*x*|`double`| First (x) coordinate. |
-|*y*|`double`| Second (y) coordinate.|
-|*z*|`double`| Third (z) coordinate. |
+|*x*|`double`| First (x) coordinate, in m. |
+|*y*|`double`| Second (y) coordinate, in m.|
+|*z*|`double`| Third (z) coordinate, in m. |
 |*frame*|[Transform](Transform.md) or `nil`| Reference frame of the coordinates if different from the simulation one or `nil`.|
 </div>
 
@@ -24,13 +24,14 @@ pumas.CartesianPoint(x, y, z, frame)
 
 pumas.CartesianPoint{x, y, z, frame}
 
-pumas.CartesianPoint(c_array)
+pumas.CartesianPoint(coordinates)
 ```
 
 !!! note
-    For the two first forms the x, y, z and frame arguments are optional, but
-    for the sake of simplicity only the full forms are reported. When an
-    argument is missing the corresponding attribute is set to zero or `nil`.
+    For the two first forms the *x*, *y*, *z* and *frame* arguments are
+    optional, but for the sake of simplicity only the full forms are reported.
+    When an argument is missing the corresponding attribute is set to zero or
+    `nil`.
     {: .justify}
 
 ### Arguments
@@ -40,14 +41,9 @@ pumas.CartesianPoint(c_array)
 |*x*|`number` | First (x) coordinate. |
 |*y*|`number` | Second (y) coordinate.|
 |*z*|`number` | Third (z) coordinate. |
-|*frame*|[Transform](Transform.md) or `nil`| Reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
+|*frame*|[Transform](Transform.md) or `nil`| Transform representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
 ||||
-|*c_array*|`double [3]`| C array of coordinates, e.g. as returned by [State.position](State.md:#attributes). |
-
-
-### Returns
-
----
+|*coordinates*|`Coordinates` or `double [3]`| Another Coordinates instance or a C array of coordinates, e.g. as returned by [State.position](../simulation/State.md:#attributes). |
 
 ### See also
 
@@ -57,6 +53,37 @@ pumas.CartesianPoint(c_array)
 [SphericalPoint](SphericalPoint.md),
 [SphericalVector](SphericalVector.md).
 
+</div>
+
+
+<div markdown="1" class="shaded-box fancy">
+## CartesianPoint.clone
+
+Get a copy (clone) of the coordinates instance.
+
+---
+
+### Synopsis
+
+```lua
+CartesianPoint:clone()
+```
+
+### Arguments
+
+None, except *self*.
+
+### Returns
+
+|Type|Description|
+|----|-----------|
+|[CartesianPoint](CartesianPoint.md)| Copy of the point coordinates.|
+
+### See also
+
+[CartesianPoint.get](#cartesianpointget),
+[CartesianPoint.set](#cartesianpointset),
+[CartesianPoint.transform](#cartesianpointtransform).
 </div>
 
 
@@ -74,27 +101,22 @@ not `nil`.
 ### Synopsis
 
 ```lua
-CartesianCoordinates:get()
+CartesianPoint:get()
 ```
-
----
 
 ### Arguments
 
 None, except *self*.
 
----
-
 ### Returns
 
 |Type|Description|
 |----|-----------|
-|`double [3]`| A C array containing the *x*, *y* and *z* coordinates in the simulation frame.|
-
----
+|`double [3]`| C array containing the *x*, *y* and *z* coordinates in the simulation frame.|
 
 ### See also
 
+[CartesianPoint.clone](#cartesianpointclone),
 [CartesianPoint.set](#cartesianpointset),
 [CartesianPoint.transform](#cartesianpointtransform).
 
@@ -106,8 +128,8 @@ None, except *self*.
 
 Set the point coordinates from another Coordinates instance or from a `double [3]`
 array of *x*, *y* and *z* Cartesian coordinates in the simulation frame. The
-input coordinates are transformed to the point frame if needed, i.e.  if the
-*frame* attribute is not `nil`.
+input coordinates are transformed to the point frame if needed, i.e.  if their
+*frame* attribute differs from the point's one.
 {: .justify}
 
 ---
@@ -117,8 +139,6 @@ input coordinates are transformed to the point frame if needed, i.e.  if the
 ```lua
 CartesianPoint:set(coordinates)
 ```
-
----
 
 ### Arguments
 
@@ -130,21 +150,18 @@ CartesianPoint:set(coordinates)
     The input coordinates must be a point instance
     ([CartesianPoint](CartesianPoint.md), [GeodeticPoint](GeodeticPoint.md),
     [SphericalPoint](SphericalPoint.md)) or a C array, e.g. as returned by
-    [State.position](#State.md#attributes).
+    [State.position](../simulation/State.md#attributes).
     {: .justify}
-
----
 
 ### Returns
 
 |Type|Description|
 |----|-----------|
-|[CartesianPoint](CartesianPoint.md)| A reference to the updated coordinates.|
-
----
+|[CartesianPoint](CartesianPoint.md)| Reference to the updated coordinates.|
 
 ### See also
 
+[CartesianPoint.clone](#cartesianpointclone),
 [CartesianPoint.get](#cartesianpointget),
 [CartesianPoint.transform](#cartesianpointtransform).
 </div>
@@ -153,21 +170,32 @@ CartesianPoint:set(coordinates)
 <div markdown="1" class="shaded-box fancy">
 ## CartesianPoint.transform
 
+Transform the point coordinates to a new reference frame. The transform occurs
+in-place.
+
 ---
 
 ### Synopsis
 
----
+```lua
+CartesianPoint:transform(frame)
+```
 
 ### Arguments
 
----
+|Name|Type|Description|
+|----|----|-----------|
+|*frame*|[Transform](Transform.md) or `nil`| Transform representing the new frame or `nil` in order to transform to the simulation frame.|
 
 ### Returns
 
-
----
+|Type|Description|
+|----|-----------|
+|[CartesianPoint](CartesianPoint.md)| Reference to the updated coordinates.|
 
 ### See also
 
+[CartesianPoint.clone](#cartesianpointclone),
+[CartesianPoint.get](#cartesianpointget),
+[CartesianPoint.set](#cartesianpointset),
 </div>

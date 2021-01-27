@@ -8,37 +8,45 @@ edit_uri: edit/master/docs/docs
 
 nav:
   - Home: index.md
-  - Lua API:
-    - build: api/build.md
-    - CartesianPoint: api/CartesianPoint.md
-    - CartesianVector: api/CartesianVector.md
-    - constants: api/constants.md
-    - Context: api/Context.md
-    - EarthGeometry: api/EarthGeometry.md
-    - Elements: api/Element.md
-    - ELEMENTS: api/ELEMENTS.md
-    - Event: api/Event.md
-    - GeodeticPoint: api/GeodeticPoint.md
-    - GradientMedium: api/GradientMedium.md
-    - HorizontalVector: api/HorizontalVector.md
-    - InfiniteGeometry: api/InfiniteGeometry.md
-    - LocalFrame: api/LocalFrame.md
-    - Material: api/Material.md
-    - MATERIALS: api/MATERIALS.md
-    - MEDIUM_TRANSPARENT: api/MEDIUM_TRANSPARENT.md
-    - MuonFlux: api/MuonFlux.md
-    - pdg: api/pdg.md
-    - Physics: api/Physics.md
-    - PolytopeGeometry: api/PolytopeGeometry.md
-    - SphericalPoint: api/SphericalPoint.md
-    - Recorder: api/Recorder.md
-    - SphericalVector: api/SphericalVector.md
-    - State: api/State.md
-    - TopographyData: api/TopographyData.md
-    - TopographyDataSet: api/TopographyDataSet.md
-    - Transform: api/Transform.md
-    - UniformMedium: api/UniformMedium.md
-    - version: api/version.md
+  - API &raquo; Coordinates:
+    - CartesianPoint: api/coordinates/CartesianPoint.md
+    - CartesianVector: api/coordinates/CartesianVector.md
+    - GeodeticPoint: api/coordinates/GeodeticPoint.md
+    - HorizontalVector: api/coordinates/HorizontalVector.md
+    - LocalFrame: api/coordinates/LocalFrame.md
+    - SphericalPoint: api/coordinates/SphericalPoint.md
+    - SphericalVector: api/coordinates/SphericalVector.md
+    - Transform: api/coordinates/Transform.md
+  - API &raquo; Data:
+    - constants: api/data/constants.md
+    - ELEMENTS: api/data/ELEMENTS.md
+    - MATERIALS: api/data/MATERIALS.md
+    - pdg: api/data/pdg.md
+    - TopographyData: api/data/TopographyData.md
+    - TopographyDataSet: api/data/TopographyDataSet.md
+  - API &raquo; Geometry:
+    - EarthGeometry: api/geometry/EarthGeometry.md
+    - InfiniteGeometry: api/geometry/InfiniteGeometry.md
+    - PolytopeGeometry: api/geometry/PolytopeGeometry.md
+  - API &raquo; Medium:
+    - GradientMedium: api/medium/GradientMedium.md
+    - MEDIUM_TRANSPARENT: api/medium/MEDIUM_TRANSPARENT.md
+    - UniformMedium: api/medium/UniformMedium.md
+  - API &raquo; Physics:
+    - build: api/physics/build.md
+    - Element: api/physics/Element.md
+    - Material: api/physics/Material.md
+    - Physics: api/physics/Physics.md
+    - TabulatedMaterial: api/physics/TabulatedMaterial.md
+  - API &raquo; Primary:
+    - MuonFlux: api/primary/MuonFlux.md
+  - API &raquo; Simulation:
+    - Context: api/simulation/Context.md
+    - Event: api/simulation/Event.md
+    - Recorder: api/simulation/Recorder.md
+    - State: api/simulation/State.md
+  - API &raquo; Others:
+    - version: api/others/version.md
 
 theme:
   name: readthedocs

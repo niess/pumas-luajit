@@ -38,11 +38,11 @@ local function CoordinatesType (name, ctype, setter, get, transform)
         raw_coordinates = 'CartesianVector'
     end
 
-    function mt.__index:set (coordinates)
+    local function set (self, coordinates, fname)
         if (self == nil) or (coordinates == nil) then
             local nargs = (self ~= nil) and 1 or 0
             error.raise{
-                fname = 'set',
+                fname = fname or 'set',
                 argnum = 'bad',
                 expected = 2,
                 got = nargs
@@ -57,24 +57,33 @@ local function CoordinatesType (name, ctype, setter, get, transform)
             raw_coordinates.y = coordinates[1]
             raw_coordinates.z = coordinates[2]
             coordinates = raw_coordinates
+        elseif metatype(coordinates) ~= 'Coordinates' then
+            error.raise{
+                fname = fname or 'set',
+                argnum = fname and 1 or 2,
+                expected = 'a Coordinates cdata',
+                got = metatype.a(coordinates)
+            }
         end
 
         local ct = ffi.typeof(coordinates)
         if ct == ctype then
             ffi.copy(self, coordinates, ffi.sizeof(ct))
         else
-            local set = setter(ct)
-            if set ~= nil then
-                set(self, coordinates)
+            local set_ = setter(ct)
+            if set_ ~= nil then
+                set_(self, coordinates)
             else
                 error.raise{
-                    fname = 'set',
+                    fname = fname or 'set',
                     description = 'not implemented'
                 }
             end
         end
         return self
     end
+
+    mt.__index.set = set
 
     function mt.__index:get ()
         if self == nil then
@@ -111,29 +120,41 @@ local function CoordinatesType (name, ctype, setter, get, transform)
                 }
             end
 
+            if (frame ~= nil) and metatype(frame) ~= 'Transform' then
+                error.raise{
+                    fname = 'transform',
+                    argnum = 2,
+                    expected = 'a Transform cdata',
+                    got = metatype.a(frame)
+                }
+            end
+
             transform(self, frame)
             return self
         end
     end
 
-    error.register(name, mt)
-
     local Meta = ffi.metatype(ctype, mt)
 
-    local function new (...)
+    local function new (_, ...)
         if select('#', ...) == 1 then
             local arg = select(1, ...)
-            if ffi.istype(double3_t, arg) then
-                return Meta():set(arg)
+            if type(arg) ~= 'table' then
+                local self = Meta()
+                return set(self, arg, name)
             end
         end
-
         return Meta(...)
     end
 
-    error.register(new)
+    function mt.__index:clone ()
+        local coordinates = Meta()
+        ffi.copy(coordinates, self, ffi.sizeof(ctype))
 
-    return new
+        return coordinates
+    end
+
+    return setmetatable(mt, {__call = new})
 end
 
 

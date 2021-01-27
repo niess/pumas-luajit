@@ -19,7 +19,6 @@ Transform.__index.__metatype = 'Transform'
 
 local raise_error = error.ErrorFunction{fname = 'from_euler'}
 
-
 function Transform.__index:from_euler (axis,...)
     if (self == nil) or (axis == nil) then
         local nargs = (self ~= nil) and 1 or 0
@@ -76,6 +75,11 @@ transform.Transform = ffi.metatype(
     'struct pumas_coordinates_transform', Transform)
 
 error.register('Transform', Transform)
+
+
+function Transform.__index:clone ()
+    return transform.Transform(self)
+end
 
 
 -------------------------------------------------------------------------------
