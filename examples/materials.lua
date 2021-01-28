@@ -12,8 +12,8 @@ print('building material tables for the examples ...')
 local t0 = os.clock()
 
 pumas.build{
-    materials = {'StandardRock', 'WaterLiquid', 'AirDry1Atm'},
-    composites = {WetRock = {StandardRock = 0.7, WaterLiquid = 0.3}},
+    materials = {'StandardRock', 'Water', 'Air'},
+    composites = {WetRock = {StandardRock = 0.7, Water = 0.3}},
     path = 'share/materials/standard'
 }
 

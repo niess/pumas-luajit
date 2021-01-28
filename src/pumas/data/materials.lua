@@ -4,6 +4,7 @@
 return {
 
     -- A-150 tissue-equivalent plastic
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/a-150_tissue-equivalent_plastic.html
     A150TissueEquivalentPlastic = {
         ZoA = 0.5489578, x0 = 0.1329, I = 6.51E-08, x1 = 2.6234, density = 1127,
@@ -13,6 +14,7 @@ return {
     },
 
     -- Acetone
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/acetone.html
     Acetone = {
         ZoA = 0.55089, x0 = 0.2197, I = 6.42E-08, x1 = 2.6928, density = 789.9,
@@ -21,14 +23,25 @@ return {
     },
 
     -- Acetylene CHCH
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/acetylene_CHCH.html
-    AcetyleneCHCH = {
+    Acetylene = {
         ZoA = 0.5376265, x0 = 1.6017, I = 5.82E-08, x1 = 4.0074,
         density = 1.097, delta0 = 0, state = 'gaz', k = 3.4277, a = 0.1217,
         Cbar = 9.8419, elements = {C = 0.922582, H = 0.077418}
     },
 
+    -- Polymethylmethacrylate acrylic
+    -- Category: polymers
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polymethylmethacrylate_acrylic.html
+    Acrylic = {
+        ZoA = 0.5393117, x0 = 0.1824, I = 7.4E-08, x1 = 2.6681, density = 1190,
+        delta0 = 0, state = 'liquid', k = 3.3836, a = 0.1143, Cbar = 3.3297,
+        elements = {H = 0.080538, C = 0.599848, O = 0.319614}
+    },
+
     -- Actinium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/actinium_Ac.html
     Actinium = {
         ZoA = 0.3920221, x0 = 0.4559, I = 8.41E-07, x1 = 3.7966,
@@ -37,6 +50,7 @@ return {
     },
 
     -- Adenine
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/adenine.html
     Adenine = {
         ZoA = 0.5179918, x0 = 0.1295, I = 7.14E-08, x1 = 2.4219, density = 1350,
@@ -45,8 +59,9 @@ return {
     },
 
     -- Adipose tissue ICRP
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/adipose_tissue_ICRP.html
-    AdiposeTissueICRP = {
+    AdiposeTissue = {
         ZoA = 0.55838, x0 = 0.1827, I = 6.32E-08, x1 = 2.653, density = 920,
         delta0 = 0, state = 'liquid', k = 3.4817, a = 0.1028, Cbar = 3.2367,
         elements = {K = 0.00032, O = 0.232333, S = 0.00073, H = 0.119477,
@@ -55,6 +70,7 @@ return {
     },
 
     -- Ag halides in phot emulsion
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ag_halides_in_phot_emulsion.html
     AgHalidesInPhotEmulsion = {
         ZoA = 0.4366328, x0 = 0.0353, I = 4.871E-07, x1 = 3.2117,
@@ -63,8 +79,9 @@ return {
     },
 
     -- Air dry 1 atm
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/air_dry_1_atm.html
-    AirDry1Atm = {
+    Air = {
         ZoA = 0.4991766, x0 = 1.7418, I = 8.57E-08, x1 = 4.2759,
         density = 1.205, delta0 = 0, state = 'gaz', k = 3.3994, a = 0.1091,
         Cbar = 10.5961, elements = {Ar = 0.012827, O = 0.231781, C = 0.000124,
@@ -72,6 +89,7 @@ return {
     },
 
     -- Alanine
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/alanine.html
     Alanine = {
         ZoA = 0.5386981, x0 = 0.1354, I = 7.19E-08, x1 = 2.6336, density = 1420,
@@ -80,6 +98,7 @@ return {
     },
 
     -- Aluminum
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/aluminum_Al.html
     Aluminum = {
         ZoA = 0.4818116, x0 = 0.1708, I = 1.66E-07, x1 = 3.0127, density = 2699,
@@ -88,6 +107,7 @@ return {
     },
 
     -- Aluminum oxide sapphire
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/aluminum_oxide_sapphire.html
     AluminumOxideSapphire = {
         ZoA = 0.4903841, x0 = 0.0402, I = 1.452E-07, x1 = 2.8665,
@@ -96,6 +116,7 @@ return {
     },
 
     -- Amber
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/amber.html
     Amber = {
         ZoA = 0.5516984, x0 = 0.1335, I = 6.32E-08, x1 = 2.561, density = 1100,
@@ -104,6 +125,7 @@ return {
     },
 
     -- Americium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/americium_Am.html
     Americium = {
         ZoA = 0.3908484, x0 = 0.2274, I = 9.34E-07, x1 = 3.5021,
@@ -112,6 +134,7 @@ return {
     },
 
     -- Ammonia
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ammonia.html
     Ammonia = {
         ZoA = 0.5870308, x0 = 1.6822, I = 5.37E-08, x1 = 4.1158,
@@ -120,6 +143,7 @@ return {
     },
 
     -- Aniline
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/aniline.html
     Aniline = {
         ZoA = 0.5368395, x0 = 0.1618, I = 6.62E-08, x1 = 2.5805, density = 1023,
@@ -128,6 +152,7 @@ return {
     },
 
     -- Anthracene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/anthracene.html
     Anthracene = {
         ZoA = 0.5273631, x0 = 0.1146, I = 6.95E-08, x1 = 2.5213, density = 1283,
@@ -136,6 +161,7 @@ return {
     },
 
     -- Antimony
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/antimony_Sb.html
     Antimony = {
         ZoA = 0.4188568, x0 = 0.3189, I = 4.87E-07, x1 = 3.3489, density = 6691,
@@ -144,6 +170,7 @@ return {
     },
 
     -- Argon gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/argon_gas_Ar.html
     ArgonGas = {
         ZoA = 0.4505846, x0 = 1.7635, I = 1.88E-07, x1 = 4.4855,
@@ -152,6 +179,7 @@ return {
     },
 
     -- Arsenic
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/arsenic_As.html
     Arsenic = {
         ZoA = 0.4404604, x0 = 0.1767, I = 3.47E-07, x1 = 3.5702, density = 5730,
@@ -160,6 +188,7 @@ return {
     },
 
     -- Astatine
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/astatine_At.html
     Astatine = {
         ZoA = 0.404787, x0 = 0.7833, I = 8.25E-07, x1 = 3, density = 14000,
@@ -168,6 +197,7 @@ return {
     },
 
     -- B-100 Bone-equivalent plastic
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/b-100_Bone-equivalent_plastic.html
     B100BoneEquivalentPlastic = {
         ZoA = 0.5273535, x0 = 0.1252, I = 8.59E-08, x1 = 3.042, density = 1450,
@@ -177,6 +207,7 @@ return {
     },
 
     -- Bakelite
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bakelite.html
     Bakelite = {
         ZoA = 0.5278805, x0 = 0.1471, I = 7.24E-08, x1 = 2.6055, density = 1250,
@@ -185,6 +216,7 @@ return {
     },
 
     -- Barium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/barium_Ba.html
     Barium = {
         ZoA = 0.4077828, x0 = 0.419, I = 4.91E-07, x1 = 3.4547, density = 3500,
@@ -193,6 +225,7 @@ return {
     },
 
     -- Barium fluoride
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/barium_fluoride.html
     BariumFluoride = {
         ZoA = 0.4220736, x0 = 0.0099, I = 3.759E-07, x1 = 3.387, density = 4893,
@@ -201,6 +234,7 @@ return {
     },
 
     -- Barium sulfate
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/barium_sulfate.html
     BariumSulfate = {
         ZoA = 0.4456033, x0 = 0.0128, I = 2.857E-07, x1 = 3.4069,
@@ -209,6 +243,7 @@ return {
     },
 
     -- Benzene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/benzene.html
     Benzene = {
         ZoA = 0.5376265, x0 = 0.171, I = 6.34E-08, x1 = 2.5091, density = 878.7,
@@ -217,6 +252,7 @@ return {
     },
 
     -- Berkelium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/berkelium_Bk.html
     Berkelium = {
         ZoA = 0.3926013, x0 = 0.0509, I = 9.52E-07, x1 = 2.5, density = 9860,
@@ -225,6 +261,7 @@ return {
     },
 
     -- Beryllium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/beryllium_Be.html
     Beryllium = {
         ZoA = 0.4438438, x0 = 0.0592, I = 6.37E-08, x1 = 1.6922, density = 1848,
@@ -233,6 +270,7 @@ return {
     },
 
     -- Beryllium oxide BeO
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/beryllium_oxide_BeO.html
     BerylliumOxide = {
         ZoA = 0.4797798, x0 = 0.0241, I = 9.32E-08, x1 = 2.5846, density = 3010,
@@ -241,6 +279,7 @@ return {
     },
 
     -- Bismuth
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bismuth_Bi.html
     Bismuth = {
         ZoA = 0.3971672, x0 = 0.4152, I = 8.23E-07, x1 = 3.8248, density = 9747,
@@ -249,6 +288,7 @@ return {
     },
 
     -- Bismuth germanate BGO
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bismuth_germanate_BGO.html
     BismuthGermanate = {
         ZoA = 0.4206107, x0 = 0.0456, I = 5.341E-07, x1 = 3.7816,
@@ -257,6 +297,7 @@ return {
     },
 
     -- Bismuth silicate BSO
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bismuth_silicate_BSO.html
     BismuthSilicate = {
         ZoA = 0.4225985, x0 = 0.4077, I = 5.192E-07, x1 = 3.0557,
@@ -265,8 +306,9 @@ return {
     },
 
     -- Blood ICRP
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/blood_ICRP.html
-    BloodICRP = {
+    Blood = {
         ZoA = 0.5498747, x0 = 0.2239, I = 7.52E-08, x1 = 2.8017, density = 1060,
         delta0 = 0, state = 'liquid', k = 3.5406, a = 0.0849, Cbar = 3.4581,
         elements = {K = 0.00163, O = 0.759414, S = 0.00185, H = 0.101866,
@@ -275,6 +317,7 @@ return {
     },
 
     -- Bohrium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bohrium_Bh.html
     Bohrium = {
         ZoA = 0.3961012, x0 = 0.6345, I = 1.087E-06, x1 = 3, density = 14000,
@@ -283,6 +326,7 @@ return {
     },
 
     -- Boron
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/boron_B.html
     Boron = {
         ZoA = 0.4622354, x0 = 0.0305, I = 7.6E-08, x1 = 1.9688, density = 2370,
@@ -291,6 +335,7 @@ return {
     },
 
     -- Boron carbide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/boron_carbide.html
     BoronCarbide = {
         ZoA = 0.4703473, x0 = 0.0093, I = 8.47E-08, x1 = 2.1006, density = 2520,
@@ -299,6 +344,7 @@ return {
     },
 
     -- Boron oxide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/boron_oxide.html
     BoronOxide = {
         ZoA = 0.4882872, x0 = 0.1843, I = 9.96E-08, x1 = 2.7379, density = 1812,
@@ -307,8 +353,9 @@ return {
     },
 
     -- Borosilicate glass Pyrex Corning 7740
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/borosilicate_glass_Pyrex_Corning_7740.html
-    BorosilicateGlassPyrexCorning7740 = {
+    BorosilicateGlass = {
         ZoA = 0.4970599, x0 = 0.1479, I = 1.34E-07, x1 = 2.9933, density = 2230,
         delta0 = 0, state = 'liquid', k = 3.5224, a = 0.0827, Cbar = 3.9708,
         elements = {B = 0.040061, O = 0.539564, Na = 0.028191, Al = 0.011644,
@@ -316,8 +363,9 @@ return {
     },
 
     -- Brain ICRP
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/brain_ICRP.html
-    BrainICRP = {
+    Brain = {
         ZoA = 0.5541432, x0 = 0.2206, I = 7.33E-08, x1 = 2.8021, density = 1030,
         delta0 = 0, state = 'liquid', k = 3.5585, a = 0.0825, Cbar = 3.4279,
         elements = {K = 0.0031, O = 0.737723, S = 0.00177, H = 0.110667,
@@ -326,6 +374,7 @@ return {
     },
 
     -- Bromine gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bromine_gas.html
     BromineGas = {
         ZoA = 0.4380251, x0 = 1.5262, I = 3.43E-07, x1 = 4.9899,
@@ -334,6 +383,7 @@ return {
     },
 
     -- Butane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/butane.html
     Butane = {
         ZoA = 0.5848367, x0 = 1.3792, I = 4.83E-08, x1 = 3.7528,
@@ -342,6 +392,7 @@ return {
     },
 
     -- C-552 air-equivalent plastic
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/C-552_air-equivalent_plastic.html
     C552AirEquivalentPlastic = {
         ZoA = 0.4996714, x0 = 0.151, I = 8.68E-08, x1 = 2.7083, density = 1760,
@@ -351,6 +402,7 @@ return {
     },
 
     -- Cadmium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cadmium_Cd.html
     Cadmium = {
         ZoA = 0.4269931, x0 = 0.1281, I = 4.69E-07, x1 = 3.1667, density = 8650,
@@ -359,6 +411,7 @@ return {
     },
 
     -- Cadmium telluride CdTe
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cadmium_telluride_CdTe.html
     CadmiumTelluride = {
         ZoA = 0.4166371, x0 = 0.0438, I = 5.393E-07, x1 = 3.2836,
@@ -367,6 +420,7 @@ return {
     },
 
     -- Cadmium tungstate
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cadmium_tungstate.html
     CadmiumTungstate = {
         ZoA = 0.4274778, x0 = 0.0123, I = 4.683E-07, x1 = 3.5941,
@@ -375,6 +429,7 @@ return {
     },
 
     -- Caesium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/caesium_Cs.html
     Caesium = {
         ZoA = 0.4138294, x0 = 0.5473, I = 4.88E-07, x1 = 3.5914, density = 1873,
@@ -383,6 +438,7 @@ return {
     },
 
     -- Calcium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_Ca.html
     Calcium = {
         ZoA = 0.4990219, x0 = 0.3228, I = 1.91E-07, x1 = 3.1191, density = 1550,
@@ -391,6 +447,7 @@ return {
     },
 
     -- Calcium carbonate
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_carbonate.html
     CalciumCarbonate = {
         ZoA = 0.4995649, x0 = 0.0492, I = 1.364E-07, x1 = 3.0549,
@@ -399,6 +456,7 @@ return {
     },
 
     -- Calcium fluoride
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_fluoride.html
     CalciumFluoride = {
         ZoA = 0.4867105, x0 = 0.0676, I = 1.66E-07, x1 = 3.1683, density = 3180,
@@ -407,6 +465,7 @@ return {
     },
 
     -- Calcium oxide CaO
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_oxide_CaO.html
     CalciumOxide = {
         ZoA = 0.4993072, x0 = 0.0172, I = 1.761E-07, x1 = 3.0171,
@@ -415,6 +474,7 @@ return {
     },
 
     -- Calcium sulfate
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_sulfate.html
     CalciumSulfate = {
         ZoA = 0.4994818, x0 = 0.0587, I = 1.523E-07, x1 = 3.1229,
@@ -423,6 +483,7 @@ return {
     },
 
     -- Calcium tungstate
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/calcium_tungstate.html
     CalciumTungstate = {
         ZoA = 0.4376265, x0 = 0.0323, I = 3.95E-07, x1 = 3.8932, density = 6062,
@@ -431,6 +492,7 @@ return {
     },
 
     -- Californium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/californium_Cf.html
     Californium = {
         ZoA = 0.3903138, x0 = 0.0623, I = 9.66E-07, x1 = 2.5, density = 15100,
@@ -439,6 +501,7 @@ return {
     },
 
     -- Carbon amorphous
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_amorphous_C.html
     CarbonAmorphous = {
         ZoA = 0.4995504, x0 = 0.0351, I = 7.8E-08, x1 = 2.486, density = 2000,
@@ -447,6 +510,7 @@ return {
     },
 
     -- Carbon compact
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_compact_C.html
     CarbonCompact = {
         ZoA = 0.4995504, x0 = 0.0178, I = 7.8E-08, x1 = 2.3415, density = 2265,
@@ -454,7 +518,17 @@ return {
         elements = {C = 1}
     },
 
+    -- Carbon gem diamond
+    -- Category: elements
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_gem_diamond.html
+    CarbonDiamond = {
+        ZoA = 0.4995504, x0 = 0.1135, I = 7.8E-08, x1 = 2.2458, density = 3520,
+        delta0 = 0.12, state = 'liquid', k = 2.8697, a = 0.2614, Cbar = 2.4271,
+        elements = {C = 1}
+    },
+
     -- Carbon dioxide gas
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_dioxide_gas.html
     CarbonDioxideGas = {
         ZoA = 0.4998932, x0 = 1.6294, I = 8.5E-08, x1 = 4.1825, density = 1.842,
@@ -462,15 +536,17 @@ return {
         elements = {C = 0.272916, O = 0.727084}
     },
 
-    -- Carbon gem diamond
-    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_gem_diamond.html
-    CarbonGemDiamond = {
-        ZoA = 0.4995504, x0 = 0.1135, I = 7.8E-08, x1 = 2.2458, density = 3520,
-        delta0 = 0.12, state = 'liquid', k = 2.8697, a = 0.2614, Cbar = 2.4271,
-        elements = {C = 1}
+    -- Solid carbon dioxide dry ice
+    -- Category: organics
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/solid_carbon_dioxide_dry_ice.html
+    CarbonDioxideIce = {
+        ZoA = 0.4998932, x0 = 0.2, I = 8.5E-08, x1 = 2, density = 1563,
+        delta0 = 0, state = 'liquid', k = 3, a = 0.4339, Cbar = 3.4513,
+        elements = {C = 0.272916, O = 0.727084}
     },
 
     -- Carbon graphite
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_graphite_C.html
     CarbonGraphite = {
         ZoA = 0.4995504, x0 = 0.009, I = 7.8E-08, x1 = 2.4817, density = 2210,
@@ -479,6 +555,7 @@ return {
     },
 
     -- Carbon tetrachloride
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_tetrachloride.html
     CarbonTetrachloride = {
         ZoA = 0.4810706, x0 = 0.1773, I = 1.663E-07, x1 = 2.9165,
@@ -487,6 +564,7 @@ return {
     },
 
     -- Carbon tetrafluoride
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_tetrafluoride.html
     CarbonTetrafluoride = {
         ZoA = 0.4772497, x0 = 1.7, I = 1.15E-07, x1 = 4, density = 3.78,
@@ -495,6 +573,7 @@ return {
     },
 
     -- Cellulose
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cellulose.html
     Cellulose = {
         ZoA = 0.5303558, x0 = 0.158, I = 7.76E-08, x1 = 2.6778, density = 1420,
@@ -503,6 +582,7 @@ return {
     },
 
     -- Cellulose acetate butyrate
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cellulose_acetate_butyrate.html
     CelluloseAcetateButyrate = {
         ZoA = 0.5327468, x0 = 0.1794, I = 7.46E-08, x1 = 2.6809, density = 1200,
@@ -511,6 +591,7 @@ return {
     },
 
     -- Cellulose nitrate
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cellulose_nitrate.html
     CelluloseNitrate = {
         ZoA = 0.5142155, x0 = 0.1897, I = 8.7E-08, x1 = 2.7253, density = 1490,
@@ -519,6 +600,7 @@ return {
     },
 
     -- Ceric sulfate dosimeter solution
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ceric_sulfate_dosimeter_solution.html
     CericSulfateDosimeterSolution = {
         ZoA = 0.5527018, x0 = 0.2363, I = 7.67E-08, x1 = 2.8769, density = 1030,
@@ -528,6 +610,7 @@ return {
     },
 
     -- Cerium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cerium_Ce.html
     Cerium = {
         ZoA = 0.4139427, x0 = 0.2676, I = 5.23E-07, x1 = 3.3395, density = 6770,
@@ -536,6 +619,7 @@ return {
     },
 
     -- Cerium fluoride
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cerium_fluoride.html
     CeriumFluoride = {
         ZoA = 0.4312287, x0 = 0.2, I = 3.484E-07, x1 = 3, density = 6160,
@@ -544,6 +628,7 @@ return {
     },
 
     -- Cesium fluoride CsF
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cesium_fluoride_CsF.html
     CesiumFluoride = {
         ZoA = 0.4213204, x0 = 0.0084, I = 4.407E-07, x1 = 3.3374,
@@ -552,6 +637,7 @@ return {
     },
 
     -- Cesium iodide CsI
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cesium_iodide_CsI.html
     CesiumIodide = {
         ZoA = 0.41569, x0 = 0.0395, I = 5.531E-07, x1 = 3.3353, density = 4510,
@@ -560,6 +646,7 @@ return {
     },
 
     -- Chlorine gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/chlorine_gas.html
     ChlorineGas = {
         ZoA = 0.4795054, x0 = 1.5566, I = 1.74E-07, x1 = 4.3005, density = 2.98,
@@ -568,6 +655,7 @@ return {
     },
 
     -- Chlorobenzene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/chlorobenzene.html
     Chlorobenzene = {
         ZoA = 0.5152567, x0 = 0.1714, I = 8.91E-08, x1 = 2.9272, density = 1106,
@@ -576,6 +664,7 @@ return {
     },
 
     -- Chloroform
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/chloroform.html
     Chloroform = {
         ZoA = 0.4858439, x0 = 0.1786, I = 1.56E-07, x1 = 2.9581, density = 1483,
@@ -584,6 +673,7 @@ return {
     },
 
     -- Chromium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/chromium_Cr.html
     Chromium = {
         ZoA = 0.4615722, x0 = 0.034, I = 2.57E-07, x1 = 3.0451, density = 7180,
@@ -592,6 +682,7 @@ return {
     },
 
     -- Cobalt
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cobalt_Co.html
     Cobalt = {
         ZoA = 0.4581458, x0 = 0.0187, I = 2.97E-07, x1 = 3.179, density = 8900,
@@ -600,8 +691,9 @@ return {
     },
 
     -- Compact bone ICRU
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/compact_bone_ICRU.html
-    CompactBoneICRU = {
+    CompactBone = {
         ZoA = 0.5300584, x0 = 0.0944, I = 9.19E-08, x1 = 3.0201, density = 1850,
         delta0 = 0, state = 'liquid', k = 3.6419, a = 0.0582, Cbar = 3.339,
         elements = {Ca = 0.147, O = 0.410016, S = 0.002, N = 0.027, Mg = 0.002,
@@ -609,6 +701,7 @@ return {
     },
 
     -- Copernicium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/copernicium_Cn.html
     Copernicium = {
         ZoA = 0.3927385, x0 = 0.6774, I = 1.156E-06, x1 = 3, density = 14000,
@@ -617,6 +710,7 @@ return {
     },
 
     -- Copper
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/copper_Cu.html
     Copper = {
         ZoA = 0.4563602, x0 = 0.0254, I = 3.22E-07, x1 = 3.2792, density = 8960,
@@ -625,8 +719,9 @@ return {
     },
 
     -- Cortical bone ICRP
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cortical_bone_ICRP.html
-    CorticalBoneICRP = {
+    CorticalBone = {
         ZoA = 0.5212671, x0 = 0.1161, I = 1.064E-07, x1 = 3.0919,
         density = 1850, delta0 = 0, state = 'liquid', k = 3.5919, a = 0.062,
         Cbar = 3.6488, elements = {O = 0.446096, S = 0.00315, H = 0.047234,
@@ -635,6 +730,7 @@ return {
     },
 
     -- Curium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/curium_Cm.html
     Curium = {
         ZoA = 0.3885539, x0 = 0.2484, I = 9.39E-07, x1 = 3.516, density = 13510,
@@ -643,6 +739,7 @@ return {
     },
 
     -- Cyclohexane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/cyclohexane.html
     Cyclohexane = {
         ZoA = 0.570231, x0 = 0.1728, I = 5.64E-08, x1 = 2.5549, density = 779,
@@ -651,6 +748,7 @@ return {
     },
 
     -- Darmstadtium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/darmstadtium_Ds.html
     Darmstadtium = {
         ZoA = 0.3912293, x0 = 0.6632, I = 1.129E-06, x1 = 3, density = 14000,
@@ -659,6 +757,7 @@ return {
     },
 
     -- Deuterium gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/deuterium_gas.html
     DeuteriumGas = {
         ZoA = 0.4964997, x0 = 1.8793, I = 1.92E-08, x1 = 3.2872,
@@ -667,6 +766,7 @@ return {
     },
 
     -- Deuterium oxide liquid
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/deuterium_oxide_liquid.html
     DeuteriumOxideLiquid = {
         ZoA = 0.4993134, x0 = 0.24, I = 7.97E-08, x1 = 2.8004, density = 1107,
@@ -675,6 +775,7 @@ return {
     },
 
     -- 12-dichlorobenzene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/12-dichlorobenzene.html
     Dichlorobenzene = {
         ZoA = 0.5033701, x0 = 0.1587, I = 1.065E-07, x1 = 2.8276,
@@ -683,6 +784,7 @@ return {
     },
 
     -- Dichlorodiethyl ether
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/dichlorodiethyl_ether.html
     DichlorodiethylEther = {
         ZoA = 0.5173938, x0 = 0.1773, I = 1.033E-07, x1 = 3.1586,
@@ -692,6 +794,7 @@ return {
     },
 
     -- 12-dichloroethane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/12-dichloroethane.html
     Dichloroethane = {
         ZoA = 0.5052253, x0 = 0.1375, I = 1.119E-07, x1 = 2.9529,
@@ -700,6 +803,7 @@ return {
     },
 
     -- Diethyl ether
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/diethyl_ether.html
     DiethylEther = {
         ZoA = 0.5665295, x0 = 0.2231, I = 6E-08, x1 = 2.6745, density = 713.8,
@@ -708,6 +812,7 @@ return {
     },
 
     -- Dimethyl sulfoxide
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/dimethyl_sulfoxide.html
     DimethylSulfoxide = {
         ZoA = 0.537481, x0 = 0.2021, I = 9.86E-08, x1 = 3.1263, density = 1101,
@@ -716,6 +821,7 @@ return {
     },
 
     -- Dubnium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/dubnium_Db.html
     Dubnium = {
         ZoA = 0.3916069, x0 = 0.6224, I = 1.061E-06, x1 = 3, density = 14000,
@@ -724,6 +830,7 @@ return {
     },
 
     -- Dysprosium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/dysprosium_Dy.html
     Dysprosium = {
         ZoA = 0.4061538, x0 = 0.0822, I = 6.28E-07, x1 = 3.4474, density = 8551,
@@ -732,6 +839,7 @@ return {
     },
 
     -- E-Glass
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/E-Glass.html
     EGlass = {
         ZoA = 0.4968594, x0 = 0.2, I = 1.434E-07, x1 = 3, density = 2610,
@@ -741,6 +849,7 @@ return {
     },
 
     -- Einsteinium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/einsteinium_Es.html
     Einsteinium = {
         ZoA = 0.3927278, x0 = 0.5697, I = 9.8E-07, x1 = 3, density = 14000,
@@ -749,14 +858,16 @@ return {
     },
 
     -- Epotek-301-1
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Epotek-301-1.html
-    Epotek3011 = {
+    EpoTek301 = {
         ZoA = 0.5340374, x0 = 0.2, I = 7.67E-08, x1 = 2, density = 1190,
         delta0 = 0, state = 'liquid', k = 3, a = 0.427, Cbar = 3.4112,
         elements = {O = 0.231531, H = 0.069894, C = 0.68964, N = 0.008936}
     },
 
     -- Erbium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/erbium_Er.html
     Erbium = {
         ZoA = 0.4065551, x0 = 0.0658, I = 6.58E-07, x1 = 3.4932, density = 9026,
@@ -765,6 +876,7 @@ return {
     },
 
     -- Ethane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ethane.html
     Ethane = {
         ZoA = 0.5984637, x0 = 1.509, I = 4.54E-08, x1 = 3.8726, density = 1.263,
@@ -773,6 +885,7 @@ return {
     },
 
     -- Ethanol
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ethanol.html
     Ethanol = {
         ZoA = 0.564276, x0 = 0.2218, I = 6.29E-08, x1 = 2.7052, density = 789.3,
@@ -781,6 +894,7 @@ return {
     },
 
     -- Ethyl cellulose
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ethyl_cellulose.html
     EthylCellulose = {
         ZoA = 0.543981, x0 = 0.1683, I = 6.93E-08, x1 = 2.6527, density = 1130,
@@ -789,6 +903,7 @@ return {
     },
 
     -- Ethylene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ethylene.html
     Ethylene = {
         ZoA = 0.570231, x0 = 1.5528, I = 5.07E-08, x1 = 3.9327, density = 1.175,
@@ -797,6 +912,7 @@ return {
     },
 
     -- Europium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/europium_Eu.html
     Europium = {
         ZoA = 0.4145719, x0 = 0.1888, I = 5.8E-07, x1 = 3.4633, density = 5244,
@@ -805,14 +921,16 @@ return {
     },
 
     -- Eye lens ICRP
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/eye_lens_ICRP.html
-    EyeLensICRP = {
+    EyeLens = {
         ZoA = 0.5486918, x0 = 0.207, I = 7.33E-08, x1 = 2.7446, density = 1100,
         delta0 = 0, state = 'liquid', k = 3.455, a = 0.0969, Cbar = 3.372,
         elements = {O = 0.653751, H = 0.099269, C = 0.19371, N = 0.05327}
     },
 
     -- Fermium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/fermium_Fm.html
     Fermium = {
         ZoA = 0.3889613, x0 = 0.5821, I = 9.94E-07, x1 = 3, density = 14000,
@@ -821,6 +939,7 @@ return {
     },
 
     -- Ferric oxide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ferric_oxide.html
     FerricOxide = {
         ZoA = 0.475927, x0 = 0.0074, I = 2.273E-07, x1 = 3.2573, density = 5200,
@@ -829,6 +948,7 @@ return {
     },
 
     -- Ferroboride FeB
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ferroboride_FeB.html
     Ferroboride = {
         ZoA = 0.4650315, x0 = 0.0988, I = 2.61E-07, x1 = 3.1749, density = 7150,
@@ -837,6 +957,7 @@ return {
     },
 
     -- Ferrous oxide FeO
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ferrous_oxide_FeO.html
     FerrousOxide = {
         ZoA = 0.4732441, x0 = 0.0279, I = 2.486E-07, x1 = 3.2002,
@@ -845,6 +966,7 @@ return {
     },
 
     -- Ferrous sulfate dosimeter solution
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ferrous_sulfate_dosimeter_solution.html
     FerrousSulfateDosimeterSolution = {
         ZoA = 0.5531987, x0 = 0.2378, I = 7.64E-08, x1 = 2.8254, density = 1024,
@@ -854,6 +976,7 @@ return {
     },
 
     -- Flerovium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/flerovium_Fl.html
     Flerovium = {
         ZoA = 0.3942045, x0 = 0.6923, I = 1.185E-06, x1 = 3, density = 14000,
@@ -862,6 +985,7 @@ return {
     },
 
     -- Fluorine gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/fluorine_gas.html
     FluorineGas = {
         ZoA = 0.4737241, x0 = 1.8433, I = 1.15E-07, x1 = 4.4096, density = 1.58,
@@ -870,6 +994,7 @@ return {
     },
 
     -- Francium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/francium_Fr.html
     Francium = {
         ZoA = 0.3900995, x0 = 1.1175, I = 8.27E-07, x1 = 3, density = 1870,
@@ -878,6 +1003,7 @@ return {
     },
 
     -- Freon-12
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Freon-12.html
     Freon12 = {
         ZoA = 0.4796798, x0 = 0.3035, I = 1.43E-07, x1 = 3.2659, density = 1120,
@@ -886,6 +1012,7 @@ return {
     },
 
     -- Freon-13
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Freon-13.html
     Freon13 = {
         ZoA = 0.4786563, x0 = 0.3659, I = 1.266E-07, x1 = 3.2337, density = 950,
@@ -894,6 +1021,7 @@ return {
     },
 
     -- Freon-13b1
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Freon-13b1.html
     Freon13b1 = {
         ZoA = 0.4566514, x0 = 0.3522, I = 2.105E-07, x1 = 3.7554,
@@ -902,6 +1030,7 @@ return {
     },
 
     -- Freon-13i1
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Freon-13i1.html
     Freon13i1 = {
         ZoA = 0.4389771, x0 = 0.2847, I = 2.935E-07, x1 = 3.728, density = 1800,
@@ -910,6 +1039,7 @@ return {
     },
 
     -- G10
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/G10.html
     G10 = {
         ZoA = 0.6336556, x0 = 0.2, I = 1.104E-07, x1 = 3, density = 1800,
@@ -920,6 +1050,7 @@ return {
     },
 
     -- Gadolinium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gadolinium_Gd.html
     Gadolinium = {
         ZoA = 0.4069875, x0 = 0.1058, I = 5.91E-07, x1 = 3.3932, density = 7901,
@@ -928,6 +1059,7 @@ return {
     },
 
     -- Gadolinium oxysulfide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gadolinium_oxysulfide.html
     GadoliniumOxysulfide = {
         ZoA = 0.4226422, x0 = 0.1774, I = 4.933E-07, x1 = 3.4045,
@@ -936,6 +1068,7 @@ return {
     },
 
     -- Gadolinium silicate
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gadolinium_silicate.html
     GadoliniumSilicate = {
         ZoA = 0.43068, x0 = 0.2039, I = 4.054E-07, x1 = 3, density = 6710,
@@ -944,6 +1077,7 @@ return {
     },
 
     -- Gallium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gallium_Ga.html
     Gallium = {
         ZoA = 0.4446159, x0 = 0.2267, I = 3.34E-07, x1 = 3.5434, density = 5904,
@@ -952,6 +1086,7 @@ return {
     },
 
     -- Gallium arsenide GaAs
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gallium_arsenide_GaAs.html
     GalliumArsenide = {
         ZoA = 0.4424635, x0 = 0.1764, I = 3.849E-07, x1 = 3.642, density = 5310,
@@ -960,6 +1095,7 @@ return {
     },
 
     -- Gel in photographic emulsion
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gel_in_photographic_emulsion.html
     GelInPhotographicEmulsion = {
         ZoA = 0.5396714, x0 = 0.1709, I = 7.48E-08, x1 = 2.7058, density = 1291,
@@ -969,6 +1105,7 @@ return {
     },
 
     -- Germanium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/germanium_Ge.html
     Germanium = {
         ZoA = 0.4405887, x0 = 0.3376, I = 3.5E-07, x1 = 3.6096, density = 5323,
@@ -977,14 +1114,16 @@ return {
     },
 
     -- Glucose dextrose monohydrate
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/glucose_dextrose_monohydrate.html
-    GlucoseDextroseMonohydrate = {
+    Glucose = {
         ZoA = 0.5348367, x0 = 0.1411, I = 7.72E-08, x1 = 2.67, density = 1540,
         delta0 = 0, state = 'liquid', k = 3.3946, a = 0.1078, Cbar = 3.1649,
         elements = {H = 0.071204, C = 0.363652, O = 0.565144}
     },
 
     -- Glutamine
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/glutamine.html
     Glutamine = {
         ZoA = 0.5336603, x0 = 0.1347, I = 7.33E-08, x1 = 2.6301, density = 1460,
@@ -993,6 +1132,7 @@ return {
     },
 
     -- Glycerol
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/glycerol.html
     Glycerol = {
         ZoA = 0.5428578, x0 = 0.1653, I = 7.26E-08, x1 = 2.6862, density = 1261,
@@ -1001,6 +1141,7 @@ return {
     },
 
     -- Gold
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gold_Au.html
     Gold = {
         ZoA = 0.4010824, x0 = 0.2021, I = 7.9E-07, x1 = 3.6979, density = 19320,
@@ -1009,6 +1150,7 @@ return {
     },
 
     -- Guanine
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/guanine.html
     Guanine = {
         ZoA = 0.5160899, x0 = 0.1163, I = 7.5E-08, x1 = 2.4296, density = 1580,
@@ -1017,6 +1159,7 @@ return {
     },
 
     -- Gypsum plaster of Paris
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/gypsum_plaster_of_Paris.html
     GypsumPlasterOfParis = {
         ZoA = 0.5111004, x0 = 0.0995, I = 1.297E-07, x1 = 3.1206,
@@ -1026,6 +1169,7 @@ return {
     },
 
     -- Hafnium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/hafnium_Hf.html
     Hafnium = {
         ZoA = 0.4033794, x0 = 0.1965, I = 7.05E-07, x1 = 3.4337,
@@ -1034,6 +1178,7 @@ return {
     },
 
     -- Hassium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/hassium_Hs.html
     Hassium = {
         ZoA = 0.4012871, x0 = 0.6392, I = 1.102E-06, x1 = 3, density = 14000,
@@ -1042,6 +1187,7 @@ return {
     },
 
     -- Heavymet in ATLAS calorimeter
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/heavymet_in_ATLAS_calorimeter.html
     HeavymetInATLASCalorimeter = {
         ZoA = 0.405938, x0 = 0.2167, I = 7.27E-07, x1 = 3.496, density = 19300,
@@ -1050,6 +1196,7 @@ return {
     },
 
     -- Heavymet in Rochester gamma stop
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/heavymet_in_Rochester_gamma_stop.html
     HeavymetInRochesterGammaStop = {
         ZoA = 0.4091473, x0 = 0.2167, I = 7.27E-07, x1 = 3.496, density = 19300,
@@ -1058,6 +1205,7 @@ return {
     },
 
     -- Helium gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/helium_gas_He.html
     HeliumGas = {
         ZoA = 0.4996752, x0 = 2.2017, I = 4.18E-08, x1 = 3.6122,
@@ -1066,6 +1214,7 @@ return {
     },
 
     -- Holmium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/holmium_Ho.html
     Holmium = {
         ZoA = 0.4062329, x0 = 0.0761, I = 6.5E-07, x1 = 3.4782, density = 8795,
@@ -1074,6 +1223,7 @@ return {
     },
 
     -- Hydrogen gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/hydrogen_gas.html
     HydrogenGas = {
         ZoA = 0.991375, x0 = 1.8639, I = 1.92E-08, x1 = 3.2718,
@@ -1082,6 +1232,7 @@ return {
     },
 
     -- Indium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/indium_In.html
     Indium = {
         ZoA = 0.4267624, x0 = 0.2406, I = 4.88E-07, x1 = 3.2032, density = 7310,
@@ -1090,6 +1241,7 @@ return {
     },
 
     -- Iodine
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/iodine_I.html
     Iodine = {
         ZoA = 0.4176385, x0 = 0.0549, I = 4.91E-07, x1 = 3.2596, density = 4930,
@@ -1098,6 +1250,7 @@ return {
     },
 
     -- Iridium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/iridium_Ir.html
     Iridium = {
         ZoA = 0.4005889, x0 = 0.0819, I = 7.57E-07, x1 = 3.548, density = 22420,
@@ -1106,6 +1259,7 @@ return {
     },
 
     -- Iron
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/iron_Fe.html
     Iron = {
         ZoA = 0.4655727, x0 = 0.0012, I = 2.86E-07, x1 = 3.1531, density = 7874,
@@ -1114,6 +1268,7 @@ return {
     },
 
     -- Krypton gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/krypton_gas_Kr.html
     KryptonGas = {
         ZoA = 0.4296035, x0 = 1.7153, I = 3.52E-07, x1 = 5.0743,
@@ -1122,6 +1277,7 @@ return {
     },
 
     -- Lanthanum
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_La.html
     Lanthanum = {
         ZoA = 0.4103524, x0 = 0.3164, I = 5.01E-07, x1 = 3.3296, density = 6145,
@@ -1130,6 +1286,7 @@ return {
     },
 
     -- Lanthanum bromide
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_bromide.html
     LanthanumBromide = {
         ZoA = 0.4278722, x0 = 0.3581, I = 4.545E-07, x1 = 3, density = 5290,
@@ -1138,6 +1295,7 @@ return {
     },
 
     -- Lanthanum chloride
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_chloride.html
     LanthanumChloride = {
         ZoA = 0.4403406, x0 = 0.2418, I = 3.295E-07, x1 = 3, density = 3860,
@@ -1146,6 +1304,7 @@ return {
     },
 
     -- Lanthanum fluoride
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_fluoride.html
     LanthanumFluoride = {
         ZoA = 0.4287897, x0 = 0.2, I = 3.363E-07, x1 = 3, density = 5900,
@@ -1154,6 +1313,7 @@ return {
     },
 
     -- Lanthanum oxybromide LaOBr
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_oxybromide_LaOBr.html
     LanthanumOxybromide = {
         ZoA = 0.4258791, x0 = 0.035, I = 4.397E-07, x1 = 3.3288, density = 6280,
@@ -1162,6 +1322,7 @@ return {
     },
 
     -- Lanthanum oxysulfide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lanthanum_oxysulfide.html
     LanthanumOxysulfide = {
         ZoA = 0.4270567, x0 = 0.0906, I = 4.212E-07, x1 = 3.2664,
@@ -1170,6 +1331,7 @@ return {
     },
 
     -- Lawrencium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lawrencium_Lr.html
     Lawrencium = {
         ZoA = 0.3929648, x0 = 0.6045, I = 1.034E-06, x1 = 3, density = 14000,
@@ -1178,6 +1340,7 @@ return {
     },
 
     -- Lead
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lead_Pb.html
     Lead = {
         ZoA = 0.3957338, x0 = 0.3776, I = 8.23E-07, x1 = 3.8073,
@@ -1186,6 +1349,7 @@ return {
     },
 
     -- Lead fluoride
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lead_fluoride.html
     LeadFluoride = {
         ZoA = 0.4078196, x0 = 0.4668, I = 6.354E-07, x1 = 3, density = 7770,
@@ -1194,6 +1358,7 @@ return {
     },
 
     -- Lead glass
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lead_glass.html
     LeadGlass = {
         ZoA = 0.4209939, x0 = 0.0614, I = 5.264E-07, x1 = 3.8146,
@@ -1203,6 +1368,7 @@ return {
     },
 
     -- Lead oxide PbO
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lead_oxide_PbO.html
     LeadOxide = {
         ZoA = 0.4032094, x0 = 0.0356, I = 7.667E-07, x1 = 3.5456,
@@ -1211,6 +1377,7 @@ return {
     },
 
     -- Lead tungstate
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lead_tungstate.html
     LeadTungstate = {
         ZoA = 0.4130535, x0 = 0.4068, I = 6.007E-07, x1 = 3.0023,
@@ -1219,6 +1386,7 @@ return {
     },
 
     -- Liquid argon
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_argon.html
     LiquidArgon = {
         ZoA = 0.4505846, x0 = 0.2, I = 1.88E-07, x1 = 3, density = 1396,
@@ -1227,6 +1395,7 @@ return {
     },
 
     -- Liquid bromine
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_bromine.html
     LiquidBromine = {
         ZoA = 0.4380251, x0 = 0.3669, I = 3.57E-07, x1 = 3, density = 3103,
@@ -1235,6 +1404,7 @@ return {
     },
 
     -- Liquid chlorine
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_chlorine.html
     LiquidChlorine = {
         ZoA = 0.4795054, x0 = 0.2, I = 1.74E-07, x1 = 3, density = 1574,
@@ -1243,6 +1413,7 @@ return {
     },
 
     -- Liquid deuterium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_deuterium.html
     LiquidDeuterium = {
         ZoA = 0.4964997, x0 = 0.4467, I = 2.18E-08, x1 = 1.8923,
@@ -1251,6 +1422,7 @@ return {
     },
 
     -- Liquid fluorine
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_fluorine.html
     LiquidFluorine = {
         ZoA = 0.4737241, x0 = 0.2, I = 1.15E-07, x1 = 3, density = 1507,
@@ -1259,6 +1431,7 @@ return {
     },
 
     -- Liquid helium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_helium.html
     LiquidHelium = {
         ZoA = 0.4996752, x0 = 0.4729, I = 4.18E-08, x1 = 2, density = 124.9,
@@ -1267,6 +1440,7 @@ return {
     },
 
     -- Liquid hydrogen
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_hydrogen.html
     LiquidHydrogen = {
         ZoA = 0.991375, x0 = 0.44, I = 2.18E-08, x1 = 1.8856, density = 70.8,
@@ -1275,6 +1449,7 @@ return {
     },
 
     -- Liquid krypton
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_krypton_Kr.html
     LiquidKrypton = {
         ZoA = 0.4296035, x0 = 0.4454, I = 3.52E-07, x1 = 3, density = 2418,
@@ -1283,6 +1458,7 @@ return {
     },
 
     -- Liquid neon
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_neon.html
     LiquidNeon = {
         ZoA = 0.4955451, x0 = 0.2, I = 1.37E-07, x1 = 3, density = 1204,
@@ -1291,6 +1467,7 @@ return {
     },
 
     -- Liquid nitrogen
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_nitrogen.html
     LiquidNitrogen = {
         ZoA = 0.499743, x0 = 0.3039, I = 8.2E-08, x1 = 2, density = 807,
@@ -1299,6 +1476,7 @@ return {
     },
 
     -- Liquid oxygen
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_oxygen.html
     LiquidOxygen = {
         ZoA = 0.5000219, x0 = 0.2868, I = 9.5E-08, x1 = 2, density = 1141,
@@ -1307,6 +1485,7 @@ return {
     },
 
     -- Liquid propane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_propane.html
     LiquidPropane = {
         ZoA = 0.589483, x0 = 0.2564, I = 5.2E-08, x1 = 2.6271, density = 493,
@@ -1315,6 +1494,7 @@ return {
     },
 
     -- Liquid xenon
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_xenon_Xe.html
     LiquidXenon = {
         ZoA = 0.4112907, x0 = 0.5993, I = 4.82E-07, x1 = 3, density = 2953,
@@ -1323,6 +1503,7 @@ return {
     },
 
     -- Lithium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_Li.html
     Lithium = {
         ZoA = 0.4321521, x0 = 0.1304, I = 4E-08, x1 = 1.6397, density = 534,
@@ -1331,6 +1512,7 @@ return {
     },
 
     -- Lithium amide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_amide.html
     LithiumAmide = {
         ZoA = 0.5224698, x0 = 0.0198, I = 5.55E-08, x1 = 2.5152, density = 1178,
@@ -1339,6 +1521,7 @@ return {
     },
 
     -- Lithium carbonate
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_carbonate.html
     LithiumCarbonate = {
         ZoA = 0.4871945, x0 = 0.0551, I = 8.79E-08, x1 = 2.6598, density = 2110,
@@ -1347,6 +1530,7 @@ return {
     },
 
     -- Lithium fluoride LiF
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_fluoride_LiF.html
     LithiumFluoride = {
         ZoA = 0.4626001, x0 = 0.0171, I = 9.4E-08, x1 = 2.7049, density = 2635,
@@ -1355,6 +1539,7 @@ return {
     },
 
     -- Lithium hydride LiH
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_hydride_LiH.html
     LithiumHydride = {
         ZoA = 0.5030599, x0 = 0.0988, I = 3.65E-08, x1 = 1.4515, density = 820,
@@ -1363,6 +1548,7 @@ return {
     },
 
     -- Lithium iodide LiI
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_iodide_LiI.html
     LithiumIodide = {
         ZoA = 0.4183912, x0 = 0.0892, I = 4.851E-07, x1 = 3.3702,
@@ -1371,6 +1557,7 @@ return {
     },
 
     -- Lithium oxide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_oxide.html
     LithiumOxide = {
         ZoA = 0.4684916, x0 = 0.0511, I = 7.36E-08, x1 = 2.5874, density = 2013,
@@ -1379,6 +1566,7 @@ return {
     },
 
     -- Lithium tetraborate
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lithium_tetraborate.html
     LithiumTetraborate = {
         ZoA = 0.4847895, x0 = 0.0737, I = 9.46E-08, x1 = 2.6502, density = 2440,
@@ -1387,6 +1575,7 @@ return {
     },
 
     -- Livermorium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/livermorium_Lv.html
     Livermorium = {
         ZoA = 0.3956276, x0 = 0.7064, I = 1.213E-06, x1 = 3, density = 14000,
@@ -1395,8 +1584,9 @@ return {
     },
 
     -- Lung ICRP
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lung_ICRP.html
-    LungICRP = {
+    Lung = {
         ZoA = 0.5495746, x0 = 0.2261, I = 7.53E-08, x1 = 2.8001, density = 1050,
         delta0 = 0, state = 'liquid', k = 3.5353, a = 0.0859, Cbar = 3.4708,
         elements = {K = 0.00194, O = 0.757072, S = 0.00225, H = 0.101278,
@@ -1405,6 +1595,7 @@ return {
     },
 
     -- Lutetium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lutetium_Lu.html
     Lutetium = {
         ZoA = 0.4057908, x0 = 0.156, I = 6.94E-07, x1 = 3.5218, density = 9841,
@@ -1413,6 +1604,7 @@ return {
     },
 
     -- Lutetium aluminum oxide 1
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lutetium_aluminum_oxide_1.html
     LutetiumAluminumOxide1 = {
         ZoA = 0.4320927, x0 = 0.2, I = 4.232E-07, x1 = 3, density = 8300,
@@ -1421,6 +1613,7 @@ return {
     },
 
     -- Lutetium aluminum oxide 2
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lutetium_aluminum_oxide_2.html
     LutetiumAluminumOxide2 = {
         ZoA = 0.4390698, x0 = 0.2, I = 3.659E-07, x1 = 3, density = 6730,
@@ -1429,6 +1622,7 @@ return {
     },
 
     -- Lutetium fluoride
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lutetium_fluoride.html
     LutetiumFluoride = {
         ZoA = 0.4224826, x0 = 0.2214, I = 4.587E-07, x1 = 3, density = 8300,
@@ -1437,6 +1631,7 @@ return {
     },
 
     -- Lutetium silicon oxide
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/lutetium_silicon_oxide.html
     LutetiumSiliconOxide = {
         ZoA = 0.4279328, x0 = 0.2732, I = 4.72E-07, x1 = 3, density = 7400,
@@ -1445,8 +1640,9 @@ return {
     },
 
     -- M3 WAX
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/M3_WAX.html
-    M3WAX = {
+    M3Wax = {
         ZoA = 0.5550295, x0 = 0.1523, I = 6.79E-08, x1 = 2.7529, density = 1050,
         delta0 = 0, state = 'liquid', k = 3.6412, a = 0.0786, Cbar = 3.254,
         elements = {O = 0.092183, Mg = 0.134792, H = 0.114318, C = 0.655823,
@@ -1454,6 +1650,7 @@ return {
     },
 
     -- Magnesium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/magnesium_Mg.html
     Magnesium = {
         ZoA = 0.4937134, x0 = 0.1499, I = 1.56E-07, x1 = 3.0668, density = 1740,
@@ -1462,6 +1659,7 @@ return {
     },
 
     -- Magnesium carbonate
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/magnesium_carbonate.html
     MagnesiumCarbonate = {
         ZoA = 0.4981362, x0 = 0.086, I = 1.18E-07, x1 = 2.7997, density = 2958,
@@ -1470,6 +1668,7 @@ return {
     },
 
     -- Magnesium fluoride
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/magnesium_fluoride.html
     MagnesiumFluoride = {
         ZoA = 0.4815223, x0 = 0.1369, I = 1.343E-07, x1 = 2.863, density = 3000,
@@ -1478,6 +1677,7 @@ return {
     },
 
     -- Magnesium oxide MgO
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/magnesium_oxide_MgO.html
     MagnesiumOxide = {
         ZoA = 0.4962176, x0 = 0.0575, I = 1.438E-07, x1 = 2.858, density = 3580,
@@ -1486,6 +1686,7 @@ return {
     },
 
     -- Magnesium tetraborate
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/magnesium_tetraborate.html
     MagnesiumTetraborate = {
         ZoA = 0.4900675, x0 = 0.1147, I = 1.083E-07, x1 = 2.7635,
@@ -1494,6 +1695,7 @@ return {
     },
 
     -- Manganese
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/manganese_Mn.html
     Manganese = {
         ZoA = 0.4550584, x0 = 0.0447, I = 2.72E-07, x1 = 3.1074, density = 7440,
@@ -1502,6 +1704,7 @@ return {
     },
 
     -- Meitnerium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/meitnerium_Mt.html
     Meitnerium = {
         ZoA = 0.3918664, x0 = 0.6522, I = 1.115E-06, x1 = 3, density = 14000,
@@ -1510,6 +1713,7 @@ return {
     },
 
     -- Mendelevium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/mendelevium_Md.html
     Mendelevium = {
         ZoA = 0.3913242, x0 = 0.5886, I = 1.007E-06, x1 = 3, density = 14000,
@@ -1518,6 +1722,7 @@ return {
     },
 
     -- Mercuric iodide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/mercuric_iodide.html
     MercuricIodide = {
         ZoA = 0.4093311, x0 = 0.104, I = 6.845E-07, x1 = 3.4728, density = 6360,
@@ -1526,6 +1731,7 @@ return {
     },
 
     -- Mercury
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/mercury_Hg.html
     Mercury = {
         ZoA = 0.3988195, x0 = 0.2756, I = 8E-07, x1 = 3.7275, density = 13550,
@@ -1534,6 +1740,7 @@ return {
     },
 
     -- Methane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/methane.html
     Methane = {
         ZoA = 0.6231489, x0 = 1.6263, I = 4.17E-08, x1 = 3.9716,
@@ -1542,6 +1749,7 @@ return {
     },
 
     -- Methanol
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/methanol.html
     Methanol = {
         ZoA = 0.5616682, x0 = 0.2529, I = 6.76E-08, x1 = 2.7639,
@@ -1550,6 +1758,7 @@ return {
     },
 
     -- Mix D wax
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/mix_D_wax.html
     MixDWax = {
         ZoA = 0.5646912, x0 = 0.1371, I = 6.09E-08, x1 = 2.7145, density = 990,
@@ -1559,6 +1768,7 @@ return {
     },
 
     -- Mn-dimethyl formamide
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/mn-dimethyl_formamide.html
     MnDimethylFormamide = {
         ZoA = 0.5471629, x0 = 0.1977, I = 6.66E-08, x1 = 2.6686,
@@ -1568,6 +1778,7 @@ return {
     },
 
     -- Molybdenum
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/molybdenum_Mo.html
     Molybdenum = {
         ZoA = 0.4377234, x0 = 0.2267, I = 4.24E-07, x1 = 3.2784,
@@ -1576,6 +1787,7 @@ return {
     },
 
     -- Moscovium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/moscovium_Mc.html
     Moscovium = {
         ZoA = 0.3976569, x0 = 0.696, I = 1.199E-06, x1 = 3, density = 14000,
@@ -1584,6 +1796,7 @@ return {
     },
 
     -- Ms20 tissue substitute
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ms20_tissue_substitute.html
     Ms20TissueSubstitute = {
         ZoA = 0.5387954, x0 = 0.1997, I = 7.51E-08, x1 = 2.8033, density = 1000,
@@ -1593,6 +1806,7 @@ return {
     },
 
     -- Muscle-equivalent liquid without sucrose
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/muscle-equivalent_liquid_without_sucrose.html
     MuscleEquivalentLiquidWithoutSucrose = {
         ZoA = 0.5500582, x0 = 0.2187, I = 7.42E-08, x1 = 2.768, density = 1070,
@@ -1601,6 +1815,7 @@ return {
     },
 
     -- Muscle-equivalent liquid with sucrose
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/muscle-equivalent_liquid_with_sucrose.html
     MuscleEquivalentLiquidWithSucrose = {
         ZoA = 0.5482054, x0 = 0.2098, I = 7.43E-08, x1 = 2.755, density = 1110,
@@ -1608,7 +1823,17 @@ return {
         elements = {O = 0.7101, H = 0.098234, C = 0.156214, N = 0.035451}
     },
 
+    -- Polyethylene terephthalate Mylar
+    -- Category: polymers
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyethylene_terephthalate_Mylar.html
+    Mylar = {
+        ZoA = 0.5203444, x0 = 0.1562, I = 7.87E-08, x1 = 2.6507, density = 1400,
+        delta0 = 0, state = 'liquid', k = 3.3076, a = 0.1268, Cbar = 3.3262,
+        elements = {H = 0.041959, C = 0.625017, O = 0.333025}
+    },
+
     -- Naphtalene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/naphtalene.html
     Naphtalene = {
         ZoA = 0.5304906, x0 = 0.1374, I = 6.84E-08, x1 = 2.5429, density = 1145,
@@ -1617,6 +1842,7 @@ return {
     },
 
     -- N-butyl alcohol
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/n-butyl_alcohol.html
     NButylAlcohol = {
         ZoA = 0.5665295, x0 = 0.1937, I = 5.99E-08, x1 = 2.6439,
@@ -1625,6 +1851,7 @@ return {
     },
 
     -- Neodymium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/neodymium_Nd.html
     Neodymium = {
         ZoA = 0.4159676, x0 = 0.195, I = 5.46E-07, x1 = 3.3029, density = 7008,
@@ -1633,6 +1860,7 @@ return {
     },
 
     -- Neon gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/neon_gas_Ne.html
     NeonGas = {
         ZoA = 0.4955451, x0 = 2.0735, I = 1.37E-07, x1 = 4.6421,
@@ -1641,6 +1869,7 @@ return {
     },
 
     -- Neptunium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/neptunium_Np.html
     Neptunium = {
         ZoA = 0.3923256, x0 = 0.1869, I = 9.02E-07, x1 = 3.369, density = 20250,
@@ -1649,6 +1878,7 @@ return {
     },
 
     -- N-heptane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/n-heptane.html
     NHeptane = {
         ZoA = 0.5787032, x0 = 0.1928, I = 5.44E-08, x1 = 2.5706,
@@ -1657,6 +1887,7 @@ return {
     },
 
     -- N-hexane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/n-hexane.html
     NHexane = {
         ZoA = 0.5800823, x0 = 0.1984, I = 5.4E-08, x1 = 2.5757, density = 660.3,
@@ -1665,6 +1896,7 @@ return {
     },
 
     -- Nickel
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nickel_Ni.html
     Nickel = {
         ZoA = 0.4770553, x0 = 0.0566, I = 3.11E-07, x1 = 3.1851, density = 8902,
@@ -1673,6 +1905,7 @@ return {
     },
 
     -- Nihonium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nihonium_Nh.html
     Nihonium = {
         ZoA = 0.3948536, x0 = 0.6818, I = 1.171E-06, x1 = 3, density = 14000,
@@ -1681,6 +1914,7 @@ return {
     },
 
     -- Niobium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/niobium_Nb.html
     Niobium = {
         ZoA = 0.4413044, x0 = 0.1785, I = 4.17E-07, x1 = 3.2201, density = 8570,
@@ -1689,6 +1923,7 @@ return {
     },
 
     -- Nitrobenzene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nitrobenzene.html
     Nitrobenzene = {
         ZoA = 0.5198277, x0 = 0.1777, I = 7.58E-08, x1 = 2.663, density = 1199,
@@ -1697,6 +1932,7 @@ return {
     },
 
     -- Nitrogen gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nitrogen_gas.html
     NitrogenGas = {
         ZoA = 0.499743, x0 = 1.7378, I = 8.2E-08, x1 = 4.1323, density = 1.165,
@@ -1705,6 +1941,7 @@ return {
     },
 
     -- Nitrous oxide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nitrous_oxide.html
     NitrousOxide = {
         ZoA = 0.4998444, x0 = 1.6477, I = 8.49E-08, x1 = 4.1565,
@@ -1713,6 +1950,7 @@ return {
     },
 
     -- Nobelium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nobelium_No.html
     Nobelium = {
         ZoA = 0.3936689, x0 = 0.595, I = 1.02E-06, x1 = 3, density = 14000,
@@ -1721,6 +1959,7 @@ return {
     },
 
     -- N-pentane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/n-pentane.html
     NPentane = {
         ZoA = 0.5819974, x0 = 0.2086, I = 5.36E-08, x1 = 2.5855,
@@ -1729,6 +1968,7 @@ return {
     },
 
     -- N-propyl alcohol
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/n-propyl_alcohol.html
     NPropylAlcohol = {
         ZoA = 0.5656655, x0 = 0.2046, I = 6.11E-08, x1 = 2.6681,
@@ -1737,14 +1977,16 @@ return {
     },
 
     -- Nylon du Pont Elvamide 8062M
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Nylon_du_Pont_Elvamide_8062M.html
-    NylonDuPontElvamide8062M = {
+    NylonDuPontElvamide = {
         ZoA = 0.5505474, x0 = 0.1503, I = 6.43E-08, x1 = 2.6004, density = 1080,
         delta0 = 0, state = 'liquid', k = 3.4044, a = 0.1151, Cbar = 3.125,
         elements = {O = 0.148539, H = 0.103509, C = 0.648415, N = 0.099536}
     },
 
     -- Nylon type 11 Rilsan
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Nylon_type_11_Rilsan.html
     NylonType11Rilsan = {
         ZoA = 0.5564007, x0 = 0.0678, I = 6.16E-08, x1 = 2.4281, density = 1425,
@@ -1753,6 +1995,7 @@ return {
     },
 
     -- Nylon type 6-10
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Nylon_type_6-10.html
     NylonType610 = {
         ZoA = 0.5522787, x0 = 0.1304, I = 6.32E-08, x1 = 2.5681, density = 1140,
@@ -1761,6 +2004,7 @@ return {
     },
 
     -- Nylon type 6 6-6
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/Nylon_type_6_6-6.html
     NylonType666 = {
         ZoA = 0.5478279, x0 = 0.1261, I = 6.39E-08, x1 = 2.5759, density = 1180,
@@ -1769,6 +2013,7 @@ return {
     },
 
     -- Octane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/octane.html
     Octane = {
         ZoA = 0.5776625, x0 = 0.1882, I = 5.47E-08, x1 = 2.5664,
@@ -1777,6 +2022,7 @@ return {
     },
 
     -- Oganesson
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/oganesson_Og.html
     Oganesson = {
         ZoA = 0.4010686, x0 = 2.0204, I = 1.242E-06, x1 = 1.9972, density = 12,
@@ -1785,6 +2031,7 @@ return {
     },
 
     -- Osmium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/osmium_Os.html
     Osmium = {
         ZoA = 0.3995101, x0 = 0.0891, I = 7.46E-07, x1 = 3.5414,
@@ -1793,6 +2040,7 @@ return {
     },
 
     -- Oxygen gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/oxygen_gas.html
     OxygenGas = {
         ZoA = 0.5000219, x0 = 1.7541, I = 9.5E-08, x1 = 4.3213, density = 1.332,
@@ -1801,6 +2049,7 @@ return {
     },
 
     -- Palladium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/palladium_Pd.html
     Palladium = {
         ZoA = 0.4322455, x0 = 0.0563, I = 4.7E-07, x1 = 3.0555, density = 12020,
@@ -1809,6 +2058,7 @@ return {
     },
 
     -- Paraffin
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/paraffin.html
     Paraffin = {
         ZoA = 0.572638, x0 = 0.1289, I = 5.59E-08, x1 = 2.5084, density = 930,
@@ -1817,6 +2067,7 @@ return {
     },
 
     -- Parylene
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/parylene.html
     Parylene = {
         ZoA = 0.5376289, x0 = 0.2, I = 6.6E-08, x1 = 2, density = 1060,
@@ -1825,6 +2076,7 @@ return {
     },
 
     -- Phosphorus
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/phosphorus_P.html
     Phosphorus = {
         ZoA = 0.4842803, x0 = 0.1696, I = 1.73E-07, x1 = 2.7815, density = 2200,
@@ -1833,6 +2085,7 @@ return {
     },
 
     -- Photographic emulsion
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/photographic_emulsion.html
     PhotographicEmulsion = {
         ZoA = 0.4545213, x0 = 0.1009, I = 3.31E-07, x1 = 3.4866, density = 3815,
@@ -1842,6 +2095,7 @@ return {
     },
 
     -- Plate glass
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/plate_glass.html
     PlateGlass = {
         ZoA = 0.4973163, x0 = 0.1237, I = 1.454E-07, x1 = 3.0649,
@@ -1851,6 +2105,7 @@ return {
     },
 
     -- Platinum
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/platinum_Pt.html
     Platinum = {
         ZoA = 0.3998257, x0 = 0.1484, I = 7.9E-07, x1 = 3.6212, density = 21450,
@@ -1859,6 +2114,7 @@ return {
     },
 
     -- Plutonium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/plutonium_Pu.html
     Plutonium = {
         ZoA = 0.3851449, x0 = 0.1557, I = 9.21E-07, x1 = 3.3981,
@@ -1867,6 +2123,7 @@ return {
     },
 
     -- Plutonium dioxide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/plutonium_dioxide.html
     PlutoniumDioxide = {
         ZoA = 0.3987067, x0 = 0.2311, I = 7.465E-07, x1 = 3.5554,
@@ -1875,6 +2132,7 @@ return {
     },
 
     -- Polonium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polonium_Po.html
     Polonium = {
         ZoA = 0.4019485, x0 = 0.4267, I = 8.3E-07, x1 = 3.8293, density = 9320,
@@ -1883,6 +2141,7 @@ return {
     },
 
     -- Polyacrylonitrile
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyacrylonitrile.html
     Polyacrylonitrile = {
         ZoA = 0.5276274, x0 = 0.1504, I = 6.96E-08, x1 = 2.5159, density = 1170,
@@ -1891,6 +2150,7 @@ return {
     },
 
     -- Polycarbonate Lexan
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polycarbonate_Lexan.html
     PolycarbonateLexan = {
         ZoA = 0.5269312, x0 = 0.1606, I = 7.31E-08, x1 = 2.6225, density = 1200,
@@ -1899,6 +2159,7 @@ return {
     },
 
     -- Polychlorostyrene
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polychlorostyrene.html
     Polychlorostyrene = {
         ZoA = 0.5251321, x0 = 0.1238, I = 8.17E-08, x1 = 2.9241, density = 1300,
@@ -1907,6 +2168,7 @@ return {
     },
 
     -- Polyethylene
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyethylene.html
     Polyethylene = {
         ZoA = 0.570231, x0 = 0.1489, I = 5.74E-08, x1 = 2.5296, density = 890,
@@ -1914,15 +2176,8 @@ return {
         elements = {C = 0.856289, H = 0.143711}
     },
 
-    -- Polyethylene terephthalate Mylar
-    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyethylene_terephthalate_Mylar.html
-    PolyethyleneTerephthalateMylar = {
-        ZoA = 0.5203444, x0 = 0.1562, I = 7.87E-08, x1 = 2.6507, density = 1400,
-        delta0 = 0, state = 'liquid', k = 3.3076, a = 0.1268, Cbar = 3.3262,
-        elements = {H = 0.041959, C = 0.625017, O = 0.333025}
-    },
-
     -- Polyimide film
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyimide_film.html
     PolyimideFilm = {
         ZoA = 0.5126286, x0 = 0.1509, I = 7.96E-08, x1 = 2.5631, density = 1420,
@@ -1930,15 +2185,8 @@ return {
         elements = {O = 0.209235, H = 0.026362, C = 0.691133, N = 0.07327}
     },
 
-    -- Polymethylmethacrylate acrylic
-    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polymethylmethacrylate_acrylic.html
-    PolymethylmethacrylateAcrylic = {
-        ZoA = 0.5393117, x0 = 0.1824, I = 7.4E-08, x1 = 2.6681, density = 1190,
-        delta0 = 0, state = 'liquid', k = 3.3836, a = 0.1143, Cbar = 3.3297,
-        elements = {H = 0.080538, C = 0.599848, O = 0.319614}
-    },
-
     -- Polyoxymethylene
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyoxymethylene.html
     Polyoxymethylene = {
         ZoA = 0.5328203, x0 = 0.1584, I = 7.74E-08, x1 = 2.6838, density = 1425,
@@ -1947,6 +2195,7 @@ return {
     },
 
     -- Polypropylene
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polypropylene.html
     Polypropylene = {
         ZoA = 0.570231, x0 = 0.1452, I = 5.74E-08, x1 = 2.5259, density = 905,
@@ -1955,6 +2204,7 @@ return {
     },
 
     -- Polystyrene
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polystyrene.html
     Polystyrene = {
         ZoA = 0.5376265, x0 = 0.1647, I = 6.87E-08, x1 = 2.5031, density = 1060,
@@ -1962,15 +2212,8 @@ return {
         elements = {C = 0.922582, H = 0.077418}
     },
 
-    -- Polytetrafluoroethylene Teflon
-    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polytetrafluoroethylene_Teflon.html
-    PolytetrafluoroethyleneTeflon = {
-        ZoA = 0.4799271, x0 = 0.1648, I = 9.91E-08, x1 = 2.7404, density = 2200,
-        delta0 = 0, state = 'liquid', k = 3.4046, a = 0.1061, Cbar = 3.4161,
-        elements = {C = 0.240183, F = 0.759817}
-    },
-
     -- Polytrifluorochloroethylene
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polytrifluorochloroethylene.html
     Polytrifluorochloroethylene = {
         ZoA = 0.4808101, x0 = 0.1714, I = 1.207E-07, x1 = 3.0265,
@@ -1979,6 +2222,7 @@ return {
     },
 
     -- Polyvinylacetate
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinylacetate.html
     Polyvinylacetate = {
         ZoA = 0.5342739, x0 = 0.1769, I = 7.37E-08, x1 = 2.6747, density = 1190,
@@ -1987,6 +2231,7 @@ return {
     },
 
     -- Polyvinyl alcohol
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinyl_alcohol.html
     PolyvinylAlcohol = {
         ZoA = 0.544732, x0 = 0.1401, I = 6.97E-08, x1 = 2.6315, density = 1300,
@@ -1995,6 +2240,7 @@ return {
     },
 
     -- Polyvinyl butyral
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinyl_butyral.html
     PolyvinylButyral = {
         ZoA = 0.5452996, x0 = 0.1555, I = 6.72E-08, x1 = 2.6186, density = 1120,
@@ -2002,23 +2248,17 @@ return {
         elements = {H = 0.092802, C = 0.680561, O = 0.226637}
     },
 
-    -- Polyvinylchloride PVC
-    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinylchloride_PVC.html
-    PolyvinylchloridePVC = {
-        ZoA = 0.5119741, x0 = 0.1559, I = 1.082E-07, x1 = 2.9415,
-        density = 1300, delta0 = 0, state = 'liquid', k = 3.2104, a = 0.1244,
-        Cbar = 4.0532, elements = {H = 0.04838, C = 0.38436, Cl = 0.56726}
-    },
-
     -- Polyvinylidene chloride Saran
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinylidene_chloride_Saran.html
-    PolyvinylideneChlorideSaran = {
+    PolyvinylideneChloride = {
         ZoA = 0.4951152, x0 = 0.1314, I = 1.343E-07, x1 = 2.9009,
         density = 1700, delta0 = 0, state = 'liquid', k = 3.102, a = 0.1547,
         Cbar = 4.2506, elements = {H = 0.020793, C = 0.247793, Cl = 0.731413}
     },
 
     -- Polyvinylidene fluoride
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinylidene_fluoride.html
     PolyvinylideneFluoride = {
         ZoA = 0.4997083, x0 = 0.1717, I = 8.88E-08, x1 = 2.7375, density = 1760,
@@ -2027,6 +2267,7 @@ return {
     },
 
     -- Polyvinyl pyrrolidone
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinyl_pyrrolidone.html
     PolyvinylPyrrolidone = {
         ZoA = 0.5397833, x0 = 0.1324, I = 6.77E-08, x1 = 2.5867, density = 1250,
@@ -2035,6 +2276,7 @@ return {
     },
 
     -- Polyvinyltoluene
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinyltoluene.html
     Polyvinyltoluene = {
         ZoA = 0.5413555, x0 = 0.1464, I = 6.47E-08, x1 = 2.4855, density = 1032,
@@ -2043,6 +2285,7 @@ return {
     },
 
     -- Potassium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/potassium_K.html
     Potassium = {
         ZoA = 0.4859546, x0 = 0.3851, I = 1.9E-07, x1 = 3.1724, density = 862,
@@ -2051,6 +2294,7 @@ return {
     },
 
     -- Potassium iodide KI
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/potassium_iodide_KI.html
     PotassiumIodide = {
         ZoA = 0.4337289, x0 = 0.1044, I = 4.319E-07, x1 = 3.3442,
@@ -2059,6 +2303,7 @@ return {
     },
 
     -- Potassium oxide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/potassium_oxide.html
     PotassiumOxide = {
         ZoA = 0.488344, x0 = 0.048, I = 1.899E-07, x1 = 3.011, density = 2320,
@@ -2067,6 +2312,7 @@ return {
     },
 
     -- Praseodymium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/praseodymium_Pr.html
     Praseodymium = {
         ZoA = 0.4187129, x0 = 0.2313, I = 5.35E-07, x1 = 3.2753, density = 6773,
@@ -2075,6 +2321,7 @@ return {
     },
 
     -- Promethium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/promethium_Pm.html
     Promethium = {
         ZoA = 0.4209422, x0 = 0.1614, I = 5.6E-07, x1 = 3.3186, density = 7264,
@@ -2083,6 +2330,7 @@ return {
     },
 
     -- Propane
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/propane.html
     Propane = {
         ZoA = 0.589483, x0 = 1.4339, I = 4.71E-08, x1 = 3.8011, density = 1.868,
@@ -2091,6 +2339,7 @@ return {
     },
 
     -- Protactinium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/protactinium_Pa.html
     Protactinium = {
         ZoA = 0.393878, x0 = 0.3144, I = 8.78E-07, x1 = 3.5079, density = 15370,
@@ -2098,7 +2347,17 @@ return {
         elements = {Pa = 1}
     },
 
+    -- Polyvinylchloride PVC
+    -- Category: polymers
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polyvinylchloride_PVC.html
+    PVC = {
+        ZoA = 0.5119741, x0 = 0.1559, I = 1.082E-07, x1 = 2.9415,
+        density = 1300, delta0 = 0, state = 'liquid', k = 3.2104, a = 0.1244,
+        Cbar = 4.0532, elements = {H = 0.04838, C = 0.38436, Cl = 0.56726}
+    },
+
     -- Pyridine
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/pyridine.html
     Pyridine = {
         ZoA = 0.5309187, x0 = 0.167, I = 6.62E-08, x1 = 2.5245, density = 981.9,
@@ -2107,6 +2366,7 @@ return {
     },
 
     -- Radium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/radium_Ra.html
     Radium = {
         ZoA = 0.3893375, x0 = 0.5991, I = 8.26E-07, x1 = 3.9428, density = 5000,
@@ -2115,6 +2375,7 @@ return {
     },
 
     -- Radon
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/radon_Rn.html
     Radon = {
         ZoA = 0.387356, x0 = 1.5368, I = 7.94E-07, x1 = 4.9889, density = 9.066,
@@ -2123,6 +2384,7 @@ return {
     },
 
     -- Rhenium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rhenium_Re.html
     Rhenium = {
         ZoA = 0.4027776, x0 = 0.0559, I = 7.36E-07, x1 = 3.4845,
@@ -2131,6 +2393,7 @@ return {
     },
 
     -- Rhodium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rhodium_Rh.html
     Rhodium = {
         ZoA = 0.4372923, x0 = 0.0576, I = 4.49E-07, x1 = 3.1069,
@@ -2139,6 +2402,7 @@ return {
     },
 
     -- Roentgenium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/roentgenium_Rg.html
     Roentgenium = {
         ZoA = 0.3933813, x0 = 0.6672, I = 1.143E-06, x1 = 3, density = 14000,
@@ -2147,6 +2411,7 @@ return {
     },
 
     -- Rubber butyl
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rubber_butyl.html
     RubberButyl = {
         ZoA = 0.570231, x0 = 0.1347, I = 5.65E-08, x1 = 2.5154, density = 920,
@@ -2155,6 +2420,7 @@ return {
     },
 
     -- Rubber natural
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rubber_natural.html
     RubberNatural = {
         ZoA = 0.5577682, x0 = 0.1512, I = 5.98E-08, x1 = 2.4815, density = 920,
@@ -2163,6 +2429,7 @@ return {
     },
 
     -- Rubber neoprene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rubber_neoprene.html
     RubberNeoprene = {
         ZoA = 0.5195184, x0 = 0.1501, I = 9.3E-08, x1 = 2.9461, density = 1230,
@@ -2171,6 +2438,7 @@ return {
     },
 
     -- Rubidium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rubidium_Rb.html
     Rubidium = {
         ZoA = 0.4329116, x0 = 0.5737, I = 3.63E-07, x1 = 3.7995, density = 1532,
@@ -2179,6 +2447,7 @@ return {
     },
 
     -- Ruthenium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ruthenium_Ru.html
     Ruthenium = {
         ZoA = 0.4353332, x0 = 0.0599, I = 4.41E-07, x1 = 3.0834,
@@ -2187,6 +2456,7 @@ return {
     },
 
     -- Rutherfordium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/rutherfordium_Rf.html
     Rutherfordium = {
         ZoA = 0.3893352, x0 = 0.6157, I = 1.047E-06, x1 = 3, density = 14000,
@@ -2195,6 +2465,7 @@ return {
     },
 
     -- Samarium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/samarium_Sm.html
     Samarium = {
         ZoA = 0.4123382, x0 = 0.1503, I = 5.74E-07, x1 = 3.3443, density = 7520,
@@ -2203,6 +2474,7 @@ return {
     },
 
     -- Scandium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/scandium_Sc.html
     Scandium = {
         ZoA = 0.4671244, x0 = 0.164, I = 2.16E-07, x1 = 3.0593, density = 2989,
@@ -2211,6 +2483,7 @@ return {
     },
 
     -- Seaborgium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/seaborgium_Sg.html
     Seaborgium = {
         ZoA = 0.3938632, x0 = 0.6309, I = 1.074E-06, x1 = 3, density = 14000,
@@ -2219,6 +2492,7 @@ return {
     },
 
     -- Selenium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/selenium_Se.html
     Selenium = {
         ZoA = 0.4305334, x0 = 0.2258, I = 3.48E-07, x1 = 3.6264, density = 4500,
@@ -2227,6 +2501,7 @@ return {
     },
 
     -- Shielding concrete
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/shielding_concrete.html
     ShieldingConcrete = {
         ZoA = 0.5027312, x0 = 0.1301, I = 1.352E-07, x1 = 3.0466,
@@ -2237,6 +2512,7 @@ return {
     },
 
     -- Silica aerogel
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silica_aerogel.html
     SilicaAerogel = {
         ZoA = 0.5009712, x0 = 0.6029, I = 1.392E-07, x1 = 3, density = 200,
@@ -2245,6 +2521,7 @@ return {
     },
 
     -- Silicon
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silicon_Si.html
     Silicon = {
         ZoA = 0.4984779, x0 = 0.2015, I = 1.73E-07, x1 = 2.8716, density = 2329,
@@ -2253,14 +2530,16 @@ return {
     },
 
     -- Silicon dioxide fused quartz
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silicon_dioxide_fused_quartz.html
-    SiliconDioxideFusedQuartz = {
+    SiliconDioxide = {
         ZoA = 0.4993001, x0 = 0.15, I = 1.392E-07, x1 = 3.014, density = 2200,
         delta0 = 0, state = 'liquid', k = 3.5064, a = 0.0841, Cbar = 4.056,
         elements = {Si = 0.467435, O = 0.532565}
     },
 
     -- Silver
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silver_Ag.html
     Silver = {
         ZoA = 0.4357177, x0 = 0.0657, I = 4.7E-07, x1 = 3.1074, density = 10500,
@@ -2269,6 +2548,7 @@ return {
     },
 
     -- Silver bromide AgBr
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silver_bromide_AgBr.html
     SilverBromide = {
         ZoA = 0.4366996, x0 = 0.0352, I = 4.866E-07, x1 = 3.2109,
@@ -2277,6 +2557,7 @@ return {
     },
 
     -- Silver chloride AgCl
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silver_chloride_AgCl.html
     SilverChloride = {
         ZoA = 0.4465494, x0 = 0.0139, I = 3.984E-07, x1 = 3.2022,
@@ -2285,6 +2566,7 @@ return {
     },
 
     -- Silver iodide AgI
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/silver_iodide_AgI.html
     SilverIodide = {
         ZoA = 0.4259452, x0 = 0.0148, I = 5.435E-07, x1 = 3.2908,
@@ -2293,8 +2575,9 @@ return {
     },
 
     -- Skeletal muscle ICRP
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/skeletal_muscle_ICRP.html
-    SkeletalMuscleICRP = {
+    SkeletalMuscle = {
         ZoA = 0.5493013, x0 = 0.2282, I = 7.53E-08, x1 = 2.7999, density = 1040,
         delta0 = 0, state = 'liquid', k = 3.533, a = 0.0864, Cbar = 3.4809,
         elements = {K = 0.00302, O = 0.754773, S = 0.00241, H = 0.100637,
@@ -2303,8 +2586,9 @@ return {
     },
 
     -- Skin ICRP
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/skin_ICRP.html
-    SkinICRP = {
+    Skin = {
         ZoA = 0.5492492, x0 = 0.2019, I = 7.27E-08, x1 = 2.7526, density = 1100,
         delta0 = 0, state = 'liquid', k = 3.4643, a = 0.0946, Cbar = 3.3546,
         elements = {K = 0.00085, O = 0.619002, S = 0.00159, H = 0.100588,
@@ -2313,6 +2597,7 @@ return {
     },
 
     -- Sodium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_Na.html
     Sodium = {
         ZoA = 0.4784731, x0 = 0.288, I = 1.49E-07, x1 = 3.1962, density = 971,
@@ -2321,6 +2606,7 @@ return {
     },
 
     -- Sodium carbonate
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_carbonate.html
     SodiumCarbonate = {
         ZoA = 0.4906197, x0 = 0.1287, I = 1.25E-07, x1 = 2.8591, density = 2532,
@@ -2329,6 +2615,7 @@ return {
     },
 
     -- Sodium chloride NaCl
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_chloride_NaCl.html
     SodiumChloride = {
         ZoA = 0.4790998, x0 = 0.1995, I = 1.753E-07, x1 = 2.9995,
@@ -2337,6 +2624,7 @@ return {
     },
 
     -- Sodium iodide NaI
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_iodide_NaI.html
     SodiumIodide = {
         ZoA = 0.4269689, x0 = 0.1203, I = 4.52E-07, x1 = 3.592, density = 3667,
@@ -2345,6 +2633,7 @@ return {
     },
 
     -- Sodium monoxide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_monoxide.html
     SodiumMonoxide = {
         ZoA = 0.4840357, x0 = 0.1652, I = 1.488E-07, x1 = 2.9793,
@@ -2353,6 +2642,7 @@ return {
     },
 
     -- Sodium nitrate
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sodium_nitrate.html
     SodiumNitrate = {
         ZoA = 0.4941473, x0 = 0.1534, I = 1.146E-07, x1 = 2.8221,
@@ -2361,8 +2651,9 @@ return {
     },
 
     -- Soft tissue ICRP
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/soft_tissue_ICRP.html
-    SoftTissueICRP = {
+    SoftTissue = {
         ZoA = 0.5511313, x0 = 0.2211, I = 7.23E-08, x1 = 2.7799, density = 1000,
         delta0 = 0, state = 'liquid', k = 3.511, a = 0.0893, Cbar = 3.4354,
         elements = {K = 0.00199, O = 0.630238, S = 0.00199, H = 0.104472,
@@ -2371,6 +2662,7 @@ return {
     },
 
     -- Soft tissue ICRU four-component
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/soft_tissue_ICRU_four-component.html
     SoftTissueICRUFourComponent = {
         ZoA = 0.5496735, x0 = 0.2377, I = 7.49E-08, x1 = 2.7908, density = 1000,
@@ -2378,15 +2670,8 @@ return {
         elements = {O = 0.761828, H = 0.101172, C = 0.111, N = 0.026}
     },
 
-    -- Solid carbon dioxide dry ice
-    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/solid_carbon_dioxide_dry_ice.html
-    SolidCarbonDioxideDryIce = {
-        ZoA = 0.4998932, x0 = 0.2, I = 8.5E-08, x1 = 2, density = 1563,
-        delta0 = 0, state = 'liquid', k = 3, a = 0.4339, Cbar = 3.4513,
-        elements = {C = 0.272916, O = 0.727084}
-    },
-
     -- Standard rock
+    -- Category: mixtures
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/standard_rock.html
     StandardRock = {
         ZoA = 0.5, x0 = 0.0492, I = 1.364E-07, x1 = 3.0549, density = 2650,
@@ -2395,6 +2680,7 @@ return {
     },
 
     -- Stilbene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/stilbene.html
     Stilbene = {
         ZoA = 0.5325523, x0 = 0.1734, I = 6.77E-08, x1 = 2.5142,
@@ -2403,8 +2689,9 @@ return {
     },
 
     -- Striated muscle ICRU
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/striated_muscle_ICRU.html
-    StriatedMuscleICRU = {
+    StriatedMuscle = {
         ZoA = 0.5509452, x0 = 0.2249, I = 7.47E-08, x1 = 2.8032, density = 1040,
         delta0 = 0, state = 'liquid', k = 3.5383, a = 0.0851, Cbar = 3.4636,
         elements = {K = 0.005, O = 0.729003, S = 0.005, H = 0.101997, P = 0.002,
@@ -2412,6 +2699,7 @@ return {
     },
 
     -- Strontium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/strontium_Sr.html
     Strontium = {
         ZoA = 0.433686, x0 = 0.4585, I = 3.66E-07, x1 = 3.6778, density = 2540,
@@ -2420,6 +2708,7 @@ return {
     },
 
     -- Sucrose
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sucrose.html
     Sucrose = {
         ZoA = 0.5316527, x0 = 0.1341, I = 7.75E-08, x1 = 2.6558, density = 1581,
@@ -2428,6 +2717,7 @@ return {
     },
 
     -- Sulfur
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/sulfur_S.html
     Sulfur = {
         ZoA = 0.4989787, x0 = 0.158, I = 1.8E-07, x1 = 2.7159, density = 2000,
@@ -2436,6 +2726,7 @@ return {
     },
 
     -- Tantalum
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tantalum_Ta.html
     Tantalum = {
         ZoA = 0.4034308, x0 = 0.2117, I = 7.18E-07, x1 = 3.4805,
@@ -2444,6 +2735,7 @@ return {
     },
 
     -- Technetium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/technetium_Tc.html
     Technetium = {
         ZoA = 0.4391914, x0 = 0.0949, I = 4.28E-07, x1 = 3.1253,
@@ -2451,7 +2743,17 @@ return {
         a = 0.1657, Cbar = 4.7769, elements = {Tc = 1}
     },
 
+    -- Polytetrafluoroethylene Teflon
+    -- Category: polymers
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/polytetrafluoroethylene_Teflon.html
+    Teflon = {
+        ZoA = 0.4799271, x0 = 0.1648, I = 9.91E-08, x1 = 2.7404, density = 2200,
+        delta0 = 0, state = 'liquid', k = 3.4046, a = 0.1061, Cbar = 3.4161,
+        elements = {C = 0.240183, F = 0.759817}
+    },
+
     -- Tellurium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tellurium_Te.html
     Tellurium = {
         ZoA = 0.4075139, x0 = 0.3296, I = 4.85E-07, x1 = 3.4418, density = 6240,
@@ -2460,6 +2762,7 @@ return {
     },
 
     -- Tennessine
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tennessine_Ts.html
     Tennessine = {
         ZoA = 0.3976738, x0 = 0.712, I = 1.227E-06, x1 = 3, density = 14000,
@@ -2468,6 +2771,7 @@ return {
     },
 
     -- Terbium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/terbium_Tb.html
     Terbium = {
         ZoA = 0.408998, x0 = 0.0947, I = 6.14E-07, x1 = 3.4224, density = 8230,
@@ -2476,6 +2780,7 @@ return {
     },
 
     -- Terphenyl
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/terphenyl.html
     Terphenyl = {
         ZoA = 0.5214577, x0 = 0.1322, I = 7.17E-08, x1 = 2.5429, density = 1234,
@@ -2484,8 +2789,9 @@ return {
     },
 
     -- Testes ICRP
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/testes_ICRP.html
-    TestesICRP = {
+    Testes = {
         ZoA = 0.5510036, x0 = 0.2274, I = 7.5E-08, x1 = 2.7988, density = 1040,
         delta0 = 0, state = 'liquid', k = 3.5428, a = 0.0853, Cbar = 3.4698,
         elements = {K = 0.00208, O = 0.773884, S = 0.00146, H = 0.104166,
@@ -2494,6 +2800,7 @@ return {
     },
 
     -- Tetrachloroethylene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tetrachloroethylene.html
     Tetrachloroethylene = {
         ZoA = 0.482409, x0 = 0.1713, I = 1.592E-07, x1 = 2.9083, density = 1625,
@@ -2502,6 +2809,7 @@ return {
     },
 
     -- Thallium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/thallium_Tl.html
     Thallium = {
         ZoA = 0.3963167, x0 = 0.3491, I = 8.1E-07, x1 = 3.8044, density = 11720,
@@ -2510,6 +2818,7 @@ return {
     },
 
     -- Thallium chloride TlCl
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/thallium_chloride_TlCl.html
     ThalliumChloride = {
         ZoA = 0.4086174, x0 = 0.0705, I = 6.903E-07, x1 = 3.5716,
@@ -2518,6 +2827,7 @@ return {
     },
 
     -- Thorium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/thorium_Th.html
     Thorium = {
         ZoA = 0.3878675, x0 = 0.4202, I = 8.47E-07, x1 = 3.7681,
@@ -2526,6 +2836,7 @@ return {
     },
 
     -- Thulium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/thulium_Tm.html
     Thulium = {
         ZoA = 0.4084435, x0 = 0.0812, I = 6.74E-07, x1 = 3.5085, density = 9321,
@@ -2534,6 +2845,7 @@ return {
     },
 
     -- Tin
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tin_Sn.html
     Tin = {
         ZoA = 0.421191, x0 = 0.2879, I = 4.88E-07, x1 = 3.2959, density = 7310,
@@ -2542,6 +2854,7 @@ return {
     },
 
     -- Tissue-equivalent gas Methane based
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tissue-equivalent_gas_Methane_based.html
     TissueEquivalentGasMethaneBased = {
         ZoA = 0.5498506, x0 = 1.6442, I = 6.12E-08, x1 = 4.1399,
@@ -2551,6 +2864,7 @@ return {
     },
 
     -- Tissue-equivalent gas Propane based
+    -- Category: biologicals
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tissue-equivalent_gas_Propane_based.html
     TissueEquivalentGasPropaneBased = {
         ZoA = 0.5501921, x0 = 1.5139, I = 5.95E-08, x1 = 3.9916,
@@ -2560,6 +2874,7 @@ return {
     },
 
     -- Titanium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/titanium_Ti.html
     Titanium = {
         ZoA = 0.4596059, x0 = 0.0957, I = 2.33E-07, x1 = 3.0386, density = 4540,
@@ -2568,6 +2883,7 @@ return {
     },
 
     -- Titanium dioxide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/titanium_dioxide.html
     TitaniumDioxide = {
         ZoA = 0.4757962, x0 = 0.0119, I = 1.795E-07, x1 = 3.1647,
@@ -2576,6 +2892,7 @@ return {
     },
 
     -- Toluene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/toluene.html
     Toluene = {
         ZoA = 0.54259, x0 = 0.1722, I = 6.25E-08, x1 = 2.5728, density = 866.9,
@@ -2584,6 +2901,7 @@ return {
     },
 
     -- Trichloroethylene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/trichloroethylene.html
     Trichloroethylene = {
         ZoA = 0.4870968, x0 = 0.1803, I = 1.481E-07, x1 = 2.914, density = 1460,
@@ -2592,6 +2910,7 @@ return {
     },
 
     -- Triethyl phosphate
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/triethyl_phosphate.html
     TriethylPhosphate = {
         ZoA = 0.53794, x0 = 0.2054, I = 8.12E-08, x1 = 2.9428, density = 1070,
@@ -2600,6 +2919,7 @@ return {
     },
 
     -- Tungsten
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tungsten_W.html
     Tungsten = {
         ZoA = 0.4025217, x0 = 0.2167, I = 7.27E-07, x1 = 3.496, density = 19300,
@@ -2608,6 +2928,7 @@ return {
     },
 
     -- Tungsten hexafluoride
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tungsten_hexafluoride.html
     TungstenHexafluoride = {
         ZoA = 0.4297725, x0 = 0.302, I = 3.544E-07, x1 = 4.2602, density = 2400,
@@ -2616,6 +2937,7 @@ return {
     },
 
     -- Uranium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/uranium_U.html
     Uranium = {
         ZoA = 0.3865075, x0 = 0.226, I = 8.9E-07, x1 = 3.3721, density = 18950,
@@ -2624,6 +2946,7 @@ return {
     },
 
     -- Uranium dicarbide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/uranium_dicarbide.html
     UraniumDicarbide = {
         ZoA = 0.3968701, x0 = 0.2191, I = 7.52E-07, x1 = 3.5208,
@@ -2632,6 +2955,7 @@ return {
     },
 
     -- Uranium monocarbide UC
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/uranium_monocarbide_UC.html
     UraniumMonocarbide = {
         ZoA = 0.3919377, x0 = 0.2524, I = 8.62E-07, x1 = 3.4941,
@@ -2640,6 +2964,7 @@ return {
     },
 
     -- Uranium oxide
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/uranium_oxide.html
     UraniumOxide = {
         ZoA = 0.3999592, x0 = 0.1938, I = 7.206E-07, x1 = 3.5292,
@@ -2648,6 +2973,7 @@ return {
     },
 
     -- Urea
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/urea.html
     Urea = {
         ZoA = 0.5327825, x0 = 0.1603, I = 7.28E-08, x1 = 2.6525, density = 1323,
@@ -2656,6 +2982,7 @@ return {
     },
 
     -- Valine
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/valine.html
     Valine = {
         ZoA = 0.5462495, x0 = 0.1441, I = 6.77E-08, x1 = 2.6227, density = 1230,
@@ -2664,6 +2991,7 @@ return {
     },
 
     -- Vanadium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/vanadium_V.html
     Vanadium = {
         ZoA = 0.4514983, x0 = 0.0691, I = 2.45E-07, x1 = 3.0322, density = 6110,
@@ -2672,6 +3000,7 @@ return {
     },
 
     -- Viton fluoroelastomer
+    -- Category: polymers
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/viton_fluoroelastomer.html
     VitonFluoroelastomer = {
         ZoA = 0.4858445, x0 = 0.2106, I = 9.86E-08, x1 = 2.7874, density = 1800,
@@ -2679,7 +3008,17 @@ return {
         elements = {H = 0.009417, C = 0.280555, F = 0.710028}
     },
 
+    -- Water liquid
+    -- Category: inorganics
+    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/water_liquid.html
+    Water = {
+        ZoA = 0.5550013, x0 = 0.24, I = 7.97E-08, x1 = 2.8004, density = 1000,
+        delta0 = 0, state = 'liquid', k = 3.4773, a = 0.0912, Cbar = 3.5017,
+        elements = {O = 0.888106, H = 0.111894}
+    },
+
     -- Water ice
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/water_ice.html
     WaterIce = {
         ZoA = 0.5550013, x0 = 0.2586, I = 7.97E-08, x1 = 2.819, density = 918,
@@ -2687,15 +3026,8 @@ return {
         elements = {O = 0.888106, H = 0.111894}
     },
 
-    -- Water liquid
-    -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/water_liquid.html
-    WaterLiquid = {
-        ZoA = 0.5550013, x0 = 0.24, I = 7.97E-08, x1 = 2.8004, density = 1000,
-        delta0 = 0, state = 'liquid', k = 3.4773, a = 0.0912, Cbar = 3.5017,
-        elements = {O = 0.888106, H = 0.111894}
-    },
-
     -- Water vapor
+    -- Category: inorganics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/water_vapor.html
     WaterVapor = {
         ZoA = 0.5550013, x0 = 1.7952, I = 7.16E-08, x1 = 4.3437,
@@ -2704,6 +3036,7 @@ return {
     },
 
     -- Xenon gas
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/xenon_gas_Xe.html
     XenonGas = {
         ZoA = 0.4112907, x0 = 1.5631, I = 4.82E-07, x1 = 4.7372,
@@ -2712,6 +3045,7 @@ return {
     },
 
     -- Xylene
+    -- Category: organics
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/xylene.html
     Xylene = {
         ZoA = 0.5462418, x0 = 0.1695, I = 6.18E-08, x1 = 2.5675, density = 870,
@@ -2720,6 +3054,7 @@ return {
     },
 
     -- Ytterbium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ytterbium_Yb.html
     Ytterbium = {
         ZoA = 0.404498, x0 = 0.1144, I = 6.84E-07, x1 = 3.6191, density = 6903,
@@ -2728,6 +3063,7 @@ return {
     },
 
     -- Yttrium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/yttrium_Y.html
     Yttrium = {
         ZoA = 0.4386665, x0 = 0.3608, I = 3.79E-07, x1 = 3.5542, density = 4469,
@@ -2736,6 +3072,7 @@ return {
     },
 
     -- Yttrium aluminum oxide 1
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/yttrium_aluminum_oxide_1.html
     YttriumAluminumOxide1 = {
         ZoA = 0.4637388, x0 = 0.2, I = 2.393E-07, x1 = 3, density = 5500,
@@ -2744,6 +3081,7 @@ return {
     },
 
     -- Yttrium aluminum oxide 2
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/yttrium_aluminum_oxide_2.html
     YttriumAluminumOxide2 = {
         ZoA = 0.4683154, x0 = 0.2, I = 2.18E-07, x1 = 3, density = 4560,
@@ -2752,6 +3090,7 @@ return {
     },
 
     -- Yttrium bromide
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/yttrium_bromide.html
     YttriumBromide = {
         ZoA = 0.4381986, x0 = 0.2831, I = 4.1E-07, x1 = 3, density = 5290,
@@ -2760,6 +3099,7 @@ return {
     },
 
     -- Yttrium silicon oxide
+    -- Category: scintillators
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/yttrium_silicon_oxide.html
     YttriumSiliconOxide = {
         ZoA = 0.4617098, x0 = 0.2, I = 2.581E-07, x1 = 3, density = 4540,
@@ -2768,6 +3108,7 @@ return {
     },
 
     -- Zinc
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/zinc_Zn.html
     Zinc = {
         ZoA = 0.4588419, x0 = 0.0049, I = 3.3E-07, x1 = 3.3668, density = 7133,
@@ -2776,6 +3117,7 @@ return {
     },
 
     -- Zirconium
+    -- Category: elements
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/zirconium_Zr.html
     Zirconium = {
         ZoA = 0.4384801, x0 = 0.2957, I = 3.93E-07, x1 = 3.489, density = 6506,

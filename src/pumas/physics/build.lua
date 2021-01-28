@@ -34,14 +34,13 @@ local function tabulate_materials (_, args)
 
     local materials, composites, project, path, particle, energies, compile
     for k, v in pairs(args) do
-        if     k == 'materials' then materials = v
-        elseif k == 'composites' then composites = v
+        if k == 'composites' then composites = v
         elseif k == 'project' then project = v
         elseif k == 'path' then path = v
         elseif k == 'particle' then particle = v
         elseif k == 'energies' then energies = v
         elseif k == 'compile' then compile = v
-        else
+        elseif k ~= 'materials' then
             raise_error{
                 argname = k,
                 description = 'unknown argument'
@@ -162,47 +161,55 @@ local function tabulate_materials (_, args)
         if not ok then error(errmsg, 2) end
     end
 
-    if materials == nil then
+    if metatype(args.materials) ~= 'table' then
         raise_error{
             argname = 'materials',
-            expected = 'a string or a table',
-            got = 'nil'
+            expected = 'a table',
+            got = metatype.a(args.materials)
         }
     else
-        local tp = type(materials)
-        if tp == 'string' then
-            materials = {materials}
-        elseif tp ~= 'table' then
-            raise_error{
-                argname = 'materials',
-                expected = 'a string or a table',
-                got = 'a '..tp
-            }
-        end
-    end
+        materials = {}
 
-    if #materials > 0 then
-        for _, name in ipairs(materials) do
+        for k, v in pairs(args.materials) do
+            local name, material
+            if type(k) == 'number' then
+                name = v
+                if type(name) == 'string' then
+                    material = material_.materials[name]
+                    if not material then
+                        raise_error{
+                            argname = 'materials',
+                            description = "unknown material '"..name.."'"
+                        }
+                    end
+                else
+                    raise_error{
+                        argname = 'materials',
+                        expected = 'a string',
+                        got = metatype.a(name)
+                    }
+                end
+            elseif type(k) == 'string' then
+                name, material = k, v
+                if metatype(material) ~= 'Material' then
+                    raise_error{
+                        argname = 'materials',
+                        expected = 'a Material table',
+                        got = metatype.a(material)
+                    }
+                end
+            end
+
             if materials[name] ~= nil then
                 raise_error{
                     argname = 'materials',
                     description = "duplicated material name '"..
                                   name.."'"
                 }
+            else
+                materials[name] = material
             end
-
-            local material = material_.materials[name]
-            if not material then
-                raise_error{
-                    argname = 'materials',
-                    description = "unknown material '"..name.."'"
-                }
-            end
-            materials[name] = material
         end
-
-        local n = #materials
-        for _ = 1, n do table.remove(materials) end
     end
 
     if composites ~= nil then
@@ -284,9 +291,11 @@ local function tabulate_materials (_, args)
             symbol, align1, e.Z, align2, e.A, align3, e.I * 1E+09, align4)
     end
 
+    local dedx_list = {}
     for _, name in ipairs(mlist) do
         xml:push('')
         local dedx = utils.snakify(name)..'.txt'
+        table.insert(dedx_list, dedx)
         local m = materials[name]
         xml:push('  <material name="%s" file="%s" density="%.7g">',
             name, dedx, m.density * 1E-03)
@@ -301,7 +310,7 @@ local function tabulate_materials (_, args)
         for symbol, wi in pairs(m.elements) do
             table.insert(tmp, {wi, symbol})
         end
-        table.sort(tmp, function (a, b) return a[1] >= b[1] end)
+        table.sort(tmp, function (a, b) return a[1] > b[1] end)
 
         for _, v in ipairs(tmp) do
             local pad = string.rep(" ", padmax2 - #v[2])
@@ -393,9 +402,9 @@ local function tabulate_materials (_, args)
         }
     end
 
+    local dump
     if compile then
         -- Generate a binary dump
-        local dump
         clib.pumas_physics_destroy(physics_)
         call(clib.pumas_physics_create, physics_, particle, mdf, path)
         dump = path..os.PATHSEP..project..'.pumas'
@@ -405,6 +414,8 @@ local function tabulate_materials (_, args)
     end
 
     clib.pumas_physics_destroy(physics_)
+
+    return {mdf = mdf, dedx = dedx_list, dump = dump}
 end
 
 

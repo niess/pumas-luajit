@@ -95,6 +95,24 @@ function Pdg.__index.get_index (target)
         return snake:gsub('[_-]', '')
     end
 
+    local exceptions = {
+        AcetyleneCHCH = 'Acetylene',
+        PolymethylmethacrylateAcrylic = 'Acrylic',
+        AirDry1Atm = 'Air',
+        BorosilicateGlassPyrexCorning7740 = 'BorosilicateGlass',
+        CarbonGemDiamond = 'CarbonDiamond',
+        Epotek3011 = 'EpoTek301',
+        GlucoseDextroseMonohydrate = 'Glucose',
+        M3WAX = 'M3Wax',
+        NylonDuPontElvamide8062M = 'NylonDuPontElvamide',
+        PolyethyleneTerephthalateMylar = 'Mylar',
+        PolyvinylchloridePVC = 'PVC',
+        PolyvinylideneChlorideSaran = 'PolyvinylideneChloride',
+        SiliconDioxideFusedQuartz = 'SiliconDioxide',
+        SolidCarbonDioxideDryIce = 'CarbonDioxideIce',
+        PolytetrafluoroethyleneTeflon = 'Teflon',
+        WaterLiquid = 'Water'}
+
     local elements, materials = {}, {}
     local categories = {'elements', 'inorganics', 'inorganics', 'inorganics',
         'scintillators', 'organics', 'polymers', 'mixtures', 'biologicals'}
@@ -123,7 +141,12 @@ function Pdg.__index.get_index (target)
 
                 if target ~= 'elements' then
                     local camel = camelify(ref:gsub('_%u%l?$', ''))
-                    materials[camel] = {reference = ref, element = name}
+                    local exception = exceptions[camel]
+                    if exception then
+                        camel = exception
+                    end
+                    materials[camel] = {reference = ref, element = name,
+                        category = category}
                 end
             end
         elseif target ~= 'elements' then
@@ -141,7 +164,13 @@ function Pdg.__index.get_index (target)
                         name = name:gsub('_%u%a*$', '')
                     end
                     name = camelify(name):gsub('^%d*', '')
-                    materials[name] = {reference = ref}
+                    name = name:gsub('ICRP$', '')
+                               :gsub('ICRU$', '')
+                    local exception = exceptions[name]
+                    if exception then
+                        name = exception
+                    end
+                    materials[name] = {reference = ref, category = category}
                 end
             end
         end
@@ -355,7 +384,7 @@ function Pdg.__index.generate_elements (path, verbose)
     local elements = {}
     for name, ref in pairs(index) do
         log(verbose, 'fetching PDG data for '..name)
-        table.insert(elements, {name, pdg.get_element(ref)})
+        table.insert(elements, {name, pdg.get_element(ref), ref})
     end
 
     table.sort(elements, function(a, b)
@@ -370,22 +399,26 @@ function Pdg.__index.generate_elements (path, verbose)
     log(verbose, 'generating '..path)
 
     local pdg_elements = {string.format([[
+-- Tabulated atomic elements from the Particle Data Group (PDG)
+-- Ref: %s/index.html
 return {
-    -- Standard atomic elements
-    -- Ref: %s/index.html]], pdg.url)}
+]], pdg.url)}
 
     for _, e in ipairs(elements) do
         local padding = (#e[1] == 1) and ' ' or ''
         table.insert(pdg_elements,
-            string.format('    %s%s = {A = %G, I = %G, Z = %d},',
-            e[1], padding, e[2].A, e[2].I * 1E-09, e[2].Z))
+            string.format(
+                '    -- Ref: %s/HTML/%s.html'..os.LINESEP..
+                '    %s%s = {A = %G, I = %G, Z = %d},',
+                pdg.url, e[3], e[1], padding, e[2].A, e[2].I * 1E-09, e[2].Z))
     end
-    table.insert(pdg_elements, [[
+    table.insert(pdg_elements, string.format([[
 
     -- Fictious Rockium element for Standard Rock
+    -- Ref: %s/standardrock.html
     Rk = {A = 22, I = 1.364E-07, Z = 11}
 }
-]])
+]], pdg.url))
 
     local source = table.concat(pdg_elements, os.LINESEP)
 
@@ -419,7 +452,7 @@ function Pdg.__index.generate_materials (path, verbose)
         local ok, result = pcall(
             pdg.get_material, datum.reference, datum.element)
         if ok then
-            insert(materials, {name, datum.reference, result})
+            insert(materials, {name, datum.reference, result, datum.category})
         else
             log(verbose, '--> failed to fetch PDG data from '..
                 dataurl(datum.reference))
@@ -446,7 +479,8 @@ return {
         local name = v[2]:gsub('_%u%l?$', '')
                          :gsub('^%w', function(a) return upper(a) end)
                          :gsub('[_]', ' ')
-        insert(pdg_materials, tab .. '-- ' .. name)
+        insert(pdg_materials, tab..'-- '..name)
+        insert(pdg_materials, format('%s-- Category: %s', tab, v[4]))
         insert(pdg_materials, format(
             '%s-- Ref: %s/HTML/%s.html', tab, pdg.url, v[2]))
         local mat = v[3]

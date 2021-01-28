@@ -5,7 +5,7 @@ local latitude, longitude = 45, 3
 local top_altitude = 1600
 
 -- Build the geometry, an Earth with a flat topography
-local atmosphere = pumas.GradientMedium('AirDry1Atm', {
+local atmosphere = pumas.GradientMedium('Air', {
     ['type'] = 'exponential', axis = 'vertical', lambda = -1E+04,
     z0 = 0, rho0 = 1.205})
 local geometry = pumas.EarthGeometry{medium = atmosphere, data = top_altitude}

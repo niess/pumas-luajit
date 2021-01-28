@@ -1,5 +1,6 @@
 build-*
-bin
+bin/*
+!docs/bin
 docs/site
 *.rock
 share

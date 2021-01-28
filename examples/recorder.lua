@@ -2,8 +2,8 @@ local pumas = require('pumas')
 
 -- Build the geometry, an Earth fully covered with sea
 local media = {}
-media['Atmosphere'] = pumas.GradientMedium('AirDry1Atm', {lambda = -1E+04})
-media['Sea'] = pumas.UniformMedium('WaterLiquid')
+media['Atmosphere'] = pumas.GradientMedium('Air', {lambda = -1E+04})
+media['Sea'] = pumas.UniformMedium('Water')
 media['Seabed'] = pumas.UniformMedium('StandardRock')
 
 local top_altitude, bottom_altitude = 100, -100
