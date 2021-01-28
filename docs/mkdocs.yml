@@ -19,8 +19,8 @@ nav:
     - Transform: api/coordinates/Transform.md
   - API &raquo; Data:
     - constants: api/data/constants.md
-    - ELEMENTS: api/data/ELEMENTS.md
-    - MATERIALS: api/data/MATERIALS.md
+    - elements: api/data/elements.md
+    - materials: api/data/materials.md
     - pdg: api/data/pdg.md
     - TopographyData: api/data/TopographyData.md
     - TopographyDataSet: api/data/TopographyDataSet.md

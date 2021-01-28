@@ -19,6 +19,7 @@ local pumas_cartesian_point_t = ffi.typeof('struct pumas_cartesian_point')
 local pumas_geodetic_point_t = ffi.typeof('struct pumas_geodetic_point')
 
 
+-- XXX Add extra frame parameters, e.g. declination
 function frame.LocalFrame (origin)
     if origin == nil then
         error.raise{

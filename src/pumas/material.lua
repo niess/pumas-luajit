@@ -3,18 +3,18 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
-local elements = require('pumas.elements')
+local element_ = require('pumas.element')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
 
-local materials = {}
+local material = {}
 
 
 -------------------------------------------------------------------------------
 -- Utility functions for computing stats over atomic element components
 -------------------------------------------------------------------------------
-function materials.compute_ZoA (elements_, ELEMENTS, raise_error)
-    ELEMENTS = ELEMENTS or elements.ELEMENTS
+function material.compute_ZoA (elements_, ELEMENTS, raise_error)
+    ELEMENTS = ELEMENTS or element_.ELEMENTS
     local ZoA = 0
     for symbol, wi in pairs(elements_) do
         local e = ELEMENTS[symbol]
@@ -34,8 +34,8 @@ function materials.compute_ZoA (elements_, ELEMENTS, raise_error)
     return ZoA
 end
 
-function materials.compute_ZoA_and_I (elements_, ELEMENTS, raise_error)
-    ELEMENTS = ELEMENTS or elements.ELEMENTS
+function material.compute_ZoA_and_I (elements_, ELEMENTS, raise_error)
+    ELEMENTS = ELEMENTS or element_.elements
     local ZoA, mee = 0, 0
     for symbol, wi in pairs(elements_) do
         local e = ELEMENTS[symbol]
@@ -118,7 +118,7 @@ do
         end
 
         if not ELEMENTS then
-            ELEMENTS = elements.ELEMENTS
+            ELEMENTS = element_.elements
         end
 
         local self = {}
@@ -157,10 +157,10 @@ do
         if I then
             check_number('I', I, 'GeV')
             self.I = I
-            self.ZoA = materials.compute_ZoA(
+            self.ZoA = material.compute_ZoA(
                 self.elements, ELEMENTS, raise_error)
         else
-            self.ZoA, self.I = materials.compute_ZoA_and_I(
+            self.ZoA, self.I = material.compute_ZoA_and_I(
                 self.elements, ELEMENTS, raise_error)
         end
         self.density = density
@@ -258,29 +258,29 @@ do
         return setmetatable(self, cls)
     end
 
-    materials.Material = setmetatable(Material, {__call = new})
+    material.Material = setmetatable(Material, {__call = new})
 end
 
 
 -------------------------------------------------------------------------------
 -- Build the Materials table
 -------------------------------------------------------------------------------
-materials.MATERIALS = require('pumas.data.materials')
-for k, v in pairs(materials.MATERIALS) do
-    materials.MATERIALS[k] = setmetatable(v, materials.Material)
+material.materials = require('pumas.data.materials')
+for k, v in pairs(material.materials) do
+    material.materials[k] = setmetatable(v, material.Material)
 end
 
 
 -------------------------------------------------------------------------------
 -- Register the subpackage
 -------------------------------------------------------------------------------
-function materials.register_to (t)
-    t.Material = materials.Material
-    t.MATERIALS = materials.MATERIALS
+function material.register_to (t)
+    t.Material = material.Material
+    t.materials = material.materials
 end
 
 
 -------------------------------------------------------------------------------
 -- Return the package
 -------------------------------------------------------------------------------
-return materials
+return material

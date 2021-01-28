@@ -8,7 +8,7 @@ local call = require('pumas.call')
 local compat = require('pumas.compat')
 local clib = require('pumas.clib')
 local error = require('pumas.error')
-local materials_ = require('pumas.materials')
+local material_ = require('pumas.material')
 local metatype = require('pumas.metatype')
 local composite = require('pumas.physics.composite')
 local readonly = require('pumas.readonly')
@@ -44,7 +44,7 @@ local function parse_composite (physics_, index)
     n_elements = tonumber(n_elements[0])
     local composition = parse_composition(index, n_elements, physics_._c[0])
 
-    local ZoA, I = materials_.compute_ZoA_and_I(
+    local ZoA, I = material_.compute_ZoA_and_I(
         composition, physics_.elements)
 
     return tonumber(density[0]), composition, ZoA, I
@@ -310,7 +310,7 @@ do
             n_elements = tonumber(n_elements[0])
             local composition = parse_composition(
                 index, n_elements, physics_._c[0])
-            local ZoA = materials_.compute_ZoA(composition, physics_.elements)
+            local ZoA = material_.compute_ZoA(composition, physics_.elements)
 
             properties = {
                 composite = false,

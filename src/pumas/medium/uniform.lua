@@ -6,7 +6,7 @@
 local ffi = require('ffi')
 local clib = require('pumas.clib')
 local error = require('pumas.error')
-local materials = require('pumas.materials')
+local material_ = require('pumas.material')
 local base = require('pumas.medium.base')
 
 local uniform = {}
@@ -62,9 +62,9 @@ do
         local self = base.BaseMedium.new(ctype, ctype_ptr, material)
 
         if density == nil then
-            local m = materials.MATERIALS[material]
+            local m = material_.materials[material]
             if m then
-                density = materials.MATERIALS[material].density
+                density = m.density
             else
                 raise_error{
                     argnum = 2,

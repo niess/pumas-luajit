@@ -25,6 +25,6 @@ print([[
    material name                       density
    (PDG scheme)                        (g/cm^3)
 ]])
-for k, v in pairs(pumas.MATERIALS) do
+for k, v in pairs(pumas.materials) do
     print(string.format('%-37s %8.5f', k, v.density * 1E-03))
 end

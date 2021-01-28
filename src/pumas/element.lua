@@ -6,7 +6,7 @@
 local compat = require('pumas.compat')
 local error = require('pumas.error')
 
-local elements = {}
+local element = {}
 
 
 -------------------------------------------------------------------------------
@@ -40,30 +40,30 @@ do
         return setmetatable(self, cls)
     end
 
-    elements.Element = setmetatable(Element, {__call = new})
+    element.Element = setmetatable(Element, {__call = new})
 end
 
 
 -------------------------------------------------------------------------------
 -- Build the Elements table
 -------------------------------------------------------------------------------
-elements.ELEMENTS = require('pumas.data.elements')
+element.elements = require('pumas.data.elements')
 
-for k, v in pairs(elements.ELEMENTS) do
-    elements.ELEMENTS[k] = setmetatable(v, Element)
+for k, v in pairs(element.elements) do
+    element.elements[k] = setmetatable(v, Element)
 end
 
 
 -------------------------------------------------------------------------------
 -- Register the subpackage
 -------------------------------------------------------------------------------
-function elements.register_to (t)
-    t.Element = elements.Element
-    t.ELEMENTS = elements.ELEMENTS
+function element.register_to (t)
+    t.Element = element.Element
+    t.elements = element.elements
 end
 
 
 -------------------------------------------------------------------------------
 -- Return the package
 -------------------------------------------------------------------------------
-return elements
+return element

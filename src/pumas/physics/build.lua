@@ -6,9 +6,9 @@
 local ffi = require('ffi')
 local call = require('pumas.call')
 local clib = require('pumas.clib')
-local elements = require('pumas.elements')
+local element_ = require('pumas.element')
 local error = require('pumas.error')
-local materials_ = require('pumas.materials')
+local material_ = require('pumas.material')
 local metatype = require('pumas.metatype')
 local os = require('pumas.os')
 local utils = require('pumas.physics.utils')
@@ -191,7 +191,7 @@ local function tabulate_materials (_, args)
                 }
             end
 
-            local material = materials_.MATERIALS[name]
+            local material = material_.materials[name]
             if not material then
                 raise_error{
                     argname = 'materials',
@@ -239,7 +239,7 @@ local function tabulate_materials (_, args)
         end
         for name, _ in pairs(material.elements) do
             if not composition[name] then
-                local element = elements.ELEMENTS[name]
+                local element = element_.elements[name]
                 if not element then
                     raise_error{
                         argname = 'materials',

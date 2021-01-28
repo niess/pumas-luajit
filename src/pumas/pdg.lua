@@ -4,7 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local error = require('pumas.error')
-local materials_ = require('pumas.materials')
+local material_ = require('pumas.material')
 local metatype = require('pumas.metatype')
 local os = require('pumas.os')
 
@@ -452,7 +452,7 @@ return {
         local mat = v[3]
         mat.density = mat.density * 1E+03 -- g/cm^3 -> kg/m^3
         mat.I = mat.I * 1E-09 -- eV -> GeV
-        mat = materials_.Material(mat)
+        mat = material_.Material(mat)
         local m = {}
         for k, v_ in pairs(mat) do
             if k == 'state' then

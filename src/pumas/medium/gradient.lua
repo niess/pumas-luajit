@@ -6,7 +6,7 @@
 local ffi = require('ffi')
 local clib = require('pumas.clib')
 local error = require('pumas.error')
-local materials = require('pumas.materials')
+local material_ = require('pumas.material')
 local base = require('pumas.medium.base')
 local metatype = require('pumas.metatype')
 
@@ -138,9 +138,9 @@ do
         -- Parse the gradient reference density
         local rho0
         if args.rho0 == nil then
-            local m = materials.MATERIALS[material]
+            local m = material_.materials[material]
             if m then
-                rho0 = materials.MATERIALS[material].density
+                rho0 = m.density
             else
                 raise_error{
                     argname = 'rho0', expected = 'a number', got = 'nil'}

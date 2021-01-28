@@ -296,7 +296,7 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_data_elements.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_data_igrf13.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_data_materials.lua.o \
-	      $(OBJS_DIR)/$(CROSS)pumas_elements.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_element.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_enum.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_error.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_flux.lua.o \
@@ -310,7 +310,7 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_header_gull.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_header_extensions.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_header_turtle.lua.o \
-	      $(OBJS_DIR)/$(CROSS)pumas_materials.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_material.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_medium.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_medium_base.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_medium_gradient.lua.o \
