@@ -15,6 +15,9 @@ local metatype = require('pumas.metatype')
 local earth = {}
 
 
+-- XXX Add a geoid metatype / interface ?
+
+
 -------------------------------------------------------------------------------
 -- The Earth geometry metatype
 -------------------------------------------------------------------------------
@@ -57,12 +60,10 @@ local function new (self)
 
         for j = #data, 1, -1 do
             local datum = data[j]
-            if type(datum._elevation) == 'number' then
-                call(datum._stepper_add, c.stepper[0],
-                        datum._elevation + datum.offset)
+            if datum._elevation then
+                call(datum._stepper_add, c.stepper[0], datum._c, datum.offset)
             else
-                call(datum._stepper_add, c.stepper[0],
-                        datum._c, datum.offset)
+                call(datum._stepper_add, c.stepper[0], datum.offset)
             end
         end
     end

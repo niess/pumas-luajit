@@ -468,7 +468,8 @@ void pumas_geometry_earth_get(struct pumas_geometry * base_geometry,
         if (medium_p != NULL) {
                 if ((index[0] >= 0) && (earth->media != NULL)) {
                         if (earth->n_layers > 1) {
-                                *medium_p = (index[0] < earth->n_layers) ?
+                                *medium_p = ((index[0] < earth->n_layers) &&
+                                    (elevation[1] != DBL_MAX)) ?
                                     earth->media[index[0]] : NULL;
                         } else {
                                 *medium_p = (extended->geodetic.altitude <

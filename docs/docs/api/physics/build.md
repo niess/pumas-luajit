@@ -38,11 +38,11 @@ pumas.build{materials[, compile, composites, energies, particle, path]}
 ``` lua
 pumas.build{
     -- List of base materials.
-    materials = {'StandardRock', 'WaterLiquid', 'AirDry1Atm'},
+    materials = {'Air', 'StandardRock', 'Water'},
 
     -- Composite (mixtures) of base materials with their mass fractions.
     composites = {
-        WetRock = {StandardRock = 0.7, WaterLiquid = 0.3}
+        WetRock = {StandardRock = 0.7, Water = 0.3}
     },
 
     -- Path to store the tabulations.

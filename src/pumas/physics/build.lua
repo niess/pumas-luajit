@@ -30,12 +30,9 @@ local function tabulate_materials (_, args)
         }
     end
 
-    -- XXX Simplify path / project
-
-    local materials, composites, project, path, particle, energies, compile
+    local materials, composites, path, particle, energies, compile
     for k, v in pairs(args) do
         if k == 'composites' then composites = v
-        elseif k == 'project' then project = v
         elseif k == 'path' then path = v
         elseif k == 'particle' then particle = v
         elseif k == 'energies' then energies = v
@@ -46,16 +43,6 @@ local function tabulate_materials (_, args)
                 description = 'unknown argument'
             }
         end
-    end
-
-    if project == nil then
-        project = 'materials'
-    elseif type(project) ~= 'string' then
-        raise_error{
-            argname = 'project',
-            expected = 'a string',
-            got = 'a '..type(project)
-        }
     end
 
     if compile == nil then
@@ -348,7 +335,7 @@ local function tabulate_materials (_, args)
     end
     xml:push('</pumas>')
 
-    local mdf = path..os.PATHSEP..project..'.xml'
+    local mdf = path..os.PATHSEP..'materials.xml'
     local f = io.open(mdf, 'w')
     f:write(xml:pop())
     f:close()
@@ -407,7 +394,7 @@ local function tabulate_materials (_, args)
         -- Generate a binary dump
         clib.pumas_physics_destroy(physics_)
         call(clib.pumas_physics_create, physics_, particle, mdf, path)
-        dump = path..os.PATHSEP..project..'.pumas'
+        dump = path..os.PATHSEP..'materials.pumas'
         local file = io.open(dump, 'w+')
         call(clib.pumas_physics_dump, physics_[0], file)
         file:close()

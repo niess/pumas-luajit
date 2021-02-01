@@ -10,6 +10,7 @@ local clib = require('pumas.clib')
 local compat = require('pumas.compat')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
+local type_ = require('pumas.coordinates.type')
 
 local topography = {}
 
@@ -20,28 +21,79 @@ local topography = {}
 local TopographyData = {__index={}}
 TopographyData.__index.__metatype = 'TopographyData'
 
+do
+    local pumas_geodetic_point_t = ffi.typeof('struct pumas_geodetic_point')
 
-function TopographyData.__index:elevation (x, y)
-    if (self == nil) or (x == nil) or (y == nil) then
-        local args = {self, x, y}
-        error.raise{
-            fname = 'elevation',
-            argnum = 'bad',
-            expected = 3,
-            got = #args
-        }
+    -- XXX Accept coordinates?
+    local function elevation (self, x, y)
+        if (self == nil) or (x == nil) then
+            local args = {self, x, y}
+            error.raise{
+                fname = 'elevation', argnum = 'bad', expected = '2 or 3',
+                got = #args}
+        end
+
+        if y == nil then
+            local geodetic
+            if ffi.istype(pumas_geodetic_point_t, x) then
+                geodetic = x
+            elseif (metatype(x) == 'Coordinates') or
+                ffi.istype('double [3]', x) then
+                geodetic = type_.GeodeticPoint():set(x)
+            else
+                error.raise{
+                    fname = 'elevation', argnum = 2,
+                    expected = 'a Coordinates ctype', got = metatype.a(x)}
+            end
+            x, y = geodetic.latitude, geodetic.longitude
+        else
+            local argnum, argval
+            if type(x) ~= 'number' then argnum, argval = 2, x end
+            if type(y) ~= 'number' then argnum, argval = 3, y end
+
+            if argnum then
+                error.raise{
+                    fname = 'elevation', argnum = argnum,
+                    expected = 'a number', got = metatype.a(argval)}
+            end
+        end
+
+        if self._elevation then
+            local z = ffi.new('double [1]')
+            local inside = ffi.new('int [1]')
+            call(self._elevation, self._c, x, y, z, inside)
+            if inside[0] == 1 then
+                return z[0] + self.offset
+            else
+                return nil
+            end
+        else
+            return self.offset
+        end
     end
 
-    if type(self._elevation) == 'number' then
-        return self._elevation + self.offset
-    else
-        local z = ffi.new('double [1]')
-        local inside = ffi.new('int [1]')
-        call(self._elevation, self._c, x, y, z, inside)
-        if inside[0] == 1 then
-            return z[0] + self.offset
+    error.register('TopographyData.__index.elevation')
+
+    function TopographyData:__index (k)
+        if k == '__metatype' then
+            return 'TopographyData'
+        elseif k == 'elevation' then
+            return elevation
+        elseif k == 'path' then
+            return self._path
         else
-            return nil
+            error.raise{
+                ['type'] = 'TopographyData', bad_member = k}
+        end
+    end
+
+    function TopographyData.__newindex (_, k)
+        if (k == 'path') or (k == 'elevation') then
+            error.raise{
+                ['type'] = 'TopographyData', not_mutable = k}
+        else
+            error.raise{
+                ['type'] = 'TopographyData', bad_member = k}
         end
     end
 end
@@ -79,41 +131,10 @@ end
 
 
 -------------------------------------------------------------------------------
--- Generic wrapper for topography data types
+-- The topography data constructor
 -------------------------------------------------------------------------------
-local function WrappedData (add, elevation)
-    local mt = {__index = {}}
-
-    mt.__index._stepper_add = add
-    if elevation then
-        mt.__index._elevation = elevation
-    end
-
-    for k, v in pairs(TopographyData.__index) do
-        mt.__index[k] = v
-    end
-
-    mt.__add = TopographyData.__add
-    mt.__sub = TopographyData.__sub
-
-    return mt
-end
-
-
--------------------------------------------------------------------------------
--- Wrapper for turtle_stack struct
--------------------------------------------------------------------------------
-local mt_stack = WrappedData(
-    clib.turtle_stepper_add_stack,
-    clib.turtle_stack_elevation)
-
-
--------------------------------------------------------------------------------
--- Wrapper for turtle_map struct
--------------------------------------------------------------------------------
-local mt_map = WrappedData(
-    clib.turtle_stepper_add_map,
-    function (self, x, y, z, inside)
+do
+    local function map_elevation (self, x, y, z, inside)
         local projection = clib.turtle_map_projection(self)
 
         if projection ~= nil then
@@ -124,25 +145,13 @@ local mt_map = WrappedData(
         end
 
         return clib.turtle_map_elevation(self, x, y, z, inside)
-    end)
+    end
 
-
--------------------------------------------------------------------------------
--- Wrapper for flat topography
--------------------------------------------------------------------------------
-local mt_flat = WrappedData(clib.turtle_stepper_add_flat)
-
-
--------------------------------------------------------------------------------
--- The topography data constructor
--------------------------------------------------------------------------------
-do
-    local function new (_, data)
+    local function new (cls, data, offset)
         if data == nil then data = 0 end
 
         local self = {}
-        self.offset = 0
-        local c, ptr, metatype_
+        local c, ptr
         local data_type = type(data)
         if data_type == 'string' then
             local mode, errmsg = lfs.attributes(data, 'mode')
@@ -157,28 +166,35 @@ do
                 c = ptr[0]
                 ffi.gc(c, function () clib.turtle_stack_destroy(ptr) end)
                 call(clib.turtle_stack_load, c)
-                metatype_ = mt_stack
+                self._stepper_add = clib.turtle_stepper_add_stack
+                self._elevation = clib.turtle_stack_elevation
             else
                 ptr = ffi.new('struct turtle_map *[1]')
                 call(clib.turtle_map_load, ptr, data)
                 c = ptr[0]
                 ffi.gc(c, function () clib.turtle_map_destroy(ptr) end)
-                metatype_ = mt_map
+                self._stepper_add = clib.turtle_stepper_add_map
+                self._elevation = map_elevation
             end
+            self.offset = offset or 0
+            self._path = data
         elseif data_type == 'number' then
-            self._elevation = data
-            metatype_ = mt_flat
+            if offset then
+                error.raise{
+                    fname = 'TopographyData', argnum = 'bad', expected = 1,
+                    got = 2}
+            end
+            self.offset = data
+            self._stepper_add = clib.turtle_stepper_add_flat
+            self._elevation = false
         else
             error.raise{
-                fname = 'TopographyData',
-                argnum = 1,
-                expected = 'a number or a string',
-                got = metatype.a(data)
-            }
+                fname = 'TopographyData', argnum = 1,
+                expected = 'a number or a string', got = metatype.a(data)}
         end
         self._c = c
 
-        return setmetatable(self, metatype_)
+        return setmetatable(self, cls)
     end
 
     topography.TopographyData = setmetatable(TopographyData, {__call = new})

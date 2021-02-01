@@ -50,8 +50,10 @@ pumas.CartesianPoint(coordinates)
 [CartesianVector](CartesianVector.md),
 [GeodeticPoint](GeodeticPoint.md),
 [HorizontalVector](HorizontalVector.md),
+[LocalFrame](LocalFrame.md),
 [SphericalPoint](SphericalPoint.md),
-[SphericalVector](SphericalVector.md).
+[SphericalVector](SphericalVector.md),
+[Transform](Transform.md).
 
 </div>
 

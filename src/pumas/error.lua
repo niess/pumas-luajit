@@ -51,12 +51,11 @@ do
                 api_functions[mt.__call] = k..'.__call'
             end
 
-            if rawget(v, '__index') then
-                register_meta(k, v, '__index')
-            end
-
-            if rawget(v, '__newindex') then
-                register_meta(k, v, '__newindex')
+            for _, attribute in ipairs{'__add', '__index', '__newindex',
+                '__sub'} do
+                if rawget(v, attribute) then
+                    register_meta(k, v, attribute)
+                end
             end
         end
     end
