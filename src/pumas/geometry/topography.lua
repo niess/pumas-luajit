@@ -204,9 +204,9 @@ end
 -------------------------------------------------------------------------------
 -- Topography data set
 -------------------------------------------------------------------------------
-local TopographyDataSet = {__index = {}}
+local TopographyDataset = {__index = {}}
 
-TopographyDataSet.__index.__metatype = 'TopographyDataSet'
+TopographyDataset.__index.__metatype = 'TopographyDataset'
 
 do
     local function add (self, t)
@@ -216,18 +216,25 @@ do
             new[i] = v + t
         end
 
-        return setmetatable(new, TopographyDataSet)
+        return setmetatable(new, TopographyDataset)
     end
 
-    TopographyDataSet.__add = add
+    TopographyDataset.__add = add
 
-    function TopographyDataSet:__sub (t)
+    function TopographyDataset:__sub (t)
         return add(self, -t)
     end
 end
 
+function TopographyDataset.__index:elevation (x, y)
+    for _, v in ipairs(self) do
+        local z = v:elevation(x, y)
+        if z then return z end
+    end
+end
+
 do
-    local raise_error = error.ErrorFunction{fname = 'TopographyDataSet'}
+    local raise_error = error.ErrorFunction{fname = 'TopographyDataset'}
 
     local function new (cls, ...)
         local nargs = select('#', ...)
@@ -263,8 +270,8 @@ do
         return setmetatable(self, cls)
     end
 
-    topography.TopographyDataSet =
-        setmetatable(TopographyDataSet, {__call = new})
+    topography.TopographyDataset =
+        setmetatable(TopographyDataset, {__call = new})
 end
 
 

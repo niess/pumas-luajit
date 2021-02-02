@@ -151,6 +151,5 @@ local carbon = pumas.elements['C']
 
 [constants](constants.md),
 [materials](materials.md),
-[pdg](pdg.md),
 [TopographyData](TopographyData.md),
-[TopographyDataSet](TopographyDataSet.md).
+[TopographyDataset](TopographyDataset.md).

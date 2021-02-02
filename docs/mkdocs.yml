@@ -21,9 +21,8 @@ nav:
     - constants: api/data/constants.md
     - elements: api/data/elements.md
     - materials: api/data/materials.md
-    - pdg: api/data/pdg.md
     - TopographyData: api/data/TopographyData.md
-    - TopographyDataSet: api/data/TopographyDataSet.md
+    - TopographyDataset: api/data/TopographyDataset.md
   - API &raquo; Geometry:
     - EarthGeometry: api/geometry/EarthGeometry.md
     - InfiniteGeometry: api/geometry/InfiniteGeometry.md

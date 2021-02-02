@@ -62,8 +62,7 @@ pumas.TopographyData(path[, offset])
 [constants](constants.md),
 [elements](elements.md),
 [materials](materials.md),
-[pdg](pdg.md),
-[TopographyDataSet](TopographyDataSet.md).
+[TopographyDataset](TopographyDataset.md).
 </div>
 
 

@@ -212,7 +212,7 @@ do
                     end
 
                     local mt = metatype(data)
-                    if (mt ~= 'table') and (mt ~= 'TopographyDataSet') then
+                    if (mt ~= 'table') and (mt ~= 'TopographyDataset') then
                         data = {data}
                     end
 

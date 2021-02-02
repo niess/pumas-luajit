@@ -26,6 +26,5 @@ local me = pumas.constants.ELECTRON_MASS
 
 [elements](elements.md),
 [materials](materials.md),
-[pdg](pdg.md),
 [TopographyData](TopographyData.md),
-[TopographyDataSet](TopographyDataSet.md).
+[TopographyDataset](TopographyDataset.md).

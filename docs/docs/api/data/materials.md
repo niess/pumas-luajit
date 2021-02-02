@@ -405,6 +405,5 @@ local rock = pumas.materials['StandardRock']
 
 [constants](constants.md),
 [elements](elements.md),
-[pdg](pdg.md),
 [TopographyData](TopographyData.md),
-[TopographyDataSet](TopographyDataSet.md).
+[TopographyDataset](TopographyDataset.md).
