@@ -3,7 +3,7 @@ site_description: A LuaJIT wrapper for PUMAS
 site_author: Valentin Niess
 copyright: LGPL-3.0
 
-repo_url: https://github.com/niess/pumas-luajit.git
+repo_url: https://github.com/niess/pumas-luajit
 edit_uri: edit/master/docs/docs
 
 nav:
