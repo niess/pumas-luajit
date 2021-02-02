@@ -13,12 +13,12 @@ vector of the 3D simulation space. Function arguments reported as
 The PUMAS library uses Cartesian coordinates for the simulation with a unique
 frame, refered to as the *simulation frame*. These coordinates are stored using
 a `double [3]` C array, see e.g. the *position* and *direction* attributes of a
-simulation [State](../physics/State.md#attributes).  The `double [3]` array is
-the most basic representation of a point or vector using Cartesian coordinates.
-Higher level representations are provided as [CartesianPoint](CartesianPoint.md)
-or [CartesianVector](CartesianVector.md).  These representations make explicit
-the point or vector type of the represented object. In addition to the *x*, *y*
-and *z* attributes, these object also have a *frame* attribute specifying the
+simulation [State](../physics/State.md#attributes).  The `double [3]` array is a
+basic representation of a point or vector using Cartesian coordinates.  Higher
+level representations are provided as [CartesianPoint](CartesianPoint.md) or
+[CartesianVector](CartesianVector.md).  These representations make explicit the
+point or vector type of the represented object. In addition to the *x*, *y* and
+*z* attributes, these object also have a *frame* attribute specifying the
 reference frame used by the coordinates. The absence of reference frame (`nil`)
 indicates that the coordinates are expressed in the simulation frame. Reference
 frames as specified as [Transform](Transform.md) objects w.r.t. the simulation
@@ -51,7 +51,7 @@ their respective constructors or converted in-place with the `Coordinates.set`
 method. There is one exception, though. Coordinates metatypes can not be cast to
 a `double [3]` array since this type does not have a specific constructor.
 Instead one must use the `Coordinates.get` method in order to convert a point or
-vector to its raw representation.
+vector to its basic representation.
 {: .justify}
 
 Changing the coordinates to a new reference frame is done with the
@@ -66,6 +66,7 @@ must be done explicitly beforehand, e.g. with the `Coordinates.clone` method.
     must explictly use the `Coordinates.transform` method if the intent is to
     change the coordinates to another frame, i.e. refer to the same point or
     vector but using another reference frame.
+    {: .justify}
 
 ## Examples
 
@@ -76,7 +77,16 @@ local position = pumas.GeodeticPoint(state.position)
 -- Get the angular coordinates of the simulation direction
 local frame = pumas.LocalFrame(position)
 local direction = pumas.HorizontalVector{frame = frame}:set(state.direction)
+
+-- Cast the direction to spherical coordinates in the simulation (ECEF) frame
+direction = pumas.SphericalVector(direction):transform(nil)
 ```
+
+!!! note
+    The `Coordinates.set` and `Coordinates.transform` methods return a reference
+    to `self` even though they operate in-place. This allows to chain them
+    conveniently.
+    {: .justify}
 
 ## See also
 

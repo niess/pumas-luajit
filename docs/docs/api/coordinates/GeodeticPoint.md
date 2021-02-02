@@ -7,14 +7,14 @@ _A metatype for representing a 3D point using geodetic coordinates._
 
 |Name|Type|Description|
 |----|----|-----------|
-|*latitude*|`double`| Geodetic latitude, in deg. |
+|*latitude* |`double`| Geodetic latitude, in deg. |
 |*longitude*|`double`| Geodetic longitude, in deg.|
-|*altitude*|`double`| Altitude w.r.t. the WGS84 ellipsoid, in m. |
+|*altitude* |`double`| Altitude w.r.t. the WGS84 ellipsoid, in m. |
 
 !!! note
-    Geodetic coordinates are w.r.t. the WGS84 ellipsoid, i.e. GPS coordinates.
-    In order to get the altitude w.r.t. the sea level one must correct from the
-    geoid undulations, e.g. by using an [EarthGeometry](EarthGeometry.md).
+    Geodetic coordinates are w.r.t. the WGS84 ellipsoid, e.g. as GPS
+    coordinates.  In order to get the altitude w.r.t. the sea level one must
+    correct from the geoid undulations.
     {: .justify}
 </div>
 
@@ -47,7 +47,7 @@ pumas.GeodeticPoint(coordinates)
 |*longitude*|`number` | Geodetic longitude, in deg.|
 |*altitude* |`number` | Altitude w.r.t. the WGS84 ellipsoid, in m. |
 ||||
-|*coordinates*|`Coordinates` or `double [3]`| Another Coordinates instance or a C array of coordinates, e.g. as returned by [State.position](../simulation/State.md:#attributes). |
+|*coordinates*|[Coordinates](Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md:#attributes). |
 
 ---
 
@@ -141,10 +141,9 @@ None, except *self*.
 <div markdown="1" class="shaded-box fancy">
 ## GeodeticPoint.set
 
-Set the point coordinates from another Coordinates instance or from a `double [3]`
-array of *x*, *y* and *z* Cartesian coordinates in the Earth-Centered
-Earth-Fixed (ECEF) frame. The input coordinates are transformed to the ECEF
-frame if needed, i.e.  if their *frame* attribute is not `nil`.
+Set the point coordinates from another [Coordinates](Coordinates.md) instance
+The input coordinates are transformed to the ECEF frame if needed, e.g.  if
+their *frame* attribute is not `nil`.
 {: .justify}
 
 ---
@@ -161,7 +160,7 @@ GeodeticPoint:set(coordinates)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*coordinates*|`Coordinates` or `double [3]`| Input coordinates.|
+|*coordinates*|[Coordinates](Coordinates.md)| Input coordinates.|
 
 !!! note
     The input coordinates must be a point instance

@@ -43,7 +43,7 @@ pumas.SphericalVector(coordinates)
 |*phi*  |`double`| &phi; angle counter-clockwise w.r.t. the x-axis, in radians. |
 |*frame*|[Transform](Transform.md) or `nil`| Transform representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
 ||||
-|*coordinates*|`Coordinates` or `double [3]`| Another Coordinates instance or a C array of coordinates, e.g. as returned by [State.direction](../simulation/State.md:#attributes). |
+|*coordinates*|[Coordinates](Coordinates.md)| Other vector coordinates e.g. as returned by [State.direction](../simulation/State.md:#attributes). |
 
 ### See also
 
@@ -91,7 +91,7 @@ None, except *self*.
 
 Get the vector coordinates in the simulation frame as a `double [3]` array of
 *x*, *y* and *z* Cartesian coordinates. The coordinates are prealably
-transformed to the simulation frame if needed, i.e.  if the *frame* attribute is
+transformed to the simulation frame if needed, e.g.  if the *frame* attribute is
 not `nil`.
 {: .justify}
 
@@ -125,10 +125,9 @@ None, except *self*.
 <div markdown="1" class="shaded-box fancy">
 ## SphericalVector.set
 
-Set the vector coordinates from another Coordinates instance or from a `double [3]`
-array of *x*, *y* and *z* Cartesian coordinates in the simulation frame. The
-input coordinates are transformed to the vector frame if needed, i.e.  if their
-*frame* attribute differs from the vector's one.
+Set the vector coordinates from another [Coordinates](Coordinates.md) instance.
+The input coordinates are transformed to the vector frame if needed, e.g.  if
+their *frame* attribute differs from the vector's one.
 {: .justify}
 
 ---
@@ -143,7 +142,7 @@ SphericalVector:set(coordinates)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*coordinates*|`Coordinates` or `double [3]`| Input coordinates.|
+|*coordinates*|[Coordinates](Coordinates.md)| Input coordinates.|
 
 !!! note
     The input coordinates must be a vector instance
