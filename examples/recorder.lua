@@ -2,15 +2,15 @@ local pumas = require('pumas')
 
 -- Build the geometry, an Earth fully covered with sea
 local media = {}
-media['Atmosphere'] = pumas.GradientMedium('Air', {lambda = -1E+04})
-media['Sea'] = pumas.UniformMedium('Water')
-media['Seabed'] = pumas.UniformMedium('StandardRock')
+media.atmosphere = pumas.GradientMedium('Air', {lambda = -1E+04})
+media.sea = pumas.UniformMedium('Water')
+media.seabed = pumas.UniformMedium('StandardRock')
 
 local top_altitude, bottom_altitude = 100, -100
 local geometry = pumas.EarthGeometry{
-    {medium = media['Atmosphere'], data = top_altitude   },
-    {medium = media['Sea'],        data = 0              },
-    {medium = media['Seabed'],     data = bottom_altitude}
+    {medium = media.atmosphere, data = top_altitude   },
+    {medium = media.sea,        data = 0              },
+    {medium = media.seabed,     data = bottom_altitude}
 }
 
 -- Initialise the Monte Carlo state below the sea bed

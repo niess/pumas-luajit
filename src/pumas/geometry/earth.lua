@@ -9,6 +9,8 @@ local clib = require('pumas.clib')
 local compat = require('pumas.compat')
 local error = require('pumas.error')
 local base = require('pumas.geometry.base')
+local readonly = require('pumas.readonly')
+local layer_ = require('pumas.geometry.layer')
 local topography = require('pumas.geometry.topography')
 local metatype = require('pumas.metatype')
 
@@ -35,26 +37,19 @@ local function new (self)
     c.base.reset = clib.pumas_geometry_earth_reset
     c.base.destroy = clib.pumas_geometry_earth_destroy
     c.media = self._media
-    c.n_layers = #self._layers
+    local layers = readonly.rawget(self.layers)
+    c.n_layers = #layers
 
     call(clib.turtle_stepper_create, c.stepper)
 
     if self._geoid_undulations then
-        local undulations
-        if metatype(self._geoid_undulations) == 'TopographyData' then
-            undulations = self._geoid_undulations
-        else
-            undulations = topography.TopographyData(self._geoid_undulations)
-        end
-
-        clib.turtle_stepper_geoid_set(c.stepper[0], undulations._c)
-        rawset(self, '_undulations', undulations)
+        clib.turtle_stepper_geoid_set(c.stepper[0], self._geoid_undulations._c)
     end
 
-    for i, layer in ipairs(self._layers) do
-        local _, data = unpack(layer)
+    for i = #layers, 1, -1 do
+        local data = layers[i].data
 
-        if i > 1 then
+        if i < #layers then
             call(clib.turtle_stepper_add_layer, c.stepper[0])
         end
 
@@ -70,7 +65,7 @@ local function new (self)
 
     c.magnet.workspace[0] = nil
     if self._magnet then
-        local date = self._date or '01/01/2020'
+        local date = self._date or '01/01/2021'
         local matches = {}
         for match in date:gmatch('(%d+)/*') do
             table.insert(matches, tonumber(match))
@@ -107,10 +102,12 @@ end
 
 
 function EarthGeometry:__index (k)
-    if k == 'magnet' then
-        return self._magnet
-    elseif k == 'date' then
+    if k == 'date' then
         return self._date
+    elseif k == 'geoid_undulations' then
+        return self._geoid_undulations
+    elseif k == 'magnet' then
+        return self._magnet
     elseif k == '_new' then
         return new
     else
@@ -149,15 +146,20 @@ function EarthGeometry:__newindex (k, v)
         end
 
         if k == 'geoid_undulations' then
-            if (mt == 'TopographyData') and
-                not ffi.istype('struct turtle_map *', v._c) then
+            local undulations
+            if metatype(v) == 'TopographyData' then
+                undulations = v
+            else
+                undulations = topography.TopographyData(v)
+            end
+
+            if not ffi.istype('struct turtle_map *', undulations._c) then
                 error.raise{
                     fname = k,
                     description = 'invalid TopographyData format'
                 }
             end
-
-            rawset(self, '_undulations', nil)
+            v = undulations
         end
 
         rawset(self, key, v)
@@ -183,16 +185,19 @@ do
             raise_error{argnum = 'bad', expected = '1 or more', got = 0}
         end
 
+        local self = base.BaseGeometry:new()
         local layers = compat.table_new(nargs, 0)
         local ilayer = 0
         local magnet, date, geoid_undulations
 
         local function add(args, index)
             for i, arg in ipairs(args) do
-                if arg.magnet then magnet = arg.magnet end
-                if arg.date then date = arg.date end
-                if arg.geoid_undulations then
-                    geoid_undulations = arg.geoid_undulations
+                if metatype(arg) == 'table' then
+                    if arg.magnet then magnet = arg.magnet end
+                    if arg.date then date = arg.date end
+                    if arg.geoid_undulations then
+                        geoid_undulations = arg.geoid_undulations
+                    end
                 end
 
                 local medium, data = arg.medium, arg.data
@@ -207,7 +212,7 @@ do
 
                     if not data then
                         raise_error{argnum = (index or i)..' (data)',
-                            expected = 'a TopographyData(Set) table',
+                            expected = 'a TopographyData(set) table',
                             got = metatype.a(data)}
                     end
 
@@ -216,34 +221,34 @@ do
                         data = {data}
                     end
 
-                    for j, datum in ipairs(data) do
-                        local mt_ = metatype(datum)
-                        if (mt_ == 'string') or (mt_ == 'number') then
-                            data[j] = topography.TopographyData(datum)
-                        elseif mt_ ~= 'TopographyData' then
-                            raise_error{argnum = (index or i)..' (data)',
-                                expected = 'a TopographyData table, a number \z
-                                    or a string', got = metatype.a(data)}
+                    if mt == 'TopographyDataset' then
+                        data = data:clone()
+                    else
+                        for j, datum in ipairs(data) do
+                            local mt_ = metatype(datum)
+                            if (mt_ == 'string') or (mt_ == 'number') then
+                                data[j] = topography.TopographyData(datum)
+                            elseif mt_ ~= 'TopographyData' then
+                                raise_error{argnum = (index or i)..' (data)',
+                                    expected = 'a TopographyData table, \z
+                                        a number or a string',
+                                        got = metatype.a(data)}
+                            end
                         end
+                        data = topography.TopographyDataset(data)
+                    end
+
+                    for _, datum in data:ipairs() do
+                        rawset(datum, '_geometry', self)
                     end
 
                     ilayer = ilayer + 1
-                    layers[ilayer] = {medium, data}
+                    layers[ilayer] = layer_.TopographyLayer(medium, data)
                 end
             end
         end
 
         add{...}
-
-        -- Revert the order of layers such that the first entry is the top
-        -- layer
-        do
-            local tmp = compat.table_new(#layers, 0)
-            for i, v in ipairs(layers) do
-                tmp[#layers - i + 1] = v
-            end
-            layers = tmp
-        end
 
         -- XXX Provide elevation and frame methods?
 
@@ -253,14 +258,13 @@ do
         local media = ffi.cast(pumas_medium_ptrarr, ffi.C.calloc(#layers, size))
         ffi.gc(media, ffi.C.free)
         for i, layer in ipairs(layers) do
-            if layer[1] ~= nil then
-                media[i - 1] = ffi.cast(pumas_medium_ptr, layer[1]._c)
+            if layer.medium ~= nil then
+                media[#layers - i] = ffi.cast(pumas_medium_ptr, layer.medium._c)
             end
         end
 
-        local self = base.BaseGeometry:new()
         self._media = media
-        self._layers = layers
+        self.layers = readonly.Readonly(layers)
 
         self = setmetatable(self, cls)
         self.magnet = magnet

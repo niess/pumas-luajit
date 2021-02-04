@@ -11,9 +11,11 @@ _A metatype for wrapping topography data._
 |*offset*|`number`| Global offset applied to the topography data.|
 
 !!! note
-    The data *offset* can be modified. Alternatively, one can also directly add
-    or subtract an offset to the [TopographyData](TopographyData.md) table. On
-    the contrary, the *path* attribute is readonly.
+    The data *offset* can be modified but not the *path* attribute. One can also
+    directly add or subtract a `number` offset to the
+    [TopographyData](TopographyData.md) table. Note that the result of this
+    operation is a shallow clone of the initial data as returned by
+    [TopographyData.clone](#topographydataclone).
     {: .justify }
 </div>
 
@@ -67,6 +69,37 @@ pumas.TopographyData(path[, offset])
 
 
 <div markdown="1" class="shaded-box fancy">
+## TopographyData.clone
+
+Get a shallow copy of the [TopographyData](TopographyData.md). The cloned
+object refers to the same data but with an independent offset. In order to
+get a deep copy of the data one should instead create a new instance with the
+[constructor](#constructor).
+{: .justify}
+
+### Synopsis
+```Lua
+TopographyData:clone()
+```
+
+### Arguments
+
+None, except *self*.
+
+### Returns
+
+|Type|Description|
+|----|-----------|
+|[TopographyData](TopographyData.md)| Shallow copy of the topography data.|
+
+
+### See also
+
+[TopographyData.elevation](#topographydataelevation)
+</div>
+
+
+<div markdown="1" class="shaded-box fancy">
 ## TopographyData.elevation
 
 Get the topography elevation at an Earth location. The input location can be
@@ -104,4 +137,8 @@ TopographyData:elevation(latitude, longitude)
     the altitude w.r.t. the WGS84 ellipsoid (e.g. the GPS altitude) one needs
     to correct from the geoid undulations.
     {: .justify}
+
+### See also
+
+[TopographyData.clone](#topographydataclone)
 </div>

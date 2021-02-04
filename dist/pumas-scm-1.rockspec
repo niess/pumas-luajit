@@ -37,6 +37,7 @@ build = {
       ['pumas.geometry.base'] = 'src/pumas/geometry/base.lua',
       ['pumas.geometry.earth'] = 'src/pumas/geometry/earth.lua',
       ['pumas.geometry.infinite'] = 'src/pumas/geometry/infinite.lua',
+      ['pumas.geometry.layer'] = 'src/pumas/geometry/layer.lua',
       ['pumas.geometry.polytope'] = 'src/pumas/geometry/polytope.lua',
       ['pumas.geometry.topography'] = 'src/pumas/geometry/topography.lua',
       ['pumas.header.api'] = 'src/pumas/header/api.lua',

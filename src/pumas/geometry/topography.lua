@@ -18,13 +18,11 @@ local topography = {}
 -------------------------------------------------------------------------------
 -- The topography data metatypes
 -------------------------------------------------------------------------------
-local TopographyData = {__index={}}
-TopographyData.__index.__metatype = 'TopographyData'
+local TopographyData = {}
 
 do
     local pumas_geodetic_point_t = ffi.typeof('struct pumas_geodetic_point')
 
-    -- XXX Accept coordinates?
     local function elevation (self, x, y)
         if (self == nil) or (x == nil) then
             local args = {self, x, y}
@@ -63,22 +61,44 @@ do
             local inside = ffi.new('int [1]')
             call(self._elevation, self._c, x, y, z, inside)
             if inside[0] == 1 then
-                return z[0] + self.offset
+                return z[0] + self._offset
             else
                 return nil
             end
         else
-            return self.offset
+            return self._offset
         end
     end
 
+    local function clone (self)
+        if not self then
+            error.raise{
+                fname = 'clone', argnum = 1,
+                expected = 'a TopographyData table', got = metatype.a(self)}
+        end
+
+        local new = {}
+        for k, v in pairs(self) do
+            if k ~= '_geometry' then
+                new[k] = v
+            end
+        end
+
+        return setmetatable(new, TopographyData)
+    end
+
+    error.register('TopographyData.__index.clone')
     error.register('TopographyData.__index.elevation')
 
     function TopographyData:__index (k)
         if k == '__metatype' then
             return 'TopographyData'
+        elseif k == 'clone' then
+            return clone
         elseif k == 'elevation' then
             return elevation
+        elseif k == 'offset' then
+            return self._offset
         elseif k == 'path' then
             return self._path
         else
@@ -87,8 +107,22 @@ do
         end
     end
 
-    function TopographyData.__newindex (_, k)
-        if (k == 'path') or (k == 'elevation') then
+    function TopographyData:__newindex (k, v)
+        if k == 'offset' then
+            if type(v) ~= 'number' then
+                error.raise{fname = 'offset', expected = 'a number',
+                    got = metatype.a(v)}
+            end
+
+            if v ~= self._offset then
+                self._offset = v
+
+                local geometry = rawget(self, '_geometry')
+                if geometry then
+                    geometry:_invalidate()
+                end
+            end
+        elseif (k == 'path') or (k == 'elevation') then
             error.raise{
                 ['type'] = 'TopographyData', not_mutable = k}
         else
@@ -105,17 +139,13 @@ end
 do
     local function add (t, v)
         if type(v) == 'number' then
-            local c = {}
-            for ki, vi in pairs(t) do
-                c[ki] = vi
-            end
-            c.offset = c.offset + v
+            local c = t:clone()
+            c._offset = c._offset + v
 
-            return setmetatable(c, getmetatable(t))
+            return c
         else
             error.raise{
-                fname = '__add',
-                argnum = 2,
+                fname = 'TopographyData.__add',
                 expected = 'a number',
                 got = metatype.a(v)
             }
@@ -137,7 +167,9 @@ do
     local function map_elevation (self, x, y, z, inside)
         local projection = clib.turtle_map_projection(self)
 
-        if projection ~= nil then
+        if projection == nil then
+            x, y = y, x
+        else
             local xmap = ffi.new('double [1]')
             local ymap = ffi.new('double [1]')
             clib.turtle_projection_project(projection, x, y, xmap, ymap)
@@ -176,7 +208,7 @@ do
                 self._stepper_add = clib.turtle_stepper_add_map
                 self._elevation = map_elevation
             end
-            self.offset = offset or 0
+            self._offset = offset or 0
             self._path = data
         elseif data_type == 'number' then
             if offset then
@@ -184,7 +216,7 @@ do
                     fname = 'TopographyData', argnum = 'bad', expected = 1,
                     got = 2}
             end
-            self.offset = data
+            self._offset = data
             self._stepper_add = clib.turtle_stepper_add_flat
             self._elevation = false
         else
@@ -206,8 +238,6 @@ end
 -------------------------------------------------------------------------------
 local TopographyDataset = {__index = {}}
 
-TopographyDataset.__index.__metatype = 'TopographyDataset'
-
 do
     local function add (self, t)
         local new = compat.table_new(#self, 0)
@@ -216,7 +246,7 @@ do
             new[i] = v + t
         end
 
-        return setmetatable(new, TopographyDataset)
+        return setmetatable({_set = new}, TopographyDataset)
     end
 
     TopographyDataset.__add = add
@@ -226,10 +256,72 @@ do
     end
 end
 
-function TopographyDataset.__index:elevation (x, y)
-    for _, v in ipairs(self) do
-        local z = v:elevation(x, y)
-        if z then return z end
+function TopographyDataset:__len ()
+    return #self._set
+end
+
+do
+    local function clone (self)
+        if not self then
+            error.raise{fname = 'clone', argnum = 1,
+                expected = 'a TopographyDataset table', got = metatype.a(self)}
+        else
+            local new = {}
+            for k, v in pairs(self._set) do
+                new[k] = v:clone()
+            end
+
+            return setmetatable({_set = new}, TopographyDataset)
+        end
+    end
+
+    local function elevation (self, x, y)
+        if not self then
+            error.raise{fname = 'elevation', argnum = 1,
+                expected = 'a TopographyDataset', got = metatype.a(self)}
+        end
+
+        for _, v in ipairs(self._set) do
+            local z = v:elevation(x, y)
+            if z then return z end
+        end
+    end
+
+    local function ipairs_ (self)
+        if not self then
+            error.raise{fname = 'ipairs', argnum = 1,
+                expected = 'a TopographyDataset', got = metatype.a(self)}
+        end
+
+        return ipairs(self._set)
+    end
+
+    error.register('TopographyDataset.__index.clone', clone)
+    error.register('TopographyDataset.__index.elevation', elevation)
+    error.register('TopographyDataset.__index.ipairs', ipairs_)
+
+    function TopographyDataset:__index (k)
+        if type(k) == 'number' then
+            return self._set[k]
+        elseif k == '__metatype' then
+            return 'TopographyDataset'
+        elseif k == 'clone' then
+            return clone
+        elseif k == 'elevation' then
+            return elevation
+        elseif k == 'ipairs' then
+            return ipairs_
+        else
+            error.raise{['type'] = 'TopographyDataset', bad_member = k}
+        end
+    end
+
+    function TopographyDataset.__newindex (_, k)
+        if (type(k) == 'number') or (k == 'clone') or (k == 'elevation') then
+            error.raise{['type'] = 'TopographyDataset', not_mutable = k}
+        else
+            error.raise{['type'] = 'TopographyDataset', bad_member = k}
+        end
     end
 end
 
@@ -242,7 +334,7 @@ do
             raise_error{argnum = 'bad', expected = '1 or more', got = 0}
         end
 
-        local self = compat.table_new(nargs, 0)
+        local set = compat.table_new(nargs, 0)
         local iarg = 0
 
         local function add (args, index)
@@ -250,10 +342,10 @@ do
                 local mt = metatype(arg)
                 if mt == 'TopographyData' then
                     iarg = iarg + 1
-                    self[iarg] = arg
+                    set[iarg] = arg:clone()
                 elseif (mt == 'string') or (mt == 'number') then
                     iarg = iarg + 1
-                    self[iarg] = TopographyData(arg)
+                    set[iarg] = TopographyData(arg)
                 elseif mt == 'table' then
                     add(arg, index or i)
                 else
@@ -267,7 +359,7 @@ do
 
         add({...})
 
-        return setmetatable(self, cls)
+        return setmetatable({_set = set}, cls)
     end
 
     topography.TopographyDataset =

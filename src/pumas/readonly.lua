@@ -46,11 +46,36 @@ do
         return pairs(self.table)
     end
 
+    local inspect
+
+    local function inspect_ (self)
+        if self == nil then
+            error.raise{fname = 'inspect', argnum = 1, expected = 'a table',
+                got = 'nil'}
+        end
+
+        if not inspect then
+            local ok, result = pcall(require, 'inspect')
+            if not ok then
+                error.raise{fname = 'inspect', description = result}
+            else
+                inspect = result
+            end
+        end
+
+        return inspect(instances[self], {process = function (item)
+            return instances[item] or item
+        end})
+    end
+
     error.register('Readonly.__ipairs', ipairs_)
     error.register('Readonly.__pairs', pairs_)
+    error.register('Readonly.__index.inspect', inspect_)
 
     function Readonly:__index (k)
-        if k == 'ipairs' then
+        if k == 'inspect' then
+            return inspect_
+        elseif k == 'ipairs' then
             return ipairs_
         elseif k == 'pairs' then
             return pairs_

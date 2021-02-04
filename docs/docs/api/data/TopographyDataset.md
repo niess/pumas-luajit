@@ -2,17 +2,17 @@
 _A metatype for an ordered set of topography data._
 
 
+<div markdown="1" class="shaded-box fancy">
 ## Attributes
 
 |Name|Type|Description|
 |----|----|-----------|
-|*[i]*  |`number`| The *i<sup>th</sup>* data member of the collection.|
+|*[i]*  |[TopographyData](TopographyData.md)| The *i<sup>th</sup>* data member of the set.|
 
 !!! note
-    This metatype is equivalent to a Lua table of
-    [TopographyData](TopographyData.md) instances indexed by numbers.  One can
-    directly add or subtract an offset number to the
-    [TopographyDataset](TopographyDataset.md) table resulting in all its data
+    The structure of the set cannot be modified. The properties of its members
+    are mutable however, e.g. their offset. The set also supports addition and
+    subtraction operations with a `number` resultint resulting in all its data
     members being offset.
     {: .justify }
 </div>
@@ -21,20 +21,22 @@ _A metatype for an ordered set of topography data._
 <div markdown="1" class="shaded-box fancy">
 ## Constructor
 
-The [TopographyDataset](TopographyDataset.md) constructor takes a table of
-*data* as argument or a variable number of *data* arguments. Each *data* element
-can be either a [TopographyData](TopographyData.md) object or one of its
-constructor arguments, i.e. a *path* `string` or an *offset* `number` for a
-geoid.
+A [TopographyDataset](TopographyDataset.md) represents an union of various data
+referering to a same topography. It behaves as a
+[TopographyData](TopographyData.md) but considering the *best* data available in
+its set.  The constructor takes a table of *data* as argument or a variable
+number of *data* arguments. Each *data* element can be either a
+[TopographyData](TopographyData.md) object or one of its
+[constructor](TopographyData.md#constructor) arguments, i.e. a *path* `string`
+or an *offset* `number` for a geoid. The order in which the *data* elements are
+specified in the constructor does matter. Elements defined first have
+precedence, e.g.  when requesting the topography elevation.
 {: .justify }
 
 !!! note
-    A [TopographyDataset](TopographyDataset.md) represents an union of various
-    data referering to a same topography. It behaves as a
-    [TopographyData](TopographyData.md) but considering the *best* data
-    available in its set. The order in which the *data* elements are specified
-    in the constructor does matter. Elements defined first have precedence, e.g.
-    when requesting the topography elevation.
+    When providing a [TopographyData](TopographyData.md) argument a shallow copy
+    is done. The set instance refers to the same input data but with an
+    independent offset.
     {: .justify }
 
 ### Synopsis
@@ -63,6 +65,37 @@ pumas.TopographyDataset(data[, ...])
 [elements](elements.md),
 [materials](materials.md),
 [TopographyData](TopographyData.md).
+</div>
+
+
+<div markdown="1" class="shaded-box fancy">
+## TopographyDataset.clone
+
+Get a shallow copy of the [TopographyDataset](TopographyDataset.md). The cloned
+data members to the same data than in the initial set but with independent
+offsets. In order to get a deep copy of the data one should instead create a
+new instance with the [constructor](#constructor).
+{: .justify}
+
+### Synopsis
+```Lua
+TopographyDataset:clone()
+```
+
+### Arguments
+
+None, except *self*.
+
+### Returns
+
+|Type|Description|
+|----|-----------|
+|[TopographyDataset](TopographyDataset.md)| Shallow copy of the topography dataset.|
+
+### See also
+
+[TopographyDataset.elevation](topographydatasetelevation),
+[TopographyDataset.ipairs](topographydatasetipairs).
 </div>
 
 
@@ -98,11 +131,46 @@ TopographyDataset:elevation(latitude, longitude)
 
 |Type|Description|
 |----|-----------|
-|`number` or `nil`| Topography elevation, in m, or `nil` if there are no data for the requested location.|
+|`number` or `nil`| Topography elevation, in m, or `nil` if there are no data in the set for the requested location.|
 
 !!! note
     Topography data are usually provided w.r.t. the sea level. In order to get
     the altitude w.r.t. the WGS84 ellipsoid (e.g. the GPS altitude) one needs
     to correct from the geoid undulations.
     {: .justify}
+
+### See also
+
+[TopographyDataset.clone](topographydatasetclone),
+[TopographyDataset.ipairs](topographydatasetipairs).
+</div>
+
+
+<div markdown="1" class="shaded-box fancy">
+## TopographyDataset.ipairs
+
+Stateless iterator over the set data members. This method behaves as the
+`ipairs` Lua function.
+{: .justify}
+
+### Synopsis
+```Lua
+TopographyDataset:ipairs()
+```
+
+### Arguments
+
+None, except *self*.
+
+### Returns
+
+|Type|Description|
+|----|-----------|
+|`function`| Stateless iterator over the set data members.|
+
+### See also
+
+[TopographyDataset.clone](topographydatasetclone),
+[TopographyDataset.elevation](topographydatasetelevation).
+
 </div>
