@@ -61,6 +61,7 @@ end
 -- Note: this is an incomplete metatype intended to be inherited. It provides
 -- common functionalities for media types.
 -------------------------------------------------------------------------------
+-- XXX Allow to provide an optional name?
 local BaseMedium = {}
 base.BaseMedium = BaseMedium
 

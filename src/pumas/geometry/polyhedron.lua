@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
--- Convex polytope geometry for PUMAS
+-- Convex polyhedron geometry for PUMAS
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
@@ -11,17 +11,17 @@ local base = require('pumas.geometry.base')
 local medium = require('pumas.medium')
 local metatype = require('pumas.metatype')
 
-local polytope = {}
+local polyhedron = {}
 
 
 -------------------------------------------------------------------------------
--- The polytope geometry metatype
+-- The polyhedron geometry metatype
 -------------------------------------------------------------------------------
-local PolytopeGeometry = {}
+local PolyhedronGeometry = {}
 
-local ctype = ffi.typeof('struct pumas_geometry_polytope')
-local ctype_ptr = ffi.typeof('struct pumas_geometry_polytope *')
-local pumas_polytope_face_t = ffi.typeof('struct pumas_polytope_face')
+local ctype = ffi.typeof('struct pumas_geometry_polyhedron')
+local ctype_ptr = ffi.typeof('struct pumas_geometry_polyhedron *')
+local pumas_polyhedron_face_t = ffi.typeof('struct pumas_polyhedron_face')
 local pumas_geometry_ptr = ffi.typeof('struct pumas_geometry *')
 local pumas_medium_ptr = ffi.typeof('struct pumas_medium *')
 
@@ -73,7 +73,7 @@ local function intersect3 (x1, n1, x2, n2, x3, n3, x)
 end
 
 
-local function convert_polytope (poly, color, all_vertices, all_faces)
+local function convert_polyhedron (poly, color, all_vertices, all_faces)
     -- Find the vertices
     local vertices = {}
     do
@@ -187,8 +187,8 @@ local function convert_polytope (poly, color, all_vertices, all_faces)
     -- Convert daughter volumes
     local daughter = poly.base.daughters
     while daughter ~= nil do
-        local p = ffi.cast('struct pumas_geometry_polytope *', daughter)
-        convert_polytope(p, color, all_vertices, all_faces)
+        local p = ffi.cast('struct pumas_geometry_polyhedron *', daughter)
+        convert_polyhedron(p, color, all_vertices, all_faces)
         daughter = daughter.next
     end
 end
@@ -198,7 +198,7 @@ local ply_initialised = false
 
 local function export_ply (self, path, color)
     local vertices, faces = {}, {}
-    convert_polytope(self._refs[1], color, vertices, faces)
+    convert_polyhedron(self._refs[1], color, vertices, faces)
 
     if not ply_initialised then
         ffi.cdef([[
@@ -295,27 +295,38 @@ do
             end
         else
             raise_error{
-                argname = 'color',
-                expected = 'a table or function',
-                got = metatype.a(options.color)
-            }
+                argname = 'color', expected = 'a table or a function',
+                got = metatype.a(options.color)}
         end
 
-        local extension = path:match('^.+(%..+)$')
-        local lext = extension:lower()
-        if lext == '.ply' then
+        local format, argnum, argname
+        if options.format then
+            argname = 'format'
+            format = options.format
+        else
+            argnum = 2
+            format = path:match('^.+%.(.+)$')
+        end
+
+        if type(format) ~= 'string' then
+            raise_error{
+                argname = 'format', expected = 'a string',
+                got = metatype.a(format)}
+        end
+        format = format:lower()
+
+        if format == 'ply' then
             export_ply(self, path, color)
         else
             raise_error{
-                argnum = 2,
-                description = 'unknown format '..extension
-            }
+                argnum = argnum, argname = argname,
+                description = 'unknown format '..format}
         end
     end
 end
 
 
-function PolytopeGeometry.__index (_, k)
+function PolyhedronGeometry.__index (_, k)
     if k == '_new' then
         return new
     elseif k == 'export' then
@@ -334,16 +345,16 @@ end
 
 
 -------------------------------------------------------------------------------
--- The polytope geometry constructor
+-- The polyhedron geometry constructor
 -------------------------------------------------------------------------------
 local point, vector
 
-local function build_polytopes (args, frame, refs, depth, index)
+local function build_polyhedrons (args, frame, refs, depth, index)
     local medium_, data, daughters = args[1], args[2], args[3]
 
     if (medium_ ~= nil) and (medium_.__metatype ~= 'Medium') then
         error.raise{
-            fname = 'Polytope '..get_tag(depth, index),
+            fname = 'Polyhedron '..get_tag(depth, index),
             argnum = 1,
             expected = 'a Medium table',
             got = metatype.a(medium)
@@ -352,7 +363,7 @@ local function build_polytopes (args, frame, refs, depth, index)
 
     if type(data) ~= 'table' then
         error.raise{
-            fname = 'Polytope '..get_tag(depth, index),
+            fname = 'Polyhedron '..get_tag(depth, index),
             argnum = 2,
             expected = 'a table',
             got = metatype.a(data)
@@ -362,7 +373,7 @@ local function build_polytopes (args, frame, refs, depth, index)
     local n_faces = math.floor(#data / 6)
     if #data ~= 6 * n_faces then
         error.raise{
-            fname = 'Polytope '..get_tag(depth, index),
+            fname = 'Polyhedron '..get_tag(depth, index),
             argnum = 2,
             expected = 'n x 6 values',
             got = #data
@@ -371,7 +382,7 @@ local function build_polytopes (args, frame, refs, depth, index)
 
     if (daughters ~= nil) and (type(daughters) ~= 'table') then
         error.raise{
-            fname = 'Polytope '..get_tag(depth, index),
+            fname = 'Polyhedron '..get_tag(depth, index),
             argnum = 3,
             expected = 'nil or a table',
             got = metatype.a(daughters)
@@ -379,12 +390,12 @@ local function build_polytopes (args, frame, refs, depth, index)
     end
 
     local size = ffi.sizeof(ctype) +
-                 n_faces * ffi.sizeof(pumas_polytope_face_t)
+                 n_faces * ffi.sizeof(pumas_polyhedron_face_t)
     local mother = ffi.cast(ctype_ptr, ffi.C.calloc(1, size))
     ffi.gc(mother, ffi.C.free)
     table.insert(refs, mother)
 
-    mother.base.get = clib.pumas_geometry_polytope_get
+    mother.base.get = clib.pumas_geometry_polyhedron_get
     if medium_ ~= nil then
         mother.medium = ffi.cast(pumas_medium_ptr, medium_._c)
         refs[medium_._c] = true
@@ -423,7 +434,7 @@ local function build_polytopes (args, frame, refs, depth, index)
     if daughters ~= nil then
         local last_daughter
         for i, daughter_args in ipairs(daughters) do
-            local daughter = build_polytopes(daughter_args, frame, refs,
+            local daughter = build_polyhedrons(daughter_args, frame, refs,
                                              depth + 1, i)
             if i == 1 then
                 mother.daughters = daughter
@@ -441,7 +452,7 @@ end
 
 local function load_ply (_)
     error.raise{
-        fname = 'PolytopeGeometry.load',
+        fname = 'PolyhedronGeometry.load',
         description = 'PLY format not implemented'
     }
 end
@@ -461,7 +472,7 @@ do
             args = load_ply(args)
         end
 
-        build_polytopes(args, frame, self._refs, 1, 0)
+        build_polyhedrons(args, frame, self._refs, 1, 0)
 
         if frame ~= nil then
             point = nil
@@ -471,11 +482,12 @@ do
         return setmetatable(self, cls)
     end
 
-    polytope.PolytopeGeometry = setmetatable(PolytopeGeometry, {__call = new_})
+    polyhedron.PolyhedronGeometry = setmetatable(PolyhedronGeometry,
+        {__call = new_})
 end
 
 
 -------------------------------------------------------------------------------
 -- Return the package
 -------------------------------------------------------------------------------
-return polytope
+return polyhedron

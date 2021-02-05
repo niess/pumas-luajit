@@ -305,7 +305,7 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_geometry_earth.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_geometry_infinite.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_geometry_layer.lua.o \
-	      $(OBJS_DIR)/$(CROSS)pumas_geometry_polytope.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_geometry_polyhedron.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_geometry_topography.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_header_api.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_header_gull.lua.o \

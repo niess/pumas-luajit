@@ -26,7 +26,7 @@ nav:
   - API &raquo; Geometry:
     - EarthGeometry: api/geometry/EarthGeometry.md
     - InfiniteGeometry: api/geometry/InfiniteGeometry.md
-    - PolytopeGeometry: api/geometry/PolytopeGeometry.md
+    - PolyhedronGeometry: api/geometry/PolyhedronGeometry.md
     - TopographyLayer: api/geometry/TopographyLayer.md
   - API &raquo; Medium:
     - GradientMedium: api/medium/GradientMedium.md

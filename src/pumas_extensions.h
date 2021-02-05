@@ -170,22 +170,22 @@ void pumas_geometry_earth_reset(struct pumas_geometry * geometry);
 /* Finaliser for the Earth geometry */
 void pumas_geometry_earth_destroy(struct pumas_geometry * geometry);
 
-/* Data for the Polytope geometry */
-struct pumas_polytope_face {
+/* Data for the Polyhedron geometry */
+struct pumas_polyhedron_face {
         double origin[3];
         double normal[3];
 };
 
-struct pumas_geometry_polytope {
+struct pumas_geometry_polyhedron {
         struct pumas_geometry base;
         struct pumas_medium * medium;
 
         int n_faces;
-        struct pumas_polytope_face faces[];
+        struct pumas_polyhedron_face faces[];
 };
 
-/* Getter for a Polytope geometry */
-void pumas_geometry_polytope_get(struct pumas_geometry * geometry,
+/* Getter for a Polyhedron geometry */
+void pumas_geometry_polyhedron_get(struct pumas_geometry * geometry,
     struct pumas_state * state, struct pumas_medium ** medium_p,
     double * step_p);
 

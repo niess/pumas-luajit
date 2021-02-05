@@ -7,7 +7,7 @@ _A metatype for representing a geometry of infinite extension._
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium*|[Medium](../physics/Medium.md)| The constitutive medium. |
+|*medium*|[Medium](../medium/Medium.md)| The constitutive medium. |
 </div>
 
 <div markdown="1" class="shaded-box fancy">
@@ -27,7 +27,7 @@ pumas.InfiniteGeometry(medium)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium*|[Medium](../physics/Medium.md)| The constitutive medium. |
+|*medium*|[Medium](../medium/Medium.md)| The constitutive medium. |
 
 ---
 

@@ -278,7 +278,7 @@ enum pumas_step pumas_geometry_medium(struct pumas_context * context,
                           &user_data->geometry.current);
         if (medium_p != NULL) *medium_p = tmp;
 
-        return PUMAS_STEP_APPROXIMATE; /* XXX Exact steps for polytopes? */
+        return PUMAS_STEP_APPROXIMATE; /* XXX Exact steps for polyhedrons? */
 }
 
 
@@ -550,13 +550,13 @@ void pumas_geometry_earth_destroy(struct pumas_geometry * base_geometry)
 }
 
 
-void pumas_geometry_polytope_get(struct pumas_geometry * geometry,
+void pumas_geometry_polyhedron_get(struct pumas_geometry * geometry,
     struct pumas_state * state, struct pumas_medium ** medium_p,
     double * step_p)
 {
 #define STEP_MIN 1E-05
 
-        struct pumas_geometry_polytope * p = (void *)geometry;
+        struct pumas_geometry_polyhedron * p = (void *)geometry;
         const double * const position = state->position;
 
         struct pumas_state_extended * extended = (void *)state;
@@ -568,7 +568,7 @@ void pumas_geometry_polytope_get(struct pumas_geometry * geometry,
 
         double dE = -DBL_MAX, dL = DBL_MAX;
         int i, inside = 1;
-        struct pumas_polytope_face * s;
+        struct pumas_polyhedron_face * s;
         for (i = 0, s = p->faces; i < p->n_faces; i++, s++) {
                 const double rn = (position[0] - s->origin[0]) * s->normal[0] +
                     (position[1] - s->origin[1]) * s->normal[1] +
