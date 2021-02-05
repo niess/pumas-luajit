@@ -22,7 +22,7 @@ _A metatype for representing a 3D vector using horizontal coordinates._
 ```lua
 pumas.HorizontalVector(norm, elevation, azimuth, frame)
 
-pumas.HorizontalVector{norm, elevation, azimuth, frame}
+pumas.HorizontalVector{norm=, elevation=, azimuth=, frame=}
 
 pumas.HorizontalVector(coordinates)
 ```

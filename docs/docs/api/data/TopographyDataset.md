@@ -41,9 +41,10 @@ precedence, e.g.  when requesting the topography elevation.
 
 ### Synopsis
 ```Lua
-pumas.TopographyDataset{data[, ...]}
+pumas.TopographyDataset(data, ...)
 
-pumas.TopographyDataset(data[, ...])
+pumas.TopographyDataset{data, ...}
+
 ```
 
 ### Arguments

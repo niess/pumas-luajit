@@ -22,7 +22,7 @@ _A metatype for representing a 3D vector using Cartesian coordinates._
 ```lua
 pumas.CartesianVector(x, y, z, frame)
 
-pumas.CartesianVector{x, y, z, frame}
+pumas.CartesianVector{x=, y=, z=, frame=}
 
 pumas.CartesianVector(coordinates)
 ```

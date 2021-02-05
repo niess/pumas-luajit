@@ -17,6 +17,8 @@ local polyhedron = {}
 -------------------------------------------------------------------------------
 -- The polyhedron geometry metatype
 -------------------------------------------------------------------------------
+-- XXX Add a Polyhedron.validate method ?
+
 local PolyhedronGeometry = {}
 
 local ctype = ffi.typeof('struct pumas_geometry_polyhedron')

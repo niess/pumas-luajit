@@ -31,7 +31,7 @@ or by one of its argument.
 ```lua
 pumas.TopographyLayer(medium, data)
 
-pumas.TopographyLayer{medium, data}
+pumas.TopographyLayer{medium=, data=}
 ```
 
 ### Arguments

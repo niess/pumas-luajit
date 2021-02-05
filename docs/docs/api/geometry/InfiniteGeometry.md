@@ -7,7 +7,7 @@ _A metatype for representing a geometry of infinite extension._
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium*|[Medium](../medium/Medium.md)| The constitutive medium. |
+|*medium*|[Medium](../medium/Medium.md)| The filling medium. |
 </div>
 
 <div markdown="1" class="shaded-box fancy">
@@ -27,7 +27,7 @@ pumas.InfiniteGeometry(medium)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium*|[Medium](../medium/Medium.md)| The constitutive medium. |
+|*medium*|[Medium](../medium/Medium.md)| The filling medium. |
 
 ---
 
@@ -94,7 +94,7 @@ This method behaves as the `table.remove` Lua function.
 ### Synopsis
 
 ```lua
-InfiniteGeometry:remove([index])
+InfiniteGeometry:remove((index))
 ```
 
 ---
@@ -103,7 +103,7 @@ InfiniteGeometry:remove([index])
 
 |Name|Type|Description|
 |----|----|-----------|
-|*index*|`number`|Table index of the daughter geometry to remove.|
+|(*index*)|`number`|Table index of the daughter geometry to remove.|
 
 ---
 

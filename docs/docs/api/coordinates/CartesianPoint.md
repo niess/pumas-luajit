@@ -22,7 +22,7 @@ _A metatype for representing a 3D point using Cartesian coordinates._
 ```lua
 pumas.CartesianPoint(x, y, z, frame)
 
-pumas.CartesianPoint{x, y, z, frame}
+pumas.CartesianPoint{x=, y=, z=, frame=}
 
 pumas.CartesianPoint(coordinates)
 ```

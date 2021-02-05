@@ -32,19 +32,19 @@ date or geoid undulations.
 ### Synopsis
 
 ```lua
-pumas.EarthGeometry(layer[, ...])
+pumas.EarthGeometry(layer, ...)
 
-pumas.EarthGeometry{layer[, ..., date, geoid_undulations, magnet]}
+pumas.EarthGeometry{layer, ..., (date)=, (geoid_undulations)=, (magnet)=}
 ```
 
 ### Arguments
 
 |Name|Type|Description|
 |----|----|-----------|
-|*date*             |`number` or `string` | Date (time) of the simulation encoded as a number since the epoch or as a `'dd/mm/yy'` string. |
-|*geoid_undulations*|[TopographyData](../data/TopographyData.md) or `nil`| Map of geoid undulations w.r.t. the WGS84 ellipsoid.|
-|*layer*            |`table` or [TopographyLayer](TopographyLayer.lua)   | [TopographyLayer](TopographyLayer.md) or a table argument consistent with the constructor of the latter, e.g. `{medium, data}`. |
-|*magnet*           |`boolean`, `string` or `nil`                        | Flag for switching the default geomagnetic field ([IGRF13](https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html)) or path to an alternative model sepcified as a COF file.|
+|*layer*              |`table` or [TopographyLayer](TopographyLayer.lua)| [TopographyLayer](TopographyLayer.md) or a table argument consistent with the constructor of the latter, e.g. `{medium, data}`. |
+|*(date)*             |`number` or `string`                             | Date (time) of the simulation encoded as a number since the epoch or as a `'dd/mm/yy'` string. |
+|*(geoid_undulations)*|[TopographyData](../data/TopographyData.md)      | Map of geoid undulations w.r.t. the WGS84 ellipsoid.|
+|*(magnet)*           |`boolean` or `string`                            | Flag for switching the default geomagnetic field ([IGRF13](https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html)) or path to an alternative model sepcified as a COF file.|
 
 ---
 
@@ -111,7 +111,7 @@ method behaves as the `table.remove` Lua function.
 ### Synopsis
 
 ```lua
-EarthGeometry:remove([index])
+EarthGeometry:remove((index))
 ```
 
 ---
@@ -120,7 +120,7 @@ EarthGeometry:remove([index])
 
 |Name|Type|Description|
 |----|----|-----------|
-|*index*|`number`|Table index of the daughter geometry to remove.|
+|(*index*)|`number`|Table index of the daughter geometry to remove.|
 
 ---
 

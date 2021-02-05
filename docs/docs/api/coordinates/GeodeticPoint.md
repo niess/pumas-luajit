@@ -27,7 +27,7 @@ _A metatype for representing a 3D point using geodetic coordinates._
 ```lua
 pumas.GeodeticPoint(latitude, longitude, altitude)
 
-pumas.GeodeticPoint{latitude, longitude, altitude}
+pumas.GeodeticPoint{latitude=, longitude=, altitude=}
 
 pumas.GeodeticPoint(coordinates)
 ```

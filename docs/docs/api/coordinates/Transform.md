@@ -20,9 +20,9 @@ _A metatype for representing a linear transform of 3D coordinates._
 ```lua
 pumas.Transform(translation, rotation)
 
-pumas.Transform{translation, rotation}
+pumas.Transform{translation=, rotation=}
 
-pumas.Transform{transform}
+pumas.Transform(transform)
 ```
 
 !!! note
@@ -83,7 +83,8 @@ None, except *self*.
 <div markdown="1" class="shaded-box fancy">
 ## Transform.from\_euler
 
-Set the rotation matrix using Euler angles.
+Set the rotation matrix using
+[Euler angles](https://en.wikipedia.org/wiki/Euler_angles).
 
 ---
 

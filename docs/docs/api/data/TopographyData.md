@@ -39,18 +39,17 @@ argument.
 
 ### Synopsis
 ```Lua
-pumas.TopographyData([offset]}
+pumas.TopographyData((offset))
 
-pumas.TopographyData(path[, offset])
+pumas.TopographyData(path, (offset))
 ```
 
 ### Arguments
 
 |Name|Type|Description|
 |----|----|-----------|
-|*path*  |`string`| Path to a topography file or to folder containing topography tiles.|
-||||
-|*offset*|`number`| Global offset applied to the topography data.|
+|*path*    |`string`| Path to a topography file or to folder containing topography tiles.|
+|(*offset*)|`number`| Global offset applied to the topography data. Defaults to 0 if not provided.|
 
 
 ### Returns
