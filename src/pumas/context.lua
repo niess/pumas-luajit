@@ -92,6 +92,7 @@ end
 -- The Monte Carlo context metatype
 -------------------------------------------------------------------------------
 -- XXX  support multi threading?
+-- XXX  allow to provide a medium for the geometry (assume an infinite one).
 local Context = {}
 
 
