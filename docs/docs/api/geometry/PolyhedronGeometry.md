@@ -16,7 +16,7 @@ None.
 <div markdown="1" class="shaded-box fancy">
 ## Constructor
 
-A [PolyhedronGeometry](PolyhedronGeometry.md) is a hierachy of convex
+A [PolyhedronGeometry](PolyhedronGeometry.md) is a hierarchy of convex
 [polyhedrons](https://en.wikipedia.org/wiki/Polyhedron). The constructor takes a
 top (mother) polyhedron as first argument and an optional reference frame. If no
 reference frame is provided then the polyhedrons coordinates are assumed to be

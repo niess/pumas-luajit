@@ -8,6 +8,9 @@ edit_uri: edit/master/docs/docs
 
 nav:
   - Home: index.md
+  - Concepts:
+    - Coordinates: api/coordinates/Coordinates.md
+    - Geometry: api/geometry/Geometry.md
   - API &raquo; Coordinates:
     - CartesianPoint: api/coordinates/CartesianPoint.md
     - CartesianVector: api/coordinates/CartesianVector.md

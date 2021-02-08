@@ -1,7 +1,7 @@
 # Coordinates
 _Generic coordinates for 3D points and vectors._
 
-## Concept
+## Description
 
 [Coordinates](Coordinates.md) are a group of metatypes representing a point or a
 vector using a specific coordinates system and reference frame. These metatypes
@@ -11,7 +11,7 @@ vector of the 3D simulation space. Function arguments reported as
 {: .justify}
 
 The PUMAS library uses Cartesian coordinates for the simulation with a unique
-frame, refered to as the *simulation frame*. These coordinates are stored using
+frame, referred to as the *simulation frame*. These coordinates are stored using
 a `double [3]` C array, see e.g. the *position* and *direction* attributes of a
 simulation [State](../physics/State.md#attributes).  The `double [3]` array is a
 basic representation of a point or vector using Cartesian coordinates.  Higher
