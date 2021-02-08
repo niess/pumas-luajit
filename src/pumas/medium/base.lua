@@ -76,11 +76,7 @@ end
 
 
 function BaseMedium:__newindex (k, v, strtype)
-    if k == 'material' then
-        rawset(self, 'material', v)
-    else
-        error.raise{['type'] = strtype, bad_member = k}
-    end
+    error.raise{['type'] = strtype, bad_member = k}
 end
 
 

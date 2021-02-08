@@ -52,7 +52,7 @@ do
     error.register('TranparentMedium', TransparentMedium)
 
     base.add(m)
-    transparent.MEDIUM_TRANSPARENT = m
+    transparent.transparent_medium = m
 end
 
 

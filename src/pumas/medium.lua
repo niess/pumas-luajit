@@ -13,8 +13,8 @@ local medium = {}
 medium.get = base.get
 medium.update = base.update
 
-medium.MEDIUM_TRANSPARENT = transparent.MEDIUM_TRANSPARENT
 medium.GradientMedium = gradient.GradientMedium
+medium.transparent_medium = transparent.transparent_medium
 medium.UniformMedium = uniform.UniformMedium
 
 
@@ -22,13 +22,9 @@ medium.UniformMedium = uniform.UniformMedium
 -- Register the subpackage
 -------------------------------------------------------------------------------
 function medium.register_to (t)
-    for k, v in pairs(medium) do
-        -- Register only metatypes and globals
-        local c = k:sub(1,1)
-        if (c >= 'A') and (c <= 'Z') then
-            t[k] = v
-        end
-    end
+    t.GradientMedium = medium.GradientMedium
+    t.transparent_medium = medium.transparent_medium
+    t.UniformMedium = medium.UniformMedium
 end
 
 

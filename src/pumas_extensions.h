@@ -93,9 +93,9 @@ struct pumas_medium_gradient {
 
         struct {
                 enum pumas_medium_gradient_type type;
-                double value;
-                double position0;
-                double density0;
+                double lambda;
+                double z0;
+                double rho0;
 
                 double direction[3];
                 double (* project)(struct pumas_medium_gradient * medium,
@@ -105,8 +105,8 @@ struct pumas_medium_gradient {
 
 void pumas_medium_gradient_initialise(
     struct pumas_medium_gradient * medium, int material,
-    enum pumas_medium_gradient_type type, double value, double position0,
-    double density0, const double * magnet);
+    enum pumas_medium_gradient_type type, double lambda, double z0,
+    double rho0, const double * magnet);
 
 double pumas_medium_gradient_project_altitude(
     struct pumas_medium_gradient * medium, const struct pumas_state * state);

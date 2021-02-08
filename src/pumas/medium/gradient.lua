@@ -21,7 +21,25 @@ local strtype = 'GradientMedium'
 
 
 function GradientMedium:__index (k)
-    if k == 'magnet' then
+    if k == 'axis' then
+        if self._c.gradient.project == nil then
+            return self._c.gradient.axis
+        else
+            return 'vertical'
+        end
+    elseif k == 'lambda' then
+        return tonumber(self._c.gradient.lambda)
+    elseif k == 'rho0' then
+        return tonumber(self._c.gradient.rho0)
+    elseif k == 'type' then
+        if self._c.gradient.type == clib.PUMAS_MEDIUM_GRADIENT_LINEAR then
+            return 'linear'
+        else
+            return 'exponential'
+        end
+    elseif k == 'z0' then
+        return tonumber(self._c.gradient.z0)
+    elseif k == 'magnet' then
         return self._c.magnet
     else
         return base.BaseMedium.__index(self, k, strtype)
@@ -30,7 +48,36 @@ end
 
 
 function GradientMedium:__newindex (k, v)
-    if k == 'magnet' then
+    if k == 'axis' then
+        if v == 'vertical' then
+            self._c.gradient.project =
+                clib.pumas_medium_gradient_project_altitude
+        else
+            self._c.gradient.axis = v
+        end
+    elseif k == 'lambda' then
+        self._c.gradient.lambda = v
+    elseif k == 'rho0' then
+        self._c.gradient.rho0 = v
+    elseif k == 'type' then
+        if type(v) == 'string' then
+            v = v:lower()
+        else
+            return error.raise{fname = 'GradientMedium', argname = 'type',
+                expected = 'a string', got = metatype.a(v)}
+        end
+
+        if v == linear then
+            self._c.gradient.type = clib.PUMAS_MEDIUM_GRADIENT_LINEAR
+        elseif v == 'exponential' then
+            self._c.gradient.type = clib.PUMAS_MEDIUM_GRADIENT_LINEAR
+        else
+            return error.raise{fname = 'GradientMedium', argname = 'type',
+                description = "unknown type '"..v.."'"}
+        end
+    elseif k == 'z0' then
+        self._c.gradient.z0 = v
+    elseif k == 'magnet' then
         self._c.magnet = v
     else
         base.BaseMedium.__newindex(self, k, v, strtype)

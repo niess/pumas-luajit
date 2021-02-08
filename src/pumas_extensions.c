@@ -362,19 +362,14 @@ static double gradient_locals(struct pumas_medium * medium_,
         /* Compute the density and the gradient length */
         double step2;
         if (medium->gradient.type == PUMAS_MEDIUM_GRADIENT_LINEAR) {
-                locals->density = (z - medium->gradient.position0) *
-                    medium->gradient.value + medium->gradient.density0;
-                step2 = medium->gradient.density0 /
-                        (d * medium->gradient.value);
+                locals->density = (1. + (z - medium->gradient.z0) /
+                    medium->gradient.lambda) * medium->gradient.rho0;
         } else {
-                locals->density = medium->gradient.density0 *
-                    exp((z - medium->gradient.position0) /
-                        medium->gradient.value);
-                step2 = medium->gradient.value / d;
+                locals->density = medium->gradient.rho0 *
+                    exp((z - medium->gradient.z0) / medium->gradient.lambda);
         }
-        step2 = fabs(step2);
 
-        step2 *= GRADIENT_RESOLUTION;
+        step2 = fabs(medium->gradient.lambda / d) * GRADIENT_RESOLUTION;
         if (step <= 0) return step2;
         else return (step < step2) ? step: step2;
 }
@@ -382,16 +377,16 @@ static double gradient_locals(struct pumas_medium * medium_,
 
 void pumas_medium_gradient_initialise(
     struct pumas_medium_gradient * medium, int material,
-    enum pumas_medium_gradient_type type, double value, double position0,
-    double density0, const double * magnet)
+    enum pumas_medium_gradient_type type, double lambda, double z0,
+    double rho0, const double * magnet)
 {
         medium->medium.material = material;
         medium->medium.locals = &gradient_locals;
 
         medium->gradient.type = type;
-        medium->gradient.value = value;
-        medium->gradient.position0 = position0;
-        medium->gradient.density0 = density0;
+        medium->gradient.lambda = lambda;
+        medium->gradient.z0 = z0;
+        medium->gradient.rho0 = rho0;
 
         medium->gradient.project = NULL;
         memset(medium->gradient.direction, 0x0,

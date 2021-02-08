@@ -21,7 +21,7 @@ local strtype = 'UniformMedium'
 
 function UniformMedium:__index (k)
     if k == 'density' then
-        return self._c.locals.density
+        return tonumber(self._c.locals.density)
     elseif k == 'magnet' then
         return self._c.locals.magnet
     else

@@ -11,6 +11,7 @@ nav:
   - Concepts:
     - Coordinates: api/coordinates/Coordinates.md
     - Geometry: api/geometry/Geometry.md
+    - Medium: api/medium/Medium.md
   - API &raquo; Coordinates:
     - CartesianPoint: api/coordinates/CartesianPoint.md
     - CartesianVector: api/coordinates/CartesianVector.md
@@ -33,7 +34,7 @@ nav:
     - TopographyLayer: api/geometry/TopographyLayer.md
   - API &raquo; Medium:
     - GradientMedium: api/medium/GradientMedium.md
-    - MEDIUM_TRANSPARENT: api/medium/MEDIUM_TRANSPARENT.md
+    - transparent_medium: api/medium/transparent_medium.md
     - UniformMedium: api/medium/UniformMedium.md
   - API &raquo; Physics:
     - build: api/physics/build.md
@@ -62,5 +63,11 @@ markdown_extensions:
   - admonition
   - attr_list
   - md_in_html
+  - pymdownx.arithmatex # pip install pymdown-extensions
 
 extra_css: [extra.css]
+
+
+extra_javascript:
+  - mathjax-config.js
+  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
