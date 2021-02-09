@@ -39,6 +39,7 @@ pumas.Element(Z, A, I)
 ### See also
 
 [build](build.md),
+[CompositeMaterials](CompositeMaterials.md),
 [Material](Material.md),
 [Physics](Physics.md),
 [TabulatedMaterial](TabulatedMaterial.md).

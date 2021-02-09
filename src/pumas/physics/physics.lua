@@ -36,7 +36,7 @@ local function load_composites (self)
     return composites
 end
 
-
+-- XXX Allow to modify cross-sections?
 local function load_dcs (self)
     local dcs = readonly.Readonly({
         bremsstrahlung = clib.pumas_physics_dcs_get(

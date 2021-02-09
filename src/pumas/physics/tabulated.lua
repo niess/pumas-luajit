@@ -95,7 +95,6 @@ do
 
         if not is_update then
             return readonly.Readonly(t, property, 'PhysicsTable')
-            -- XXX Use a C type instead?
         end
     end
 
@@ -109,11 +108,6 @@ do
             t = {}
         end
 
-        for _, k in pairs{'cross_section', 'kinetic_energy',
-            'magnetic_rotation'} do
-            t[k] = get_or_update_table(self, k)
-        end
-
         for _, mode in pairs{'csda', 'hybrid'} do
             local v
             if is_update then
@@ -124,12 +118,22 @@ do
             for _, k in pairs{'energy_loss', 'grammage', 'proper_time'} do
                 v[k] = get_or_update_table(self, k, mode)
             end
+
+            if mode == 'csda' then
+                v['kinetic_energy'] = get_or_update_table(
+                    self, 'kinetic_energy', mode)
+            else
+                v['cross_section'] = get_or_update_table(
+                    self, 'cross_section', mode)
+            end
+
             if not is_update then
                 t[mode] = readonly.Readonly(v, mode)
             end
         end
 
         if not is_update then
+            readonly.rawget(t.hybrid).kinetic_energy = t.csda.kinetic_energy
             t.detailed = t.hybrid
             return readonly.Readonly(t)
         end

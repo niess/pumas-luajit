@@ -60,4 +60,8 @@ pumas.build{
 
 ## See also
 
-[Physics](Physics.md)
+[CompositeMaterials](CompositeMaterials.md),
+[Element](Element.md),
+[Material](Material.md),
+[Physics](Physics.md),
+[TabulatedMaterial](TabulatedMaterial.md).

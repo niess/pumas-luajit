@@ -9,7 +9,7 @@ properties: its bulk density and / or a local magnetic field. There are
 two types of propagation media:
 {: .justify}
 
-- a [GradientMedium](GradientMedium.md) whose bulk density varies along a
+- a [GradientMedium](GradientMedium.md) whose bulk density varies as a
   unidimensionnal gradient.
 - A [UniformMedium](UniformMedium.md) whose bulk density is uniform over the
   whole propagation medium.

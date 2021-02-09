@@ -18,8 +18,14 @@ _A metatype for defining materials properties._
 |*x1*      |`number`| Sternheimer $x_1$ coefficient ([see below](#constructor)). |
 |*Cbar*    |`number`| Sternheimer $\overline{C}$ coefficient ([see below](#constructor)). |
 |*delta0*  |`number`| Sternheimer $\delta_0$ coefficient ([see below](#constructor)). |
+|||
+|*ZoA*     |`number`| The ratio $Z / A$ of the charge number over the mass number (g/mol) averaged over atomic components. {: .justify} |
 </div>
 
+!!! note
+    The *ZoA* attribute is informative only. Changing its value has no effect
+    on the material properties.
+    {: .justify}
 
 <div markdown="1" class="shaded-box fancy">
 ## Constructor
@@ -73,6 +79,7 @@ pumas.Material{density=, (elements)=, (formula)=, (I)=, (state)=,
 ### See also
 
 [build](build.md),
+[CompositeMaterials](CompositeMaterials.md),
 [Element](Element.md),
 [Physics](Physics.md),
 [TabulatedMaterial](TabulatedMaterial.md).
