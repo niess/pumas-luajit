@@ -8,19 +8,21 @@ the transport.
 {: .justify}
 
 This function takes a single table argument as detailed in the synopsis below.
-One must provide a list of materials to tabulate. Other keys are optional.
+One must provide a list of materials to tabulate. Other keyword arguments are
+optionnal.
 {: .justify}
 
 ## Synopsis
 ``` lua
-pumas.build{materials[, compile, composites, energies, particle, path]}
+pumas.build{
+    materials=, (compile)=, (composites)=, (energies)=, (particle)=, (path)=}
 ```
 
 ## Arguments
 
 |Name|Type|Description|
 |----|----|-----------|
-|*materials* |`table` | List of [Material](Material.md) or name `string` refering to existing entries in the [MATERIALS](MATERIALS.md) table.|
+|*materials* |`table`  | List of [Material](Material.md) or name `string` refering to existing entries in the [materials](../data/materials.md) table.|
 ||||
 |*compile*   |`boolean`| Compile the tabulations to a ready to use binary format. Default: `True`.|
 |*composites*|`table`  | Mapping with keys naming composite materials and values providing their composition. Default: `nil`.|
@@ -28,6 +30,12 @@ pumas.build{materials[, compile, composites, energies, particle, path]}
 |*particle*  |`string` | Name of the transported (projectile) particle. Must be `'muon'` or `'tau'`. Default: `'muon'`.|
 |*path*      |`table`  | Path under which to store the tabulations. Default: `'.'`.|
 
+If kinetic *energies* values are not specified a log like default sampling is
+used. For muons the exact same sampling than in the Particle Data Group
+([PDG](https://pdg.lbl.gov/2020/AtomicNuclearProperties/index.html)) energy loss
+files is used. For taus a logarithmic sampling is used ranging from 100 GeV to
+10<sup>12</sup> GeV with 20 points per decade.
+{: .justify}
 
 ## Returns
 

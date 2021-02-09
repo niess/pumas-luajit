@@ -22,8 +22,8 @@ an alternative bulk density and/or an extra local magnetic field.
 
 !!! note
     The ionization loss of charged particles depends on the target material
-    atomic spacing, i.e. on its density (see e.g. [Sternheimer et
-    al.](https://doi.org/10.1016/0092-640X(84)90002-0)). Therefore, it is *a
+    atomic spacing, i.e. on its density (see e.g. [Sternheimer et al.,
+    1984](https://doi.org/10.1016/0092-640X(84)90002-0)). Therefore, it is *a
     priori* not correct to arbitrarly change the medium density without
     re-computing the energy loss. However, in some cases, e.g. a porous rock
     filled with air, it is a good approximation to use a lower bulk density than
