@@ -50,6 +50,7 @@ nav:
     - Recorder: api/simulation/Recorder.md
     - State: api/simulation/State.md
   - API &raquo; Others:
+    - Readonly: api/others/Readonly.md
     - version: api/others/version.md
 
 theme:

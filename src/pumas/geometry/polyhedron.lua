@@ -354,13 +354,18 @@ local point, vector
 local function build_polyhedrons (args, frame, refs, depth, index)
     local medium_, data, daughters = args[1], args[2], args[3]
 
-    if (medium_ ~= nil) and (medium_.__metatype ~= 'Medium') then
-        error.raise{
-            fname = 'Polyhedron '..get_tag(depth, index),
-            argnum = 1,
-            expected = 'a Medium table',
-            got = metatype.a(medium)
-        }
+    do
+        local mt = metatype(medium_)
+        if mt == 'string' then
+            medium_ = medium.UniformMedium(medium)
+        elseif (mt ~= 'nil') and (mt ~= 'Medium') then
+            error.raise{
+                fname = 'Polyhedron '..get_tag(depth, index),
+                argnum = 1,
+                expected = 'a Medium table',
+                got = metatype.a(medium_)
+            }
+        end
     end
 
     if type(data) ~= 'table' then

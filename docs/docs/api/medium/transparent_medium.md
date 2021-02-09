@@ -24,6 +24,11 @@ geometry, e.g. an [EarthGeometry](../geometry/EarthGeometry.md) it would be
 placed in.
 {: .justify}
 
+!!! note
+    The [transparent\_medium](transparent_medium.md) should not be mistaken with
+    the `nil` medium. The latter indicates the absence of medium at all, i.e.
+    the end of the simulation geometry.
+
 ---
 
 ### See also

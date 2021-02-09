@@ -75,7 +75,7 @@ function BaseMedium.__index (_, k, strtype)
 end
 
 
-function BaseMedium:__newindex (k, v, strtype)
+function BaseMedium.__newindex (_, k, _, strtype)
     error.raise{['type'] = strtype, bad_member = k}
 end
 

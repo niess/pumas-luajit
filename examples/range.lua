@@ -7,8 +7,7 @@ local physics = pumas.Physics('share/materials/standard')
 local context = physics:Context('longitudinal hybrid')
 
 -- Build the geometry, a uniform medium of infinite extension
-local medium = pumas.UniformMedium('StandardRock')
-context.geometry = pumas.InfiniteGeometry(medium)
+context.geometry = pumas.InfiniteGeometry('StandardRock')
 
 -- Initial muon state
 local initial = pumas.State{kinetic = 1E+03} -- GeV

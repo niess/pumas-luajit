@@ -67,7 +67,7 @@ function GradientMedium:__newindex (k, v)
                 expected = 'a string', got = metatype.a(v)}
         end
 
-        if v == linear then
+        if v == 'linear' then
             self._c.gradient.type = clib.PUMAS_MEDIUM_GRADIENT_LINEAR
         elseif v == 'exponential' then
             self._c.gradient.type = clib.PUMAS_MEDIUM_GRADIENT_LINEAR

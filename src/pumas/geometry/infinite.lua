@@ -7,6 +7,7 @@ local ffi = require('ffi')
 local clib = require('pumas.clib')
 local error = require('pumas.error')
 local base = require('pumas.geometry.base')
+local uniform = require('pumas.medium.uniform')
 local metatype = require('pumas.metatype')
 
 local infinite = {}
@@ -64,11 +65,14 @@ end
 -------------------------------------------------------------------------------
 do
     local function new_ (cls, medium)
-        if (medium ~= nil) and (medium.__metatype ~= 'Medium') then
+        local mt = metatype(medium)
+        if mt == 'string' then
+            medium = uniform.UniformMedium(medium)
+        elseif (mt ~= 'nil') and (mt ~= 'Medium') then
             error.raise {
                 fname = 'InfiniteGeometry',
                 argnum = 1,
-                expected = 'a Medium table',
+                expected = 'a Medium table or a string',
                 got = metatype.a(medium)
             }
         end

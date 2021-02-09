@@ -7,7 +7,7 @@ _A metatype for describing a layer of an Earth geometry._
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium* |[Medium](../medium/Medium.md)                   | Medium constituting the layer. |
+|*medium* |[Medium](../medium/Medium.md)                    | Filling medium of the layer. |
 |*data*   |[TopographyDataset](../data/TopographyDataset.md)| Top boundary of the layer. |
 
 !!! note
@@ -38,7 +38,7 @@ pumas.TopographyLayer{medium=, data=}
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium* |[Medium](../medium/Medium.md)| Medium constituting the layer. |
+|*medium*|[Medium](../medium/Medium.md) or `string`| Filling medium of the layer. If a `string` is provided it must reference a [TabulatedMaterial](../physics/TabulatedMaterial.md). Then a [UniformMedium](../medium/UniformMedium.md) is implicitly created and filled with the corresponding material. {: .justify}|
 |*data*   |`number`, `string`, `table`, [TopographyData](../data/TopographyData.md) or [TopographyDataset](../data/TopographyDataset.md)| Topography data describing the top boundary of the layer. |
 
 ---

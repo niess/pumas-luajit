@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local error = require('pumas.error')
 local topography = require('pumas.geometry.topography')
+local uniform = require('pumas.medium.uniform')
 local metatype = require('pumas.metatype')
 
 local layer = {}
@@ -61,16 +62,21 @@ do
             raise_error{argnum = 'bad', expected = '1 or 2', got = nargs}
         end
 
-        if metatype(medium) ~= 'Medium' then
-            local argnum, argname
-            if nargs == 1 then
-                argname = 'medium'
-            else
-                argnum = 1
-            end
+        do
+            local mt = metatype(medium)
+            if mt == 'string' then
+                medium = uniform.UniformMedium(medium)
+            elseif mt ~= 'Medium' then
+                local argnum, argname
+                if nargs == 1 then
+                    argname = 'medium'
+                else
+                    argnum = 1
+                end
 
-            raise_error{argnum = argnum, argname = argname,
-                expected = 'a Medium table', got = metatype.a(medium)}
+                raise_error{argnum = argnum, argname = argname,
+                    expected = 'a Medium table', got = metatype.a(medium)}
+            end
         end
 
         do

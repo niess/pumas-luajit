@@ -15,12 +15,16 @@ two types of propagation media:
   whole propagation medium.
 
 The boundaries of a propagation medium are defined by a
-[Geometry](../geometry/Geometry) object. In addition the
-[transparent\_medium](transparent_medium.md) is a special instance of a
-[Medium](Medium.md) that is used in order to represent the absence of filling
-medium in a geometry. Such transparent geometries behave as a container for
-other (daughter) geometries (volumes).
+[Geometry](../geometry/Geometry) object. In addition there are two special
+media instances:
 {: .justify}
+
+- the [transparent\_medium](transparent_medium.md) represents the absence of
+  proper filling medium in a geometry. Such transparent geometries behave as
+  containers for other (daughter) geometries (volumes).
+  {: .justify}
+- The `nil` medium represents the absence of propagation medium at all. It
+  indicates the end of the simulation geometry.
 
 
 ## Examples

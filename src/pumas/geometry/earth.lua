@@ -12,6 +12,7 @@ local base = require('pumas.geometry.base')
 local readonly = require('pumas.readonly')
 local layer_ = require('pumas.geometry.layer')
 local topography = require('pumas.geometry.topography')
+local uniform = require('pumas.medium.uniform')
 local metatype = require('pumas.metatype')
 
 local earth = {}
@@ -204,10 +205,15 @@ do
                 if (not medium) and (not data) and type(arg) == 'table' then
                     add(arg, index or i)
                 else
-                    if (metatype(medium) ~= 'Medium') and (medium ~= nil) then
-                        raise_error{argnum = (index or i)..' (medium)',
-                            expected = 'a Medium table or nil',
-                            got = metatype.a(medium)}
+                    do
+                        local mt = metatype(medium)
+                        if mt == 'string' then
+                            medium = uniform.UniformMedium(medium)
+                        elseif (mt ~= 'Medium') and (mt ~= 'nil') then
+                            raise_error{argnum = (index or i)..' (medium)',
+                                expected = 'a Medium table or nil',
+                                got = metatype.a(medium)}
+                        end
                     end
 
                     if not data then

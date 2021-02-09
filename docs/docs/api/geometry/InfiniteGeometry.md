@@ -27,7 +27,7 @@ pumas.InfiniteGeometry(medium)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium*|[Medium](../medium/Medium.md)| The filling medium. |
+|*medium*|[Medium](../medium/Medium.md) or `string`| The filling medium. If a `string` is provided it must reference a [TabulatedMaterial](../physics/TabulatedMaterial.md). Then a [UniformMedium](../medium/UniformMedium.md) is implicitly created and filled with the corresponding material. {: .justify}|
 
 ---
 

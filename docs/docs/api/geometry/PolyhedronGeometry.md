@@ -54,14 +54,14 @@ where the various elements are listed in the table below.
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium*    |[Medium](../medium/Medium.md)| Filling medium of the polyhedron. |
+|*medium*|[Medium](../medium/Medium.md) or `string`| Filling medium of the polyhedron. If a `string` is provided it must reference a [TabulatedMaterial](../physics/TabulatedMaterial.md). Then a [UniformMedium](../medium/UniformMedium.md) is implicitly created and filled with the corresponding material. {: .justify}|
 |*x*         |`number`| Cartesian x (first) coordinate of a point on the face, in m. |
 |*y*         |`number`| Cartesian y (second) coordinate of the same point on the face, in m. |
 |*z*         |`number`| Cartesian z (third) coordinate of the same point on the face, in m. |
 |*nx*        |`number`| Cartesian x (first) coordinate of the normal to the face, outward going. |
-|*ny*        |`number`| Cartesian y (second) coordinate of the normal to the face, outward going. |
-|*nz*        |`number`| Cartesian z (third) coordinate of the normal to the face, outward going. |
-|(*daughter*)|`table` | A daughter polyhedron contained inside and following the same semantic. |
+|*ny*        |`number`| Cartesian y (second) coordinate of the normal to the face, outward going. {: .justify} |
+|*nz*        |`number`| Cartesian z (third) coordinate of the normal to the face, outward going. {: .justify} |
+|(*daughter*)|`table` | A daughter polyhedron contained inside and following the same semantic. {: .justify} |
 
 !!! note
     The sequence *x*, *y*, *z*, *nx*, *ny* and *nz* has to be repeated for each
