@@ -47,7 +47,7 @@ pumas.GeodeticPoint(coordinates)
 |*longitude*|`number` | Geodetic longitude, in deg.|
 |*altitude* |`number` | Altitude w.r.t. the WGS84 ellipsoid, in m. |
 ||||
-|*coordinates*|[Coordinates](Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md:#attributes). |
+|*coordinates*|[Coordinates](../Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md:#attributes). |
 
 ---
 
@@ -141,7 +141,7 @@ None, except *self*.
 <div markdown="1" class="shaded-box fancy">
 ## GeodeticPoint.set
 
-Set the point coordinates from another [Coordinates](Coordinates.md) instance
+Set the point coordinates from another [Coordinates](../Coordinates.md) instance
 The input coordinates are transformed to the ECEF frame if needed, e.g.  if
 their *frame* attribute is not `nil`.
 {: .justify}
@@ -160,7 +160,7 @@ GeodeticPoint:set(coordinates)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*coordinates*|[Coordinates](Coordinates.md)| Input coordinates.|
+|*coordinates*|[Coordinates](../Coordinates.md)| Input coordinates.|
 
 !!! note
     The input coordinates must be a point instance

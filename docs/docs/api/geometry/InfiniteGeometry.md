@@ -34,7 +34,7 @@ pumas.InfiniteGeometry(medium)
 ### See also
 
 [EarthGeometry](EarthGeometry.md),
-[PolytopeGeometry](PolytopeGeometry.md),
+[PolyhedronGeometry](PolyhedronGeometry.md),
 [TopographyLayer](TopographyLayer.md),
 
 </div>
@@ -65,7 +65,7 @@ InfiniteGeometry:insert(index, daughter)
 |Name|Type|Description|
 |----|----|-----------|
 |*index*|`number`|Table index of the inserted geometry.|
-|*daughter*|[Geometry](Geometry.md)|Daughter geometry to insert.|
+|*daughter*|[Geometry](../Geometry.md)|Daughter geometry to insert.|
 
 ---
 
@@ -111,7 +111,7 @@ InfiniteGeometry:remove((index))
 
 |Type|Description|
 |----|-----------|
-|[Geometry](Geometry.md)| The removed geometry.|
+|[Geometry](../Geometry.md)| The removed geometry.|
 
 ---
 

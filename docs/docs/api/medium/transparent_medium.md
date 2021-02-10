@@ -13,11 +13,11 @@ _A placeholder for an empty medium acting as a container._
 ## Description
 
 The [transparent\_medium](transparent_medium.md) is a special
-[Medium](Medium.md) instance that can be used in a
-[Geometry](../geometry/Geometry.md) in order to indicate the absence of filling
-medium. When such a medium is encountered the corresponding volume is ignored.
-A transparent volume can still contain (non transparent) daughters and be
-included in an other geometry. A typical usage is to make the top volume of a
+[Medium](../Medium.md) instance that can be used in a [Geometry](../Geometry.md)
+in order to indicate the absence of filling medium. When such a medium is
+encountered the corresponding volume is ignored.  A transparent volume can still
+contain (non transparent) daughters and be included in an other geometry. A
+typical usage is to make the top volume of a
 [PolyhedronGeometry](../geometry/PolyhedronGeometry.md) transparent such that it
 behaves as a bounding box for its content without erasing its own mother
 geometry, e.g. an [EarthGeometry](../geometry/EarthGeometry.md) it would be

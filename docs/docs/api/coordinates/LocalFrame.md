@@ -14,7 +14,7 @@ pumas.LocalFrame(origin)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*origin* |[Coordinates](Coordinates.md)| Origin of the local Earth frame.|
+|*origin* |[Coordinates](../Coordinates.md)| Origin of the local Earth frame.|
 
 
 ## Returns

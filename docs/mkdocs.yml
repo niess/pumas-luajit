@@ -9,9 +9,9 @@ edit_uri: edit/master/docs/docs
 nav:
   - Home: index.md
   - API &raquo; Topics:
-    - Coordinates: api/coordinates/Coordinates.md
-    - Geometry: api/geometry/Geometry.md
-    - Medium: api/medium/Medium.md
+    - Coordinates: api/Coordinates.md
+    - Geometry: api/Geometry.md
+    - Medium: api/Medium.md
     - Physics: api/Physics.md
   - API &raquo; Coordinates:
     - CartesianPoint: api/coordinates/CartesianPoint.md

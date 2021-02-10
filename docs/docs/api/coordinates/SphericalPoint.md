@@ -43,7 +43,7 @@ pumas.SphericalPoint(coordinates)
 |*phi*  |`number`| &phi; angle counter-clockwise w.r.t. the x-axis, in radians. |
 |*frame*|[Transform](Transform.md) or `nil`| Transform representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
 ||||
-|*coordinates*|[Coordinates](Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md:#attributes). |
+|*coordinates*|[Coordinates](../Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md:#attributes). |
 
 ### See also
 
@@ -126,9 +126,9 @@ None, except *self*.
 <div markdown="1" class="shaded-box fancy">
 ## SphericalPoint.set
 
-Set the point coordinates from another [Coordinates](Coordinates.md) instance.
-The input coordinates are transformed to the point frame if needed, e.g.  if
-their *frame* attribute differs from the point's one.
+Set the point coordinates from another [Coordinates](../Coordinates.md)
+instance.  The input coordinates are transformed to the point frame if needed,
+e.g.  if their *frame* attribute differs from the point's one.
 {: .justify}
 
 ---
@@ -143,7 +143,7 @@ SphericalPoint:set(coordinates)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*coordinates*|[Coordinates](Coordinates.md)| Input coordinates.|
+|*coordinates*|[Coordinates](../Coordinates.md)| Input coordinates.|
 
 !!! note
     The input coordinates must be a point instance

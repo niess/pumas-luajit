@@ -146,8 +146,8 @@ corresponding medium.
 <div markdown="1" class="shaded-box fancy">
 ## PolyhedronGeometry.insert
 
-Insert a daughter geometry into the [PolyhedronGeometry](PolyhedronGeometry.md). This
-method behaves as the `table.insert` Lua function. If no index is specified
+Insert a daughter geometry into the [PolyhedronGeometry](PolyhedronGeometry.md).
+This method behaves as the `table.insert` Lua function. If no index is specified
 the daughter geometry is appended as the last element.
 {: .justify}
 
@@ -168,7 +168,7 @@ PolyhedronGeometry:insert(index, daughter)
 |Name|Type|Description|
 |----|----|-----------|
 |*index*|`number`|Table index of the inserted geometry.|
-|*daughter*|[Geometry](Geometry.md)|Daughter geometry to insert.|
+|*daughter*|[Geometry](../Geometry.md)|Daughter geometry to insert.|
 
 ---
 
@@ -188,9 +188,9 @@ PolyhedronGeometry:insert(index, daughter)
 <div markdown="1" class="shaded-box fancy">
 ## PolyhedronGeometry.remove
 
-Remove a daughter geometry from the [PolyhedronGeometry](PolyhedronGeometry.md) given its
-index. If no index is provided the last daughter geometry is removed. This
-method behaves as the `table.remove` Lua function.
+Remove a daughter geometry from the [PolyhedronGeometry](PolyhedronGeometry.md)
+given its index. If no index is provided the last daughter geometry is removed.
+This method behaves as the `table.remove` Lua function.
 {: .justify}
 
 ---
@@ -215,7 +215,7 @@ PolyhedronGeometry:remove((index))
 
 |Type|Description|
 |----|-----------|
-|[Geometry](Geometry.md)| The removed geometry.|
+|[Geometry](../Geometry.md)| The removed geometry.|
 
 ---
 

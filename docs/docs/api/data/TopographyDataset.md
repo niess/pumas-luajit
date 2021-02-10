@@ -122,7 +122,7 @@ TopographyDataset:elevation(latitude, longitude)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*coordinates* |[Coordinates](../coordinates/Coordinates.md)| Point coordinates, in m.|
+|*coordinates* |[Coordinates](../coordinates/../Coordinates.md)| Point coordinates, in m.|
 ||||
 |*latitude* |`number`| Latitude, in deg.|
 |*longitude*|`number`| Longitude, in deg.|

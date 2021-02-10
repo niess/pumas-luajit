@@ -4,16 +4,16 @@ _Generic geometry for simulations._
 ## Description
 
 The geometry of a simulation is specified using volumes filled with
-[media](../medium/Medium.md). A [Geometry](Geometry.md) metatype is specialised
+[media](medium/Medium.md). A [Geometry](Geometry.md) metatype is specialised
 in representing volumes with a specific shape or a familly of shapes. For
 example:
 {: .justify}
 
-- the [EarthGeometry](EarthGeometry.md) can represent an Earth topography
-  using data from one or more Digital Elevation Models (DEMs).
-- The [InfiniteGeometry](InfiniteGeometry.md) represents a volume of infinite
-  extension filled with a single medium.
-- The [PolyhedronGeometry](PolyhedronGeometry.md) allows to represent a
+- the [EarthGeometry](geometry/EarthGeometry.md) can represent an Earth
+  topography using data from one or more Digital Elevation Models (DEMs).
+- The [InfiniteGeometry](geometry/InfiniteGeometry.md) represents a volume of
+  infinite extension filled with a single medium.
+- The [PolyhedronGeometry](geometry/PolyhedronGeometry.md) allows to represent a
   collection of imbricated convex polyhedrons.
 
 Geometries can be nested using the `Geometry.insert` method following the same
@@ -37,6 +37,6 @@ world:insert(pumas.EarthGeometry{medium = 'Water', data = 0})
 
 ## See also
 
-[EarthGeometry](EarthGeometry.md),
-[InfiniteGeometry](InfiniteGeometry.md),
-[PolyhedronGeometry](PolyhedronGeometry.md).
+[EarthGeometry](geometry/EarthGeometry.md),
+[InfiniteGeometry](geometry/InfiniteGeometry.md),
+[PolyhedronGeometry](geometry/PolyhedronGeometry.md).

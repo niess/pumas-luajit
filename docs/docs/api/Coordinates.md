@@ -13,33 +13,34 @@ vector of the 3D simulation space. Function arguments reported as
 The PUMAS library uses Cartesian coordinates for the simulation with a unique
 frame, referred to as the *simulation frame*. These coordinates are stored using
 a `double [3]` C array, see e.g. the *position* and *direction* attributes of a
-simulation [State](../physics/State.md#attributes).  The `double [3]` array is a
+simulation [State](physics/State.md#attributes).  The `double [3]` array is a
 basic representation of a point or vector using Cartesian coordinates.  Higher
-level representations are provided as [CartesianPoint](CartesianPoint.md) or
-[CartesianVector](CartesianVector.md).  These representations make explicit the
-point or vector type of the represented object. In addition to the *x*, *y* and
-*z* attributes, these object also have a *frame* attribute specifying the
-reference frame used by the coordinates. The absence of reference frame (`nil`)
-indicates that the coordinates are expressed in the simulation frame. Reference
-frames as specified as [Transform](Transform.md) objects w.r.t. the simulation
-frame.
+level representations are provided as
+[CartesianPoint](coordinates/CartesianPoint.md) or
+[CartesianVector](coordinates/CartesianVector.md).  These representations make
+explicit the point or vector type of the represented object. In addition to the
+*x*, *y* and *z* attributes, these object also have a *frame* attribute
+specifying the reference frame used by the coordinates. The absence of reference
+frame (`nil`) indicates that the coordinates are expressed in the simulation
+frame. Reference frames as specified as [Transform](coordinates/Transform.md)
+objects w.r.t. the simulation frame.
 {: .justify}
 
 #### Earth coordinates
 
-The [GeodeticPoint](GeodeticPoint.md) metatype allows to represent an Earth
-location using its latitude, longitude and altitude w.r.t. the WGS84 ellipsoid.
-Note that this object does not have a *frame* attribute since it uses a fixed
-frame (see below). Local Earth frames can be created with the
-[LocalFrame](LocalFrame.md) frame constructor by specifying an origin on Earth.
-Then, the [HorizontalVector](HorizontalVector.md) mettaype can be used to
-represent a direction in the local frame using horizontal coordinates, i.e. by
-specifying an azimuth and an elevation angle.
+The [GeodeticPoint](coordinates/GeodeticPoint.md) metatype allows to represent
+an Earth location using its latitude, longitude and altitude w.r.t. the WGS84
+ellipsoid.  Note that this object does not have a *frame* attribute since it
+uses a fixed frame (see below). Local Earth frames can be created with the
+[LocalFrame](coordinates/LocalFrame.md) frame constructor by specifying an
+origin on Earth.  Then, the [HorizontalVector](coordinates/HorizontalVector.md)
+mettaype can be used to represent a direction in the local frame using
+horizontal coordinates, i.e. by specifying an azimuth and an elevation angle.
 {: .justify}
 
 !!! warning
-    When using a [GeodeticPoint](GeodeticPoint.md) or a
-    [LocalFrame](LocalFrame.md) the simulation frame is assumed to be
+    When using a [GeodeticPoint](coordinates/GeodeticPoint.md) or a
+    [LocalFrame](coordinates/LocalFrame.md) the simulation frame is assumed to be
     Earh-Centered, Earth-Fixed (ECEF). Using a different simulation frame
     together with the latter objects will lead to erroneous results.
     {: .justify}
@@ -90,9 +91,9 @@ direction = pumas.SphericalVector(direction):transform(nil)
 
 ## See also
 
-[CartesianPoint](CartesianPoint.md),
-[CartesianVector](CartesianVector.md),
-[GeodeticPoint](GeodeticPoint.md),
-[HorizontalVector](HorizontalVector.md),
-[SphericalPoint](SphericalPoint.md),
-[SphericalVector](SphericalVector.md).
+[CartesianPoint](coordinates/CartesianPoint.md),
+[CartesianVector](coordinates/CartesianVector.md),
+[GeodeticPoint](coordinates/GeodeticPoint.md),
+[HorizontalVector](coordinates/HorizontalVector.md),
+[SphericalPoint](coordinates/SphericalPoint.md),
+[SphericalVector](coordinates/SphericalVector.md).

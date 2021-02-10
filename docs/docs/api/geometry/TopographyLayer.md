@@ -47,6 +47,6 @@ pumas.TopographyLayer{medium=, data=}
 
 [EarthGeometry](EarthGeometry.md),
 [InfiniteGeometry](InfiniteGeometry.md),
-[PolytopeGeometry](PolytopeGeometry.md).
+[PolyhedronGeometry](PolyhedronGeometry.md).
 
 </div>
