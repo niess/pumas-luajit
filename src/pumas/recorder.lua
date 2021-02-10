@@ -52,7 +52,7 @@ do
                     function (_, c_state, c_medium, c_event)
                         local wrapped_medium = medium.get(c_medium)
                         ffi.copy(wrapped_state._c, c_state, state_size)
-                        wrapped_event.value = c_event
+                        wrapped_event._value = c_event
                         v(wrapped_state, wrapped_medium, wrapped_event)
                     end)
             else
@@ -61,7 +61,7 @@ do
 
             rawset(self, '_record', v)
         elseif k == 'period' then
-            rawget(self, '_c').period = v
+            self._c.period = v
         else
             error.raise{
                 ['type'] = 'Recorder',

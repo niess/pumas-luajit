@@ -33,7 +33,7 @@ do
 end
 
 -- Create a backward simulation context
-local context = pumas.Context{
+local simulation = pumas.Context{
     physics = 'share/materials/standard',
     mode = 'backward longitudinal hybrid',
     limit = {kinetic = 1E+08},
@@ -47,7 +47,7 @@ local deg = math.pi / 180
 local direction = pumas.HorizontalVector{
     azimuth = 0 * deg, elevation = -90 * deg, norm = 1, frame = frame}
 
-local initial = pumas.State{
+local initial_state = pumas.State{
     position = position,
     direction = direction
 }
@@ -62,15 +62,15 @@ print([[
 for ik = 1, 81 do
     local t0 = os.clock()
 
-    initial.kinetic = 1E-02 * math.exp((ik - 1) * math.log(1E+08) / 80)
+    initial_state.kinetic = 1E-02 * math.exp((ik - 1) * math.log(1E+08) / 80)
     local state = pumas.State()
 
     local s, s2, n = 0, 0, 10000
     for _ = 1, n do
-        state:set(initial)
+        state:set(initial_state)
 
         -- Randomise the charge
-        if context:random() < 0.5 then
+        if simulation:random() < 0.5 then
             state.charge = -1
         else
             state.charge = 1
@@ -78,7 +78,7 @@ for ik = 1, 81 do
         state.weight = state.weight * 2
 
         -- Do the transport
-        context:transport(state)
+        simulation:transport(state)
 
         -- Update the flux
         local f = flux(state) * state.weight
@@ -90,7 +90,7 @@ for ik = 1, 81 do
 
     local dt = os.clock() - t0
 
-    print(string.format('%.5E  %.5E %.5E  %.5E', initial.kinetic, s,
+    print(string.format('%.5E  %.5E %.5E  %.5E', initial_state.kinetic, s,
                         math.sqrt((s2 - s * s) / n), dt))
     io.flush()
 end

@@ -27,7 +27,7 @@ local state = pumas.State{
 }
 
 -- Create a backward simulation context with a detailed transport
-local context = pumas.Context{
+local simulation = pumas.Context{
     physics = 'share/materials/standard',
     mode = 'backward detailed',
     geometry = geometry,
@@ -40,7 +40,7 @@ for k, v in pairs(media) do
     media_names[v] = k
 end
 
-context.recorder = function (state, medium, event)
+simulation.recorder = function (state, medium, event)
     if event.none then return end
 
     local geodetic = pumas.GeodeticPoint(state.position)
@@ -65,4 +65,4 @@ print([[
 medium       energy     altitude   distance   deflection  event
               (GeV)        (m)       (m)         (deg)
 ]])
-context:transport(state)
+simulation:transport(state)

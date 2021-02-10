@@ -97,6 +97,39 @@ pumas.Physics{dedx, mdf, particle}
 
 
 <div markdown="1" class="shaded-box fancy">
+## Physics.Context
+
+Create a new Monte Carlo simulation [Context](../simulation/Context.md) using
+this [Physics](Physics.md).
+{: .justify}
+
+---
+
+### Synopsis
+
+```lua
+Physics:Context(mode)
+```
+
+### Arguments
+
+|Name|Type|Description|
+|----|----|-----------|
+|*mode*|`string`| Configuration [Mode](../simulation/Mode.md) flags for the simulation. Defaults to ``detailed forward`` {: .justify}|
+
+### Returns
+
+|Type|Description|
+|----|-----------|
+|[Context](../simulation/Context.md)| New Monte Carlo simulation context.|
+
+### See also
+
+[Physics.dump](#physicsdump)
+</div>
+
+
+<div markdown="1" class="shaded-box fancy">
 ## Physics.dump
 
 This method dumps the material tables to a binary file from which they can be
@@ -118,4 +151,8 @@ Physics:dump(path)
 ### Returns
 
 `nil`
+
+### See also
+
+[Physics.Context](#physicscontext)
 </div>

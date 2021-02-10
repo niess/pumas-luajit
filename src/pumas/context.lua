@@ -9,6 +9,7 @@ local clib = require('pumas.clib')
 local compat = require('pumas.compat')
 local enum = require('pumas.enum')
 local error = require('pumas.error')
+local infinite = require('pumas.geometry.infinite')
 local medium = require('pumas.medium')
 local metatype = require('pumas.metatype')
 local recorder = require('pumas.recorder')
@@ -121,12 +122,21 @@ function Context:__newindex (k, v)
         local current_geometry = rawget(self, '_geometry')
         if current_geometry == v then return end
 
+        if type(v) == 'string' then
+            local m = self._physics.materials[v] or self._physics.composites[v]
+            if m then
+                v = infinite.InfiniteGeometry(m.name)
+            else
+                error.raise{header = 'bad value',
+                    description = "no such TabulatedMaterial : '"..v.."'"}
+            end
+        end
+
         if current_geometry ~= nil then
             clib.pumas_geometry_destroy(self._c)
         end
 
-        if (v ~= nil) and ((type(v) ~= 'table') or
-            (v.__metatype ~= 'Geometry')) then
+        if (v ~= nil) and (metatype(v) ~= 'Geometry') then
             error.raise{header = 'bad type', expected = 'a Geometry table',
                 got = metatype.a(v)}
         end
@@ -155,6 +165,8 @@ function Context:__newindex (k, v)
             self._c.recorder = v._c
         end
     elseif k == 'geometry_callback' then
+        -- Set a geometry callback for checking / debugging the geometry
+        -- navigation
         local user_data = ffi.cast('struct pumas_user_data *',
                                    self._c.user_data)
         local wrapped_state = state.State()
@@ -201,7 +213,7 @@ do
             }
         end
         self._geometry:_update(self)
-        self._c.event = self.event.value
+        self._c.event = self.event._value
         call(clib.pumas_context_transport, self._c, state_._c,
             self._cache.event, self._cache.media)
         local media = compat.table_new(2, 0)
@@ -296,8 +308,7 @@ do
         v = members[k]
         if v then return self[v] end
 
-        error.raise{fname = 'Context', argname = k,
-            description = 'no such member'}
+        error.raise{['type'] = 'Context', bad_member = k}
     end
 end
 
@@ -361,7 +372,7 @@ do
         user_data.geometry.callback = nil
 
         local event = enum.Event()
-        event.value = c.event
+        event._value = c.event
 
         local self = setmetatable({
             _c = c,

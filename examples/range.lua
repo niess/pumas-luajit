@@ -3,21 +3,21 @@ local pumas = require('pumas')
 -- Load materials tabulations
 local physics = pumas.Physics('share/materials/standard')
 
--- Create an hybrid simulation context a la MuM
-local context = physics:Context('longitudinal hybrid')
+-- Create an hybrid simulation context a la MUM
+local simulation = physics:Context('longitudinal hybrid')
 
 -- Build the geometry, a uniform medium of infinite extension
-context.geometry = pumas.InfiniteGeometry('StandardRock')
+simulation.geometry = pumas.InfiniteGeometry('StandardRock')
 
 -- Initial muon state
-local initial = pumas.State{kinetic = 1E+03} -- GeV
+local initial_state = pumas.State{kinetic = 1E+03} -- GeV
 
 -- Run the Monte Carlo
 local s1, s2, n = 0, 0, 10000
 local state = pumas.State()
 for _ = 1, n do
-    state:set(initial)
-    context:transport(state)
+    state:set(initial_state)
+    simulation:transport(state)
 
     s1 = s1 + state.distance
     s2 = s2 + state.distance * state.distance

@@ -49,6 +49,8 @@ nav:
   - API &raquo; Simulation:
     - Context: api/simulation/Context.md
     - Event: api/simulation/Event.md
+    - Limit: api/simulation/Limit.md
+    - Mode: api/simulation/Mode.md
     - Recorder: api/simulation/Recorder.md
     - State: api/simulation/State.md
   - API &raquo; Others:

@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
 local error = require('pumas.error')
+local metatype = require('pumas.metatype')
 
 local enum = {}
 
@@ -13,7 +14,7 @@ local enum = {}
 -- The Event metatype
 -------------------------------------------------------------------------------
 do
-    ffi.cdef('struct pumas_event_w {enum pumas_event value;}')
+    ffi.cdef('struct pumas_event_w {enum pumas_event _value;}')
     local event_t = ffi.typeof('struct pumas_event_w')
 
     local tags = {
@@ -60,10 +61,21 @@ do
 
     function Event.__new (ct, ...)
         local self = ffi.new(ct)
-        if select('#', ...) then
-            for _, k in ipairs({...}) do
+
+        local n = select('#', ...)
+        if n == 1 then
+            -- Copy constructor
+            local arg = select(1, ...)
+            if metatype(arg) == 'Event' then
+                self._value = arg._value
+                return self
+            end
+        end
+
+        if n > 0 then
+            for _, k in ipairs{...} do
                 local b = get_value(k)
-                self.value = bit.bor(tonumber(self.value), b)
+                self._value = bit.bor(tonumber(self._value), b)
             end
         end
         return self
@@ -71,38 +83,61 @@ do
 
     function Event.__eq (self, other)
         if ffi.istype(event_t, other) then
-            return self.value == other.value
+            return self._value == other._value
         else
-            return self.value == other
+            return self._value == other
         end
+    end
+
+    local function clear (self)
+        if not self then
+            error.raise{fname = 'clear', argnum = 'bad', expected = 1, got = 0}
+        end
+
+        self._value = 0
+        return self
+    end
+
+    local function clone (self)
+        if self == nil then
+            error.raise{fname = 'clone', argnum = 'bad', expected = 1, got = 0}
+        end
+
+        local other = enum.Event()
+        other._value = self._value
+        return other
     end
 
     function Event.__index (self, k)
         if k == '__metatype' then
             return 'Event'
-        end
-
-        local b = get_value(k)
-        if b == 0 then
-            return self.value == 0
+        elseif k == 'clear' then
+            return clear
+        elseif k == 'clone' then
+            return clone
         else
-            return bit.band(tonumber(self.value), b) ~= 0
+            local b = get_value(k)
+            if b == 0 then
+                return self._value == 0
+            else
+                return bit.band(tonumber(self._value), b) ~= 0
+            end
         end
     end
 
     function Event.__newindex (self, k, v)
         local b = get_value(k)
         if b == 0 then
-            self.value = 0
+            self._value = 0
         elseif v then
-            self.value = bit.bor(tonumber(self.value), b)
+            self._value = bit.bor(tonumber(self._value), b)
         else
-            self.value = bit.band(tonumber(self.value), bit.bnot(b))
+            self._value = bit.band(tonumber(self._value), bit.bnot(b))
         end
     end
 
     function Event.__tostring (self)
-        local v = tonumber(self.value)
+        local v = tonumber(self._value)
         local s = get_string(v)
         if s then return s end
 
@@ -110,13 +145,13 @@ do
         for _, k in ipairs(tags) do
             local b = get_value(k)
             if b ~= 0 then
-                if bit.band(tonumber(self.value), b) == b then
+                if bit.band(tonumber(self._value), b) == b then
                     table.insert(t, k)
-                    self.value = bit.band(tonumber(self.value), bit.bnot(b))
+                    self._value = bit.band(tonumber(self._value), bit.bnot(b))
                 end
             end
         end
-        self.value = v
+        self._value = v
         return table.concat(t, ' ')
     end
 
