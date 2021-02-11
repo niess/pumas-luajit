@@ -1,10 +1,10 @@
 # Build
 _Build physics tabulations for a set of materials and composites._
 
-The [build](build.md) function allows to pre-compute tabulations for a given
-projectile and a set of target materials. These tabulations are stored on disk.
-They are used by [Physics](Physics.md) instances for simulating the physics of
-the transport.
+The [build](build.md) function allows to pre-compute (tabulate) the
+[physics](../Physics.md) for a given projectile and a set of target materials.
+The resulting tabulations are stored on disk.  They are used by
+[Physics](Physics.md) instances for simulating the physics of the transport.
 {: .justify}
 
 This function takes a single table argument as detailed in the synopsis below.
