@@ -100,8 +100,8 @@ Context:medium(state)
 
 ### See also
 
-[Context.random](#contextrandom),
-[Context.transport](#contexttransport).
+[random](#contextrandom),
+[transport](#contexttransport).
 </div>
 
 
@@ -131,8 +131,8 @@ None, except *self*.
 
 ### See also
 
-[Context.medium](#contextmedium),
-[Context.transport](#contexttransport).
+[medium](#contextmedium),
+[transport](#contexttransport).
 </div>
 
 
@@ -172,6 +172,6 @@ Context:transport(state)
 
 ### See also
 
-[Context.medium](#contextmedium),
-[Context.random](#contextrandom).
+[medium](#contextmedium),
+[random](#contextrandom).
 </div>

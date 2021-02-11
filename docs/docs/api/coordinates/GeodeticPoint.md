@@ -93,8 +93,8 @@ None, except *self*.
 
 ### See also
 
-[GeodeticPoint.get](#geodeticpointget),
-[GeodeticPoint.set](#geodeticpointset).
+[get](#geodeticpointget),
+[set](#geodeticpointset).
 </div>
 
 
@@ -132,8 +132,8 @@ None, except *self*.
 
 ### See also
 
-[GeodeticPoint.clone](#geodeticpointclone),
-[GeodeticPoint.set](#geodeticpointset).
+[clone](#geodeticpointclone),
+[set](#geodeticpointset).
 
 </div>
 
@@ -181,6 +181,6 @@ GeodeticPoint:set(coordinates)
 
 ### See also
 
-[GeodeticPoint.clone](#geodeticpointclone),
-[GeodeticPoint.get](#geodeticpointget).
+[clone](#geodeticpointclone),
+[get](#geodeticpointget).
 </div>

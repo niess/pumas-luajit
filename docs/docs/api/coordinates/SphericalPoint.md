@@ -81,9 +81,9 @@ None, except *self*.
 
 ### See also
 
-[SphericalPoint.get](#sphericalpointget),
-[SphericalPoint.set](#sphericalpointset),
-[SphericalPoint.transform](#sphericalpointtransform).
+[get](#sphericalpointget),
+[set](#sphericalpointset),
+[transform](#sphericalpointtransform).
 </div>
 
 
@@ -116,9 +116,9 @@ None, except *self*.
 
 ### See also
 
-[SphericalPoint.clone](#sphericalpointclone),
-[SphericalPoint.set](#sphericalpointset),
-[SphericalPoint.transform](#sphericalpointtransform).
+[clone](#sphericalpointclone),
+[set](#sphericalpointset),
+[transform](#sphericalpointtransform).
 
 </div>
 
@@ -160,9 +160,9 @@ SphericalPoint:set(coordinates)
 
 ### See also
 
-[SphericalPoint.clone](#sphericalpointclone),
-[SphericalPoint.get](#sphericalpointget),
-[SphericalPoint.transform](#sphericalpointtransform).
+[clone](#sphericalpointclone),
+[get](#sphericalpointget),
+[transform](#sphericalpointtransform).
 </div>
 
 
@@ -194,7 +194,7 @@ SphericalPoint:transform(frame)
 
 ### See also
 
-[SphericalPoint.clone](#sphericalpointclone),
-[SphericalPoint.get](#sphericalpointget),
-[SphericalPoint.set](#sphericalpointset),
+[clone](#sphericalpointclone),
+[get](#sphericalpointget),
+[set](#sphericalpointset).
 </div>

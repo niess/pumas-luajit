@@ -81,9 +81,9 @@ None, except *self*.
 
 ### See also
 
-[CartesianVector.get](#cartesianvectorget),
-[CartesianVector.set](#cartesianvectorset),
-[CartesianVector.transform](#cartesianvectortransform).
+[get](#cartesianvectorget),
+[set](#cartesianvectorset),
+[transform](#cartesianvectortransform).
 </div>
 
 
@@ -116,9 +116,9 @@ None, except *self*.
 
 ### See also
 
-[CartesianVector.clone](#cartesianvectorclone),
-[CartesianVector.set](#cartesianvectorset),
-[CartesianVector.transform](#cartesianvectortransform).
+[clone](#cartesianvectorclone),
+[set](#cartesianvectorset),
+[transform](#cartesianvectortransform).
 
 </div>
 
@@ -160,9 +160,9 @@ CartesianVector:set(coordinates)
 
 ### See also
 
-[CartesianVector.clone](#cartesianvectorclone),
-[CartesianVector.get](#cartesianvectorget),
-[CartesianVector.transform](#cartesianvectortransform).
+[clone](#cartesianvectorclone),
+[get](#cartesianvectorget),
+[transform](#cartesianvectortransform).
 </div>
 
 
@@ -194,7 +194,7 @@ CartesianVector:transform(frame)
 
 ### See also
 
-[CartesianVector.clone](#cartesianvectorclone),
-[CartesianVector.get](#cartesianvectorget),
-[CartesianVector.set](#cartesianvectorset),
+[clone](#cartesianvectorclone),
+[get](#cartesianvectorget),
+[set](#cartesianvectorset).
 </div>

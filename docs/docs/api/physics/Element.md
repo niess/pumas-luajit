@@ -18,8 +18,8 @@ _A metatype for defining atomic elements properties._
 
 The [Element](Element.md) metatype is a simple container for atomic elements
 properties. Its constructor takes three mandatory arguments as detailled in the
-synopsis below: the atomic charge number, *Z*, the atomic mass, *A* and the
-Mean Excitation Energy, *I* of its electronic structure.
+synopsis below: the atomic charge, *Z*, the atomic mass, *A* and the Mean
+Excitation Energy, *I*, of its electronic structure.
 {: .justify}
 
 ### Synopsis

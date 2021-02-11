@@ -15,7 +15,7 @@ _A metatype for wrapping topography data._
     directly add or subtract a `number` offset to the
     [TopographyData](TopographyData.md) table. Note that the result of this
     operation is a shallow clone of the initial data as returned by
-    [TopographyData.clone](#topographydataclone).
+    [clone](#topographydataclone).
     {: .justify }
 </div>
 
@@ -94,7 +94,7 @@ None, except *self*.
 
 ### See also
 
-[TopographyData.elevation](#topographydataelevation)
+[elevation](#topographydataelevation).
 </div>
 
 
@@ -139,5 +139,5 @@ TopographyData:elevation(latitude, longitude)
 
 ### See also
 
-[TopographyData.clone](#topographydataclone)
+[clone](#topographydataclone).
 </div>

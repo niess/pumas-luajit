@@ -76,7 +76,7 @@ None, except *self*.
 
 ### See also
 
-[Transform.from\_euler](#transformfrom_euler).
+[from\_euler](#transformfrom_euler).
 </div>
 
 
@@ -118,5 +118,5 @@ rotations around the x, z and x-axis.
 
 ### See also
 
-[Transform.clone](#transformclone).
+[clone](#transformclone).
 </div>

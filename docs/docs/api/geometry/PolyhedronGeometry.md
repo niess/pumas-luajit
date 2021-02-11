@@ -138,8 +138,8 @@ corresponding medium.
 
 ### See also
 
-[PolyhedronGeometry.insert](#polyhedrongeometryinsert),
-[PolyhedronGeometry.remove](#polyhedrongeometryremove).
+[insert](#polyhedrongeometryinsert),
+[remove](#polyhedrongeometryremove).
 </div>
 
 
@@ -180,8 +180,8 @@ PolyhedronGeometry:insert(index, daughter)
 
 ### See also
 
-[PolyhedronGeometry.export](#polyhedrongeometryexport),
-[PolyhedronGeometry.remove](#polyhedrongeometryremove).
+[export](#polyhedrongeometryexport),
+[remove](#polyhedrongeometryremove).
 </div>
 
 
@@ -221,7 +221,7 @@ PolyhedronGeometry:remove((index))
 
 ### See also
 
-[PolyhedronGeometry.export](#polyhedrongeometryexport),
-[PolyhedronGeometry.insert](#poluhedrongeometryinsert).
+[export](#polyhedrongeometryexport),
+[insert](#polyhedrongeometryinsert).
 
 </div>

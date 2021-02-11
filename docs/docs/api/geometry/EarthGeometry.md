@@ -94,7 +94,7 @@ EarthGeometry:insert(index, daughter)
 
 ### See also
 
-[EarthGeometry.remove](#earthgeometryremove).
+[remove](#earthgeometryremove).
 </div>
 
 
@@ -134,6 +134,6 @@ EarthGeometry:remove((index))
 
 ### See also
 
-[EarthGeometry.insert](#earthgeometryinsert).
+[insert](#earthgeometryinsert).
 
 </div>

@@ -95,8 +95,8 @@ None, except *self*.
 
 ### See also
 
-[TopographyDataset.elevation](topographydatasetelevation),
-[TopographyDataset.ipairs](topographydatasetipairs).
+[elevation](topographydatasetelevation),
+[ipairs](topographydatasetipairs).
 </div>
 
 
@@ -142,8 +142,8 @@ TopographyDataset:elevation(latitude, longitude)
 
 ### See also
 
-[TopographyDataset.clone](topographydatasetclone),
-[TopographyDataset.ipairs](topographydatasetipairs).
+[clone](topographydatasetclone),
+[ipairs](topographydatasetipairs).
 </div>
 
 
@@ -171,7 +171,7 @@ None, except *self*.
 
 ### See also
 
-[TopographyDataset.clone](topographydatasetclone),
-[TopographyDataset.elevation](topographydatasetelevation).
+[clone](topographydatasetclone),
+[elevation](topographydatasetelevation).
 
 </div>

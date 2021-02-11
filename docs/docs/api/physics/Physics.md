@@ -125,7 +125,7 @@ Physics:Context(mode)
 
 ### See also
 
-[Physics.dump](#physicsdump)
+[dump](#physicsdump).
 </div>
 
 
@@ -154,5 +154,5 @@ Physics:dump(path)
 
 ### See also
 
-[Physics.Context](#physicscontext)
+[Context](#physicscontext).
 </div>

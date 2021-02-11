@@ -77,7 +77,7 @@ InfiniteGeometry:insert(index, daughter)
 
 ### See also
 
-[InfiniteGeometry.remove](#infinitegeometryremove).
+[remove](#infinitegeometryremove).
 </div>
 
 
@@ -117,6 +117,6 @@ InfiniteGeometry:remove((index))
 
 ### See also
 
-[InfiniteGeometry.insert](#infinitegeometryinsert).
+[insert](#infinitegeometryinsert).
 
 </div>

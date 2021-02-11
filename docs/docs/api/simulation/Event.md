@@ -101,7 +101,7 @@ None, except *self*.
 
 ### See also
 
-[Event.clone](#eventclone).
+[clone](#eventclone).
 </div>
 
 
@@ -130,5 +130,5 @@ None, except *self*.
 
 ### See also
 
-[Event.clear](#eventclear).
+[clear](#eventclear).
 </div>

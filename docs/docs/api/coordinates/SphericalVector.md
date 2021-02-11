@@ -80,9 +80,9 @@ None, except *self*.
 
 ### See also
 
-[SphericalVector.get](#sphericalvectorget),
-[SphericalVector.set](#sphericalvectorset),
-[SphericalVector.transform](#sphericalvectortransform).
+[get](#sphericalvectorget),
+[set](#sphericalvectorset),
+[transform](#sphericalvectortransform).
 </div>
 
 
@@ -115,9 +115,9 @@ None, except *self*.
 
 ### See also
 
-[SphericalVector.clone](#sphericalvectorclone),
-[SphericalVector.set](#sphericalvectorset),
-[SphericalVector.transform](#sphericalvectortransform).
+[clone](#sphericalvectorclone),
+[set](#sphericalvectorset),
+[transform](#sphericalvectortransform).
 
 </div>
 
@@ -159,9 +159,9 @@ SphericalVector:set(coordinates)
 
 ### See also
 
-[SphericalVector.clone](#sphericalvectorclone),
-[SphericalVector.get](#sphericalvectorget),
-[SphericalVector.transform](#sphericalvectortransform).
+[clone](#sphericalvectorclone),
+[get](#sphericalvectorget),
+[transform](#sphericalvectortransform).
 </div>
 
 
@@ -193,7 +193,7 @@ SphericalVector:transform(frame)
 
 ### See also
 
-[SphericalVector.clone](#sphericalvectorclone),
-[SphericalVector.get](#sphericalvectorget),
-[SphericalVector.set](#sphericalvectorset),
+[clone](#sphericalvectorclone),
+[get](#sphericalvectorget),
+[set](#sphericalvectorset).
 </div>

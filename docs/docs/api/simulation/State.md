@@ -101,8 +101,8 @@ None, except *self*.
 
 ### See also
 
-[State.clone](#stateclone),
-[State.set](#stateset).
+[clone](#stateclone),
+[set](#stateset).
 </div>
 
 
@@ -131,8 +131,8 @@ None, except *self*.
 
 ### See also
 
-[State.clear](#stateclear),
-[State.set](#stateset).
+[clear](#stateclear),
+[set](#stateset).
 </div>
 
 
@@ -164,6 +164,6 @@ State:set(state)
 
 ### See also
 
-[State.clear](#stateclear),
-[State.clone](#stateclone).
+[clear](#stateclear),
+[clone](#stateclone).
 </div>

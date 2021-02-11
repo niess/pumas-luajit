@@ -81,9 +81,9 @@ None, except *self*.
 
 ### See also
 
-[HorizontalVector.get](#horizontalvectorget),
-[HorizontalVector.set](#horizontalvectorset),
-[HorizontalVector.transform](#horizontalvectortransform).
+[get](#horizontalvectorget),
+[set](#horizontalvectorset),
+[transform](#horizontalvectortransform).
 </div>
 
 
@@ -116,9 +116,9 @@ None, except *self*.
 
 ### See also
 
-[HorizontalVector.clone](#horizontalvectorclone),
-[HorizontalVector.set](#horizontalvectorset),
-[HorizontalVector.transform](#horizontalvectortransform).
+[clone](#horizontalvectorclone),
+[set](#horizontalvectorset),
+[transform](#horizontalvectortransform).
 
 </div>
 
@@ -161,9 +161,9 @@ HorizontalVector:set(coordinates)
 
 ### See also
 
-[HorizontalVector.clone](#horizontalvectorclone),
-[HorizontalVector.get](#horizontalvectorget),
-[HorizontalVector.transform](#horizontalvectortransform).
+[clone](#horizontalvectorclone),
+[get](#horizontalvectorget),
+[transform](#horizontalvectortransform).
 </div>
 
 
@@ -195,7 +195,7 @@ HorizontalVector:transform(frame)
 
 ### See also
 
-[HorizontalVector.clone](#horizontalvectorclone),
-[HorizontalVector.get](#horizontalvectorget),
-[HorizontalVector.set](#horizontalvectorset),
+[clone](#horizontalvectorclone),
+[get](#horizontalvectorget),
+[set](#horizontalvectorset).
 </div>
