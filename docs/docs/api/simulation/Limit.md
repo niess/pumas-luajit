@@ -8,7 +8,7 @@ _External limits for a Monte Carlo simulation context._
 |----|----|-----------|
 |*distance*|`number`| Limit on the travelled distance, in m. {: .justify} |
 |*grammage*|`number`| Limit on the travelled grammage in kg/m<sup>2</sup>. {: .justify} |
-|*kinetic* |`number`| Limit on the kinetic energy, in GeV. In *forward* this sets a upper limit but in *backward* it sets a lower limit. {: .justify} |
+|*energy*  |`number`| Limit on the kinetic energy, in GeV. In *forward* this sets a upper limit but in *backward* it sets a lower limit. {: .justify} |
 |*time*    |`number`| Limit on the proper time, in m/c. {: .justify} |
 
 !!! note

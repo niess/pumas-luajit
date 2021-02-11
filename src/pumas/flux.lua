@@ -34,9 +34,9 @@ end
 local function GaisserFlux (normalisation, gamma, charge_ratio)
     local ratio = ChargeRatio(charge_ratio)
 
-    return function (kinetic, cos_theta, charge)
+    return function (kinetic_energy, cos_theta, charge)
         if cos_theta < 0 then return 0 end
-        local Emu = kinetic + physics.MUON_MASS
+        local Emu = kinetic_energy + physics.MUON_MASS
         local ec = 1.1 * Emu * cos_theta
         local rpi = 1 + ec / 115
         local rK = 1 + ec / 850
@@ -71,12 +71,12 @@ end
 local function GcclyFlux (normalisation, gamma, charge_ratio)
     local gaisser = GaisserFlux(normalisation, gamma, charge_ratio)
 
-    return function (kinetic, cos_theta, charge)
+    return function (kinetic_energy, cos_theta, charge)
         local cs = cos_theta_star(cos_theta)
         if cs < 0 then return 0 end
-        local Emu = kinetic + physics.MUON_MASS
+        local Emu = kinetic_energy + physics.MUON_MASS
         return math.pow(1 + 3.64 / (Emu * math.pow(cs, 1.29)), -gamma) *
-               gaisser(kinetic, cs, charge)
+               gaisser(kinetic_energy, cs, charge)
     end
 end
 
@@ -130,7 +130,7 @@ local function ChirkinFlux (normalisation, gamma, charge_ratio)
     local c2 = bstar * bstar / b
     local d1 = 0.054
 
-    return function (kinetic, cos_theta, charge)
+    return function (kinetic_energy, cos_theta, charge)
         local cs = cos_theta_star(cos_theta)
         if cs < 0 then return 0 end
 
@@ -139,7 +139,7 @@ local function ChirkinFlux (normalisation, gamma, charge_ratio)
         do
             local X = mass_overburden(cos_theta) - X0
             local ebx = math.exp(b * X)
-            local Ef = kinetic + physics.MUON_MASS
+            local Ef = kinetic_energy + physics.MUON_MASS
             local Ei = ((a + b * Ef) * ebx - a) / b
 
             local sE = 0.5 * c2 * (Ei * Ei - Ef * Ef) + c1 * (Ei - Ef) +
@@ -211,10 +211,10 @@ function flux.MuonFlux (model, options)
         local data = clib.pumas_flux_tabulation_data[1]
         -- XXX interpolate with altitude
 
-        return function (kinetic, cos_theta, charge)
+        return function (kinetic_energy, cos_theta, charge)
             if charge == nil then charge = 0 end
-            return clib.pumas_flux_tabulation_get(data, kinetic, cos_theta,
-                                                   charge) * normalisation
+            return clib.pumas_flux_tabulation_get(data, kinetic_energy,
+                cos_theta, charge) * normalisation
         end
     end
 

@@ -106,7 +106,7 @@ state.State = setmetatable(State, {
                 self:set(args)
             elseif mt == 'table' then
                 c.charge = -1
-                c.kinetic = 1
+                c.energy = 1
                 c.weight = 1
                 c.direction[2] = 1
 

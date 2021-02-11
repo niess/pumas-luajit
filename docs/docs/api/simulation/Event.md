@@ -25,8 +25,8 @@ _Event flags for the Monte Carlo simulation._
 |*vertex\_photonuclear*  |`boolean`| A photonuclear DEL vertex. |
 |||
 |*limit\_distance*       |`boolean`| A travelled distance external limit. |
+|*limit\_energy*         |`boolean`| A kinetic energy external limit. |
 |*limit\_grammage*       |`boolean`| A travelled grammage external limit. |
-|*limit\_kinetic*        |`boolean`| A kinetic energy external limt. |
 |*limit\_time*           |`boolean`| A proper time external limit. |
 
 !!! note

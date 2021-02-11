@@ -10,7 +10,7 @@ local simulation = physics:Context('longitudinal hybrid')
 simulation.geometry = pumas.InfiniteGeometry('StandardRock')
 
 -- Initial muon state
-local initial_state = pumas.State{kinetic = 1E+03} -- GeV
+local initial_state = pumas.State{energy = 1E+03} -- GeV
 
 -- Run the Monte Carlo
 local s1, s2, n = 0, 0, 10000

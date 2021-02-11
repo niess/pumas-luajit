@@ -20,7 +20,7 @@ do
     local tags = {
         'none', 'start', 'medium', 'weight', 'stop', 'limit', 'vertex',
         'vertex_decay', 'vertex_del', 'limit_distance', 'limit_grammage',
-        'limit_kinetic', 'limit_time', 'vertex_coulomb',
+        'limit_energy', 'limit_time', 'vertex_coulomb',
         'vertex_bremsstrahlung', 'vertex_delta_ray', 'vertex_pair_creation',
         'vertex_photonuclear'
     }

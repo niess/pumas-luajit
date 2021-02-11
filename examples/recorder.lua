@@ -52,7 +52,7 @@ simulation.recorder = function (state, medium, event)
     local medium_name = media_names[medium]
 
     print(string.format('%-10s  %.3E %10.3f %.5E %.5E  %s', medium_name,
-                                                            state.kinetic,
+                                                            state.energy,
                                                             geodetic.altitude,
                                                             state.distance,
                                                             deflection,

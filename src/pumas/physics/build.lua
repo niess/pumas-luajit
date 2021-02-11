@@ -350,8 +350,8 @@ local function tabulate_materials (_, args)
     if path ~= nil then outdir = ffi.new('char [?]', #path + 1, path) end
     data.outdir = outdir
     data.overwrite = 1
-    data.n_kinetics = ffi.sizeof(energies) / ffi.sizeof('double')
-    data.kinetic = energies
+    data.n_energies = ffi.sizeof(energies) / ffi.sizeof('double')
+    data.energy = energies
 
     local errormsg
     for name, material in pairs(materials) do

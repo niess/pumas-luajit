@@ -28,7 +28,7 @@ do
         if math.abs(position.altitude - top_altitude) > 1E-03 then return 0 end
         local frame = pumas.LocalFrame(position)
         direction:set(state.direction):transform(frame)
-        return flux_model(state.kinetic, -direction.z, state.charge)
+        return flux_model(state.energy, -direction.z, state.charge)
     end
 end
 
@@ -36,7 +36,7 @@ end
 local simulation = pumas.Context{
     physics = 'share/materials/standard',
     mode = 'backward longitudinal hybrid',
-    limit = {kinetic = 1E+08},
+    limit = {energy = 1E+08},
     geometry = geometry
 }
 
@@ -62,7 +62,7 @@ print([[
 for ik = 1, 81 do
     local t0 = os.clock()
 
-    initial_state.kinetic = 1E-02 * math.exp((ik - 1) * math.log(1E+08) / 80)
+    initial_state.energy = 1E-02 * math.exp((ik - 1) * math.log(1E+08) / 80)
     local state = pumas.State()
 
     local s, s2, n = 0, 0, 10000
@@ -90,7 +90,7 @@ for ik = 1, 81 do
 
     local dt = os.clock() - t0
 
-    print(string.format('%.5E  %.5E %.5E  %.5E', initial_state.kinetic, s,
+    print(string.format('%.5E  %.5E %.5E  %.5E', initial_state.energy, s,
                         math.sqrt((s2 - s * s) / n), dt))
     io.flush()
 end

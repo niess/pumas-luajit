@@ -8,7 +8,7 @@ _A container for the state of Monte Carlo particles._
 |Name|Type|Description|
 |----|----|-----------|
 |*charge*   |`number`    | Electric charge, i.e. `1` or `-1`. |
-|*kinetic*  |`number`    | Kinetic energy, in GeV. |
+|*energy*   |`number`    | Kinetic energy, in GeV. |
 |*position* |`double [3]`| Cartesian coordinates of the position in the simulation frame, in m. {: .justify} |
 |*direction*|`double [3]`| Cartesian coordinates of the momentum direction in the simulation frame. {: .justify} |
 |||
@@ -38,7 +38,7 @@ pumas.State()
 
 pumas.State(state)
 
-pumas.State{(charge)=, (kinetic)=, (position)=, (direction)=, (distance)=,
+pumas.State{(charge)=, (energy)=, (position)=, (direction)=, (distance)=,
     (grammage)=, (time)=, (weight)=, (decayed)=}
 ```
 
@@ -49,7 +49,7 @@ pumas.State{(charge)=, (kinetic)=, (position)=, (direction)=, (distance)=,
 |*state*|[State](State.md)| Another [State](State.md) instance to copy. |
 |||
 |(*charge*)   |`number`                        | Electric charge, i.e. `1` or `-1`. Defaults to `-1`. {: .justify} |
-|(*kinetic*)  |`number`                        | Initial kinetic energy, in GeV. Defaults to `1` GeV. {: .justify} |
+|(*energy*)   |`number`                        | Initial kinetic energy, in GeV. Defaults to `1` GeV. {: .justify} |
 |(*position*) |[Coordinates](../Coordinates.md)| Initial position, in m. Defaults to the origin of the simulation frame. {: .justify} |
 |(*direction*)|[Coordinates](../Coordinates.md)| Initial momentum direction. Defaults to the vertical of the simulation frame. {: .justify} |
 |||

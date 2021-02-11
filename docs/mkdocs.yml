@@ -13,6 +13,7 @@ nav:
     - Geometry: api/Geometry.md
     - Medium: api/Medium.md
     - Physics: api/Physics.md
+    - Simulation: api/Simulation.md
   - API &raquo; Coordinates:
     - CartesianPoint: api/coordinates/CartesianPoint.md
     - CartesianVector: api/coordinates/CartesianVector.md

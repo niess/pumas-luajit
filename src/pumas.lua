@@ -13,8 +13,8 @@ local pumas = {}
 -------------------------------------------------------------------------------
 do
     local tag = clib.pumas_version()
-    local major = math.floor(tag / 1000)
-    local minor = tag - major
+    local major = math.floor(tag / 100)
+    local minor = tag - 100 * major
     pumas.version = string.format('%d.%d', major, minor)
 end
 

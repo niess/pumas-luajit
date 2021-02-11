@@ -173,24 +173,24 @@ do
     end
 
     local index = {
-        cross_section = function (self, kinetic)
+        cross_section = function (self, energy)
             update(self, 'cross_section')
             call(clib.pumas_physics_property_cross_section, self._physics._c[0],
-                self._index, kinetic, value)
+                self._index, energy, value)
             return tonumber(value[0])
         end,
 
-        energy_loss = function (self, kinetic, mode)
+        energy_loss = function (self, energy, mode)
             update(self, 'energy_loss')
             call(clib.pumas_physics_property_energy_loss, self.physics._c[0],
-                toindex(mode, 'energy_loss'), self._index, kinetic, value)
+                toindex(mode, 'energy_loss'), self._index, energy, value)
             return tonumber(value[0])
         end,
 
-        grammage = function (self, kinetic, mode)
+        grammage = function (self, energy, mode)
             update(self, 'grammage')
             call(clib.pumas_physics_property_grammage, self.physics._c[0],
-                toindex(mode, 'grammage'), self._index, kinetic, value)
+                toindex(mode, 'grammage'), self._index, energy, value)
             return tonumber(value[0])
         end,
 
@@ -201,24 +201,24 @@ do
             return tonumber(value[0])
         end,
 
-        magnetic_rotation = function (self, kinetic)
+        magnetic_rotation = function (self, energy)
             update(self, 'magnetic_rotation')
             call(clib.pumas_physics_property_magnetic_rotation,
-                self.physics._c[0], self._index, kinetic, value)
+                self.physics._c[0], self._index, energy, value)
             return tonumber(value[0])
         end,
 
-        proper_time = function (self, kinetic, mode)
+        proper_time = function (self, energy, mode)
             update(self, 'proper_time')
             call(clib.pumas_physics_property_proper_time, self.physics._c[0],
-                toindex(mode, 'proper_time'), self._index, kinetic, value)
+                toindex(mode, 'proper_time'), self._index, energy, value)
             return tonumber(value[0])
         end,
 
-        scattering_length = function (self, kinetic)
+        scattering_length = function (self, energy)
             update(self, 'scattering_length')
             call(clib.pumas_physics_property_scattering_length,
-                self.physics._c[0], self._index, kinetic, value)
+                self.physics._c[0], self._index, energy, value)
             return tonumber(value[0])
         end
     }

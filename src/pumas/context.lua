@@ -24,7 +24,7 @@ local context = {}
 do
     local Limit = {}
 
-    local fields = {'distance', 'grammage', 'kinetic', 'time'}
+    local fields = {'distance', 'energy', 'grammage', 'time'}
 
     local raise_error = error.ErrorFunction{fname = 'limit'}
 
