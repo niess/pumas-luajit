@@ -10,6 +10,8 @@ local physics = require('pumas.physics')
 local flux = {}
 
 
+-- XXX add primary generators for configuring a state
+
 -------------------------------------------------------------------------------
 -- Flux scaling according to a constant charge ratio
 -------------------------------------------------------------------------------
