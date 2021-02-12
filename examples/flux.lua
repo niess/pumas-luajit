@@ -10,27 +10,8 @@ local atmosphere = pumas.GradientMedium('Air', {
     z0 = 0, rho0 = 1.205})
 local geometry = pumas.EarthGeometry{medium = atmosphere, data = top_altitude}
 
--- Wrap the primary flux model
---
--- The flux models use geodetic coordinates (altitude, zenith angle, ...) but
--- the Monte Carlo uses Cartesian ECEF ones. This wrapper does the coordinates
--- conversion from the Monte-Carlo to the flux model.
-local flux
-do
-    local position = pumas.GeodeticPoint()
-    local direction = pumas.CartesianVector()
-
-    -- Tabulated flux model from CORSIKA simulations
-    local flux_model = pumas.MuonFlux('tabulation', {altitude = top_altitude})
-
-    function flux (state)
-        position:set(state.position)
-        if math.abs(position.altitude - top_altitude) > 1E-03 then return 0 end
-        local frame = pumas.LocalFrame(position)
-        direction:set(state.direction):transform(frame)
-        return flux_model(state.energy, -direction.z, state.charge)
-    end
-end
+-- Set the primary flux model
+local flux = pumas.MuonFlux('tabulation', {altitude = top_altitude})
 
 -- Create a backward simulation context
 local simulation = pumas.Context{
@@ -69,7 +50,7 @@ for ik = 1, 81 do
     for _ = 1, n do
         state:set(initial_state)
 
-        -- Randomise the charge
+        -- Randomise the electric charge
         if simulation:random() < 0.5 then
             state.charge = -1
         else
@@ -77,13 +58,16 @@ for ik = 1, 81 do
         end
         state.weight = state.weight * 2
 
-        -- Do the transport
+        -- Do the backward transport
         simulation:transport(state)
 
-        -- Update the flux
-        local f = flux(state) * state.weight
-        s = s + f
-        s2 = s2 + f * f
+        -- Sample the primary flux
+        if flux:sample(state) then
+            -- The particle reached the primary flux. Let us update the
+            -- Monte Carlo estimate
+            s = s + state.weight
+            s2 = s2 + state.weight * state.weight
+        end
     end
     s = s / n
     s2 = s2 / n

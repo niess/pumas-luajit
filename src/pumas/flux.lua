@@ -4,13 +4,13 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local clib = require('pumas.clib')
+local coordinates = require('pumas.coordinates')
 local error = require('pumas.error')
+local metatype = require('pumas.metatype')
 local physics = require('pumas.physics')
 
 local flux = {}
 
-
--- XXX add primary generators for configuring a state
 
 -------------------------------------------------------------------------------
 -- Flux scaling according to a constant charge ratio
@@ -179,83 +179,209 @@ end
 
 
 -------------------------------------------------------------------------------
--- Generic muon flux metatype
+-- Muon flux metatype
 -------------------------------------------------------------------------------
-function flux.MuonFlux (model, options)
+local MuonFlux = {}
+
+do
+    local function sample (self, state)
+        if metatype(self) ~= 'MuonFlux' then
+            error.raise{fname = 'sample', argnum = 1,
+                expected = 'a MuonFlux table', got = metatype.a(self)}
+        elseif metatype(state) ~= 'State' then
+            error.raise{fname = 'sample', argnum = 2,
+                expected = 'a State table', got = metatype.a(state)}
+        end
+
+        local cos_theta
+        if self._axis == 'vertical' then
+            self._position:set(state.position)
+            local altitude = self._altitude + self._origin
+            if math.abs(self._position.altitude - altitude) > 1E-03 then
+                return false
+            end
+            local frame = coordinates.LocalFrame(self._position)
+            self._direction:set(state.direction):transform(frame)
+            cos_theta = -self._direction.z
+        else
+            local z = (state.position[0] - self._origin[0]) * self._axis[0] +
+                      (state.position[1] - self._origin[1]) * self._axis[1] +
+                      (state.position[2] - self._origin[2]) * self._axis[2]
+            if math.abs(z - self._altitude) > 1E-03 then
+                return false
+            end
+
+            cos_theta = -state.direction[0] * self._axis[0] -
+                         state.direction[1] * self._axis[1] -
+                         state.direction[2] * self._axis[2]
+        end
+
+        local f = self._spectrum(state.energy, cos_theta, state.charge)
+        state.weight = state.weight * f
+
+        return true, f
+    end
+
+    local function spectrum (self, energy, cos_theta, charge)
+        if metatype(self) ~= 'MuonFlux' then
+            error.raise{fname = 'spectrum', argnum = 1,
+                expected = 'a MuonFlux table', got = metatype.a(self)}
+        end
+
+        return self._spectrum(energy, cos_theta, charge)
+    end
+
+    function MuonFlux:__index (k)
+        if k == '__metatype' then
+            return 'MuonFlux'
+        elseif k == 'sample' then
+            return sample
+        elseif k == 'spectrum' then
+            return spectrum
+        elseif k == 'altitude' then
+            return self._altitude
+        elseif k == 'model' then
+            return self._model
+        else
+            error.raise{['type'] = 'MuonFlux', bad_member = k}
+        end
+    end
+end
+
+
+function MuonFlux.__newindex (_, k)
+    if (k == 'altitude') or (k == 'model') then
+        error.raise{['type'] = 'MuonFlux', not_mutable = k}
+    else
+        error.raise{['type'] = 'MuonFlux', bad_member = k}
+    end
+end
+
+
+-------------------------------------------------------------------------------
+-- Muon flux constructor
+-------------------------------------------------------------------------------
+-- XXX Allow a user defined muon spectrum
+-- XXX Allow a range of altitudes for muon spectrum
+
+do
     local raise_error = error.ErrorFunction{fname = 'MuonFlux'}
 
-    if model == nil then
-        raise_error{
-            argnum = 'bad',
-            expected = '1 or 2',
-            got = 0
-        }
-    end
-    if options == nil then options = {} end
+    local function new (cls, model, options)
+        if model == nil then
+            raise_error{argnum = 'bad',  expected = '1 or 2', got = 0}
+        end
+        if options == nil then options = {} end
 
-    local tag = model:lower()
-    if tag == 'tabulation' then
-        local normalisation, altitude = 1
+        local self = {_model = model}
+
+        -- Set the vertical axis and the origin of the model
+        local axis = options.axis or 'vertical'
+        if axis == 'vertical' then
+            self._position = coordinates.GeodeticPoint()
+            self._direction = coordinates.CartesianVector()
+            self._axis = axis
+
+            local origin = options.origin or 0
+            if type(origin) == 'number' then
+                self._origin = origin
+            else
+                raise_error{argname = 'origin', expected = 'a number',
+                    got = metatype.a(origin)}
+            end
+        else
+            local mt = metatype(axis)
+            if mt == 'table' then
+                self._axis = coordinates.CartesianVector(axis)
+            else
+                self._axis = coordinates.CartesianVector():set(axis)
+            end
+
+            local origin = options.origin or {0, 0, 0}
+            mt = metatype(origin)
+            if mt == 'table' then
+                self._origin = coordinates.CartesianPoint(origin)
+            else
+                self._origin = coordinates.CartesianPoint():set(origin)
+            end
+        end
+
+        local altitude = options.altitude or 0
+        if type(altitude) == 'number' then
+            self._altitude = altitude
+        else
+            raise_error{argname = 'altitude', expected = 'a number',
+                got = metatype.a(altitude)}
+        end
+
+        local tag = model:lower()
+        if tag == 'tabulation' then
+            local normalisation = 1
+            for k, v in pairs(options) do
+                if k == 'normalisation' then
+                    normalisation = v
+                elseif k ~= 'altitude' then
+                    raise_error{
+                        argnum = 2,
+                        description = "unknown option '"..k..
+                                      "' for 'tabulation' model"
+                    }
+                end
+            end
+
+            local data = clib.pumas_flux_tabulation_data[1]
+            -- XXX interpolate with altitude
+
+            self._spectrum = function (kinetic_energy, cos_theta, charge)
+                if charge == nil then charge = 0 end
+                return clib.pumas_flux_tabulation_get(data, kinetic_energy,
+                    cos_theta, charge) * normalisation
+            end
+
+            return setmetatable(self, cls)
+        end
+
+        local charge_ratio, gamma, normalisation
         for k, v in pairs(options) do
-            if k == 'normalisation' then
-                normalisation = v
-            elseif k == 'altitude' then
-                altitude = v
+            if k == 'charge_ratio' then charge_ratio = v
+            elseif k == 'gamma' then
+                gamma = v
+            elseif k == 'normalisation' then normalisation = v
             else
                 raise_error{
                     argnum = 2,
                     description = "unknown option '"..k..
-                                  "' for 'tabulation' model"
+                                  "' for '"..model.."' model"
                 }
             end
         end
 
-        local data = clib.pumas_flux_tabulation_data[1]
-        -- XXX interpolate with altitude
+        charge_ratio = charge_ratio or 1.2766
+        -- Ref: CMS (https://arxiv.org/abs/1005.5332)
 
-        return function (kinetic_energy, cos_theta, charge)
-            if charge == nil then charge = 0 end
-            return clib.pumas_flux_tabulation_get(data, kinetic_energy,
-                cos_theta, charge) * normalisation
-        end
-    end
-
-    local charge_ratio, gamma, normalisation
-    for k, v in pairs(options) do
-        if k == 'charge_ratio' then charge_ratio = v
-        elseif k == 'gamma' then
-            gamma = v
-        elseif k == 'normalisation' then normalisation = v
+        if tag == 'gaisser' then
+            gamma = gamma or 2.7
+            normalisation = normalisation or 1.4E+03
+            self._spectrum = GaisserFlux(normalisation, gamma, charge_ratio)
+        elseif tag == 'gccly' then
+            gamma = gamma or 2.7
+            normalisation = normalisation or 1.4E+03
+            self._spectrum = GcclyFlux(normalisation, gamma, charge_ratio)
+        elseif tag == 'chirkin' then
+            gamma = gamma or 2.715
+            normalisation = normalisation or 9.814E+02
+            self._spectrum = ChirkinFlux(normalisation, gamma, charge_ratio)
         else
             raise_error{
-                argnum = 2,
-                description = "unknown option '"..k..
-                              "' for '"..model.."' model"
+                argnum = 1,
+                description = "'unknown flux model '"..model.."'"
             }
         end
+
+        return setmetatable(self, cls)
     end
 
-    charge_ratio = charge_ratio or 1.2766
-    -- Ref: CMS (https://arxiv.org/abs/1005.5332)
-
-    if tag == 'gaisser' then
-        gamma = gamma or 2.7
-        normalisation = normalisation or 1.4E+03
-        return GaisserFlux(normalisation, gamma, charge_ratio)
-    elseif tag == 'gccly' then
-        gamma = gamma or 2.7
-        normalisation = normalisation or 1.4E+03
-        return GcclyFlux(normalisation, gamma, charge_ratio)
-    elseif tag == 'chirkin' then
-        gamma = gamma or 2.715
-        normalisation = normalisation or 9.814E+02
-        return ChirkinFlux(normalisation, gamma, charge_ratio)
-    else
-        raise_error{
-            argnum = 1,
-            description = "'unknown flux model '"..model.."'"
-        }
-    end
+    flux.MuonFlux = setmetatable(MuonFlux, {__call = new})
 end
 
 

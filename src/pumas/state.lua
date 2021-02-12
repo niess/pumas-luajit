@@ -13,6 +13,8 @@ local state = {}
 -------------------------------------------------------------------------------
 -- The Monte Carlo state metatype
 -------------------------------------------------------------------------------
+-- XXX Add generators for configuring an initial state
+
 local State = {}
 
 local ctype = ffi.typeof('struct pumas_state_extended')

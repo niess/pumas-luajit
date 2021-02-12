@@ -8,13 +8,20 @@
 -------------------------------------------------------------------------------
 -- Return the PUMAS metatype. Fallback to the usual type otherwise
 -------------------------------------------------------------------------------
-local function metatype (_, obj)
-    local tp = type(obj)
-    if (tp == 'table') or (tp == 'cdata') then
-        local mt = obj.__metatype
-        if mt then return mt else return tp end
-    else
-        return tp
+local metatype
+do
+    local function get_metatype (obj)
+        return obj.__metatype
+    end
+
+    function metatype (_, obj)
+        local tp = type(obj)
+        if (tp == 'table') or (tp == 'cdata') then
+            local ok, mt = pcall(get_metatype, obj)
+            if (ok and mt) then return mt else return tp end
+        else
+            return tp
+        end
     end
 end
 
