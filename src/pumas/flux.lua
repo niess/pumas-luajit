@@ -315,7 +315,7 @@ do
         end
 
         local tag = model:lower()
-        if tag == 'tabulation' then
+        if tag == 'mceq' then
             local normalisation = 1
             for k, v in pairs(options) do
                 if k == 'normalisation' then
@@ -324,50 +324,54 @@ do
                     raise_error{
                         argnum = 2,
                         description = "unknown option '"..k..
-                                      "' for 'tabulation' model"
+                                      "' for 'mceq' model"
                     }
                 end
             end
 
-            local data = clib.pumas_flux_tabulation_data[1]
-            -- XXX interpolate with altitude
+            local data = clib.pumas_flux_tabulation_data[0]
 
             self._spectrum = function (kinetic_energy, cos_theta, charge)
                 if charge == nil then charge = 0 end
                 return clib.pumas_flux_tabulation_get(data, kinetic_energy,
-                    cos_theta, charge) * normalisation
+                    cos_theta, self._altitude, charge) * normalisation
             end
 
             return setmetatable(self, cls)
         end
 
         local charge_ratio, gamma, normalisation
-        for k, v in pairs(options) do
-            if k == 'charge_ratio' then charge_ratio = v
-            elseif k == 'gamma' then
-                gamma = v
-            elseif k == 'normalisation' then normalisation = v
-            else
-                raise_error{
-                    argnum = 2,
-                    description = "unknown option '"..k..
-                                  "' for '"..model.."' model"
-                }
+        local function parse_args ()
+            for k, v in pairs(options) do
+                if k == 'charge_ratio' then charge_ratio = v
+                elseif k == 'gamma' then
+                    gamma = v
+                elseif k == 'normalisation' then normalisation = v
+                else
+                    raise_error{
+                        argnum = 2,
+                        description = "unknown option '"..k..
+                                      "' for '"..model.."' model"
+                    }
+                end
             end
+
+            charge_ratio = charge_ratio or 1.2766
+            -- Ref: CMS (https://arxiv.org/abs/1005.5332)
         end
 
-        charge_ratio = charge_ratio or 1.2766
-        -- Ref: CMS (https://arxiv.org/abs/1005.5332)
-
         if tag == 'gaisser' then
+            parse_args()
             gamma = gamma or 2.7
             normalisation = normalisation or 1.4E+03
             self._spectrum = GaisserFlux(normalisation, gamma, charge_ratio)
         elseif tag == 'gccly' then
+            parse_args()
             gamma = gamma or 2.7
             normalisation = normalisation or 1.4E+03
             self._spectrum = GcclyFlux(normalisation, gamma, charge_ratio)
         elseif tag == 'chirkin' then
+            parse_args()
             gamma = gamma or 2.715
             normalisation = normalisation or 9.814E+02
             self._spectrum = ChirkinFlux(normalisation, gamma, charge_ratio)
@@ -377,6 +381,8 @@ do
                 description = "'unknown flux model '"..model.."'"
             }
         end
+
+        -- XXX Implement any tabulated flux
 
         return setmetatable(self, cls)
     end

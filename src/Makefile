@@ -1,3 +1,7 @@
+FLUX_REPO=       "https://github.com/niess/atmospheric-muon-flux.git"
+FLUX_VERSION=    "11c4ce9f8ecfdff64e44aeecd563ba4feb4e6afb"
+FLUX_DATA=       "sybill23c-polygonato-usstd"
+
 GULL_REPO=       "https://github.com/niess/gull.git"
 GULL_VERSION=    "286ace553a4328a4c61448817e40a799bd8fc50a"
 
@@ -213,7 +217,16 @@ $(OBJS_DIR)/$(CROSS)turtle_io_%.c.o: $(TURTLE_SRC)/src/turtle/io/%.c \
 
 EXTENSIONS_OBJ= $(OBJS_DIR)/$(CROSS)pumas_extensions.c.o
 
-$(EXTENSIONS_OBJ): pumas_extensions.c pumas_extensions.h | \
+FLUX_SRC= $(BUILD_DIR)/src/atmospheric-muon-flux
+
+$(FLUX_SRC)/scripts/wrap-flux.lua $(FLUX_SRC)/data/flux-mceq-$(FLUX_DATA).table:
+	@$(call git_fetch,$(FLUX_SRC),$(FLUX_REPO),$(FLUX_VERSION))
+
+flux_mceq.c: $(FLUX_SRC)/data/flux-mceq-$(FLUX_DATA).table $(FLUX_SRC)/scripts/wrap-flux.lua $(LUAJIT_EXE) 
+	@echo "WRAP      $$(basename $<)"
+	@$(LUAJIT_EXE) $(FLUX_SRC)/scripts/wrap-flux.lua $< $@
+
+$(EXTENSIONS_OBJ): pumas_extensions.c flux_mceq.c pumas_extensions.h | \
 	           $(OBJS_DIR) $(GULL_INC)/gull.h $(PUMAS_INC)/pumas.h \
                    $(TURTLE_INC)/turtle.h
 	@echo "CC        $$(basename $@)"

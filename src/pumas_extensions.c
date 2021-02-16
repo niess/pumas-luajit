@@ -969,39 +969,60 @@ void pumas_coordinates_frame_initialise_local(
 
 double pumas_flux_tabulation_get(
     const struct pumas_flux_tabulation * tabulation, double k, double c,
-    double charge)
+    double h, double charge)
 {
         /* Compute the interpolation indices and coefficients */
         const double dlk = log(tabulation->k_max / tabulation->k_min) /
-                           tabulation->n_k;
+                           (tabulation->n_k - 1);
         double hk = log(k / tabulation->k_min) / dlk;
-        if ((hk < 0.) || (hk > tabulation->n_k)) return 0.;
-        hk -= 0.5;
-        int ik = (int)hk;
-        if ((hk < 0) || (hk > tabulation->n_k - 1)) hk = 0.;
-        else hk -= ik;
+        if ((hk < 0.) || (hk > tabulation->n_k - 1)) return 0.;
+        const int ik = (int)hk;
+        hk -= ik;
 
         const double dc = (tabulation->c_max - tabulation->c_min) /
-                          tabulation->n_c;
+                          (tabulation->n_c - 1);
         double hc = (c - tabulation->c_min) / dc;
-        if ((hc < 0.) || (hc > tabulation->n_c)) return 0.;
-        hc -= 0.5;
-        int ic = (int)hc;
-        if ((hc < 0) || (hc > tabulation->n_c - 1)) hc = 0.;
-        else hc -= ic;
+        if ((hc < 0.) || (hc > tabulation->n_c - 1)) return 0.;
+        const int ic = (int)hc;
+        hc -= ic;
+
+        const double dh = (tabulation->h_max - tabulation->h_min) /
+                          (tabulation->n_h - 1);
+        double hh = (h - tabulation->h_min) / dh;
+        if ((hh < 0.) || (hh > tabulation->n_h - 1)) return 0.;
+        const int ih = (int)hh;
+        hh -= ih;
 
         const int ik1 = (ik < tabulation->n_k - 1) ?
             ik + 1 : tabulation->n_k - 1;
         const int ic1 = (ic < tabulation->n_c - 1) ?
             ic + 1 : tabulation->n_c - 1;
-        const float * const f00 =
-            tabulation->data + 2 * (ic * tabulation->n_k + ik);
-        const float * const f01 =
-            tabulation->data + 2 * (ic1 * tabulation->n_k + ik);
-        const float * const f10 =
-            tabulation->data + 2 * (ic * tabulation->n_k + ik1);
-        const float * const f11 =
-            tabulation->data + 2 * (ic1 * tabulation->n_k + ik1);
+        const int ih1 = (ih < tabulation->n_h - 1) ?
+            ih + 1 : tabulation->n_h - 1;
+        const float * const f000 =
+            tabulation->data + 2 * ((ih * tabulation->n_c + ic) *
+            tabulation->n_k + ik);
+        const float * const f010 =
+            tabulation->data + 2 * ((ih * tabulation->n_c + ic1) *
+            tabulation->n_k + ik);
+        const float * const f100 =
+            tabulation->data + 2 * ((ih * tabulation->n_c + ic) *
+            tabulation->n_k + ik1);
+        const float * const f110 =
+            tabulation->data + 2 * ((ih * tabulation->n_c + ic1) *
+            tabulation->n_k + ik1);
+        const float * const f001 =
+            tabulation->data + 2 * ((ih1 * tabulation->n_c + ic) *
+            tabulation->n_k + ik);
+        const float * const f011 =
+            tabulation->data + 2 * ((ih1 * tabulation->n_c + ic1) *
+            tabulation->n_k + ik);
+        const float * const f101 =
+            tabulation->data + 2 * ((ih1 * tabulation->n_c + ic) *
+            tabulation->n_k + ik1);
+        const float * const f111 =
+            tabulation->data + 2 * ((ih1 * tabulation->n_c + ic1) *
+            tabulation->n_k + ik1);
 
         /* Interpolate the flux */
         double flux = 0.;
@@ -1010,17 +1031,36 @@ double pumas_flux_tabulation_get(
                 if ((1 - 2 * i) * charge < 0) continue;
 
                 /* Linear interpolation along cos(theta) */
-                const double g0 = f00[i] * (1. - hc) + f01[i] * hc;
-                const double g1 = f10[i] * (1. - hc) + f11[i] * hc;
+                const double g00 = f000[i] * (1. - hc) + f010[i] * hc;
+                const double g10 = f100[i] * (1. - hc) + f110[i] * hc;
+                const double g01 = f001[i] * (1. - hc) + f011[i] * hc;
+                const double g11 = f101[i] * (1. - hc) + f111[i] * hc;
 
                 /* Log or linear interpolation along log(kinetic) */
-                if ((g0 <= 0.) || (g1 <= 0.))
-                        flux += g0 * (1. - hk) + g1 * hk;
+                double g0;
+                if ((g00 <= 0.) || (g10 <= 0.))
+                        g0 = g00 * (1. - hk) + g10 * hk;
                 else
-                        flux += exp(log(g0) * (1. - hk) + log(g1) * hk);
+                        g0 = exp(log(g00) * (1. - hk) + log(g10) * hk);
+
+                double g1;
+                if ((g01 <= 0.) || (g11 <= 0.))
+                        g1 = g01 * (1. - hk) + g11 * hk;
+                else
+                        g1 = exp(log(g01) * (1. - hk) + log(g11) * hk);
+
+                /* Log or linear interpolation along altitude */
+                if ((g0 <= 0.) || (g1 <= 0.))
+                        flux += g0 * (1. - hh) + g1 * hh;
+                else
+                        flux += exp(log(g0) * (1. - hh) + log(g1) * hh);
         }
         return flux;
 }
 
 /* The flux tabulation data */
-#include "flux_data.c"
+#include "flux_mceq.c"
+
+struct pumas_flux_tabulation * pumas_flux_tabulation_data[1] = {
+    (void *)&pumas_flux_mceq
+};

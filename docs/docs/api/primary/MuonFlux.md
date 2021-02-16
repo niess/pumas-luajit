@@ -33,7 +33,7 @@ indicated.
 |`'chirkin'`  | 0      | Parametric model from [Chirkin, 2003](https://arxiv.org/abs/hep-ph/0407078). |
 |`'gaisser'`  | 0      | Gaisser's semi-analytical model, see e.g. [Zyla _et al._, 2020](https://pdg.lbl.gov/2020/reviews/rpp2020-rev-cosmic-rays.pdf). {: .justify} |
 |`'gccly'`    | 0      | Parametric model from [Guan _et al._, 2015](https://arxiv.org/abs/1509.06176). |
-|`'tabulated'`| 0-1600 | Tabulations of CORSIKA simulations using the _poly-gonato_ primary composition from [Hörandel, 2003](https://doi.org/10.1016/S0927-6505(02)00198-6). {: .justify} |
+|`'mceq'`     | 0-9000 | Tabulation of [MCEq](https://github.com/afedynitch/MCEq) result (*conditions to be defined*). {: .justify} |
 
 !!! warning
     The `'chirkin'`, `'gaisser'` and `'gccly'` models are only provided at

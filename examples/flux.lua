@@ -11,7 +11,7 @@ local atmosphere = pumas.GradientMedium('Air', {
 local geometry = pumas.EarthGeometry{medium = atmosphere, data = top_altitude}
 
 -- Set the primary flux model
-local flux = pumas.MuonFlux('tabulation', {altitude = top_altitude})
+local flux = pumas.MuonFlux('mceq', {altitude = top_altitude})
 
 -- Create a backward simulation context
 local simulation = pumas.Context{

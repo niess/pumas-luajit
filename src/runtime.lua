@@ -210,10 +210,13 @@ function runtime.repl ()
             os.execute(command:sub(2))
         else
             -- XXX nil should show as "nil"
-            local f, result, ok
+            local f, result
             f, result = loadstring('return '..command, '=stdin')
             if result ~= nil then f, result = loadstring(command, '=stdin') end
-            if result == nil then ok, result = pcall(f) end
+            if result == nil then
+                local ok
+                ok, result = pcall(f)
+            end
             if result ~= nil then
                 io.stdout:write(inspect(result, options))
                 io.stdout:write(linesep)

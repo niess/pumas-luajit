@@ -4,6 +4,7 @@ bin/*
 docs/site
 *.rock
 share
+src/flux_mceq.c
 src/pumas/data/igrf13.lua
 src/pumas/header/*.lua
 src/pumas/libpumas_extended.*

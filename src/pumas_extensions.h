@@ -303,15 +303,18 @@ void pumas_coordinates_frame_initialise_local(
 struct pumas_flux_tabulation {
         int n_k;
         int n_c;
+        int n_h;
         double k_min;
         double k_max;
         double c_min;
         double c_max;
+        double h_min;
+        double h_max;
         float data[];
 };
 
 double pumas_flux_tabulation_get(
     const struct pumas_flux_tabulation * tabulation, double k, double c,
-    double charge);
+    double h, double charge);
 
-extern struct pumas_flux_tabulation * pumas_flux_tabulation_data[2];
+extern struct pumas_flux_tabulation * pumas_flux_tabulation_data[1];
