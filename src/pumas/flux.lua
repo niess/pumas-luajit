@@ -193,21 +193,23 @@ do
                 expected = 'a State table', got = metatype.a(state)}
         end
 
-        local cos_theta
+        local altitude, cos_theta
         if self._axis == 'vertical' then
             self._position:set(state.position)
-            local altitude = self._altitude + self._origin
-            if math.abs(self._position.altitude - altitude) > 1E-03 then
+            altitude = self._position.altitude - self._origin
+            if rawget(self, '_altitude') and
+               (math.abs(self._altitude - altitude) > 1E-03) then
                 return false
             end
             local frame = coordinates.LocalFrame(self._position)
             self._direction:set(state.direction):transform(frame)
             cos_theta = -self._direction.z
         else
-            local z = (state.position[0] - self._origin[0]) * self._axis[0] +
-                      (state.position[1] - self._origin[1]) * self._axis[1] +
-                      (state.position[2] - self._origin[2]) * self._axis[2]
-            if math.abs(z - self._altitude) > 1E-03 then
+            altitude = (state.position[0] - self._origin[0]) * self._axis[0] +
+                       (state.position[1] - self._origin[1]) * self._axis[1] +
+                       (state.position[2] - self._origin[2]) * self._axis[2]
+            if rawget(self, '_altitude') and
+               (math.abs(altitude - self._altitude) > 1E-03) then
                 return false
             end
 
@@ -216,7 +218,8 @@ do
                          state.direction[2] * self._axis[2]
         end
 
-        local f = self._spectrum(state.energy, cos_theta, state.charge)
+        local f = self._spectrum(
+            state.energy, cos_theta, state.charge, altitude)
         state.weight = state.weight * f
 
         return true, f
@@ -239,9 +242,9 @@ do
         elseif k == 'spectrum' then
             return spectrum
         elseif k == 'altitude' then
-            return self._altitude
+            return rawget(self, '_altitude')
         elseif k == 'model' then
-            return self._model
+            return rawget(self, '_model')
         else
             error.raise{['type'] = 'MuonFlux', bad_member = k}
         end
@@ -262,7 +265,6 @@ end
 -- Muon flux constructor
 -------------------------------------------------------------------------------
 -- XXX Allow a user defined muon spectrum
--- XXX Allow a range of altitudes for muon spectrum
 -- XXX Implement any tabulated flux
 
 do
@@ -307,12 +309,14 @@ do
             end
         end
 
-        local altitude = options.altitude or 0
-        if type(altitude) == 'number' then
-            self._altitude = altitude
-        else
-            raise_error{argname = 'altitude', expected = 'a number',
-                got = metatype.a(altitude)}
+        -- Set any default altitude
+        if options.altitude then
+            if type(options.altitude) == 'number' then
+                self._altitude = options.altitude
+            else
+                raise_error{argname = 'altitude', expected = 'a number',
+                    got = metatype.a(options.altitude)}
+            end
         end
 
         local tag = model:lower()
@@ -320,35 +324,41 @@ do
             local normalisation = 1
             for k, v in pairs(options) do
                 if k == 'normalisation' then
-                    normalisation = v
-                elseif k ~= 'altitude' then
+                    if type(v) == 'number' then
+                        normalisation = v
+                    else
+                        raise_error{argname = 'normalisation',
+                            expected = 'a number', got = metatype.a(v)}
+                    end
+                elseif (k ~= 'altitude') and (k ~= 'axis') then
                     raise_error{
-                        argnum = 2,
-                        description = "unknown option '"..k..
-                                      "' for 'mceq' model"
-                    }
+                        argnum = 2, description = "unknown option '"..k..
+                        "' for 'mceq' model"}
                 end
             end
 
             local data = clib.pumas_flux_tabulation_data[0]
 
-            self._spectrum = function (kinetic_energy, cos_theta, charge)
-                if charge == nil then charge = 0 end
+            self._spectrum = function (
+                kinetic_energy, cos_theta, charge, altitude)
+                altitude = altitude or rawget(self, '_altitude') or 0
+                charge = charge or 0
                 return clib.pumas_flux_tabulation_get(data, kinetic_energy,
-                    cos_theta, self._altitude, charge) * normalisation
+                    cos_theta, altitude, charge) * normalisation
             end
 
             return setmetatable(self, cls)
         end
 
-        local charge_ratio, gamma, normalisation
+        local charge_ratio, gamma
+        local normalisation = 1
         local function parse_args ()
             for k, v in pairs(options) do
                 if k == 'charge_ratio' then charge_ratio = v
                 elseif k == 'gamma' then
                     gamma = v
                 elseif k == 'normalisation' then normalisation = v
-                else
+                elseif (k ~= 'altitude') and (k ~= 'axis') then
                     raise_error{
                         argnum = 2,
                         description = "unknown option '"..k..
@@ -364,17 +374,17 @@ do
         if tag == 'gaisser' then
             parse_args()
             gamma = gamma or 2.7
-            normalisation = normalisation or 1.4E+03
+            normalisation = normalisation * 1.4E+03
             self._spectrum = GaisserFlux(normalisation, gamma, charge_ratio)
         elseif tag == 'gccly' then
             parse_args()
             gamma = gamma or 2.7
-            normalisation = normalisation or 1.4E+03
+            normalisation = normalisation * 1.4E+03
             self._spectrum = GcclyFlux(normalisation, gamma, charge_ratio)
         elseif tag == 'chirkin' then
             parse_args()
             gamma = gamma or 2.715
-            normalisation = normalisation or 9.814E+02
+            normalisation = normalisation * 9.814E+02
             self._spectrum = ChirkinFlux(normalisation, gamma, charge_ratio)
         else
             raise_error{
