@@ -10,7 +10,7 @@ _A metatype for representing a 3D vector using horizontal coordinates._
 |*norm*     |`double`| Euclidian (&#8467;<sup>2</sup>) norm. |
 |*elevation*|`double`| Elevation angle clockwise w.r.t. the xy (horizontal) plane, in radians. |
 |*azimuth*  |`double`| Azimuth angle clockwise w.r.t. the y-axis (geographic north), in radians. |
-|*frame*|[Transform](Transform.md) or `nil`| Reference frame of the coordinates if different from the simulation one or `nil`.|
+|*frame*|[UnitaryTransformation](UnitaryTransformation.md) or `nil`| Reference frame of the coordinates if different from the simulation one or `nil`.|
 </div>
 
 
@@ -41,7 +41,7 @@ pumas.HorizontalVector(coordinates)
 |*norm*     |`number` | Euclidian (&#8467;<sup>2</sup>) norm. |
 |*elevation*|`number` | Elevation angle clockwise w.r.t. the xy (horizontal) plane, in radians. |
 |*azimuth*  |`number` | Azimuth angle clockwise w.r.t. the y-axis (geographic north), in radians. |
-|*frame*    |[Transform](Transform.md) or `nil`| Transform representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
+|*frame*    |[UnitaryTransformation](UnitaryTransformation.md) or `nil`| UnitaryTransformation representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
 ||||
 |*coordinates*|[Coordinates](../Coordinates.md)| Other vector coordinates e.g. as returned by [State.direction](../simulation/State.md#attributes). |
 
@@ -170,7 +170,7 @@ HorizontalVector:set(coordinates)
 <div markdown="1" class="shaded-box fancy">
 ## HorizontalVector.transform
 
-Transform the vector coordinates to a new reference frame. The transform occurs
+UnitaryTransformation the vector coordinates to a new reference frame. The transform occurs
 in-place.
 
 ---
@@ -185,7 +185,7 @@ HorizontalVector:transform(frame)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*frame*|[Transform](Transform.md) or `nil`| Transform representing the new frame or `nil` in order to transform to the simulation frame.|
+|*frame*|[UnitaryTransformation](UnitaryTransformation.md) or `nil`| UnitaryTransformation representing the new frame or `nil` in order to transform to the simulation frame.|
 
 ### Returns
 

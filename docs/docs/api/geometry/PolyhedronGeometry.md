@@ -38,8 +38,8 @@ pumas.PolyhedronGeometry(polyhedron, (frame))
 
 |Name|Type|Description|
 |----|----|-----------|
-|*polyhedron*|`table`                                 | Top (mother) polyhedron as described below. |
-|(*frame*)   |[Transform](../coordinates/Transform.md)| Reference frame for polyhedrons. If `nil` polyhedrons are assumed to be defined in the simulation frame. |
+|*polyhedron*|`table`                                                         | Top (mother) polyhedron as described below. |
+|(*frame*)   |[UnitaryTransformation](../coordinates/UnitaryTransformation.md)| Reference frame for polyhedrons. If `nil` polyhedrons are assumed to be defined in the simulation frame. |
 
 A convex polyhedron is defined by a filling [Medium](../Medium.md) and by
 a list of faces delimiting its inner volume. Each face is specified by a point

@@ -495,7 +495,7 @@ double pumas_geometry_earth_magnet(struct pumas_geometry * base_geometry,
                     &geodetic_position.altitude);
 
                 /* Get the local frame */
-                struct pumas_coordinates_transform frame;
+                struct pumas_coordinates_unitary_transformation frame;
                 struct pumas_cartesian_point ecef_position = {
                     state->position[0], state->position[1], state->position[2]};
                 pumas_coordinates_frame_initialise_local(&frame, &ecef_position,
@@ -601,39 +601,40 @@ void pumas_geometry_polyhedron_get(struct pumas_geometry * geometry,
 
 /* Coordinates transforms */
 static void cartesian_point_transform(struct pumas_cartesian_point * self,
-    const struct pumas_coordinates_transform * frame)
+    const struct pumas_coordinates_unitary_transformation * frame)
 {
-        const struct pumas_coordinates_transform * initial_frame = self->frame;
+        const struct pumas_coordinates_unitary_transformation * initial_frame =
+            self->frame;
 
         if (initial_frame != NULL) {
                 const double r[3] = { self->x, self->y, self->z };
                 self->x = initial_frame->translation[0] +
-                          initial_frame->rotation[0][0] * r[0] +
-                          initial_frame->rotation[0][1] * r[1] +
-                          initial_frame->rotation[0][2] * r[2];
+                          initial_frame->matrix[0][0] * r[0] +
+                          initial_frame->matrix[0][1] * r[1] +
+                          initial_frame->matrix[0][2] * r[2];
                 self->y = initial_frame->translation[1] +
-                          initial_frame->rotation[1][0] * r[0] +
-                          initial_frame->rotation[1][1] * r[1] +
-                          initial_frame->rotation[1][2] * r[2];
+                          initial_frame->matrix[1][0] * r[0] +
+                          initial_frame->matrix[1][1] * r[1] +
+                          initial_frame->matrix[1][2] * r[2];
                 self->z = initial_frame->translation[2] +
-                          initial_frame->rotation[2][0] * r[0] +
-                          initial_frame->rotation[2][1] * r[1] +
-                          initial_frame->rotation[2][2] * r[2];
+                          initial_frame->matrix[2][0] * r[0] +
+                          initial_frame->matrix[2][1] * r[1] +
+                          initial_frame->matrix[2][2] * r[2];
         }
 
         if (frame != NULL) {
                 const double r[3] = { self->x - frame->translation[0],
                                       self->y - frame->translation[1],
                                       self->z - frame->translation[2] };
-                self->x = frame->rotation[0][0] * r[0] +
-                          frame->rotation[1][0] * r[1] +
-                          frame->rotation[2][0] * r[2];
-                self->y = frame->rotation[0][1] * r[0] +
-                          frame->rotation[1][1] * r[1] +
-                          frame->rotation[2][1] * r[2];
-                self->z = frame->rotation[0][2] * r[0] +
-                          frame->rotation[1][2] * r[1] +
-                          frame->rotation[2][2] * r[2];
+                self->x = frame->matrix[0][0] * r[0] +
+                          frame->matrix[1][0] * r[1] +
+                          frame->matrix[2][0] * r[2];
+                self->y = frame->matrix[0][1] * r[0] +
+                          frame->matrix[1][1] * r[1] +
+                          frame->matrix[2][1] * r[2];
+                self->z = frame->matrix[0][2] * r[0] +
+                          frame->matrix[1][2] * r[1] +
+                          frame->matrix[2][2] * r[2];
         }
 
         self->frame = (void *)frame;
@@ -642,7 +643,7 @@ static void cartesian_point_transform(struct pumas_cartesian_point * self,
 
 void pumas_coordinates_cartesian_point_transform(
     struct pumas_cartesian_point * self,
-    const struct pumas_coordinates_transform * frame)
+    const struct pumas_coordinates_unitary_transformation * frame)
 {
         if (self->frame == frame) return;
         cartesian_point_transform(self, frame);
@@ -650,35 +651,35 @@ void pumas_coordinates_cartesian_point_transform(
 
 
 static void cartesian_vector_transform(struct pumas_cartesian_vector * self,
-    const struct pumas_coordinates_transform * frame)
+    const struct pumas_coordinates_unitary_transformation * frame)
 {
-        const struct pumas_coordinates_transform * initial_frame =
+        const struct pumas_coordinates_unitary_transformation * initial_frame =
             self->frame;
 
         if (initial_frame != NULL) {
                 const double r[3] = { self->x, self->y, self->z };
-                self->x = initial_frame->rotation[0][0] * r[0] +
-                          initial_frame->rotation[0][1] * r[1] +
-                          initial_frame->rotation[0][2] * r[2];
-                self->y = initial_frame->rotation[1][0] * r[0] +
-                          initial_frame->rotation[1][1] * r[1] +
-                          initial_frame->rotation[1][2] * r[2];
-                self->z = initial_frame->rotation[2][0] * r[0] +
-                          initial_frame->rotation[2][1] * r[1] +
-                          initial_frame->rotation[2][2] * r[2];
+                self->x = initial_frame->matrix[0][0] * r[0] +
+                          initial_frame->matrix[0][1] * r[1] +
+                          initial_frame->matrix[0][2] * r[2];
+                self->y = initial_frame->matrix[1][0] * r[0] +
+                          initial_frame->matrix[1][1] * r[1] +
+                          initial_frame->matrix[1][2] * r[2];
+                self->z = initial_frame->matrix[2][0] * r[0] +
+                          initial_frame->matrix[2][1] * r[1] +
+                          initial_frame->matrix[2][2] * r[2];
         }
 
         if (frame != NULL) {
                 const double r[3] = { self->x, self->y, self->z };
-                self->x = frame->rotation[0][0] * r[0] +
-                          frame->rotation[1][0] * r[1] +
-                          frame->rotation[2][0] * r[2];
-                self->y = frame->rotation[0][1] * r[0] +
-                          frame->rotation[1][1] * r[1] +
-                          frame->rotation[2][1] * r[2];
-                self->z = frame->rotation[0][2] * r[0] +
-                          frame->rotation[1][2] * r[1] +
-                          frame->rotation[2][2] * r[2];
+                self->x = frame->matrix[0][0] * r[0] +
+                          frame->matrix[1][0] * r[1] +
+                          frame->matrix[2][0] * r[2];
+                self->y = frame->matrix[0][1] * r[0] +
+                          frame->matrix[1][1] * r[1] +
+                          frame->matrix[2][1] * r[2];
+                self->z = frame->matrix[0][2] * r[0] +
+                          frame->matrix[1][2] * r[1] +
+                          frame->matrix[2][2] * r[2];
         }
 
         self->frame = (void *)frame;
@@ -687,7 +688,7 @@ static void cartesian_vector_transform(struct pumas_cartesian_vector * self,
 
 void pumas_coordinates_cartesian_vector_transform(
     struct pumas_cartesian_vector * self,
-    const struct pumas_coordinates_transform * frame)
+    const struct pumas_coordinates_unitary_transformation * frame)
 {
         if (self->frame == frame) return;
         cartesian_vector_transform(self, frame);
@@ -897,7 +898,7 @@ void pumas_coordinates_horizontal_vector_from_spherical(
 
 void pumas_coordinates_horizontal_vector_transform(
     struct pumas_horizontal_vector * self,
-    const struct pumas_coordinates_transform * frame)
+    const struct pumas_coordinates_unitary_transformation * frame)
 {
         if (self->frame == frame) return;
 
@@ -911,7 +912,7 @@ void pumas_coordinates_horizontal_vector_transform(
 
 void pumas_coordinates_spherical_point_transform(
     struct pumas_spherical_point * self,
-    const struct pumas_coordinates_transform * frame)
+    const struct pumas_coordinates_unitary_transformation * frame)
 {
         if (self->frame == frame) return;
 
@@ -925,7 +926,7 @@ void pumas_coordinates_spherical_point_transform(
 
 void pumas_coordinates_spherical_vector_transform(
     struct pumas_spherical_vector * self,
-    const struct pumas_coordinates_transform * frame)
+    const struct pumas_coordinates_unitary_transformation * frame)
 {
         if (self->frame == frame) return;
 
@@ -938,7 +939,7 @@ void pumas_coordinates_spherical_vector_transform(
 
 
 void pumas_coordinates_frame_initialise_local(
-    struct pumas_coordinates_transform * frame,
+    struct pumas_coordinates_unitary_transformation * frame,
     const struct pumas_cartesian_point * cartesian,
     const struct pumas_geodetic_point * geodetic)
 {
@@ -954,17 +955,17 @@ void pumas_coordinates_frame_initialise_local(
         turtle_ecef_from_horizontal(
             geodetic->latitude, geodetic->longitude, 90, 0, tmp);
         for (i = 0; i < 3; i++)
-                frame->rotation[i][0] = tmp[i];
+                frame->matrix[i][0] = tmp[i];
 
         turtle_ecef_from_horizontal(
             geodetic->latitude, geodetic->longitude, 0, 0, tmp);
         for (i = 0; i < 3; i++)
-                frame->rotation[i][1] = tmp[i];
+                frame->matrix[i][1] = tmp[i];
 
         turtle_ecef_from_horizontal(
             geodetic->latitude, geodetic->longitude, 0, 90, tmp);
         for (i = 0; i < 3; i++)
-                frame->rotation[i][2] = tmp[i];
+                frame->matrix[i][2] = tmp[i];
 }
 
 double pumas_flux_tabulation_get(

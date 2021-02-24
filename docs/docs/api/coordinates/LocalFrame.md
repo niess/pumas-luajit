@@ -1,8 +1,9 @@
 # LocalFrame
 _Coordinates transform representing a local Earth frame._
 
-The [LocalFrame](LocalFrame.md) constructor creates a [Transform](Transform.md)
-representing a local Earth frame.
+The [LocalFrame](LocalFrame.md) constructor creates a
+[UnitaryTransformation](UnitaryTransformation.md) representing a local Earth
+frame.
 {: .justify}
 
 ## Synopsis
@@ -21,7 +22,7 @@ pumas.LocalFrame(origin)
 
 |Type|Description|
 |----|-----------|
-|[Transform](Transform.md)| Transform representing the local Earth frame.|
+|[UnitaryTransformation](UnitaryTransformation.md)| UnitaryTransformation representing the local Earth frame.|
 
 ## Examples
 
@@ -32,4 +33,4 @@ local frame = pumas.LocalFrame(origin)
 
 ## See also
 
-[Transform](Transform.md)
+[UnitaryTransformation](UnitaryTransformation.md)

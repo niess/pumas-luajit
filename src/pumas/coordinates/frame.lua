@@ -43,7 +43,7 @@ function frame.LocalFrame (origin)
                                    :transform(nil)
     end
 
-    local self = transform.Transform()
+    local self = transform.UnitaryTransformation()
     clib.pumas_coordinates_frame_initialise_local(
         self, origin, geodetic)
 

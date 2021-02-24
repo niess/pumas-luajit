@@ -120,11 +120,12 @@ local function CoordinatesType (name, ctype, setter, get, transform)
                 }
             end
 
-            if (frame ~= nil) and metatype(frame) ~= 'Transform' then
+            if (frame ~= nil) and
+               (metatype(frame) ~= 'UnitaryTransformation') then
                 error.raise{
                     fname = 'transform',
                     argnum = 2,
-                    expected = 'a Transform cdata',
+                    expected = 'a UnitaryTransformation cdata',
                     got = metatype.a(frame)
                 }
             end

@@ -22,7 +22,7 @@ nav:
     - LocalFrame: api/coordinates/LocalFrame.md
     - SphericalPoint: api/coordinates/SphericalPoint.md
     - SphericalVector: api/coordinates/SphericalVector.md
-    - Transform: api/coordinates/Transform.md
+    - UnitaryTransformation: api/coordinates/UnitaryTransformation.md
   - API &raquo; Data:
     - constants: api/data/constants.md
     - elements: api/data/elements.md

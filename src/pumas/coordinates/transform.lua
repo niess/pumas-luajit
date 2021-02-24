@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
--- Coordinates transforms for PUMAS
+-- Coordinates transformations for PUMAS
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
@@ -13,13 +13,13 @@ local transform = {}
 -------------------------------------------------------------------------------
 -- The transform metatype
 -------------------------------------------------------------------------------
-local Transform = {__index = {}}
-Transform.__index.__metatype = 'Transform'
+local UnitaryTransformation = {__index = {}}
+UnitaryTransformation.__index.__metatype = 'UnitaryTransformation'
 
 
 local raise_error = error.ErrorFunction{fname = 'from_euler'}
 
-function Transform.__index:from_euler (axis,...)
+function UnitaryTransformation.__index:from_euler (axis,...)
     if (self == nil) or (axis == nil) then
         local nargs = (self ~= nil) and 1 or 0
         raise_error{
@@ -49,19 +49,19 @@ function Transform.__index:from_euler (axis,...)
     if #axis == 1 then
         local c, s = math.cos(angles[1]), math.sin(angles[1])
         if (axis == 'x') or (axis == 'X') then
-            self.rotation = {{  1,  0,  0},
-                             {  0,  c,  s},
-                             {  0, -s,  c}}
+            self.matrix = {{  1,  0,  0},
+                           {  0,  c,  s},
+                           {  0, -s,  c}}
             return self
         elseif (axis == 'y') or (axis == 'Y') then
-            self.rotation = {{  c,  0,  s},
-                             {  0,  1,  0},
-                             { -s,  0,  c}}
+            self.matrix = {{  c,  0,  s},
+                           {  0,  1,  0},
+                           { -s,  0,  c}}
             return self
         elseif (axis == 'z') or (axis == 'Z') then
-            self.rotation = {{  c,  s,  0},
-                             { -s,  c,  0},
-                             {  0,  0,  1}}
+            self.matrix = {{  c,  s,  0},
+                           { -s,  c,  0},
+                           {  0,  0,  1}}
             return self
         end
     end
@@ -71,14 +71,14 @@ function Transform.__index:from_euler (axis,...)
 end
 
 
-transform.Transform = ffi.metatype(
-    'struct pumas_coordinates_transform', Transform)
+transform.UnitaryTransformation = ffi.metatype(
+    'struct pumas_coordinates_unitary_transformation', UnitaryTransformation)
 
-error.register('Transform', Transform)
+error.register('UnitaryTransformation', UnitaryTransformation)
 
 
-function Transform.__index:clone ()
-    return transform.Transform(self)
+function UnitaryTransformation.__index:clone ()
+    return transform.UnitaryTransformation(self)
 end
 
 

@@ -22,8 +22,9 @@ explicit the point or vector type of the represented object. In addition to the
 *x*, *y* and *z* attributes, these object also have a *frame* attribute
 specifying the reference frame used by the coordinates. The absence of reference
 frame (`nil`) indicates that the coordinates are expressed in the simulation
-frame. Reference frames as specified as [Transform](coordinates/Transform.md)
-objects w.r.t. the simulation frame.
+frame. Reference frames as specified as
+[UnitaryTransformation](coordinates/UnitaryTransformation.md) objects w.r.t. the
+simulation frame.
 {: .justify}
 
 #### Earth coordinates
@@ -40,8 +41,8 @@ horizontal coordinates, i.e. by specifying an azimuth and an elevation angle.
 
 !!! warning
     When using a [GeodeticPoint](coordinates/GeodeticPoint.md) or a
-    [LocalFrame](coordinates/LocalFrame.md) the simulation frame is assumed to be
-    Earh-Centered, Earth-Fixed (ECEF). Using a different simulation frame
+    [LocalFrame](coordinates/LocalFrame.md) the simulation frame is assumed to
+    be Earh-Centered, Earth-Fixed (ECEF). Using a different simulation frame
     together with the latter objects will lead to erroneous results.
     {: .justify}
 

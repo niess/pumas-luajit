@@ -10,7 +10,7 @@ local type_ = require('pumas.coordinates.type')
 local coordinates = {}
 
 coordinates.LocalFrame = frame.LocalFrame
-coordinates.Transform = transform.Transform
+coordinates.UnitaryTransformation = transform.UnitaryTransformation
 for k, v in pairs(type_) do
     coordinates[k] = v
 end

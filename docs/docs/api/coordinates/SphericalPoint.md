@@ -10,7 +10,7 @@ _A metatype for representing a 3D point using Spherical coordinates._
 |*r*    |`double`| Euclidian distance to the origin, in m. |
 |*theta*|`double`| &theta; angle counter-clockwise w.r.t. the z-axis, in radians.|
 |*phi*  |`double`| &phi; angle counter-clockwise w.r.t. the x-axis, in radians. |
-|*frame*|[Transform](Transform.md) or `nil`| Reference frame of the coordinates if different from the simulation one or `nil`.|
+|*frame*|[UnitaryTransformation](UnitaryTransformation.md) or `nil`| Reference frame of the coordinates if different from the simulation one or `nil`.|
 </div>
 
 
@@ -41,7 +41,7 @@ pumas.SphericalPoint(coordinates)
 |*r*    |`number`| Euclidian distance to the origin, in m. |
 |*theta*|`number`| &theta; angle counter-clockwise w.r.t. the z-axis, in radians.|
 |*phi*  |`number`| &phi; angle counter-clockwise w.r.t. the x-axis, in radians. |
-|*frame*|[Transform](Transform.md) or `nil`| Transform representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
+|*frame*|[UnitaryTransformation](UnitaryTransformation.md) or `nil`| UnitaryTransformation representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
 ||||
 |*coordinates*|[Coordinates](../Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md#attributes). |
 
@@ -169,7 +169,7 @@ SphericalPoint:set(coordinates)
 <div markdown="1" class="shaded-box fancy">
 ## SphericalPoint.transform
 
-Transform the point coordinates to a new reference frame. The transform occurs
+UnitaryTransformation the point coordinates to a new reference frame. The transform occurs
 in-place.
 
 ---
@@ -184,7 +184,7 @@ SphericalPoint:transform(frame)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*frame*|[Transform](Transform.md) or `nil`| Transform representing the new frame or `nil` in order to transform to the simulation frame.|
+|*frame*|[UnitaryTransformation](UnitaryTransformation.md) or `nil`| UnitaryTransformation representing the new frame or `nil` in order to transform to the simulation frame.|
 
 ### Returns
 

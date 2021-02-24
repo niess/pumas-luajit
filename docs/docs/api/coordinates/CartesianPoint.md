@@ -10,7 +10,7 @@ _A metatype for representing a 3D point using Cartesian coordinates._
 |*x*|`double`| First (x) coordinate, in m. |
 |*y*|`double`| Second (y) coordinate, in m.|
 |*z*|`double`| Third (z) coordinate, in m. |
-|*frame*|[Transform](Transform.md) or `nil`| Reference frame of the coordinates if different from the simulation one or `nil`.|
+|*frame*|[UnitaryTransformation](UnitaryTransformation.md) or `nil`| Reference frame of the coordinates if different from the simulation one or `nil`.|
 </div>
 
 
@@ -41,7 +41,7 @@ pumas.CartesianPoint(coordinates)
 |*x*|`number` | First (x) coordinate. |
 |*y*|`number` | Second (y) coordinate.|
 |*z*|`number` | Third (z) coordinate. |
-|*frame*|[Transform](Transform.md) or `nil`| Transform representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
+|*frame*|[UnitaryTransformation](UnitaryTransformation.md) or `nil`| UnitaryTransformation representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
 ||||
 |*coordinates*|[Coordinates](../Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md#attributes). |
 
@@ -53,7 +53,7 @@ pumas.CartesianPoint(coordinates)
 [LocalFrame](LocalFrame.md),
 [SphericalPoint](SphericalPoint.md),
 [SphericalVector](SphericalVector.md),
-[Transform](Transform.md).
+[UnitaryTransformation](UnitaryTransformation.md).
 
 </div>
 
@@ -171,7 +171,7 @@ CartesianPoint:set(coordinates)
 <div markdown="1" class="shaded-box fancy">
 ## CartesianPoint.transform
 
-Transform the point coordinates to a new reference frame. The transform occurs
+UnitaryTransformation the point coordinates to a new reference frame. The transform occurs
 in-place.
 
 ---
@@ -186,7 +186,7 @@ CartesianPoint:transform(frame)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*frame*|[Transform](Transform.md) or `nil`| Transform representing the new frame or `nil` in order to transform to the simulation frame.|
+|*frame*|[UnitaryTransformation](UnitaryTransformation.md) or `nil`| UnitaryTransformation representing the new frame or `nil` in order to transform to the simulation frame.|
 
 ### Returns
 
