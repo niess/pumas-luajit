@@ -4,13 +4,13 @@ _Compilation of atomic elements._
 ## Content
 
 The [elements](elements.md) table provides a compilation of atomic element's
-properties relevant to PUMAS. The data are stored as [Element](../Element.md)
-instances indexed by their atomic symbol. A dump of the table content is
-provided below. For each entry the charge number, *Z*, the mass number, *A* and
-the Mean Excitation Energy, *I*, are indicated. Atomic elements data are set
-according to the
-[Particle Data Group](https://pdg.lbl.gov/2020/AtomicNuclearProperties/index.html).
-In addition, for C users, links to minimal Material Description Files (MDF) are
+properties relevant to PUMAS. The data are stored as
+[Element](../physics/Element.md) instances indexed by their atomic symbol. A
+dump of the table content is provided below. For each entry the charge number,
+*Z*, the mass number, *A* and the Mean Excitation Energy, *I*, are indicated.
+Atomic elements data are set according to the [Particle Data
+Group](https://pdg.lbl.gov/2020/AtomicNuclearProperties/index.html).  In
+addition, for C users, links to minimal Material Description Files (MDF) are
 also provided.
 {: .justify}
 

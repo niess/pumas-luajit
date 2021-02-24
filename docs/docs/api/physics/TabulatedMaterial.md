@@ -14,7 +14,7 @@ following extra attributes:
 
 |Name|Type|Description|
 |----|----|-----------|
-|*name*|`string`|Name of the material used e.g. when referring to from a [Medium](../medium/Medium.md). {: .justify} |
+|*name*|`string`|Name of the material used e.g. when referring to from a [Medium](../Medium.md). {: .justify} |
 |*physics*|[Readonly](../others/Readonly.md)| The [Physics](Physics.md) instance this [TabulatedMaterial](TabulatedMaterial.md) belongs to. {: .justify} |
 |*table*|[Readonly](../others/Readonly.md)| Material tabulations ([see below](#table)). |
 |||

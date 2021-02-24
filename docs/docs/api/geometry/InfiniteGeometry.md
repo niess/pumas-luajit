@@ -7,14 +7,14 @@ _A metatype for representing a geometry of infinite extension._
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium*|[Medium](../medium/Medium.md)| The filling medium. |
+|*medium*|[Medium](../Medium.md)| The filling medium. |
 </div>
 
 <div markdown="1" class="shaded-box fancy">
 ## Constructor
 
 The [InfiniteGeometry](InfiniteGeometry.md) wraps a simulation
-[Medium](../physics/Medium.md). It takes a single mandatory argument: the
+[Medium](../Medium.md). It takes a single mandatory argument: the
 medium.
 
 ### Synopsis
@@ -27,7 +27,7 @@ pumas.InfiniteGeometry(medium)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium*|[Medium](../medium/Medium.md) or `string`| The filling medium. If a `string` is provided it must reference a [TabulatedMaterial](../physics/TabulatedMaterial.md). Then a [UniformMedium](../medium/UniformMedium.md) is implicitly created and filled with the corresponding material. {: .justify}|
+|*medium*|[Medium](../Medium.md) or `string`| The filling medium. If a `string` is provided it must reference a [TabulatedMaterial](../physics/TabulatedMaterial.md). Then a [UniformMedium](../medium/UniformMedium.md) is implicitly created and filled with the corresponding material. {: .justify}|
 
 ---
 

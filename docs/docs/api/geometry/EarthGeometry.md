@@ -9,7 +9,7 @@ _A metatype for representing an Earth geometry as stacked topography layers._
 |----|----|-----------|
 |*date*             |`string` or `nil`                                   | Date (time) of the simulation encoded as a `'dd/mm/yy'` string. |
 |*geoid_undulations*|[TopographyData](../data/TopographyData.md) or `nil`| Map of geoid undulations w.r.t. the WGS84 ellipsoid.|
-|*layers*           |[Readonly](../others/Readonly.lua)                  | Table containing the [TopographyLayer](TopographyLayer.md)s indexed by number. Note that the 1<sup>st</sup> layer is on top. |
+|*layers*           |[Readonly](../others/Readonly.md)                   | Table containing the [TopographyLayer](TopographyLayer.md)s indexed by number. Note that the 1<sup>st</sup> layer is on top. |
 |*magnet*           |`boolean`, `string` or `nil`                        | Flag for switching the default geomagnetic field ([IGRF13](https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html)) or path to an alternative model specified as a COF file.|
 
 !!! note
@@ -41,10 +41,10 @@ pumas.EarthGeometry{layer, ..., (date)=, (geoid_undulations)=, (magnet)=}
 
 |Name|Type|Description|
 |----|----|-----------|
-|*layer*              |`table` or [TopographyLayer](TopographyLayer.lua)| [TopographyLayer](TopographyLayer.md) or a table argument consistent with the constructor of the latter, e.g. `{medium, data}`. |
-|*(date)*             |`number` or `string`                             | Date (time) of the simulation encoded as a number since the epoch or as a `'dd/mm/yy'` string. |
-|*(geoid_undulations)*|[TopographyData](../data/TopographyData.md)      | Map of geoid undulations w.r.t. the WGS84 ellipsoid.|
-|*(magnet)*           |`boolean` or `string`                            | Flag for switching the default geomagnetic field ([IGRF13](https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html)) or path to an alternative model sepcified as a COF file.|
+|*layer*              |`table` or [TopographyLayer](TopographyLayer.md)| [TopographyLayer](TopographyLayer.md) or a table argument consistent with the constructor of the latter, e.g. `{medium, data}`. |
+|*(date)*             |`number` or `string`                            | Date (time) of the simulation encoded as a number since the epoch or as a `'dd/mm/yy'` string. |
+|*(geoid_undulations)*|[TopographyData](../data/TopographyData.md)     | Map of geoid undulations w.r.t. the WGS84 ellipsoid.|
+|*(magnet)*           |`boolean` or `string`                           | Flag for switching the default geomagnetic field ([IGRF13](https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html)) or path to an alternative model sepcified as a COF file.|
 
 ---
 

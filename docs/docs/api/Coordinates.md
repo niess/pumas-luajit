@@ -13,7 +13,7 @@ vector of the 3D simulation space. Function arguments reported as
 The PUMAS library uses Cartesian coordinates for the simulation with a unique
 frame, referred to as the *simulation frame*. These coordinates are stored using
 a `double [3]` C array, see e.g. the *position* and *direction* attributes of a
-simulation [State](physics/State.md#attributes).  The `double [3]` array is a
+simulation [State](simulation/State.md#attributes).  The `double [3]` array is a
 basic representation of a point or vector using Cartesian coordinates.  Higher
 level representations are provided as
 [CartesianPoint](coordinates/CartesianPoint.md) or

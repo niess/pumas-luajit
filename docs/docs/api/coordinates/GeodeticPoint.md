@@ -47,7 +47,7 @@ pumas.GeodeticPoint(coordinates)
 |*longitude*|`number` | Geodetic longitude, in deg.|
 |*altitude* |`number` | Altitude w.r.t. the WGS84 ellipsoid, in m. |
 ||||
-|*coordinates*|[Coordinates](../Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md:#attributes). |
+|*coordinates*|[Coordinates](../Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md#attributes). |
 
 ---
 

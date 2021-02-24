@@ -4,9 +4,8 @@ _Generic geometry for simulations._
 ## Description
 
 The geometry of a simulation is specified using volumes filled with
-[media](medium/Medium.md). A [Geometry](Geometry.md) metatype is specialised
-in representing volumes with a specific shape or a familly of shapes. For
-example:
+[media](Medium.md). A [Geometry](Geometry.md) metatype is specialised in
+representing volumes with a specific shape or a familly of shapes. For example:
 {: .justify}
 
 - the [EarthGeometry](geometry/EarthGeometry.md) can represent an Earth

@@ -43,7 +43,7 @@ pumas.HorizontalVector(coordinates)
 |*azimuth*  |`number` | Azimuth angle clockwise w.r.t. the y-axis (geographic north), in radians. |
 |*frame*    |[Transform](Transform.md) or `nil`| Transform representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
 ||||
-|*coordinates*|[Coordinates](../Coordinates.md)| Other vector coordinates e.g. as returned by [State.direction](../simulation/State.md:#attributes). |
+|*coordinates*|[Coordinates](../Coordinates.md)| Other vector coordinates e.g. as returned by [State.direction](../simulation/State.md#attributes). |
 
 ### See also
 

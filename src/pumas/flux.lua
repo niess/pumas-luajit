@@ -263,6 +263,7 @@ end
 -------------------------------------------------------------------------------
 -- XXX Allow a user defined muon spectrum
 -- XXX Allow a range of altitudes for muon spectrum
+-- XXX Implement any tabulated flux
 
 do
     local raise_error = error.ErrorFunction{fname = 'MuonFlux'}
@@ -381,8 +382,6 @@ do
                 description = "'unknown flux model '"..model.."'"
             }
         end
-
-        -- XXX Implement any tabulated flux
 
         return setmetatable(self, cls)
     end

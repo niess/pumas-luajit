@@ -41,7 +41,7 @@ pumas.PolyhedronGeometry(polyhedron, (frame))
 |*polyhedron*|`table`                                 | Top (mother) polyhedron as described below. |
 |(*frame*)   |[Transform](../coordinates/Transform.md)| Reference frame for polyhedrons. If `nil` polyhedrons are assumed to be defined in the simulation frame. |
 
-A convex polyhedron is defined by a filling [Medium](../medium/Medium.md) and by
+A convex polyhedron is defined by a filling [Medium](../Medium.md) and by
 a list of faces delimiting its inner volume. Each face is specified by a point
 lying on the face and by a unit normal vector, outward going. In addition the
 volume can contain an arbitrary number of daughter polyhedrons. The data of a
@@ -54,7 +54,7 @@ where the various elements are listed in the table below.
 
 |Name|Type|Description|
 |----|----|-----------|
-|*medium*|[Medium](../medium/Medium.md) or `string`| Filling medium of the polyhedron. If a `string` is provided it must reference a [TabulatedMaterial](../physics/TabulatedMaterial.md). Then a [UniformMedium](../medium/UniformMedium.md) is implicitly created and filled with the corresponding material. {: .justify}|
+|*medium*|[Medium](../Medium.md) or `string`| Filling medium of the polyhedron. If a `string` is provided it must reference a [TabulatedMaterial](../physics/TabulatedMaterial.md). Then a [UniformMedium](../medium/UniformMedium.md) is implicitly created and filled with the corresponding material. {: .justify}|
 |*x*         |`number`| Cartesian x (first) coordinate of a point on the face, in m. |
 |*y*         |`number`| Cartesian y (second) coordinate of the same point on the face, in m. |
 |*z*         |`number`| Cartesian z (third) coordinate of the same point on the face, in m. |
@@ -122,10 +122,9 @@ If the *color* option is provided as a `table` then it must be formated as
 can be indexed by number or by color names (`{red=, green=, blue=}`).
 Alternatively one can also provide a painter callback `function` with the
 following synopsis: `color(medium)` where *medium* is a constitutive
-[Medium](../medium/Medium.md) of the
-[PolyhedronGeometry](PolyhedronGeometry.md).  This function must return three
-numbers in the range 0 to 255 indicating the the color code to apply to the
-corresponding medium.
+[Medium](../Medium.md) of the [PolyhedronGeometry](PolyhedronGeometry.md).  This
+function must return three numbers in the range 0 to 255 indicating the the
+color code to apply to the corresponding medium.
 {: .justify}
 
 ---

@@ -43,7 +43,7 @@ pumas.CartesianPoint(coordinates)
 |*z*|`number` | Third (z) coordinate. |
 |*frame*|[Transform](Transform.md) or `nil`| Transform representing the reference frame e.g. as returned by [LocalFrame](LocalFrame.md) or `nil` if the coordinates are expressed in the simulation frame.|
 ||||
-|*coordinates*|[Coordinates](../Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md:#attributes). |
+|*coordinates*|[Coordinates](../Coordinates.md)| Other point coordinates e.g. as returned by [State.position](../simulation/State.md#attributes). |
 
 ### See also
 

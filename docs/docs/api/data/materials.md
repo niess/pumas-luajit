@@ -4,11 +4,11 @@ _Compilation of materials._
 ## Content
 
 The [materials](elements.md) table provides a compilation of material properties
-relevant to PUMAS. The data are stored as [Material](../Material.md) instances
-indexed by their name using a camel case notation. Dumps of the table content
-are provided below sorted by categories. For each entry the density, the ratio
-of charge to mass numbers, *Z / A*, and the Mean Excitation Energy, *I*, are
-indicated. The materials data are set according to the [Particle Data
+relevant to PUMAS. The data are stored as [Material](../physics/Material.md)
+instances indexed by their name using a camel case notation. Dumps of the table
+content are provided below sorted by categories. For each entry the density, the
+ratio of charge to mass numbers, *Z / A*, and the Mean Excitation Energy, *I*,
+are indicated. The materials data are set according to the [Particle Data
 Group](https://pdg.lbl.gov/2020/AtomicNuclearProperties/index.html).  In
 addition, for C users we also provide links to minimal Material Description
 Files (MDF) as well as to muon and tau energy loss tables.
