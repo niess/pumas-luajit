@@ -127,8 +127,7 @@ None, except *self*.
 ## CartesianVector.set
 
 Set the vector coordinates from another [Coordinates](../Coordinates.md)
-instance The input coordinates are transformed to the vector frame if needed,
-e.g.  if their *frame* attribute differs from the vector's one.
+instance.
 {: .justify}
 
 ---
@@ -169,7 +168,7 @@ CartesianVector:set(coordinates)
 <div markdown="1" class="shaded-box fancy">
 ## CartesianVector.transform
 
-UnitaryTransformation the vector coordinates to a new reference frame. The transform occurs
+Transform the vector coordinates to a new reference frame. The transform occurs
 in-place.
 
 ---

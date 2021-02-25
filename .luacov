@@ -1,0 +1,8 @@
+modules = {
+   ['pumas'] = 'src/pumas.lua',
+   ['pumas.*'] = 'src',
+   ['pumas.coordinates.*'] = 'src',
+   ['pumas.geometry.*'] = 'src',
+   ['pumas.medium.*'] = 'src',
+   ['pumas.physics.*'] = 'src'
+}

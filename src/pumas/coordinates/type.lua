@@ -88,11 +88,8 @@ local function CoordinatesType (name, ctype, setter, get, transform)
     function mt.__index:get ()
         if self == nil then
             error.raise{
-                fname = 'get',
-                argnum = 1,
-                expected = 'a Coordinates cdata',
-                got = 'nil'
-            }
+                fname = 'get', argnum = 1, expected = 'a Coordinates cdata',
+                got = 'nil'}
         end
 
         if type(raw_coordinates) == 'string' then
@@ -149,6 +146,12 @@ local function CoordinatesType (name, ctype, setter, get, transform)
     end
 
     function mt.__index:clone ()
+        if self == nil then
+            error.raise{
+                fname = 'clone', argnum = 1, expected = 'a Coordinates cdata',
+                got = 'nil'}
+        end
+
         local coordinates = Meta()
         ffi.copy(coordinates, self, ffi.sizeof(ctype))
 

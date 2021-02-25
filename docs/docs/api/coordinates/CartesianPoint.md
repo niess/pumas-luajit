@@ -129,8 +129,7 @@ None, except *self*.
 ## CartesianPoint.set
 
 Set the point coordinates from another [Coordinates](../Coordinates.md)
-instance.  The input coordinates are transformed to the point frame if needed,
-e.g.  if their *frame* attribute differs from the point's one.
+instance.
 {: .justify}
 
 ---
@@ -171,7 +170,7 @@ CartesianPoint:set(coordinates)
 <div markdown="1" class="shaded-box fancy">
 ## CartesianPoint.transform
 
-UnitaryTransformation the point coordinates to a new reference frame. The transform occurs
+Transform the point coordinates to a new reference frame. The transform occurs
 in-place.
 
 ---

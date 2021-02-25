@@ -142,7 +142,7 @@ None, except *self*.
 ## GeodeticPoint.set
 
 Set the point coordinates from another [Coordinates](../Coordinates.md) instance
-The input coordinates are transformed to the ECEF frame if needed, e.g.  if
+The input coordinates are transformed to the ECEF frame if needed, i.e.  if
 their *frame* attribute is not `nil`.
 {: .justify}
 

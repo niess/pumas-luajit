@@ -125,9 +125,8 @@ None, except *self*.
 <div markdown="1" class="shaded-box fancy">
 ## SphericalVector.set
 
-Set the vector coordinates from another [Coordinates](../Coordinates.md) instance.
-The input coordinates are transformed to the vector frame if needed, e.g.  if
-their *frame* attribute differs from the vector's one.
+Set the vector coordinates from another [Coordinates](../Coordinates.md)
+instance.
 {: .justify}
 
 ---
@@ -168,7 +167,7 @@ SphericalVector:set(coordinates)
 <div markdown="1" class="shaded-box fancy">
 ## SphericalVector.transform
 
-UnitaryTransformation the vector coordinates to a new reference frame. The transform occurs
+Transform the vector coordinates to a new reference frame. The transform occurs
 in-place.
 
 ---

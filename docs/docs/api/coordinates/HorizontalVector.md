@@ -127,8 +127,7 @@ None, except *self*.
 ## HorizontalVector.set
 
 Set the vector coordinates from another [Coordinates](../Coordinates.md)
-instance The input coordinates are transformed to the vector frame if needed,
-e.g.  if their *frame* attribute differs from the vector's one.
+instance.
 {: .justify}
 
 ---
@@ -170,7 +169,7 @@ HorizontalVector:set(coordinates)
 <div markdown="1" class="shaded-box fancy">
 ## HorizontalVector.transform
 
-UnitaryTransformation the vector coordinates to a new reference frame. The transform occurs
+Transform the vector coordinates to a new reference frame. The transform occurs
 in-place.
 
 ---

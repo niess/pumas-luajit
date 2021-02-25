@@ -719,7 +719,7 @@ static void cartesian_from_spherical(void * self_, const void * point_)
         const double st = sin(point->theta);
         self->x = point->r * cos(point->phi) * st;
         self->y = point->r * sin(point->phi) * st;
-        self->z = cos(point->theta);
+        self->z = point->r * cos(point->theta);
 }
 
 
@@ -863,8 +863,13 @@ static void horizontal_from_spherical(
     const struct pumas_spherical_vector * vector)
 {
         memcpy(self, vector, sizeof *self);
-        self->elevation = 0.5 * M_PI - self->elevation;
-        self->azimuth = 0.5 * M_PI - self->azimuth;
+        if ((self->elevation == 0) || (self->elevation == M_PI)) {
+                self->elevation = 0.5 * M_PI - self->elevation;
+                self->azimuth = 0;
+        } else {
+                self->elevation = 0.5 * M_PI - self->elevation;
+                self->azimuth = 0.5 * M_PI - self->azimuth;
+        }
 }
 
 
@@ -904,6 +909,7 @@ void pumas_coordinates_horizontal_vector_transform(
 
         struct pumas_cartesian_vector tmp;
         cartesian_from_horizontal(&tmp, self);
+        tmp.frame = self->frame;
         cartesian_vector_transform(&tmp, frame);
         horizontal_from_cartesian(self, &tmp);
         self->frame = (void *)frame;
@@ -918,6 +924,7 @@ void pumas_coordinates_spherical_point_transform(
 
         struct pumas_cartesian_point tmp;
         cartesian_from_spherical(&tmp, self);
+        tmp.frame = self->frame;
         cartesian_point_transform(&tmp, frame);
         spherical_from_cartesian(self, &tmp);
         self->frame = (void *)frame;
@@ -932,6 +939,7 @@ void pumas_coordinates_spherical_vector_transform(
 
         struct pumas_cartesian_vector tmp;
         cartesian_from_spherical(&tmp, self);
+        tmp.frame = self->frame;
         cartesian_vector_transform(&tmp, frame);
         spherical_from_cartesian(self, &tmp);
         self->frame = (void *)frame;
