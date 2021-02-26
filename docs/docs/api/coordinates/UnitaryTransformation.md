@@ -42,8 +42,9 @@ pumas.UnitaryTransformation(transformation)
 
 !!! note
     In the second form arguments are optional, but for the sake of simplicity
-    only the full form is reported. When an argument is missing the
-    corresponding attribute is filled with zeros.
+    only the full form is reported. If not specified the *translation* attribute
+    is set to the null translation and the *matrix* attribute is set to the
+    identity.
     {: .justify}
 
 ### Arguments
@@ -103,7 +104,7 @@ None, except *self*.
 <div markdown="1" class="shaded-box fancy">
 ## UnitaryTransformation.from\_euler
 
-Set the matrix of the linear transformation to a rotation defined by
+Set the matrix of the unitary transformation to a rotation defined by
 [Euler angles](https://en.wikipedia.org/wiki/Euler_angles).
 
 ---
@@ -111,23 +112,23 @@ Set the matrix of the linear transformation to a rotation defined by
 ### Synopsis
 
 ```lua
-UnitaryTransformation:from_euler(axis, alpha[, beta, gamma])
+UnitaryTransformation:from_euler(axis, alpha, (beta), (gamma))
 ```
 
 ### Arguments
 
 |Name|Type|Description|
 |----|----|-----------|
-|*axis* |`string`| Sequence of rotation axis (see below). |
-|*alpha*|`number`| Rotation angle around the 1<sup>st</sup> axis, in radians.|
-|*beta* |`number`| Rotation angle around the 2<sup>nd</sup> axis, in radians.|
-|*gamma*|`number`| Rotation angle around the 3<sup>rd</sup> axis, in radians.|
+|*axis*   |`string`| Sequence of rotation axis (see below). |
+|*alpha*  |`number`| Rotation angle around the 1<sup>st</sup> axis, in radians.|
+|(*beta*) |`number`| Rotation angle around the 2<sup>nd</sup> axis, in radians.|
+|(*gamma*)|`number`| Rotation angle around the 3<sup>rd</sup> axis, in radians.|
 
 The sequence of rotations is encoded in the *axis* argument by specifying the
 `'x'`, `'y'` or `'z'` rotation axis according to their order of occurence.
-Upper case letters indicate a sequence of extrinsic rotations while lower case
+Lower case letters indicate a sequence of extrinsic rotations while upper case
 letters are for intrinsic ones. For example, `XZX` indicates proper Euler angles
-rotations around the x, z and x-axis.
+rotations around the intrinsic $x'$, $z'$ and $x'$-axis.
 {: .justify}
 
 ### Returns

@@ -1,0 +1,104 @@
+local assert = require('luassert')
+local pumas = require('pumas')
+
+local util = {}
+
+
+-------------------------------------------------------------------------------
+-- A dummy transformation
+-------------------------------------------------------------------------------
+util.DummyTransformation = setmetatable(
+    {check = function (t)
+        assert.is.equal(t.translation[0], 1)
+        assert.is.equal(t.translation[1], 2)
+        assert.is.equal(t.translation[2], 3)
+        local n = 4
+        for i = 0, 2 do
+            for j = 0, 2 do
+                assert.is.equal(t.matrix[i][j], n)
+                n = n + 1
+            end
+        end
+    end}, {
+
+    __call = function ()
+        return pumas.UnitaryTransformation({1, 2, 3},
+            {{4, 5, 6}, {7, 8, 9}, {10, 11, 12}})
+    end})
+
+
+-------------------------------------------------------------------------------
+-- An Euler rotation matrix (extrinsic: Z, Y, X)
+-- Ref: https://en.wikipedia.org/wiki/Euler_angles
+-------------------------------------------------------------------------------
+util.EulerMatrix = setmetatable(
+    {__index = {check = function (self, t, precision)
+        precision = precision or 7
+
+        for i, vi in ipairs(self) do
+            for j, vij in ipairs(vi) do
+                assert.is.equal(util.round(vij, precision),
+                    util.round(t.matrix[i - 1][j - 1], precision))
+            end
+        end
+    end}},
+
+    {__call = function (cls, ...)
+        local a1 = select(1, ...) or 0
+        local a2 = select(2, ...) or 0
+        local a3 = select(3, ...) or 0
+
+        local c1, s1 = math.cos(a1), math.sin(a1)
+        local c2, s2 = math.cos(a2), math.sin(a2)
+        local c3, s3 = math.cos(a3), math.sin(a3)
+
+        local self = {
+            {c1 * c2, c1 * s2 * s3 - c3 * s1, s1 * s3 + c1 * c3 * s2},
+            {c2 * s1, c1 * c3 + s1 * s2 * s3, c3 * s1 * s2 - c1 * s3},
+            {-s2, c2 * s3, c2 * c3}
+        }
+
+        return setmetatable(self, cls)
+    end})
+
+
+-------------------------------------------------------------------------------
+-- Identity transformation
+-------------------------------------------------------------------------------
+util.IdentityTransformation = setmetatable(
+    {check = function (t)
+        for i = 0, 2 do
+            assert.is.equal(t.translation[i], 0)
+            for j = 0, 2 do
+                local v = (i == j) and 1 or 0
+                assert.is.equal(t.matrix[i][j], v)
+            end
+        end
+    end},
+
+    {__call = function ()
+        return pumas.UnitaryTransformation()
+    end})
+
+
+-------------------------------------------------------------------------------
+-- A central symmetry transformation
+-------------------------------------------------------------------------------
+function util.Reflection ()
+    return pumas.UnitaryTransformation{
+        matrix = {{-1, 0, 0}, {0, -1, 0}, {0, 0, -1}}}
+end
+
+
+-------------------------------------------------------------------------------
+-- Round floats to a given numeric precision
+-------------------------------------------------------------------------------
+function util.round (v, precision)
+    return math.floor(v * 10^precision + 0.5) * 10^(-precision)
+end
+
+
+-------------------------------------------------------------------------------
+-- Return the package
+-------------------------------------------------------------------------------
+return util

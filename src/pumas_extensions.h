@@ -293,6 +293,11 @@ void pumas_coordinates_spherical_vector_from_horizontal(
     struct pumas_spherical_vector * self,
     const struct pumas_horizontal_vector * vector);
 
+/* Rotation matrix from Euler angles */
+void pumas_coordinates_unitary_transformation_from_euler(
+    struct pumas_coordinates_unitary_transformation * transformation,
+    int n, int * axis, double * angles);
+
 /* Local frame initialiser */
 void pumas_coordinates_frame_initialise_local(
     struct pumas_coordinates_unitary_transformation * frame,

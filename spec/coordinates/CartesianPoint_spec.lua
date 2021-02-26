@@ -1,14 +1,6 @@
-require 'busted.runner' ()
-require 'luacov'
-
 local ffi = require('ffi')
 local pumas = require('pumas')
-
-
-local function Reflection ()
-    return pumas.UnitaryTransformation{
-        matrix = {{-1, 0, 0}, {0, -1, 0}, {0, 0, -1}}}
-end
+local util = require('spec.util')
 
 
 describe('CartesianPoint', function ()
@@ -88,7 +80,7 @@ describe('CartesianPoint', function ()
         end)
 
         it('should transform back to the simulation frame', function ()
-            local t = Reflection()
+            local t = util.Reflection()
             local c = pumas.CartesianPoint(1, 2, 3, t)
             local a = c:get()
             assert.is.equal(a[0], -c.x)
@@ -106,7 +98,7 @@ describe('CartesianPoint', function ()
         end)
 
         it('should accept a C array', function ()
-            local c = pumas.CartesianPoint{frame = t}
+            local c = pumas.CartesianPoint()
             c:set(ffi.new('double [3]', 1, 2, 3))
             assert.is.equal(c.x, 1)
             assert.is.equal(c.y, 2)
@@ -116,7 +108,7 @@ describe('CartesianPoint', function ()
 
         it('should accept another point instance of same type', function ()
             local c = pumas.CartesianPoint()
-            local t = Reflection()
+            local t = util.Reflection()
             c:set(pumas.CartesianPoint(1, 2, 3, t))
             assert.is.equal(c.x, 1)
             assert.is.equal(c.y, 2)
@@ -126,7 +118,7 @@ describe('CartesianPoint', function ()
 
         it('should accept another point instance of different type', function ()
             local c = pumas.CartesianPoint()
-            local t = Reflection()
+            local t = util.Reflection()
             c:set(pumas.SphericalPoint(1, 0, 0, t))
             assert.is.equal(c.x, 0)
             assert.is.equal(c.y, 0)
@@ -167,7 +159,7 @@ describe('CartesianPoint', function ()
         end)
 
         it('should transform to the simulation frame', function ()
-            local t = Reflection()
+            local t = util.Reflection()
             local c = pumas.CartesianPoint(1, 2, 3, t)
             c:transform()
             assert.is.equal(c.x, -1)
@@ -178,7 +170,7 @@ describe('CartesianPoint', function ()
 
         it('should transform from the simulation frame', function ()
             local c = pumas.CartesianPoint(1, 2, 3)
-            local t = Reflection()
+            local t = util.Reflection()
             c:transform(t)
             assert.is.equal(c.x, -1)
             assert.is.equal(c.y, -2)
@@ -187,9 +179,9 @@ describe('CartesianPoint', function ()
         end)
 
         it('should transform between two frames', function ()
-            local t0 = Reflection()
+            local t0 = util.Reflection()
             local c = pumas.CartesianPoint(1, 2, 3, t0)
-            local t1 = Reflection()
+            local t1 = util.Reflection()
             c:transform(t1)
             assert.is.equal(c.x, 1)
             assert.is.equal(c.y, 2)

@@ -1,18 +1,11 @@
-require 'busted.runner' ()
-require 'luacov'
-
 local ffi = require('ffi')
 local pumas = require('pumas')
+local util = require('spec.util')
 
 
 -- ECEF coordinates for latitude = 1 deg, longitude = 2 deg, and altitude = 3 m
 -- Ref: http://walter.bislins.ch/bloge/index.asp?page=Rainy+Lake+Experiment%3A+WGS84+Calculator
 local ecef = {x = 6373290.28, y = 222560.20, z = 110568.83}
-
-
-local function round (v, precision)
-    return math.floor(v * 10^precision + 0.5) * 10^(-precision)
-end
 
 
 describe('GeodeticPoint', function ()
@@ -78,9 +71,9 @@ describe('GeodeticPoint', function ()
             local c = pumas.GeodeticPoint(1, 2, 3)
             local a = c:get()
             assert.is.True(ffi.istype('double [3]', a))
-            assert.is.equal(round(a[0], 2), ecef.x)
-            assert.is.equal(round(a[1], 2), ecef.y)
-            assert.is.equal(round(a[2], 2), ecef.z)
+            assert.is.equal(util.round(a[0], 2), ecef.x)
+            assert.is.equal(util.round(a[1], 2), ecef.y)
+            assert.is.equal(util.round(a[2], 2), ecef.z)
         end)
     end)
 
@@ -93,11 +86,11 @@ describe('GeodeticPoint', function ()
         end)
 
         it('should accept a C array', function ()
-            local c = pumas.GeodeticPoint{frame = t}
+            local c = pumas.GeodeticPoint()
             c:set(ffi.new('double [3]', ecef.x, ecef.y, ecef.z))
-            assert.is.equal(round(c.latitude, 7), 1)
-            assert.is.equal(round(c.longitude, 7), 2)
-            assert.is.equal(round(c.altitude, 2), 3)
+            assert.is.equal(util.round(c.latitude, 7), 1)
+            assert.is.equal(util.round(c.longitude, 7), 2)
+            assert.is.equal(util.round(c.altitude, 2), 3)
         end)
 
         it('should accept another point instance of same type', function ()
@@ -111,9 +104,9 @@ describe('GeodeticPoint', function ()
         it('should accept another point instance of different type', function ()
             local c = pumas.GeodeticPoint()
             c:set(pumas.CartesianPoint(ecef.x, ecef.y, ecef.z))
-            assert.is.equal(round(c.latitude, 7), 1)
-            assert.is.equal(round(c.longitude, 7), 2)
-            assert.is.equal(round(c.altitude, 2), 3)
+            assert.is.equal(util.round(c.latitude, 7), 1)
+            assert.is.equal(util.round(c.longitude, 7), 2)
+            assert.is.equal(util.round(c.altitude, 2), 3)
         end)
 
         it('should not accept a vector instance', function ()

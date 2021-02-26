@@ -946,6 +946,53 @@ void pumas_coordinates_spherical_vector_transform(
 }
 
 
+void pumas_coordinates_unitary_transformation_from_euler(
+    struct pumas_coordinates_unitary_transformation * transformation,
+    int n, int * axis, double * angles)
+{
+        /* Initialise to the identity */
+        int i, j, k, l;
+        for (i = 0; i < 3; i++) for (j = 0; j < 3; j++) {
+                transformation->matrix[i][j] = (i == j) ? 1. : 0.;
+        }
+
+        /* Fill with elementary rotations */
+        for (l = n - 1; l >= 0; l--) {
+                if (angles[l] == 0) continue;
+                const double c = cos(angles[l]);
+                const double s = sin(angles[l]);
+                double r[3][3];
+
+                if (axis[l] == 0) {
+                        r[0][0] =  1, r[1][0] =  0, r[2][0] =  0;
+                        r[0][1] =  0, r[1][1] =  c, r[2][1] =  s;
+                        r[0][2] =  0, r[1][2] = -s, r[2][2] =  c;
+                } else if (axis[l] == 1) {
+                        r[0][0] =  c, r[1][0] =  0, r[2][0] = -s;
+                        r[0][1] =  0, r[1][1] =  1, r[2][1] =  0;
+                        r[0][2] =  s, r[1][2] =  0, r[2][2] =  c;
+                } else if (axis[l] == 2) {
+                        r[0][0] =  c, r[1][0] =  s, r[2][0] =  0;
+                        r[0][1] = -s, r[1][1] =  c, r[2][1] =  0;
+                        r[0][2] =  0, r[1][2] =  0, r[2][2] =  1;
+                } else {
+                        continue;
+                }
+
+                double m[3][3] = {0};
+                for (i = 0; i < 3; i++)
+                        for (j = 0; j <3; j++)
+                                for (k = 0; k < 3; k++) {
+                                        m[i][j] +=
+                                            transformation->matrix[i][k] *
+                                            r[k][j];
+                }
+
+                memcpy(transformation->matrix, m, sizeof(m));
+        }
+}
+
+
 void pumas_coordinates_frame_initialise_local(
     struct pumas_coordinates_unitary_transformation * frame,
     const struct pumas_cartesian_point * cartesian,
