@@ -1,5 +1,6 @@
 local ffi = require('ffi')
 local pumas = require('pumas')
+local metatype = require('pumas.metatype')
 local util = require('spec.util')
 
 
@@ -39,6 +40,11 @@ describe('HorizontalVector', function ()
             assert.is.equal(c1.azimuth, 2)
             assert.is.equal(c1.frame, t)
         end)
+
+        it('should return a Coordinates cdata', function ()
+            local c = pumas.HorizontalVector()
+            assert.is.equal(metatype(c), 'Coordinates')
+        end)
     end)
 
     describe('clone', function ()
@@ -59,6 +65,7 @@ describe('HorizontalVector', function ()
             assert.is.equal(c1.elevation, 1)
             assert.is.equal(c1.azimuth, 2)
             assert.is.equal(c1.frame, t)
+            assert.is.equal(metatype(c1), metatype(c0))
         end)
     end)
 
@@ -133,6 +140,14 @@ describe('HorizontalVector', function ()
             assert.has_error(function ()
                 c:set(pumas.SphericalPoint())
             end, "bad argument(s) to 'set' (not implemented)")
+        end)
+
+        it('should not accept other types', function ()
+            assert.has_error(function ()
+                local c = pumas.HorizontalVector()
+                c:set(1)
+            end, "bad argument #2 to 'set' (expected a Coordinates cdata, \z
+                got a number)")
         end)
 
         it('should return an instance of self', function ()

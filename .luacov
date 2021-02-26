@@ -1,3 +1,5 @@
+deletestats = true
+runreport = true
 modules = {
    ['pumas'] = 'src/pumas.lua',
    ['pumas.*'] = 'src',

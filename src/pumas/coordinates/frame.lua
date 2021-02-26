@@ -22,12 +22,7 @@ local pumas_geodetic_point_t = ffi.typeof('struct pumas_geodetic_point')
 -- XXX Add extra frame parameters, e.g. declination
 function frame.LocalFrame (origin)
     if origin == nil then
-        error.raise{
-            fname = 'LocalFrame',
-            argnum = 'bad',
-            expected = 1,
-            got = 0
-        }
+        error.raise{fname = 'LocalFrame', argnum = 'bad', expected = 1, got = 0}
     end
 
     local geodetic
@@ -40,7 +35,7 @@ function frame.LocalFrame (origin)
     if (not ffi.istype(pumas_cartesian_point_t, origin)) or
        (origin.frame ~= nil) then
         origin = type_.CartesianPoint():set(origin)
-                                   :transform(nil)
+                                       :transform(nil)
     end
 
     local self = transform.UnitaryTransformation()

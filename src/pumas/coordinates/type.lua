@@ -41,12 +41,8 @@ local function CoordinatesType (name, ctype, setter, get, transform)
     local function set (self, coordinates, fname)
         if (self == nil) or (coordinates == nil) then
             local nargs = (self ~= nil) and 1 or 0
-            error.raise{
-                fname = fname or 'set',
-                argnum = 'bad',
-                expected = 2,
-                got = nargs
-            }
+            error.raise{fname = fname or 'set', argnum = 'bad',
+                expected = 2, got = nargs}
         end
 
         if ffi.istype(double3_t, coordinates) then
@@ -59,11 +55,8 @@ local function CoordinatesType (name, ctype, setter, get, transform)
             coordinates = raw_coordinates
         elseif metatype(coordinates) ~= 'Coordinates' then
             error.raise{
-                fname = fname or 'set',
-                argnum = fname and 1 or 2,
-                expected = 'a Coordinates cdata',
-                got = metatype.a(coordinates)
-            }
+                fname = fname or 'set', argnum = fname and 1 or 2,
+                expected = 'a Coordinates cdata', got = metatype.a(coordinates)}
         end
 
         local ct = ffi.typeof(coordinates)

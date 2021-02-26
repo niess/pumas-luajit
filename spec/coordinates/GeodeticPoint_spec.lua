@@ -1,5 +1,6 @@
 local ffi = require('ffi')
 local pumas = require('pumas')
+local metatype = require('pumas.metatype')
 local util = require('spec.util')
 
 
@@ -37,6 +38,11 @@ describe('GeodeticPoint', function ()
             assert.is.equal(c1.longitude, 2)
             assert.is.equal(c1.altitude, 3)
         end)
+
+        it('should return a Coordinates cdata', function ()
+            local c = pumas.GeodeticPoint()
+            assert.is.equal(metatype(c), 'Coordinates')
+        end)
     end)
 
     describe('clone', function ()
@@ -55,6 +61,7 @@ describe('GeodeticPoint', function ()
             assert.is.equal(c1.latitude, 1)
             assert.is.equal(c1.longitude, 2)
             assert.is.equal(c1.altitude, 3)
+            assert.is.equal(metatype(c1), metatype(c0))
         end)
     end)
 
@@ -114,6 +121,14 @@ describe('GeodeticPoint', function ()
             assert.has_error(function ()
                 c:set(pumas.CartesianVector())
             end, "bad argument(s) to 'set' (not implemented)")
+        end)
+
+        it('should not accept other types', function ()
+            assert.has_error(function ()
+                local c = pumas.GeodeticPoint()
+                c:set(1)
+            end, "bad argument #2 to 'set' (expected a Coordinates cdata, \z
+                got a number)")
         end)
 
         it('should return an instance of self', function ()

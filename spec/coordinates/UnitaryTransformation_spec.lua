@@ -1,4 +1,5 @@
 local pumas = require('pumas')
+local metatype = require('pumas.metatype')
 local util = require('spec.util')
 
 
@@ -30,6 +31,11 @@ describe('UnitaryTransformation', function ()
             local t0 = util.DummyTransformation()
             local t1 = pumas.UnitaryTransformation(t0)
             util.DummyTransformation.check(t1)
+        end)
+
+        it('should return a UnitaryTransformation table', function ()
+            local t = pumas.UnitaryTransformation()
+            assert.is.equal(metatype(t), 'UnitaryTransformation')
         end)
     end)
 

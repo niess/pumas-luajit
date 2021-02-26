@@ -998,7 +998,34 @@ void pumas_coordinates_frame_initialise_local(
     const struct pumas_cartesian_point * cartesian,
     const struct pumas_geodetic_point * geodetic)
 {
-        /* XXX check and handle default conversions if NULL */
+        struct pumas_cartesian_point cartesian_data;
+        struct pumas_geodetic_point geodetic_data;
+
+        if (frame == NULL) return;
+        else if ((cartesian == NULL) && (geodetic == NULL)) {
+                memset(frame, 0x0, sizeof(*frame));
+                int i;
+                for (i = 0; i < 3; i++)
+                        frame->matrix[i][i] = 1;
+                return;
+        }
+
+        if (cartesian == NULL) {
+                pumas_coordinates_cartesian_point_from_geodetic(
+                    &cartesian_data, geodetic);
+                cartesian = &cartesian_data;
+        } else if (cartesian->frame != NULL) {
+                memcpy(&cartesian_data, cartesian, sizeof cartesian_data);
+                pumas_coordinates_cartesian_point_transform(
+                    &cartesian_data, NULL);
+                cartesian = &cartesian_data;
+        }
+
+        if (geodetic == NULL) {
+                pumas_coordinates_geodetic_point_from_cartesian(
+                    &geodetic_data, cartesian);
+                geodetic = &geodetic_data;
+        }
 
         frame->translation[0] = cartesian->x;
         frame->translation[1] = cartesian->y;
