@@ -302,7 +302,8 @@ void pumas_coordinates_unitary_transformation_from_euler(
 void pumas_coordinates_frame_initialise_local(
     struct pumas_coordinates_unitary_transformation * frame,
     const struct pumas_cartesian_point * cartesian,
-    const struct pumas_geodetic_point * geodetic);
+    const struct pumas_geodetic_point * geodetic, double declination,
+    double inclination);
 
 /* Flux tabulations */
 struct pumas_flux_tabulation {

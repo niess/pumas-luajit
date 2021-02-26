@@ -41,7 +41,7 @@ function UnitaryTransformation.__index:from_euler (axis,...)
     if axis:upper() == axis then
         intrinsic = true
     elseif axis:lower() == axis then
-        intrisic = false
+        intrinsic = false
     else
         raise_error{argnum = 2, description = "bad axis '"..axis.."'"}
     end

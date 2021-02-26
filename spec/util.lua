@@ -99,6 +99,31 @@ end
 
 
 -------------------------------------------------------------------------------
+-- Dot product of C arrays
+-------------------------------------------------------------------------------
+function util.dot (a, b, precision)
+    local d = a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+    if precision then
+        d = util.round(d, precision)
+    end
+    return d
+end
+
+
+-------------------------------------------------------------------------------
+-- Assert that a transform is unitary
+-------------------------------------------------------------------------------
+function util.assert_unitary (t)
+    assert.is.equal(0, util.dot(t.matrix[0], t.matrix[1], 7))
+    assert.is.equal(0, util.dot(t.matrix[0], t.matrix[2], 7))
+    assert.is.equal(0, util.dot(t.matrix[1], t.matrix[2], 7))
+    assert.is.equal(1, util.dot(t.matrix[0], t.matrix[0], 7))
+    assert.is.equal(1, util.dot(t.matrix[1], t.matrix[1], 7))
+    assert.is.equal(1, util.dot(t.matrix[2], t.matrix[2], 7))
+end
+
+
+-------------------------------------------------------------------------------
 -- Return the package
 -------------------------------------------------------------------------------
 return util

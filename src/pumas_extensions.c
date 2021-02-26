@@ -499,7 +499,7 @@ double pumas_geometry_earth_magnet(struct pumas_geometry * base_geometry,
                 struct pumas_cartesian_point ecef_position = {
                     state->position[0], state->position[1], state->position[2]};
                 pumas_coordinates_frame_initialise_local(&frame, &ecef_position,
-                    &geodetic_position);
+                    &geodetic_position, 0, 0);
 
                 /* Get the local magnetic field (ENU frame) */
                 struct pumas_cartesian_vector magnet_enu = {.frame = &frame};
@@ -996,7 +996,8 @@ void pumas_coordinates_unitary_transformation_from_euler(
 void pumas_coordinates_frame_initialise_local(
     struct pumas_coordinates_unitary_transformation * frame,
     const struct pumas_cartesian_point * cartesian,
-    const struct pumas_geodetic_point * geodetic)
+    const struct pumas_geodetic_point * geodetic, double declination,
+    double inclination)
 {
         struct pumas_cartesian_point cartesian_data;
         struct pumas_geodetic_point geodetic_data;
@@ -1034,18 +1035,18 @@ void pumas_coordinates_frame_initialise_local(
         double tmp[3];
         int i;
 
-        turtle_ecef_from_horizontal(
-            geodetic->latitude, geodetic->longitude, 90, 0, tmp);
+        turtle_ecef_from_horizontal(geodetic->latitude, geodetic->longitude,
+            90 + declination, 0, tmp);
         for (i = 0; i < 3; i++)
                 frame->matrix[i][0] = tmp[i];
 
-        turtle_ecef_from_horizontal(
-            geodetic->latitude, geodetic->longitude, 0, 0, tmp);
+        turtle_ecef_from_horizontal(geodetic->latitude, geodetic->longitude,
+            declination, -inclination, tmp);
         for (i = 0; i < 3; i++)
                 frame->matrix[i][1] = tmp[i];
 
-        turtle_ecef_from_horizontal(
-            geodetic->latitude, geodetic->longitude, 0, 90, tmp);
+        turtle_ecef_from_horizontal(geodetic->latitude, geodetic->longitude,
+            0, 90 - inclination, tmp);
         for (i = 0; i < 3; i++)
                 frame->matrix[i][2] = tmp[i];
 }
