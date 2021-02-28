@@ -1,30 +1,23 @@
--- Generate Physics tabulations of materials for PUMAS
+-- Build materials tables for the `pumas` examples
 --
--- A set of default materials is provided from the MATERIALS global table.
+-- A set of default materials is provided from the pumas.materials table.
 -- Naming and properties follow the Particle Data Group (PDG),
 -- Ref: http://pdg.lbl.gov/2020/AtomicNuclearProperties/index.html.
 --
--- Custom materials can be defined and added to the MATERIALS table as well.
+-- Custom materials can be defined and added to the pumas.materials table as
+-- well.
 
 local pumas = require('pumas')
 
-print('building material tables for the examples ...')
-local t0 = os.clock()
+
+print('building materials tables for the `pumas` examples...')
 
 pumas.build{
     materials = {'StandardRock', 'Water', 'Air'},
-    composites = {WetRock = {StandardRock = 0.7, Water = 0.3}},
+    composites = {
+        WetRock = {StandardRock = 0.7, Water = 0.3}
+    },
     path = 'share/materials/standard'
 }
 
-print('done in ' .. os.clock() - t0 .. ' s')
-
--- Print a list of available materials
-print([[
-
-   material name                       density
-   (PDG scheme)                        (g/cm^3)
-]])
-for k, v in pairs(pumas.materials) do
-    print(string.format('%-37s %8.5f', k, v.density * 1E-03))
-end
+print('materials tables have been dumped to share/materials/standard')

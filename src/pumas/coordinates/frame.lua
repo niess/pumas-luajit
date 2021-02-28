@@ -39,10 +39,6 @@ function frame.LocalFrame (origin, options)
                                        :transform(nil)
     end
 
-
-    local declination = options and options.declination or 0
-    local inclination = options and options.inclination or 0
-
     local declination, inclination
     if options then
         declination = options.declination or 0
