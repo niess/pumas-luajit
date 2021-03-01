@@ -1,6 +1,6 @@
 FLUX_REPO=       "https://github.com/niess/atmospheric-muon-flux.git"
-FLUX_VERSION=    "11c4ce9f8ecfdff64e44aeecd563ba4feb4e6afb"
-FLUX_DATA=       "sybill23c-polygonato-usstd"
+FLUX_VERSION=    "825f5d512668c19374918457dfc25932ae902155"
+FLUX_DATA=       "yfm-gsf-usstd"
 
 GULL_REPO=       "https://github.com/niess/gull.git"
 GULL_VERSION=    "286ace553a4328a4c61448817e40a799bd8fc50a"
@@ -219,10 +219,10 @@ EXTENSIONS_OBJ= $(OBJS_DIR)/$(CROSS)pumas_extensions.c.o
 
 FLUX_SRC= $(BUILD_DIR)/src/atmospheric-muon-flux
 
-$(FLUX_SRC)/scripts/wrap-flux.lua $(FLUX_SRC)/data/flux-mceq-$(FLUX_DATA).table:
+$(FLUX_SRC)/scripts/wrap-flux.lua $(FLUX_SRC)/data/simulated/flux-mceq-$(FLUX_DATA).table:
 	@$(call git_fetch,$(FLUX_SRC),$(FLUX_REPO),$(FLUX_VERSION))
 
-flux_mceq.c: $(FLUX_SRC)/data/flux-mceq-$(FLUX_DATA).table $(FLUX_SRC)/scripts/wrap-flux.lua $(LUAJIT_EXE) 
+flux_mceq.c: $(FLUX_SRC)/data/simulated/flux-mceq-$(FLUX_DATA).table $(FLUX_SRC)/scripts/wrap-flux.lua $(LUAJIT_EXE) 
 	@echo "WRAP      $$(basename $<)"
 	@$(LUAJIT_EXE) $(FLUX_SRC)/scripts/wrap-flux.lua $< $@
 

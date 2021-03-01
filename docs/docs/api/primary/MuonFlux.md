@@ -8,7 +8,7 @@ _A metatype for representing a primary flux of atmospheric muons._
 |Name|Type|Description|
 |----|----|-----------|
 |*model*   |`string`         | Reference model for atmospheric muon spectra. |
-|*altitude*|`number` or `nil`| Default model altitude, in m. {: .justify}    |
+|*altitude*|`number` or `nil`| Model default altitude, in m. {: .justify}    |
 
 !!! note
     Attributes are readonly. The model cannot be modified once created. Instead
@@ -33,7 +33,7 @@ indicated.
 |`'chirkin'`  | 0      | Parametric model from [Chirkin, 2003](https://arxiv.org/abs/hep-ph/0407078). |
 |`'gaisser'`  | 0      | Gaisser's semi-analytical model, see e.g. [Zyla _et al._, 2020](https://pdg.lbl.gov/2020/reviews/rpp2020-rev-cosmic-rays.pdf). {: .justify} |
 |`'gccly'`    | 0      | Parametric model from [Guan _et al._, 2015](https://arxiv.org/abs/1509.06176). |
-|`'mceq'`     | 0-9000 | Tabulation of [MCEq](https://github.com/afedynitch/MCEq) results (*conditions to be defined*). {: .justify} |
+|`'mceq'`     | 0-9000 | Tabulation of [MCEq](https://github.com/afedynitch/MCEq) results. Production yields have been weighted according to the global fit to experimental data of [Yanez _et al._, 2019](https://arxiv.org/abs/1909.08365). {: .justify} |
 
 !!! warning
     The `'chirkin'`, `'gaisser'` and `'gccly'` models are only provided at
@@ -43,7 +43,7 @@ indicated.
 ### Synopsis
 
 ```lua
-pumas.MuonFlux(model, {(altitude)=, (axis)=, (charge_ratio)=, (gamma)=,
+pumas.MuonFlux{(altitude)=, (axis)=, (charge_ratio)=, (gamma)=, (model)=,
     (normalisation)=, (origin)=})
 ```
 
@@ -51,12 +51,11 @@ pumas.MuonFlux(model, {(altitude)=, (axis)=, (charge_ratio)=, (gamma)=,
 
 |Name|Type|Description|
 |----|----|-----------|
-|*model*     |`string`                                    | Reference model for atmospheric muon spectra. One of `'chirkin'`, `gaisser`, `gccly` or `tabulated`. {: .justify} |
-|||
 |(*altitude*)|`number`                                    | Default model altitude, in `m`. If specified this sets the sampling altitude of the [sample](muonfluxsample) method. {: .justify} |
 |(*axis*)    |`string` or [Coordinates](../Coordinates.md)| Vertical axis of the flux model. Defaults to `'vertical'` i.e. the local vertical is used assuming Earth-Centered Earth-Fixed (ECEF) coordinates for the simulation frame. Alternativelly if [Coordinates](../Coordinates.md) are provided a constant vertical axis is used. {: .justify} |
 |(*charge_ratio*)  |`number`                              | Constant charge ratio ($\mu^+ / \mu^-$) for semi-analytical models. Defaults to `1.2766` as measured by [CMS](https://arxiv.org/abs/1005.5332). {: .justify} |
 |(*gamma*)  |`number`                                     | Spectral exponent for semi-analytical models. The default value depends on the model, e.g. $\gamma = 2.7$ for `'gaisser'` model. {: .justify} |
+|*(model)*   |`string`                                    | Reference model for atmospheric muon spectra. One of `'chirkin'`, `'gaisser'`, `'gccly'` or `'mceq'`. Defaults to `'mceq'`. {: .justify} |
 |(*normalisation*)  |`number`                             | Flux relative normalization. Defaults to `1`, i.e. native model values are used. {: .justify} |
 |(*origin*)  |[Coordinates](../Coordinates.md)            | Origin of the flux model, in m. Defaults to the WGS84 ellipsoid if a local vertical *axis* is used or to the origin of the simulation frame otherwise. {: .justify} |
 </div>

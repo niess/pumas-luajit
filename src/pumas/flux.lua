@@ -270,12 +270,10 @@ end
 do
     local raise_error = error.ErrorFunction{fname = 'MuonFlux'}
 
-    local function new (cls, model, options)
-        if model == nil then
-            raise_error{argnum = 'bad',  expected = '1 or 2', got = 0}
-        end
-        if options == nil then options = {} end
+    local function new (cls, options)
+        options = options or {}
 
+        local model = options.model or 'mceq'
         local self = {_model = model}
 
         -- Set the vertical axis and the origin of the model
@@ -330,7 +328,9 @@ do
                         raise_error{argname = 'normalisation',
                             expected = 'a number', got = metatype.a(v)}
                     end
-                elseif (k ~= 'altitude') and (k ~= 'axis') then
+                elseif (k ~= 'altitude') and (k ~= 'axis') and
+                    (k ~= 'model')
+                then
                     raise_error{
                         argnum = 2, description = "unknown option '"..k..
                         "' for 'mceq' model"}
@@ -358,7 +358,8 @@ do
                 elseif k == 'gamma' then
                     gamma = v
                 elseif k == 'normalisation' then normalisation = v
-                elseif (k ~= 'altitude') and (k ~= 'axis') then
+                elseif (k ~= 'altitude') and (k ~= 'axis') and (k ~= 'model')
+                then
                     raise_error{
                         argnum = 2,
                         description = "unknown option '"..k..
