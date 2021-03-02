@@ -10,7 +10,7 @@ _A metatype for defining materials properties._
 |*density* |`number`| Material density, in kg/m<sup>3</sup>.|
 |*elements*|`table` | Atomic elements composition. The table contains mass fractions indexed with atomic elements symbols. {: .justify}|
 |*I*       |`number`| Mean Excitation Energy (MEE), in GeV. |
-|*state*   |`string`| Material state. One of `'solid'`, `'liquid'` or `'gaz'`. |
+|*state*   |`string`| Material state. One of `'solid'`, `'liquid'` or `'gas'`. |
 |||
 |*a*       |`number`| Sternheimer $a$ coefficient ([see below](#constructor)). |
 |*k*       |`number`| Sternheimer $k$ coefficient ([see below](#constructor)). |
@@ -35,7 +35,7 @@ the material properties as keywords. A material is defined by its *density* and
 its atomic composition. The atomic composition can be provided by a chemical
 formula or as a `table` of mass fractions indexed with atomic elements symbols.
 Optionally one can also specify the material Mean Excitation Energy (*I*) and
-the material *state* (`'solid'`, `'liquid'` or `'gaz'`). If the mean excitation
+the material *state* (`'solid'`, `'liquid'` or `'gas'`). If the mean excitation
 energy is not provided it is estimated from the atomic composition using Bragg
 additivity rule.
 {: .justify}
@@ -67,7 +67,7 @@ pumas.Material{density=, (elements)=, (formula)=, (I)=, (state)=,
 |*formula* |`string`| Chemical formula, e.g. `'H2O'`.|
 |||
 |*I*       |`number`| Mean Excitation Energy (MEE), in GeV. |
-|*state*   |`string`| Material state. One of `'solid'`, `'liquid'` or `'gaz'`. |
+|*state*   |`string`| Material state. One of `'solid'`, `'liquid'` or `'gas'`. |
 |||
 |*a*       |`number`| Sternheimer $a$ coefficient ([see above](#constructor)). |
 |*k*       |`number`| Sternheimer $k$ coefficient ([see above](#constructor)). |

@@ -27,7 +27,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/acetylene_CHCH.html
     Acetylene = {
         ZoA = 0.5376265, x0 = 1.6017, I = 5.82E-08, x1 = 4.0074,
-        density = 1.097, delta0 = 0, state = 'gaz', k = 3.4277, a = 0.1217,
+        density = 1.097, delta0 = 0, state = 'gas', k = 3.4277, a = 0.1217,
         Cbar = 9.8419, elements = {C = 0.922582, H = 0.077418}
     },
 
@@ -83,7 +83,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/air_dry_1_atm.html
     Air = {
         ZoA = 0.4991766, x0 = 1.7418, I = 8.57E-08, x1 = 4.2759,
-        density = 1.205, delta0 = 0, state = 'gaz', k = 3.3994, a = 0.1091,
+        density = 1.205, delta0 = 0, state = 'gas', k = 3.3994, a = 0.1091,
         Cbar = 10.5961, elements = {Ar = 0.012827, O = 0.231781, C = 0.000124,
         N = 0.755267}
     },
@@ -138,7 +138,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ammonia.html
     Ammonia = {
         ZoA = 0.5870308, x0 = 1.6822, I = 5.37E-08, x1 = 4.1158,
-        density = 0.826, delta0 = 0, state = 'gaz', k = 3.6464, a = 0.0831,
+        density = 0.826, delta0 = 0, state = 'gas', k = 3.6464, a = 0.0831,
         Cbar = 9.8763, elements = {N = 0.822453, H = 0.177547}
     },
 
@@ -174,7 +174,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/argon_gas_Ar.html
     ArgonGas = {
         ZoA = 0.4505846, x0 = 1.7635, I = 1.88E-07, x1 = 4.4855,
-        density = 1.662, delta0 = 0, state = 'gaz', k = 2.9618, a = 0.1971,
+        density = 1.662, delta0 = 0, state = 'gas', k = 2.9618, a = 0.1971,
         Cbar = 11.948, elements = {Ar = 1}
     },
 
@@ -378,7 +378,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/bromine_gas.html
     BromineGas = {
         ZoA = 0.4380251, x0 = 1.5262, I = 3.43E-07, x1 = 4.9899,
-        density = 7.072, delta0 = 0, state = 'gaz', k = 3.467, a = 0.0633,
+        density = 7.072, delta0 = 0, state = 'gas', k = 3.467, a = 0.0633,
         Cbar = 11.7307, elements = {Br = 1}
     },
 
@@ -387,7 +387,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/butane.html
     Butane = {
         ZoA = 0.5848367, x0 = 1.3792, I = 4.83E-08, x1 = 3.7528,
-        density = 2.489, delta0 = 0, state = 'gaz', k = 3.4884, a = 0.1085,
+        density = 2.489, delta0 = 0, state = 'gas', k = 3.4884, a = 0.1085,
         Cbar = 8.5651, elements = {C = 0.826592, H = 0.173408}
     },
 
@@ -532,7 +532,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_dioxide_gas.html
     CarbonDioxideGas = {
         ZoA = 0.4998932, x0 = 1.6294, I = 8.5E-08, x1 = 4.1825, density = 1.842,
-        delta0 = 0, state = 'gaz', k = 3.3227, a = 0.1177, Cbar = 10.1537,
+        delta0 = 0, state = 'gas', k = 3.3227, a = 0.1177, Cbar = 10.1537,
         elements = {C = 0.272916, O = 0.727084}
     },
 
@@ -568,7 +568,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/carbon_tetrafluoride.html
     CarbonTetrafluoride = {
         ZoA = 0.4772497, x0 = 1.7, I = 1.15E-07, x1 = 4, density = 3.78,
-        delta0 = 0, state = 'gaz', k = 3, a = 0.1855, Cbar = 10.0858,
+        delta0 = 0, state = 'gas', k = 3, a = 0.1855, Cbar = 10.0858,
         elements = {C = 0.136548, F = 0.86345}
     },
 
@@ -650,7 +650,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/chlorine_gas.html
     ChlorineGas = {
         ZoA = 0.4795054, x0 = 1.5566, I = 1.74E-07, x1 = 4.3005, density = 2.98,
-        delta0 = 0, state = 'gaz', k = 2.9702, a = 0.1985, Cbar = 11.147,
+        delta0 = 0, state = 'gas', k = 2.9702, a = 0.1985, Cbar = 11.147,
         elements = {Cl = 1}
     },
 
@@ -761,7 +761,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/deuterium_gas.html
     DeuteriumGas = {
         ZoA = 0.4964997, x0 = 1.8793, I = 1.92E-08, x1 = 3.2872,
-        density = 0.1677, delta0 = 0, state = 'gaz', k = 5.7273, a = 0.1409,
+        density = 0.1677, delta0 = 0, state = 'gas', k = 5.7273, a = 0.1409,
         Cbar = 9.6543, elements = {D = 1}
     },
 
@@ -880,7 +880,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ethane.html
     Ethane = {
         ZoA = 0.5984637, x0 = 1.509, I = 4.54E-08, x1 = 3.8726, density = 1.263,
-        delta0 = 0, state = 'gaz', k = 3.6095, a = 0.0963, Cbar = 9.0965,
+        delta0 = 0, state = 'gas', k = 3.6095, a = 0.0963, Cbar = 9.0965,
         elements = {C = 0.798885, H = 0.201115}
     },
 
@@ -907,7 +907,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/ethylene.html
     Ethylene = {
         ZoA = 0.570231, x0 = 1.5528, I = 5.07E-08, x1 = 3.9327, density = 1.175,
-        delta0 = 0, state = 'gaz', k = 3.5387, a = 0.1064, Cbar = 9.438,
+        delta0 = 0, state = 'gas', k = 3.5387, a = 0.1064, Cbar = 9.438,
         elements = {C = 0.856289, H = 0.143711}
     },
 
@@ -989,7 +989,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/fluorine_gas.html
     FluorineGas = {
         ZoA = 0.4737241, x0 = 1.8433, I = 1.15E-07, x1 = 4.4096, density = 1.58,
-        delta0 = 0, state = 'gaz', k = 3.2962, a = 0.1108, Cbar = 10.9653,
+        delta0 = 0, state = 'gas', k = 3.2962, a = 0.1108, Cbar = 10.9653,
         elements = {F = 1}
     },
 
@@ -1209,7 +1209,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/helium_gas_He.html
     HeliumGas = {
         ZoA = 0.4996752, x0 = 2.2017, I = 4.18E-08, x1 = 3.6122,
-        density = 0.1663, delta0 = 0, state = 'gaz', k = 5.8347, a = 0.1344,
+        density = 0.1663, delta0 = 0, state = 'gas', k = 5.8347, a = 0.1344,
         Cbar = 11.1393, elements = {He = 1}
     },
 
@@ -1227,7 +1227,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/hydrogen_gas.html
     HydrogenGas = {
         ZoA = 0.991375, x0 = 1.8639, I = 1.92E-08, x1 = 3.2718,
-        density = 0.08376, delta0 = 0, state = 'gaz', k = 5.7273, a = 0.1409,
+        density = 0.08376, delta0 = 0, state = 'gas', k = 5.7273, a = 0.1409,
         Cbar = 9.5834, elements = {H = 1}
     },
 
@@ -1272,7 +1272,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/krypton_gas_Kr.html
     KryptonGas = {
         ZoA = 0.4296035, x0 = 1.7153, I = 3.52E-07, x1 = 5.0743,
-        density = 3.486, delta0 = 0, state = 'gaz', k = 3.4051, a = 0.0745,
+        density = 3.486, delta0 = 0, state = 'gas', k = 3.4051, a = 0.0745,
         Cbar = 12.5094, elements = {Kr = 1}
     },
 
@@ -1444,7 +1444,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/liquid_hydrogen.html
     LiquidHydrogen = {
         ZoA = 0.991375, x0 = 0.44, I = 2.18E-08, x1 = 1.8856, density = 70.8,
-        delta0 = 0, state = 'gaz', k = 5.6249, a = 0.1348, Cbar = 3.0977,
+        delta0 = 0, state = 'gas', k = 5.6249, a = 0.1348, Cbar = 3.0977,
         elements = {H = 1}
     },
 
@@ -1744,7 +1744,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/methane.html
     Methane = {
         ZoA = 0.6231489, x0 = 1.6263, I = 4.17E-08, x1 = 3.9716,
-        density = 0.6672, delta0 = 0, state = 'gaz', k = 3.6257, a = 0.0925,
+        density = 0.6672, delta0 = 0, state = 'gas', k = 3.6257, a = 0.0925,
         Cbar = 9.5243, elements = {C = 0.748694, H = 0.251306}
     },
 
@@ -1864,7 +1864,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/neon_gas_Ne.html
     NeonGas = {
         ZoA = 0.4955451, x0 = 2.0735, I = 1.37E-07, x1 = 4.6421,
-        density = 0.8385, delta0 = 0, state = 'gaz', k = 3.5771, a = 0.0806,
+        density = 0.8385, delta0 = 0, state = 'gas', k = 3.5771, a = 0.0806,
         Cbar = 11.9041, elements = {Ne = 1}
     },
 
@@ -1936,7 +1936,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nitrogen_gas.html
     NitrogenGas = {
         ZoA = 0.499743, x0 = 1.7378, I = 8.2E-08, x1 = 4.1323, density = 1.165,
-        delta0 = 0, state = 'gaz', k = 3.2125, a = 0.1535, Cbar = 10.54,
+        delta0 = 0, state = 'gas', k = 3.2125, a = 0.1535, Cbar = 10.54,
         elements = {N = 1}
     },
 
@@ -1945,7 +1945,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/nitrous_oxide.html
     NitrousOxide = {
         ZoA = 0.4998444, x0 = 1.6477, I = 8.49E-08, x1 = 4.1565,
-        density = 1.831, delta0 = 0, state = 'gaz', k = 3.3318, a = 0.1199,
+        density = 1.831, delta0 = 0, state = 'gas', k = 3.3318, a = 0.1199,
         Cbar = 10.1575, elements = {O = 0.363517, N = 0.636483}
     },
 
@@ -2026,7 +2026,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/oganesson_Og.html
     Oganesson = {
         ZoA = 0.4010686, x0 = 2.0204, I = 1.242E-06, x1 = 1.9972, density = 12,
-        delta0 = 0, state = 'gaz', k = 3, a = 0.0703, Cbar = 13.8662,
+        delta0 = 0, state = 'gas', k = 3, a = 0.0703, Cbar = 13.8662,
         elements = {Og = 1}
     },
 
@@ -2044,7 +2044,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/oxygen_gas.html
     OxygenGas = {
         ZoA = 0.5000219, x0 = 1.7541, I = 9.5E-08, x1 = 4.3213, density = 1.332,
-        delta0 = 0, state = 'gaz', k = 3.2913, a = 0.1178, Cbar = 10.7004,
+        delta0 = 0, state = 'gas', k = 3.2913, a = 0.1178, Cbar = 10.7004,
         elements = {O = 1}
     },
 
@@ -2334,7 +2334,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/propane.html
     Propane = {
         ZoA = 0.589483, x0 = 1.4339, I = 4.71E-08, x1 = 3.8011, density = 1.868,
-        delta0 = 0, state = 'gaz', k = 3.592, a = 0.0992, Cbar = 8.7939,
+        delta0 = 0, state = 'gas', k = 3.592, a = 0.0992, Cbar = 8.7939,
         elements = {C = 0.817145, H = 0.182855}
     },
 
@@ -2379,7 +2379,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/radon_Rn.html
     Radon = {
         ZoA = 0.387356, x0 = 1.5368, I = 7.94E-07, x1 = 4.9889, density = 9.066,
-        delta0 = 0, state = 'gaz', k = 2.7409, a = 0.208, Cbar = 13.2839,
+        delta0 = 0, state = 'gas', k = 2.7409, a = 0.208, Cbar = 13.2839,
         elements = {Rn = 1}
     },
 
@@ -2858,7 +2858,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tissue-equivalent_gas_Methane_based.html
     TissueEquivalentGasMethaneBased = {
         ZoA = 0.5498506, x0 = 1.6442, I = 6.12E-08, x1 = 4.1399,
-        density = 1.064, delta0 = 0, state = 'gaz', k = 3.4708, a = 0.0995,
+        density = 1.064, delta0 = 0, state = 'gas', k = 3.4708, a = 0.0995,
         Cbar = 9.95, elements = {O = 0.40678, H = 0.101869, C = 0.456179,
         N = 0.035172}
     },
@@ -2868,7 +2868,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/tissue-equivalent_gas_Propane_based.html
     TissueEquivalentGasPropaneBased = {
         ZoA = 0.5501921, x0 = 1.5139, I = 5.95E-08, x1 = 3.9916,
-        density = 1.826, delta0 = 0, state = 'gaz', k = 3.5159, a = 0.098,
+        density = 1.826, delta0 = 0, state = 'gas', k = 3.5159, a = 0.098,
         Cbar = 9.3529, elements = {O = 0.293366, H = 0.102672, C = 0.56894,
         N = 0.035022}
     },
@@ -3031,7 +3031,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/water_vapor.html
     WaterVapor = {
         ZoA = 0.5550013, x0 = 1.7952, I = 7.16E-08, x1 = 4.3437,
-        density = 0.7562, delta0 = 0, state = 'gaz', k = 3.5901, a = 0.081,
+        density = 0.7562, delta0 = 0, state = 'gas', k = 3.5901, a = 0.081,
         Cbar = 10.5962, elements = {O = 0.888106, H = 0.111894}
     },
 
@@ -3040,7 +3040,7 @@ return {
     -- Ref: https://pdg.lbl.gov/2020/AtomicNuclearProperties/HTML/xenon_gas_Xe.html
     XenonGas = {
         ZoA = 0.4112907, x0 = 1.5631, I = 4.82E-07, x1 = 4.7372,
-        density = 5.483, delta0 = 0, state = 'gaz', k = 2.7414, a = 0.2331,
+        density = 5.483, delta0 = 0, state = 'gas', k = 2.7414, a = 0.2331,
         Cbar = 12.7285, elements = {Xe = 1}
     },
 

@@ -367,7 +367,7 @@ local function tabulate_materials (_, args)
             m.state = ({
                 solid  = clib.PUMAS_PHYSICS_STATE_SOLID,
                 liquid = clib.PUMAS_PHYSICS_STATE_LIQUID,
-                gaz    = clib.PUMAS_PHYSICS_STATE_GAZ
+                gas    = clib.PUMAS_PHYSICS_STATE_GAS
             })[material.state:lower()]
         end
         m.density_effect.a = material.a

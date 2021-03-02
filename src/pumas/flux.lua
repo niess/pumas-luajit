@@ -205,17 +205,17 @@ do
             self._direction:set(state.direction):transform(frame)
             cos_theta = -self._direction.z
         else
-            altitude = (state.position[0] - self._origin[0]) * self._axis[0] +
-                       (state.position[1] - self._origin[1]) * self._axis[1] +
-                       (state.position[2] - self._origin[2]) * self._axis[2]
+            altitude = (state.position[0] - self._origin.x) * self._axis.x +
+                       (state.position[1] - self._origin.y) * self._axis.y +
+                       (state.position[2] - self._origin.z) * self._axis.z
             if rawget(self, '_altitude') and
                (math.abs(altitude - self._altitude) > 1E-03) then
                 return false
             end
 
-            cos_theta = -state.direction[0] * self._axis[0] -
-                         state.direction[1] * self._axis[1] -
-                         state.direction[2] * self._axis[2]
+            cos_theta = -state.direction[0] * self._axis.x -
+                         state.direction[1] * self._axis.y -
+                         state.direction[2] * self._axis.z
         end
 
         local f = self._spectrum(
@@ -329,7 +329,7 @@ do
                             expected = 'a number', got = metatype.a(v)}
                     end
                 elseif (k ~= 'altitude') and (k ~= 'axis') and
-                    (k ~= 'model')
+                    (k ~= 'model') and (k ~= 'origin')
                 then
                     raise_error{
                         argnum = 2, description = "unknown option '"..k..
@@ -359,6 +359,7 @@ do
                     gamma = v
                 elseif k == 'normalisation' then normalisation = v
                 elseif (k ~= 'altitude') and (k ~= 'axis') and (k ~= 'model')
+                    and (k ~= 'origin')
                 then
                     raise_error{
                         argnum = 2,

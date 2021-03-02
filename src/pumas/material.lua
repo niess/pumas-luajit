@@ -172,16 +172,16 @@ do
             end
 
             local tmp = state:lower()
-            if (tmp ~= 'gaz') and (tmp ~= 'liquid') and (tmp ~= 'solid') then
+            if (tmp ~= 'gas') and (tmp ~= 'liquid') and (tmp ~= 'solid') then
                 raise_error{
-                    argname = 'state', expected = "'solid', 'liquid' or 'gaz'",
+                    argname = 'state', expected = "'solid', 'liquid' or 'gas'",
                     got = "'"..state.."'"
                 }
             end
             state = tmp
         else
             if self.density < 0.1E+03
-            then state = 'gaz'
+            then state = 'gas'
             else state = 'liquid'
             end
         end
@@ -207,7 +207,7 @@ do
         if x0 then
             check_number('x0', x0)
         else
-            if state == 'gaz' then
+            if state == 'gas' then
                 if     Cbar <= 10     then x0 = 1.6
                 elseif Cbar <= 10.5   then x0 = 1.7
                 elseif Cbar <= 11     then x0 = 1.8
@@ -232,7 +232,7 @@ do
         if x1 then
             check_number('x1', x1)
         else
-            if state == 'gaz' then
+            if state == 'gas' then
                 if   Cbar < 13.804
                 then x1 = 4
                 else x1 = 5
