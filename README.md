@@ -1,4 +1,4 @@
-# PUMAS-LuaJIT
+# PUMAS-LuaJIT [![Documentation Status](https://readthedocs.org/projects/pumas-luajit/badge/?version=latest)](https://pumas-luajit.readthedocs.io/en/latest/?badge=latest)
 _A LuaJIT wrapper for the PUMAS Monte Carlo engine_
 
 **This is Work In Progress**
