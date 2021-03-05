@@ -57,38 +57,7 @@ local function tabulate_materials (_, args)
 
     particle = utils.particle_ctype(particle, raise_error)
 
-    if energies == nil then
-        if particle == clib.PUMAS_PARTICLE_MUON
-        then energies = 'pdg'
-        else energies = {min = 1E+02, max = 1E+12, n = 201}
-        end
-    end
-
-    if type(energies) == 'string' then
-        local tmp = energies:lower()
-        if tmp ~= 'pdg' then
-            raise_error{
-                argname = 'energies',
-                expected = "a table or 'PDG'",
-                got = "'"..energies.."'"
-            }
-        end
-
-        energies = ffi.new("double [?]", 145,
-            1.000E-03, 1.200E-03, 1.400E-03, 1.700E-03, 2.000E-03,
-            2.500E-03, 3.000E-03, 3.500E-03, 4.000E-03, 4.500E-03,
-            5.000E-03, 5.500E-03, 6.000E-03, 7.000E-03, 8.000E-03,
-            9.000E-03)
-
-        local n_decade = 16
-        for i = 1, 8 do
-            for j = 0, n_decade - 1 do
-                energies[i * n_decade + j] =
-                    10 * energies[(i - 1) * n_decade + j]
-            end
-        end
-        energies[9 * n_decade] = 10 * energies[8 * n_decade]
-    elseif type(energies) == 'table' then
+    if type(energies) == 'table' then
         if #energies > 0 then
             local tmp = ffi.new('double [?]', #energies)
             for i, v in ipairs(energies) do tmp[i - 1] = v end
@@ -98,39 +67,32 @@ local function tabulate_materials (_, args)
             if min == nil then
                 raise_error{
                     argname = 'energies',
-                    description = 'missing min kinetic energy'
-                }
+                    description = 'missing min kinetic energy'}
             end
             if max == nil then
                 raise_error{
                     argname = 'energies',
-                    description = 'missing max kinetic energy'
-                }
+                    description = 'missing max kinetic energy'}
             end
             if n == nil then
                 raise_error{
                     argname = 'energies',
-                    description = "missing number of kinetic energies, 'n'"
-                }
+                    description = "missing number of kinetic energies, 'n'"}
             end
             if n <= 1 then
                 raise_error{
-                    argname = 'energies',
-                    expected = 'n > 1',
-                    got = 'n = '..n
-                }
+                    argname = 'energies', expected = 'n > 1',
+                    got = 'n = '..n}
             end
 
             energies = ffi.new("double [?]", n)
             local dlnk = math.log(max / min) / (n - 1)
             for i = 0, n - 1 do energies[i] = min * math.exp(dlnk * i) end
         end
-    else
+    elseif energies ~= nil then
         raise_error{
-            argname = 'energies',
-            expected = 'a string or table',
-            got = metatype.a(energies)
-        }
+            argname = 'energies', expected = 'a table',
+            got = metatype.a(energies)}
     end
 
     if path == nil then
@@ -350,8 +312,13 @@ local function tabulate_materials (_, args)
     if path ~= nil then outdir = ffi.new('char [?]', #path + 1, path) end
     data.outdir = outdir
     data.overwrite = 1
-    data.n_energies = ffi.sizeof(energies) / ffi.sizeof('double')
-    data.energy = energies
+    if energies then
+        data.n_energies = ffi.sizeof(energies) / ffi.sizeof('double')
+        data.energy = energies
+    else
+        data.n_energies = -1
+        data.energy = nil
+    end
 
     local errormsg
     for name, material in pairs(materials) do
@@ -359,7 +326,6 @@ local function tabulate_materials (_, args)
         local index = ffi.new('int [1]')
         clib.pumas_physics_material_index(physics_[0], name, index)
         m.index = index[0]
-        m.density = material.density
         m.I = material.I
         if material.state == nil then
             m.state = clib.PUMAS_PHYSICS_STATE_UNKNOWN

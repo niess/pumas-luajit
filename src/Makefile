@@ -15,7 +15,7 @@ LUAJIT_REPO=     "https://github.com/openresty/luajit2.git"
 LUAJIT_VERSION=  "v2.1-20200102"
 
 PUMAS_REPO=      "https://github.com/niess/pumas.git"
-PUMAS_VERSION=   "d01af901c28ceb3574dd817e7b1f17e62c44b559"
+PUMAS_VERSION=   "121779c17d308bc0c6b56b3a53de126b3d9f8598"
 
 TURTLE_REPO=     "https://github.com/niess/turtle.git"
 TURTLE_VERSION=  "2c2ecdf89bfc341d64f0ec981008f5fc5c498861"
