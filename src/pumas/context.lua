@@ -95,23 +95,6 @@ end
 -- XXX  support multi threading?
 local Context = {}
 
-
-local function get_random_seed ()
-    local seed
-    local f = io.open('/dev/urandom', 'rb') -- XXX Windows case?
-    if f == nil then
-        seed = os.time()
-    else
-        local s = f:read(4)
-        f:close()
-        seed = 0
-        for i = 1, s:len() do seed = seed * 256 + s:byte(i) end
-    end
-
-    return seed
-end
-
-
 function Context:__newindex (k, v)
     if k == 'limit' then
         self._limit:set(v)
@@ -142,13 +125,16 @@ function Context:__newindex (k, v)
 
         rawset(self, '_geometry', v)
     elseif k == 'random_seed' then
-        if v == nil then
-            v = get_random_seed()
+        if v then
+            if type(v) == 'number' then
+                v = ffi.new('unsigned long [1]', v)
+            else
+                error.raise{header = 'bad type', expected = 'a number',
+                    got = metatype.a(v)}
+            end
         end
         local c = rawget(self, '_c')
-        clib.pumas_random_initialise(c, v)
-
-        rawset(self, '_random_seed', v)
+        clib.pumas_context_random_seed_set(c, v)
     elseif k == 'recorder' then
         if v == nil then
             rawset(self, '_recorder', nil)
@@ -169,7 +155,7 @@ function Context:__newindex (k, v)
         local user_data = ffi.cast('struct pumas_user_data *',
                                    self._c.user_data)
         local wrapped_state = state.State()
-        user_data.geometry.callback =
+        user_data.callback =
             function (geometry, c_state, c_medium, step)
                 local wrapped_medium = medium.get(c_medium)
                 ffi.copy(wrapped_state._c, c_state,
@@ -255,7 +241,7 @@ end
 
 
 local function random (self, n)
-    if (type(self) ~= 'table') or (self.__metatype ~= 'Context') then
+    if metatype(self) ~= 'Context' then
         error.raise{fname = 'random', argnum = 1, expected = 'a Context table',
             got = metatype.a(self)}
     end
@@ -297,8 +283,7 @@ do
         limit = '_limit',
         mode = '_mode',
         physics = '_physics',
-        recorder = '_recorder',
-        random_seed = '_random_seed'}
+        recorder = '_recorder'}
 
     function Context:__index (k)
         local v = index[k]
@@ -306,6 +291,12 @@ do
 
         v = members[k]
         if v then return self[v] end
+
+        if k == 'random_seed' then
+            local seed = ffi.new('unsigned long [1]')
+            clib.pumas_context_random_seed_get(self._c, seed)
+            return tonumber(seed[0])
+        end
 
         error.raise{['type'] = 'Context', bad_member = k}
     end
@@ -362,13 +353,12 @@ do
         local c = ptr[0]
         ffi.gc(c, function () clib.pumas_context_destroy(ptr) end)
 
-        c.random = clib.pumas_random_uniform01
         c.medium = clib.pumas_geometry_medium
 
         local user_data = ffi.cast('struct pumas_user_data *', c.user_data)
-        user_data.geometry.top = nil
-        user_data.geometry.current = nil
-        user_data.geometry.callback = nil
+        user_data.top = nil
+        user_data.current = nil
+        user_data.callback = nil
 
         local event = enum.Event()
         event._value = c.event
@@ -386,20 +376,12 @@ do
         }, cls)
         rawset(self, '_limit', context.Limit(self))
 
-        local seeded = false
         if args ~= nil then
             for k, v in pairs(args) do
                 if k ~= 'physics' then
                     self[k] = v
-                    if k == 'random_seed' then
-                        seeded = true
-                    end
                 end
             end
-        end
-
-        if not seeded then
-            self.random_seed = nil
         end
 
         return self

@@ -2,13 +2,6 @@
 #include "pumas.h"
 #include "turtle.h"
 
-/* Data container for a random stream */
-struct pumas_random {
-        int index;
-#define MT_PERIOD 624
-        unsigned long buffer[MT_PERIOD];
-};
-
 /* Wrapper for geometries */
 struct pumas_geometry {
         void (*get)(struct pumas_geometry *, struct pumas_state *,
@@ -28,28 +21,16 @@ extern struct pumas_medium * PUMAS_MEDIUM_TRANSPARENT;
 
 /* Layout of the user data section */
 struct pumas_user_data {
-        struct {
-                struct pumas_geometry * top;
-                struct pumas_geometry * current;
-                void (*callback)(struct pumas_geometry *, struct pumas_state *,
-                    struct pumas_medium *, double); /* User callback for
-                                                     * debug
-                                                     */
-        } geometry;
-        struct pumas_random random;
+        struct pumas_geometry * top;
+        struct pumas_geometry * current;
+        void (*callback)(struct pumas_geometry *, struct pumas_state *,
+            struct pumas_medium *, double); /* User callback for debug */
 };
 
 /* Forward errors */
 void pumas_error_initialise(void);
 void pumas_error_clear(void);
 const char * pumas_error_get(void);
-
-/* Set the MT initial state */
-void pumas_random_initialise(
-    struct pumas_context * context, unsigned long seed);
-
-/* Uniform pseudo random distribution from a Mersenne Twister */
-double pumas_random_uniform01(struct pumas_context * context);
 
 /* Extended state  with a ref to the processing context */
 struct pumas_state_extended {

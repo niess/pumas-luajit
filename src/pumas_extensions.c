@@ -55,73 +55,6 @@ const char * pumas_error_get(void)
 }
 
 
-/* Set the MT initial state */
-void pumas_random_initialise(
-    struct pumas_context * context, unsigned long seed)
-{
-        struct pumas_user_data * user_data = context->user_data;
-        struct pumas_random * data = &user_data->random;
-
-        data->buffer[0] = seed & 0xffffffffUL;
-        int j;
-        for (j = 1; j < MT_PERIOD; j++) {
-                data->buffer[j] = (1812433253UL *
-                        (data->buffer[j - 1] ^ (data->buffer[j - 1] >> 30)) +
-                    j);
-                data->buffer[j] &= 0xffffffffUL;
-        }
-        data->index = MT_PERIOD;
-}
-
-
-/* Uniform pseudo random distribution from a Mersenne Twister */
-double pumas_random_uniform01(struct pumas_context * context)
-{
-        struct pumas_user_data * user_data = context->user_data;
-        struct pumas_random * data = &user_data->random;
-
-        /* Check the buffer */
-        if (data->index < MT_PERIOD - 1) {
-                data->index++;
-        } else {
-                /* Update the MT state */
-                const int M = 397;
-                const unsigned long UPPER_MASK = 0x80000000UL;
-                const unsigned long LOWER_MASK = 0x7fffffffUL;
-                static unsigned long mag01[2] = { 0x0UL, 0x9908b0dfUL };
-                unsigned long y;
-                int kk;
-                for (kk = 0; kk < MT_PERIOD - M; kk++) {
-                        y = (data->buffer[kk] & UPPER_MASK) |
-                            (data->buffer[kk + 1] & LOWER_MASK);
-                        data->buffer[kk] =
-                            data->buffer[kk + M] ^ (y >> 1) ^ mag01[y & 0x1UL];
-                }
-                for (; kk < MT_PERIOD - 1; kk++) {
-                        y = (data->buffer[kk] & UPPER_MASK) |
-                            (data->buffer[kk + 1] & LOWER_MASK);
-                        data->buffer[kk] = data->buffer[kk + (M - MT_PERIOD)] ^
-                            (y >> 1) ^ mag01[y & 0x1UL];
-                }
-                y = (data->buffer[MT_PERIOD - 1] & UPPER_MASK) |
-                    (data->buffer[0] & LOWER_MASK);
-                data->buffer[MT_PERIOD - 1] =
-                    data->buffer[M - 1] ^ (y >> 1) ^ mag01[y & 0x1UL];
-                data->index = 0;
-        }
-
-        /* Tempering */
-        unsigned long y = data->buffer[data->index];
-        y ^= (y >> 11);
-        y ^= (y << 7) & 0x9d2c5680UL;
-        y ^= (y << 15) & 0xefc60000UL;
-        y ^= (y >> 18);
-
-        /* Convert to a floating point and return */
-        return y * (1.0 / 4294967295.0);
-}
-
-
 void pumas_state_extended_reset(struct pumas_state_extended * state,
     struct pumas_context * context)
 {
@@ -135,7 +68,7 @@ void pumas_state_extended_reset(struct pumas_state_extended * state,
 struct pumas_geometry * pumas_geometry_get(struct pumas_context * context)
 {
         struct pumas_user_data * user_data = context->user_data;
-        return user_data->geometry.top;
+        return user_data->top;
 }
 
 
@@ -143,7 +76,7 @@ void pumas_geometry_set(
     struct pumas_context * context, struct pumas_geometry * geometry)
 {
         struct pumas_user_data * user_data = context->user_data;
-        user_data->geometry.top = geometry;
+        user_data->top = geometry;
 }
 
 
@@ -160,9 +93,9 @@ static void geometry_reset(struct pumas_geometry * geometry)
 void pumas_geometry_reset(struct pumas_context * context)
 {
         struct pumas_user_data * user_data = context->user_data;
-        user_data->geometry.current = user_data->geometry.top;
-        if (user_data->geometry.top != NULL)
-                geometry_reset(user_data->geometry.top);
+        user_data->current = user_data->top;
+        if (user_data->top != NULL)
+                geometry_reset(user_data->top);
 }
 
 
@@ -178,11 +111,11 @@ static void geometry_destroy(struct pumas_geometry * geometry)
 void pumas_geometry_destroy(struct pumas_context * context)
 {
         struct pumas_user_data * user_data = context->user_data;
-        if (user_data->geometry.top != NULL) {
-                geometry_destroy(user_data->geometry.top);
-                user_data->geometry.top = NULL;
+        if (user_data->top != NULL) {
+                geometry_destroy(user_data->top);
+                user_data->top = NULL;
         }
-        user_data->geometry.current = NULL;
+        user_data->current = NULL;
 }
 
 
@@ -220,8 +153,8 @@ static void geometry_navigate(struct pumas_geometry * geometry,
         struct pumas_state_extended * extended = (void *)state;
         struct pumas_user_data * user_data =
             (void *)extended->context->user_data;
-        if (user_data->geometry.callback != NULL) {
-                user_data->geometry.callback(geometry, state, *medium_p,
+        if (user_data->callback != NULL) {
+                user_data->callback(geometry, state, *medium_p,
                     (step_p == NULL) ? -1 : *step_p);
         }
 
@@ -267,15 +200,15 @@ enum pumas_step pumas_geometry_medium(struct pumas_context * context,
     double * step_p)
 {
         struct pumas_user_data * user_data = context->user_data;
-        struct pumas_geometry * geometry = user_data->geometry.current;
-        if (geometry == NULL) geometry = user_data->geometry.top;
+        struct pumas_geometry * geometry = user_data->current;
+        if (geometry == NULL) geometry = user_data->top;
 
         struct pumas_state_extended * extended = (void *)state;
         extended->geodetic.computed = 0;
 
         struct pumas_medium * tmp;
         geometry_navigate(geometry, state, &tmp, step_p, NULL,
-                          &user_data->geometry.current);
+                          &user_data->current);
         if (medium_p != NULL) *medium_p = tmp;
 
         return PUMAS_STEP_APPROXIMATE; /* XXX Exact steps for polyhedrons? */
@@ -288,7 +221,7 @@ static double add_global_magnet(struct pumas_state * state,
         struct pumas_state_extended * extended = (void *)state;
         struct pumas_context * context = extended->context;
         struct pumas_user_data * user_data = context->user_data;
-        struct pumas_geometry * geometry = user_data->geometry.current;
+        struct pumas_geometry * geometry = user_data->current;
         if (geometry->magnet == NULL)
                 return 0;
 
