@@ -266,6 +266,30 @@ void pumas_medium_uniform_initialise(struct pumas_medium_uniform * uniform,
 
 
 /* Medium with a density gradient */
+double pumas_medium_gradient_density(
+    struct pumas_medium_gradient * medium, struct pumas_state_extended * state)
+{
+        /* Project onto the gradient axis */
+        const double * const u = medium->gradient.axis;
+        double z;
+        if (medium->gradient.project != NULL) {
+                z = medium->gradient.project(medium, state);
+        } else {
+                const double * const r = state->base.position;
+                z = r[0] * u[0] + r[1] * u[1] + r[2] * u[2];
+        }
+
+        /* Compute the density */
+        if (medium->gradient.type == PUMAS_MEDIUM_GRADIENT_LINEAR) {
+                return (1. + (z - medium->gradient.z0) /
+                    medium->gradient.lambda) * medium->gradient.rho0;
+        } else {
+                return medium->gradient.rho0 *
+                    exp((z - medium->gradient.z0) / medium->gradient.lambda);
+        }
+}
+
+
 static double gradient_locals(struct pumas_medium * medium_,
     struct pumas_state * state, struct pumas_locals * locals)
 {
@@ -277,32 +301,18 @@ static double gradient_locals(struct pumas_medium * medium_,
         memcpy(locals->magnet, medium->magnet, sizeof locals->magnet);
         double step = add_global_magnet(state, locals);
 
-        /* Project onto the gradient axis */
-        const double * const u = medium->gradient.direction;
-        double z;
-        if (medium->gradient.project != NULL) {
-                z = medium->gradient.project(medium, state);
-        } else {
-                const double * const r = state->position;
-                z = r[0] * u[0] + r[1] * u[1] + r[2] * u[2];
-        }
+        /* Compute the density and the gradient length */
+        locals->density = pumas_medium_gradient_density(medium, (void *)state);
 
+        /* Compute the gradient length */
+        const double * const u = medium->gradient.axis;
         const double * const v = state->direction;
         double d = fabs(u[0] * v[0] + u[1] * v[1] + u[2] * v[2]);
         if (d < GRADIENT_MIN_PROJECTION)
                 d = GRADIENT_MIN_PROJECTION;
 
-        /* Compute the density and the gradient length */
-        double step2;
-        if (medium->gradient.type == PUMAS_MEDIUM_GRADIENT_LINEAR) {
-                locals->density = (1. + (z - medium->gradient.z0) /
-                    medium->gradient.lambda) * medium->gradient.rho0;
-        } else {
-                locals->density = medium->gradient.rho0 *
-                    exp((z - medium->gradient.z0) / medium->gradient.lambda);
-        }
-
-        step2 = fabs(medium->gradient.lambda / d) * GRADIENT_RESOLUTION;
+        const double step2 =
+            fabs(medium->gradient.lambda / d) * GRADIENT_RESOLUTION;
         if (step <= 0) return step2;
         else return (step < step2) ? step: step2;
 }
@@ -322,8 +332,8 @@ void pumas_medium_gradient_initialise(
         medium->gradient.rho0 = rho0;
 
         medium->gradient.project = NULL;
-        memset(medium->gradient.direction, 0x0,
-            sizeof medium->gradient.direction);
+        memset(medium->gradient.axis, 0x0,
+            sizeof medium->gradient.axis);
 
         if (magnet != NULL)
                 memcpy(medium->magnet, magnet, sizeof medium->magnet);
@@ -336,30 +346,30 @@ void pumas_medium_gradient_initialise(
 
 
 double pumas_medium_gradient_project_altitude(
-    struct pumas_medium_gradient * medium, const struct pumas_state * state)
+    struct pumas_medium_gradient * medium,
+    struct pumas_state_extended * state)
 {
 #define VERTICAL_UPDATE_DISTANCE 1E+03
 
-        struct pumas_state_extended * extended = (void *)state;
-        if (!extended->geodetic.computed) {
-                turtle_ecef_to_geodetic(state->position,
-                                        &extended->geodetic.latitude,
-                                        &extended->geodetic.longitude,
-                                        &extended->geodetic.altitude);
-                extended->geodetic.computed = 1;
+        if (!state->geodetic.computed) {
+                turtle_ecef_to_geodetic(state->base.position,
+                                        &state->geodetic.latitude,
+                                        &state->geodetic.longitude,
+                                        &state->geodetic.altitude);
+                state->geodetic.computed = 1;
         }
 
-        if (state->distance >= extended->vertical.distance) {
-                turtle_ecef_from_horizontal(extended->geodetic.latitude,
-                                            extended->geodetic.longitude, 0, 90,
-                                            extended->vertical.last);
-                extended->vertical.distance = state->distance +
-                                              VERTICAL_UPDATE_DISTANCE;
+        if (state->base.distance >= state->vertical.distance) {
+                turtle_ecef_from_horizontal(state->geodetic.latitude,
+                                            state->geodetic.longitude, 0, 90,
+                                            state->vertical.last);
+                state->vertical.distance = state->base.distance +
+                    VERTICAL_UPDATE_DISTANCE;
         }
-        memcpy(medium->gradient.direction, extended->vertical.last,
-               sizeof medium->gradient.direction);
+        memcpy(medium->gradient.axis, state->vertical.last,
+               sizeof medium->gradient.axis);
 
-        return extended->geodetic.altitude;
+        return state->geodetic.altitude;
 
 #undef VERTICAL_UPDATE_DISTANCE
 }

@@ -21,10 +21,11 @@ _A metatype for describing a layer of an Earth geometry._
 ## Constructor
 
 The [TopographyLayer](TopographyLayer.md) constructor takes two arguments, a
-constituting medium and topography data as illustrated in the synopsis below.
+constituting medium and a topography data as illustrated in the synopsis below.
 The topography data can be specified by a
 [TopographyData](../data/TopographyData.md)([set](../data/TopographyDataset.md))
 or by one of its argument.
+{: .justify}
 
 ### Synopsis
 

@@ -78,9 +78,9 @@ struct pumas_medium_gradient {
                 double z0;
                 double rho0;
 
-                double direction[3];
+                double axis[3];
                 double (* project)(struct pumas_medium_gradient * medium,
-                                   const struct pumas_state * state);
+                                   struct pumas_state_extended * state);
         } gradient;
 };
 
@@ -89,8 +89,11 @@ void pumas_medium_gradient_initialise(
     enum pumas_medium_gradient_type type, double lambda, double z0,
     double rho0, const double * magnet);
 
+double pumas_medium_gradient_density(
+    struct pumas_medium_gradient * medium, struct pumas_state_extended * state);
+
 double pumas_medium_gradient_project_altitude(
-    struct pumas_medium_gradient * medium, const struct pumas_state * state);
+    struct pumas_medium_gradient * medium, struct pumas_state_extended * state);
 
 /* Setters and getters for the geometry */
 struct pumas_geometry * pumas_geometry_get(struct pumas_context * context);

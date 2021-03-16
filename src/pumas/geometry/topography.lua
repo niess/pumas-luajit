@@ -87,8 +87,8 @@ do
         return setmetatable(new, TopographyData)
     end
 
-    error.register('TopographyData.__index.clone')
-    error.register('TopographyData.__index.elevation')
+    error.register('TopographyData.__index.clone', clone)
+    error.register('TopographyData.__index.elevation', elevation)
 
     function TopographyData:__index (k)
         if k == '__metatype' then

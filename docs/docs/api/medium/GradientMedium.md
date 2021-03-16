@@ -40,7 +40,7 @@ simulation frame or to the Earth local vertical. Optionaly one can also specify
 an extra local magnetic field.
 {: .justify}
 
-!!! note
+!!! warning
     The ionization loss of charged particles depends on the target material
     atomic spacing, i.e. on its density (see e.g. [Sternheimer et al.,
     1984](https://doi.org/10.1016/0092-640X(84)90002-0)). Therefore, it is *a
@@ -65,11 +65,11 @@ pumas.GradientMedium(
 |*material*     |`string`                         | Name of the filling material. |
 |*lambda*       |`number`                         | Gradient $\lambda$ parameter, in m ([see above](#constructor)). |
 |||
-|(*axis*)       |`double [3]`, `table` or `string`| Cartesian coordinates of the gradient axis in the simulation frame or `'vertical'` if the gradient axis is defined by the Earth local vertical. |
-|(*magnet*)     |`double [3]`                     | Magnetic field Cartesian components in the simulation frame, in T. |
-|(*rho&Oslash;*)|`number`                         | Gradient $\rho_0$ parameter, in kg/m<sup>3</sup> ([see above](#constructor)). |
-|(*type*)       |`string`                         | Gradient type, i.e. `'linear'` or `'exponential'`. |
-|(*z&Oslash;*)  |`number`                         | Gradient $z_0$ parameter, in m ([see above](#constructor)). |
+|(*axis*)       |`double [3]`, `table` or `string`| Cartesian coordinates of the gradient axis in the simulation frame or `'vertical'` if the gradient axis is defined by the Earth local vertical. Defaults to `'vertical'`. {: .justify} |
+|(*magnet*)     |`double [3]`                     | Magnetic field Cartesian components in the simulation frame, in T. Defaults to `{0, 0, 0}` T. {: .justify} |
+|(*rho&Oslash;*)|`number`                         | Gradient $\rho_0$ parameter, in kg/m<sup>3</sup> ([see above](#constructor)). Defaults to the *material*'s density. {: .justify} |
+|(*type*)       |`string`                         | Gradient type, i.e. `'linear'` or `'exponential'`. Defaults to `'exponential'`. {: .justify} |
+|(*z&Oslash;*)  |`number`                         | Gradient $z_0$ parameter, in m ([see above](#constructor)). Defaults to zero. {: .justify} |
 
 !!! note
     The filling material must reference a
@@ -88,4 +88,38 @@ pumas.GradientMedium(
 
 [transparent\_medium](transparent_medium.md),
 [UniformMedium](UniformMedium.md).
+</div>
+
+
+<div markdown="1" class="shaded-box fancy">
+## GradientMedium.density
+
+Get the medium density, in $\text{kg} / \text{m}^3$, at a given location.
+The location can be provided as a [Coordinates](../Coordinates.md) object or
+as a simulation [State](../simulation/State.md) object. In the latter case the
+[`state.position`](../simulation/State.md#attributes) is considered for the
+location.
+{: .justify}
+
+### Synopsis
+```Lua
+GradientMedium:density(state)
+
+GradientMedium:density(coordinates)
+```
+
+### Arguments
+
+|Name|Type|Description|
+|----|----|-----------|
+|*state*|[State](../simulation/State.md)| Simulation state. The `state.position` is considered for the  computation of the density value. {: .justify}|
+||||
+|*coordinates* |[Coordinates](../Coordinates.md)| Point coordinates, in m. {: .justify}|
+
+
+### Returns
+
+|Type|Description|
+|----|-----------|
+|`number`| Medium density at tye requested location, in $\text{kg} / \text{m}^3$. {: .justify}|
 </div>
