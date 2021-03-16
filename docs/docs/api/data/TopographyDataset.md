@@ -12,8 +12,8 @@ _A metatype for an ordered set of topography data._
 !!! note
     The structure of the set cannot be modified. The properties of its members
     are mutable however, e.g. their offset. The set also supports addition and
-    subtraction operations with a `number` resultint resulting in all its data
-    members being offset.
+    subtraction operations with a `number` resulting in all its data members
+    being offset.
     {: .justify }
 </div>
 
@@ -52,13 +52,6 @@ pumas.TopographyDataset{data, ...}
 |Name|Type|Description|
 |----|----|-----------|
 |*data*|`number`, `string` or [TopographyData](TopographyData.md)| [TopographyData](TopographyData.md) or any argument refering to them as defined in the [TopographyData constructor](TopographyData.md#constructor).|
-
-
-### Returns
-
-|Type|Description|
-|----|-----------|
-|`table`| A Lua table of metatype [TopographyDataset](TopographyDataset.md).|
 
 ### See also
 

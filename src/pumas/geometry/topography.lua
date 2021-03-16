@@ -258,7 +258,7 @@ do
     local function add (self, t)
         local new = compat.table_new(#self, 0)
 
-        for i, v in ipairs(self) do
+        for i, v in ipairs(self._set) do
             new[i] = v + t
         end
 

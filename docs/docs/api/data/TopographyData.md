@@ -54,13 +54,6 @@ pumas.TopographyData(data, (offset))
 |*path*    |`string`| Path to a topography file or to folder containing topography tiles. {: .justify}|
 |(*offset*)|`number`| Global offset applied to the topography data. Defaults to 0 if a *path* is provided or to the initial *data* offset otherwise. {: .justify}|
 
-
-### Returns
-
-|Type|Description|
-|----|-----------|
-|`table`| A Lua table of metatype [TopographyData](TopographyData.md).|
-
 ### See also
 
 [constants](constants.md),
