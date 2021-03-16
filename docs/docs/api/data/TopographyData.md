@@ -25,11 +25,11 @@ _A metatype for wrapping topography data._
 
 The [TopographyData](TopographyData.md) constructor takes zero to two arguments
 as shown in the synospis below. If no argument is provided a flat topography
-with zero elevation is assumed, i.e. a geoid. If a path is provided as first
+with zero elevation is assumed, i.e. a geoid. If a *path* is provided as first
 argument then it must refer to a topography data format supported by the
 [TURTLE](https://github.com/niess/turtle) library: ASC, GEOTIFF, GRD, HGT or
 PNG. Global model with multiple data tiles are also supported, e.g.
-[SRTMGL1](https://lpdaac.usgs.gov/products/srtmgl1v003/). or
+[SRTMGL1](https://lpdaac.usgs.gov/products/srtmgl1v003/) or
 [ASTER-GDEM2](https://asterweb.jpl.nasa.gov/gdem.asp). In the latter case,
 *path* points to a directory containing the topography tiles. In addition, the
 topography data can be shifted by a global *offset* provided as an extra
@@ -42,14 +42,17 @@ argument.
 pumas.TopographyData((offset))
 
 pumas.TopographyData(path, (offset))
+
+pumas.TopographyData(data, (offset))
 ```
 
 ### Arguments
 
 |Name|Type|Description|
 |----|----|-----------|
-|*path*    |`string`| Path to a topography file or to folder containing topography tiles.|
-|(*offset*)|`number`| Global offset applied to the topography data. Defaults to 0 if not provided.|
+|*data*    |[TopographyData](TopographyData.md)| Another [TopographyData](TopographyData.md) instance (see the [clone](#topographydataclone) method below). {: .justify} |
+|*path*    |`string`| Path to a topography file or to folder containing topography tiles. {: .justify}|
+|(*offset*)|`number`| Global offset applied to the topography data. Defaults to 0 if a *path* is provided or to the initial *data* offset otherwise. {: .justify}|
 
 
 ### Returns

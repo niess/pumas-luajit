@@ -98,9 +98,9 @@ do
         elseif k == 'elevation' then
             return elevation
         elseif k == 'offset' then
-            return self._offset
+            return rawget(self, '_offset')
         elseif k == 'path' then
-            return self._path
+            return rawget(self, '_path')
         else
             error.raise{
                 ['type'] = 'TopographyData', bad_member = k}
@@ -184,7 +184,7 @@ do
 
         local self = {}
         local c, ptr
-        local data_type = type(data)
+        local data_type = metatype(data)
         if data_type == 'string' then
             local mode, errmsg = lfs.attributes(data, 'mode')
             if mode == nil then
@@ -208,6 +208,11 @@ do
                 self._stepper_add = clib.turtle_stepper_add_map
                 self._elevation = map_elevation
             end
+            if offset and type(offset) ~= 'number' then
+                error.raise{
+                    fname = 'TopographyData', argnum = 3,
+                    expected = ' a number', got = metatype.a(offset)}
+            end
             self._offset = offset or 0
             self._path = data
         elseif data_type == 'number' then
@@ -219,6 +224,17 @@ do
             self._offset = data
             self._stepper_add = clib.turtle_stepper_add_flat
             self._elevation = false
+        elseif data_type == 'TopographyData' then
+            self = data:clone()
+            if offset then
+                if type(offset) ~= 'number' then
+                    error.raise{
+                        fname = 'TopographyData', argnum = 3,
+                        expected = ' a number', got = metatype.a(offset)}
+                end
+                self._offset = offset
+            end
+            return self
         else
             error.raise{
                 fname = 'TopographyData', argnum = 1,

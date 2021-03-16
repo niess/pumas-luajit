@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
 local clib = require('pumas.clib')
+local readonly = require('pumas.readonly')
 
 local constants = {}
 
@@ -12,7 +13,6 @@ local constants = {}
 -------------------------------------------------------------------------------
 -- Get constants from the PUMAS library
 -------------------------------------------------------------------------------
--- XXX Make the table Readonly?
 do
     local value = ffi.new('double [1]')
 
@@ -27,4 +27,4 @@ end
 -------------------------------------------------------------------------------
 -- Return the package
 -------------------------------------------------------------------------------
-return constants
+return readonly.Readonly(constants, 'constants')
