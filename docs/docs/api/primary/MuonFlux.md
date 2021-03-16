@@ -7,8 +7,8 @@ _A metatype for representing a primary flux of atmospheric muons._
 
 |Name|Type|Description|
 |----|----|-----------|
-|*model*   |`string`         | Reference model for atmospheric muon spectra. |
-|*altitude*|`number` or `nil`| Model default altitude, in m. {: .justify}    |
+|*model*   |`function` or `string`| Reference model for atmospheric muon spectra ([see below](#constructor)). |
+|*altitude*|`number` or `nil`     | Model default altitude, in m. {: .justify}    |
 
 !!! note
     Attributes are readonly. The model cannot be modified once created. Instead
@@ -24,8 +24,11 @@ The [MuonFlux](MuonFlux.md) constructor requires a spectrum model to be provided
 as first argument. Optionally one can also provide a default model altitude as
 well as a specific vertical axis or origin. If not specified spectrum models are
 provided w.r.t. the local vertical using the WGS84 ellipsoid (GPS altitude).
-Available models are listed in the table below. Their altitude (range) is also
-indicated.
+{: .justify}
+
+The spectrum model can be provided as a user defined Lua function, as a string
+path to a flux tabulation file or as a string name refering to a predefined
+model as listed in the table below.
 {: .justify}
 
 |Name|Altitude (m)|Description|
@@ -36,9 +39,30 @@ indicated.
 |`'mceq'`     | 0-9000 | Tabulation of [MCEq](https://github.com/afedynitch/MCEq) results. Production yields have been weighted according to the global fit to experimental data of [Yanez _et al._, 2019](https://arxiv.org/abs/1909.08365). {: .justify} |
 
 !!! warning
-    The `'chirkin'`, `'gaisser'` and `'gccly'` models are only provided at
-    sea level. No correction is applied if they are used at another altitude.
+    The `'chirkin'`, `'gaisser'` and `'gccly'` models are analytical
+    parameterisations. They are only provided at sea level. No correction is
+    applied if they are used at another altitude.
     {: .justify}
+
+The `'mceq'` model is a flux tabulation embedded in the `pumas` Lua package.
+Alternative flux tabulation files can be downloaded from the
+[`atmospheric-muon-flux`](https://github.com/niess/atmospheric-muon-flux) GitHub
+project and provided as *model* argument. The GitHub project also contains a
+Python script allowing to generate these tabulations with
+[MCeq](https://github.com/afedynitch/MCEq).
+{: .justify}
+
+If a function is provided as spectrum *model* then
+it synopsis must conform to the [`MuonFlux.spectrum`](#muonfluxspectrum) one
+as:
+{: .justify}
+```lua
+model(kinetic_energy, cos_theta, (charge)=, (altitude)=)
+```
+The spectrum *model* function must return a `number` indicating the
+corresponding flux, in
+$\text{GeV}^{-1}\text{m}^{-2}\text{s}^{-1}\text{sr}^{-1}$.
+{: .justify}
 
 ### Synopsis
 
@@ -53,9 +77,9 @@ pumas.MuonFlux{(altitude)=, (axis)=, (charge_ratio)=, (gamma)=, (model)=,
 |----|----|-----------|
 |(*altitude*)|`number`                                    | Default model altitude, in `m`. If specified this sets the sampling altitude of the [sample](muonfluxsample) method. {: .justify} |
 |(*axis*)    |`string` or [Coordinates](../Coordinates.md)| Vertical axis of the flux model. Defaults to `'vertical'` i.e. the local vertical is used assuming Earth-Centered Earth-Fixed (ECEF) coordinates for the simulation frame. Alternativelly if [Coordinates](../Coordinates.md) are provided a constant vertical axis is used. {: .justify} |
-|(*charge_ratio*)  |`number`                              | Constant charge ratio ($\mu^+ / \mu^-$) for semi-analytical models. Defaults to `1.2766` as measured by [CMS](https://arxiv.org/abs/1005.5332). {: .justify} |
-|(*gamma*)  |`number`                                     | Spectral exponent for semi-analytical models. The default value depends on the model, e.g. $\gamma = 2.7$ for `'gaisser'` model. {: .justify} |
-|*(model)*   |`string`                                    | Reference model for atmospheric muon spectra. One of `'chirkin'`, `'gaisser'`, `'gccly'` or `'mceq'`. Defaults to `'mceq'`. {: .justify} |
+|(*charge_ratio*)  |`number`                              | Constant charge ratio ($\mu^+ / \mu^-$) for analytical models. Defaults to `1.2766` as measured by [CMS](https://arxiv.org/abs/1005.5332). {: .justify} |
+|(*gamma*)  |`number`                                     | Spectral exponent for analytical models. The default value depends on the model, e.g. $\gamma = 2.7$ for `'gaisser'` model. {: .justify} |
+|*(model)*   |`function` or `string`                      | Reference model for atmospheric muon spectra. One of `'chirkin'`, `'gaisser'`, `'gccly'`, `'mceq'`, a path string to a flux tabulation file or a spectrum Lua function. Defaults to `'mceq'`. {: .justify} |
 |(*normalisation*)  |`number`                             | Flux relative normalization. Defaults to `1`, i.e. native model values are used. {: .justify} |
 |(*origin*)  |[Coordinates](../Coordinates.md)            | Origin of the flux model, in m. Defaults to the WGS84 ellipsoid if a local vertical *axis* is used or to the origin of the simulation frame otherwise. {: .justify} |
 </div>
@@ -90,7 +114,7 @@ MuonFlux:sample(state)
 |Type|Description|
 |----|-----------|
 |`boolean`         | `false` if a primary flux altitude was specified but not reached by the particle, `true` otherwise. {: .justify}|
-|`number` or `nil` | Value of the sampled flux on success otherwise `nil`. {: .justify} |
+|`number` or `nil` | Value of the sampled flux on success, in $\text{GeV}^{-1}\text{m}^{-2}\text{s}^{-1}\text{sr}^{-1}$, otherwise `nil`. {: .justify} |
 
 !!! note
     On success the Monte Carlo weight of the input
@@ -134,16 +158,16 @@ MuonFlux:spectrum(kinetic_energy, cos_theta, (charge)=, (altitude)=)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*kinetic\_energy*|`number`| Muon kinetic energy, in GeV. {: .justify} |
+|*kinetic\_energy*|`number`| Muon kinetic energy, in $\text{GeV}$. {: .justify} |
 |*cos\_theta*     |`number`| Cosine of the observation angle (see above). {: .justify} |
 |(*charge*)       |`number`| Muon electric charge. If `0` or `nil` the total flux is returned, i.e. for both charges. {: .justify} |
-|(*altitude*)     |`number`| Model altitude, in `m`. See above for default value. {: .justify} |
+|(*altitude*)     |`number`| Model altitude, in $\text{m}$. See above for default value. {: .justify} |
 
 ### Returns
 
 |Type|Description|
 |----|-----------|
-|`number`| Value of the differential flux for the requested parameters. {:.justify}|
+|`number`| Value of the differential flux, in $\text{GeV}^{-1}\text{m}^{-2}\text{s}^{-1}\text{sr}^{-1}$. {:.justify}|
 
 ### See also
 

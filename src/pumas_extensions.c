@@ -984,6 +984,46 @@ void pumas_coordinates_frame_initialise_local(
                 frame->matrix[i][2] = tmp[i];
 }
 
+
+struct pumas_flux_tabulation * pumas_flux_tabulation_load(const char * path)
+{
+        FILE * fid = fopen(path, "rb");
+        if (fid == NULL) return NULL;
+
+        struct pumas_flux_tabulation * tabulation = NULL;
+        int64_t shape[3];
+        double range[6];
+
+        if (fread(shape, 8, 3, fid) != 3) goto error;
+        if (fread(range, 8, 6, fid) != 6) goto error;
+
+        /* XXX check endianess */
+
+        int64_t size = 2 * shape[0] * shape[1] * shape[2];
+        tabulation = malloc(sizeof (*tabulation) + 4 * size);
+        if (tabulation == NULL) goto error;
+
+        if (fread(tabulation->data, 4, size, fid) != size) goto error;
+        fclose(fid);
+
+        tabulation->n_k = shape[0];
+        tabulation->n_c = shape[1];
+        tabulation->n_h = shape[2];
+        tabulation->k_min = range[0];
+        tabulation->k_max = range[1];
+        tabulation->c_min = range[2];
+        tabulation->c_max = range[3];
+        tabulation->h_min = range[4];
+        tabulation->h_max = range[5];
+
+        return tabulation;
+error:
+        fclose(fid);
+        free(tabulation);
+        return NULL;
+}
+
+
 double pumas_flux_tabulation_get(
     const struct pumas_flux_tabulation * tabulation, double k, double c,
     double h, double charge)

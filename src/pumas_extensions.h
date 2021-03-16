@@ -300,6 +300,8 @@ struct pumas_flux_tabulation {
         float data[];
 };
 
+struct pumas_flux_tabulation * pumas_flux_tabulation_load(const char * path);
+
 double pumas_flux_tabulation_get(
     const struct pumas_flux_tabulation * tabulation, double k, double c,
     double h, double charge);

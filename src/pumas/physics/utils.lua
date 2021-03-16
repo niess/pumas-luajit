@@ -92,7 +92,7 @@ function utils.makedirs (path)
     local dir = ''
     for s in path:gmatch(os.PATHSEP..'?[^'..os.PATHSEP..']+') do
         dir = dir..s
-        if lfs.attributes(dir, "mode") == nil then
+        if lfs.attributes(dir, 'mode') == nil then
             local ok, err = lfs.mkdir(dir)
             if not ok then return nil, err end
         end

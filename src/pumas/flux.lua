@@ -3,6 +3,8 @@
 -- Author: Valentin Niess
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
+local ffi = require('ffi')
+local lfs = require('lfs')
 local clib = require('pumas.clib')
 local constants = require('pumas.constants')
 local coordinates = require('pumas.coordinates')
@@ -264,9 +266,6 @@ end
 -------------------------------------------------------------------------------
 -- Muon flux constructor
 -------------------------------------------------------------------------------
--- XXX Allow a user defined muon spectrum
--- XXX Implement any tabulated flux
-
 do
     local raise_error = error.ErrorFunction{fname = 'MuonFlux'}
 
@@ -317,8 +316,26 @@ do
             end
         end
 
-        local tag = model:lower()
-        if tag == 'mceq' then
+        local tag, data
+        if type(model) == 'string' then
+            if lfs.attributes(model, 'mode') == 'file' then
+                data = clib.pumas_flux_tabulation_load(model)
+                if data == nil then
+                    raise_error{argname = 'model',
+                        description = 'could not load flux tabulation from '..
+                        model}
+                end
+                ffi.gc(data, ffi.C.free)
+                self._data = data
+            else
+                tag = model:lower()
+            end
+        elseif type(model) ~= 'function' then
+            raise_error{argname = 'model',
+                expected = 'a function or a string', got = metatype.a(model)}
+        end
+
+        if (tag == 'mceq') or (tag == nil) or data then
             local normalisation = 1
             for k, v in pairs(options) do
                 if k == 'normalisation' then
@@ -337,14 +354,25 @@ do
                 end
             end
 
-            local data = clib.pumas_flux_tabulation_data[0]
+            if tag or data then
+                if not data then
+                    data = clib.pumas_flux_tabulation_data[0]
+                end
 
-            self._spectrum = function (
-                kinetic_energy, cos_theta, charge, altitude)
-                altitude = altitude or rawget(self, '_altitude') or 0
-                charge = charge or 0
-                return clib.pumas_flux_tabulation_get(data, kinetic_energy,
-                    cos_theta, altitude, charge) * normalisation
+                self._spectrum = function (
+                    kinetic_energy, cos_theta, charge, altitude)
+                    altitude = altitude or rawget(self, '_altitude') or 0
+                    charge = charge or 0
+                    return clib.pumas_flux_tabulation_get(data, kinetic_energy,
+                        cos_theta, altitude, charge) * normalisation
+                end
+            else
+                self._spectrum = function (
+                    kinetic_energy, cos_theta, charge, altitude)
+                    altitude = altitude or rawget(self, '_altitude') or 0
+                    return model(data, kinetic_energy, cos_theta, charge,
+                        altitude) * normalisation
+                end
             end
 
             return setmetatable(self, cls)

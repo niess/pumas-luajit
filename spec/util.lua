@@ -1,4 +1,5 @@
 local assert = require('luassert')
+local lfs = require('lfs')
 local pumas = require('pumas')
 
 local util = {}
@@ -122,6 +123,23 @@ function util.assert_unitary (t)
     assert.is.equal(1, util.dot(t.matrix[2], t.matrix[2], 7))
 end
 
+
+-------------------------------------------------------------------------------
+-- A dummy muon flux spectrum
+-------------------------------------------------------------------------------
+function util.dummy_spectrum () return 1 end
+
+
+-------------------------------------------------------------------------------
+-- Locate the flux tabulation data
+-------------------------------------------------------------------------------
+function util.muon_flux_data ()
+    for _, path in ipairs{'build-release', 'build-debug'} do
+        if lfs.attributes(path, 'mode') == 'directory' then
+            return path..'/src/atmospheric-muon-flux/data/simulated'
+        end
+    end
+end
 
 -------------------------------------------------------------------------------
 -- Return the package

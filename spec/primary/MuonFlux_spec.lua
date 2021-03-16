@@ -67,13 +67,15 @@ describe('MuonFlux', function ()
         end)
 
         it('should set model properly', function ()
-            for _, model in ipairs{'chirkin', 'gaisser', 'gccly', 'mceq'} do
+            for _, model in ipairs{'chirkin', 'gaisser', 'gccly', 'mceq',
+                util.dummy_flux} do
                 assert.is.equal(pumas.MuonFlux{model = model}['model'], model)
             end
         end)
 
         it('should set normalisation properly', function ()
-            for _, model in ipairs{'chirkin', 'gaisser', 'gccly', 'mceq'} do
+            for _, model in ipairs{'chirkin', 'gaisser', 'gccly', 'mceq',
+                util.dummy_flux} do
                 local flux0 = pumas.MuonFlux{model = model, normalisation = 2}
                 local flux1 = pumas.MuonFlux{model = model}
                 assert.is.equal(2, flux0:spectrum(1, 1) / flux1:spectrum(1, 1))
@@ -96,6 +98,16 @@ describe('MuonFlux', function ()
                 local r = flux0:spectrum(1, 1, 1) / flux0:spectrum(1, 1, -1)
                 assert.is.equal(2, r)
             end
+        end)
+
+        it('should load a flux table properly', function()
+            local data = util.muon_flux_data()..'/flux-mceq-yfm-gsf-usstd.table'
+            local flux0 = pumas.MuonFlux{model = data}
+            local flux1 = pumas.MuonFlux{model = 'mceq'}
+
+            local f0 = flux0:spectrum(2, 1, 3, 4)
+            local f1 = flux1:spectrum(2, 1, 3, 4)
+            assert.is.equal(util.round(f1, 7), util.round(f0, 7))
         end)
     end)
 
