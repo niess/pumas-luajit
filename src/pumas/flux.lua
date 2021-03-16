@@ -4,10 +4,10 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local clib = require('pumas.clib')
+local constants = require('pumas.constants')
 local coordinates = require('pumas.coordinates')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
-local physics = require('pumas.physics')
 
 local flux = {}
 
@@ -38,7 +38,7 @@ local function GaisserFlux (normalisation, gamma, charge_ratio)
 
     return function (kinetic_energy, cos_theta, charge)
         if cos_theta < 0 then return 0 end
-        local Emu = kinetic_energy + physics.MUON_MASS
+        local Emu = kinetic_energy + constants.MUON_MASS
         local ec = 1.1 * Emu * cos_theta
         local rpi = 1 + ec / 115
         local rK = 1 + ec / 850
@@ -76,7 +76,7 @@ local function GcclyFlux (normalisation, gamma, charge_ratio)
     return function (kinetic_energy, cos_theta, charge)
         local cs = cos_theta_star(cos_theta)
         if cs < 0 then return 0 end
-        local Emu = kinetic_energy + physics.MUON_MASS
+        local Emu = kinetic_energy + constants.MUON_MASS
         return math.pow(1 + 3.64 / (Emu * math.pow(cs, 1.29)), -gamma) *
                gaisser(kinetic_energy, cs, charge)
     end
@@ -141,7 +141,7 @@ local function ChirkinFlux (normalisation, gamma, charge_ratio)
         do
             local X = mass_overburden(cos_theta) - X0
             local ebx = math.exp(b * X)
-            local Ef = kinetic_energy + physics.MUON_MASS
+            local Ef = kinetic_energy + constants.MUON_MASS
             local Ei = ((a + b * Ef) * ebx - a) / b
 
             local sE = 0.5 * c2 * (Ei * Ei - Ef * Ef) + c1 * (Ei - Ef) +
@@ -170,7 +170,7 @@ local function ChirkinFlux (normalisation, gamma, charge_ratio)
         -- Calculate the survival factor (W)
         local d0 = path_length(cos_theta)
         local ctau = 658.65
-        local W = math.exp(-d0 / ctau * physics.MUON_MASS / EI)
+        local W = math.exp(-d0 / ctau * constants.MUON_MASS / EI)
 
         -- Return the modified Gaisser's flux
         return dEIdEf * W * gaisser(EI, cs, charge)
@@ -225,13 +225,13 @@ do
         return true, f
     end
 
-    local function spectrum (self, energy, cos_theta, charge)
+    local function spectrum (self, energy, cos_theta, charge, altitude)
         if metatype(self) ~= 'MuonFlux' then
             error.raise{fname = 'spectrum', argnum = 1,
                 expected = 'a MuonFlux table', got = metatype.a(self)}
         end
 
-        return self._spectrum(energy, cos_theta, charge)
+        return self._spectrum(energy, cos_theta, charge, altitude)
     end
 
     function MuonFlux:__index (k)

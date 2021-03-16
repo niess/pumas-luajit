@@ -76,7 +76,6 @@ describe('LocalFrame', function ()
 
             util.assert_unitary(f)
 
-            local s2 = util.round(1 / math.sqrt(2), 7)
             assert.is.equal( 0, util.round(f.matrix[0][0], 7))
             assert.is.equal( 1, util.round(f.matrix[1][0], 7))
             assert.is.equal( 0, util.round(f.matrix[2][0], 7))

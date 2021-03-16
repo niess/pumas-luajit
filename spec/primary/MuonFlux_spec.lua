@@ -1,4 +1,5 @@
 local pumas = require('pumas')
+local util = require('spec.util')
 
 
 describe('MuonFlux', function ()
@@ -56,19 +57,74 @@ describe('MuonFlux', function ()
             assert.is.equal(f1, f0)
 
             local flux1 = pumas.MuonFlux{axis = {0, 0, 1}, origin = {0, 0, 500}}
-            local state = pumas.State()
+            state = pumas.State()
             state.position[2] = 1000
             state.direction[2] = -1
-            local f1 = flux1:spectrum(state.energy, 1, state.charge, 500)
-            local ok, f0 = flux1:sample(state)
-            assert.is.equal(true, ok)
-            assert.is.equal(f1, f0)
+            local f2 = flux1:spectrum(state.energy, 1, state.charge, 500)
+            local ok1, f3 = flux1:sample(state)
+            assert.is.equal(true, ok1)
+            assert.is.equal(f2, f3)
         end)
 
+        it('should set model properly', function ()
+            for _, model in ipairs{'chirkin', 'gaisser', 'gccly', 'mceq'} do
+                assert.is.equal(pumas.MuonFlux{model = model}['model'], model)
+            end
+        end)
+
+        it('should set normalisation properly', function ()
+            for _, model in ipairs{'chirkin', 'gaisser', 'gccly', 'mceq'} do
+                local flux0 = pumas.MuonFlux{model = model, normalisation = 2}
+                local flux1 = pumas.MuonFlux{model = model}
+                assert.is.equal(2, flux0:spectrum(1, 1) / flux1:spectrum(1, 1))
+            end
+        end)
+
+        it('should set gamma properly', function ()
+            for _, model in ipairs{'chirkin', 'gaisser', 'gccly'} do
+                local flux0 = pumas.MuonFlux{model = model, gamma = 2}
+                local flux1 = pumas.MuonFlux{model = model, gamma = 3}
+                local e = 1E+12
+                local r = flux1:spectrum(e, 1) * e / flux0:spectrum(e, 1)
+                assert.is.equal(1, util.round(r, 2))
+            end
+        end)
+
+        it('should set charge ratio properly', function ()
+            for _, model in ipairs{'chirkin', 'gaisser', 'gccly'} do
+                local flux0 = pumas.MuonFlux{model = model, charge_ratio = 2}
+                local r = flux0:spectrum(1, 1, 1) / flux0:spectrum(1, 1, -1)
+                assert.is.equal(2, r)
+            end
+        end)
+    end)
+
+    describe('sample', function ()
+        it('should update the Monte Carlo weight', function ()
+            local flux = pumas.MuonFlux{axis = {0, 0, 1}, altitude = 0}
+            local state = pumas.State()
+            state.direction = {0, 0, -1}
+            local ok, f0 = flux:sample(state)
+            local f1 = flux:spectrum(state.energy, 1, state.charge)
+            assert.is.equal(true, ok)
+            assert.is.equal(f1, f0)
+            assert.is.equal(f1, state.weight)
+        end)
+
+        it('should check the altitude if provided', function ()
+            local flux = pumas.MuonFlux{axis = {0, 0, 1}, altitude = 1000}
+            local state = pumas.State()
+            local ok = flux:sample(state)
+            assert.is.equal(false, ok)
+        end)
     end)
 
     describe('spectrum', function ()
-        it('should work ...', function ()
+        it('should accept different altitudes', function ()
+            local flux = pumas.MuonFlux()
+            local f0 = flux:spectrum(1, 1, nil, 0)
+            local f1 = flux:spectrum(1, 1, nil, 1000)
+            assert.is.equal(true, f0 < f1)
         end)
     end)
 end)
