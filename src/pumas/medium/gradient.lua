@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
 local clib = require('pumas.clib')
+local coordinates = require('pumas.coordinates')
 local error = require('pumas.error')
 local material_ = require('pumas.material')
 local base = require('pumas.medium.base')
@@ -43,7 +44,7 @@ do
             if ok then
                 s = state
             else
-                error.raise{fname = density, argnum = 2, description = msg}
+                error.raise{fname = 'density', argnum = 2, description = msg}
             end
         end
 
@@ -89,8 +90,13 @@ function GradientMedium:__newindex (k, v)
             self._c.gradient.project =
                 clib.pumas_medium_gradient_project_altitude
         else
+            local ok, description = coordinates.set_double3(
+                self._c.gradient, 'axis', v)
+            if not ok then
+                error.raise{fname = 'GradientMedium', argname = 'axis',
+                    description = description}
+            end
             self._c.gradient.project = nil
-            self._c.gradient.axis = v
         end
     elseif k == 'lambda' then
         self._c.gradient.lambda = v
@@ -115,7 +121,11 @@ function GradientMedium:__newindex (k, v)
     elseif k == 'z0' then
         self._c.gradient.z0 = v
     elseif k == 'magnet' then
-        self._c.magnet = v
+        local ok, description = coordinates.set_double3(self._c, 'magnet', v)
+        if not ok then
+            error.raise{fname = 'GradientMedium', argname = 'magnet',
+                description = description}
+        end
     else
         base.BaseMedium.__newindex(self, k, v, strtype)
     end
@@ -245,14 +255,11 @@ do
         local magnet = args.magnet
 
         if magnet then
-            local ok = pcall(function ()
-                magnet = ffi.new('double [3]', magnet)
-            end)
-            if not ok then
-                raise_error{
-                    argname = 'magnet',
-                    expected = 'a size 3 table or array of numbers',
-                    got = 'something else'}
+            local ok, tmp = coordinates.to_double3(magnet)
+            if ok then
+                magnet = tmp
+            else
+                raise_error{argname = 'magnet', description = tmp}
             end
         end
 
@@ -264,7 +271,11 @@ do
             self._c.gradient.project =
                 clib.pumas_medium_gradient_project_altitude
         else
-            self._c.gradient.axis = axis
+            local ok, description = coordinates.set_double3(
+                self._c.gradient, 'axis', axis)
+            if not ok then
+                raise_error{argname = 'axis', description = description}
+            end
         end
 
         return setmetatable(self, cls)

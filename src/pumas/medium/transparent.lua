@@ -46,7 +46,6 @@ end
 do
     local m = setmetatable({
         _c = clib.PUMAS_MEDIUM_TRANSPARENT,
-        material = 'Transparent'
     }, TransparentMedium)
 
     error.register('TranparentMedium', TransparentMedium)

@@ -19,20 +19,30 @@ describe('GradientMedium', function ()
         end)
 
         it('should properly set attributes', function ()
-            local m = pumas.GradientMedium('StandardRock', {
+            local m0 = pumas.GradientMedium('StandardRock', {
                 lambda = -1, axis = {0, 0, 1}, magnet = {1, 2, 3},
                 rho0 = 1E+03, z0 = 100, ['type'] = 'linear'})
-            assert.is.equal('StandardRock', m.material)
-            assert.is.equal(-1, m.lambda)
-            assert.is.equal(0, m.axis[0])
-            assert.is.equal(0, m.axis[1])
-            assert.is.equal(1, m.axis[2])
-            assert.is.equal(1, m.magnet[0])
-            assert.is.equal(2, m.magnet[1])
-            assert.is.equal(3, m.magnet[2])
-            assert.is.equal(1E+03, m.rho0)
-            assert.is.equal(100, m.z0)
-            assert.is.equal('linear', m.type)
+            assert.is.equal('StandardRock', m0.material)
+            assert.is.equal(-1, m0.lambda)
+            assert.is.equal(0, m0.axis[0])
+            assert.is.equal(0, m0.axis[1])
+            assert.is.equal(1, m0.axis[2])
+            assert.is.equal(1, m0.magnet[0])
+            assert.is.equal(2, m0.magnet[1])
+            assert.is.equal(3, m0.magnet[2])
+            assert.is.equal(1E+03, m0.rho0)
+            assert.is.equal(100, m0.z0)
+            assert.is.equal('linear', m0.type)
+
+            local m1 = pumas.GradientMedium('StandardRock', {
+                lambda = -1, axis = pumas.CartesianVector(0, 0, 1),
+                magnet = pumas.CartesianVector(1, 2, 3)})
+            assert.is.equal(0, m1.axis[0])
+            assert.is.equal(0, m1.axis[1])
+            assert.is.equal(1, m1.axis[2])
+            assert.is.equal(1, m1.magnet[0])
+            assert.is.equal(2, m1.magnet[1])
+            assert.is.equal(3, m1.magnet[2])
         end)
     end)
 
@@ -43,15 +53,25 @@ describe('GradientMedium', function ()
             m.lambda = -2
             assert.is.equal(-2, m.lambda)
 
-            m.axis = {0, 0, 1}
+            m.axis = pumas.CartesianVector(0, 0, 1)
             assert.is.equal(0, m.axis[0])
             assert.is.equal(0, m.axis[1])
             assert.is.equal(1, m.axis[2])
 
-            m.magnet = {1, 2, 3}
+            m.axis = {0, 1, 0}
+            assert.is.equal(0, m.axis[0])
+            assert.is.equal(1, m.axis[1])
+            assert.is.equal(0, m.axis[2])
+
+            m.magnet = pumas.CartesianVector(1, 2, 3)
             assert.is.equal(1, m.magnet[0])
             assert.is.equal(2, m.magnet[1])
             assert.is.equal(3, m.magnet[2])
+
+            m.magnet = {3, 2, 1}
+            assert.is.equal(3, m.magnet[0])
+            assert.is.equal(2, m.magnet[1])
+            assert.is.equal(1, m.magnet[2])
 
             m.rho0 = 1E+03
             assert.is.equal(1E+03, m.rho0)

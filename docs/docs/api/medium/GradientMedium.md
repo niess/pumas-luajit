@@ -65,8 +65,8 @@ pumas.GradientMedium(
 |*material*     |`string`                         | Name of the filling material. |
 |*lambda*       |`number`                         | Gradient $\lambda$ parameter, in m ([see above](#constructor)). |
 |||
-|(*axis*)       |`double [3]`, `table` or `string`| Cartesian coordinates of the gradient axis in the simulation frame or `'vertical'` if the gradient axis is defined by the Earth local vertical. Defaults to `'vertical'`. {: .justify} |
-|(*magnet*)     |`double [3]`                     | Magnetic field Cartesian components in the simulation frame, in T. Defaults to `{0, 0, 0}` T. {: .justify} |
+|(*axis*)       |[Coordinates](../Coordinates.md), `table` or `string`| Coordinates of the gradient axis in the simulation frame or `'vertical'` if the gradient axis is defined by the Earth local vertical. Defaults to `'vertical'`. {: .justify} |
+|(*magnet*)     |[Coordinates](../Coordinates.md) or `table`| Magnetic field coordinates in the simulation frame, in T. Defaults to `{0, 0, 0}` T. {: .justify} |
 |(*rho&Oslash;*)|`number`                         | Gradient $\rho_0$ parameter, in kg/m<sup>3</sup> ([see above](#constructor)). Defaults to the *material*'s density. {: .justify} |
 |(*type*)       |`string`                         | Gradient type, i.e. `'linear'` or `'exponential'`. Defaults to `'exponential'`. {: .justify} |
 |(*z&Oslash;*)  |`number`                         | Gradient $z_0$ parameter, in m ([see above](#constructor)). Defaults to zero. {: .justify} |
@@ -121,5 +121,5 @@ GradientMedium:density(coordinates)
 
 |Type|Description|
 |----|-----------|
-|`number`| Medium density at tye requested location, in $\text{kg} / \text{m}^3$. {: .justify}|
+|`number`| Medium density at the requested location, in $\text{kg} / \text{m}^3$. {: .justify}|
 </div>

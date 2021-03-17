@@ -5,9 +5,11 @@
 -------------------------------------------------------------------------------
 local ffi = require('ffi')
 local clib = require('pumas.clib')
+local coordinates = require('pumas.coordinates')
 local error = require('pumas.error')
 local material_ = require('pumas.material')
 local base = require('pumas.medium.base')
+local metatype = require('pumas.metatype')
 
 local uniform = {}
 
@@ -32,9 +34,20 @@ end
 
 function UniformMedium:__newindex (k, v)
     if k == 'density' then
-        self._c.locals.density = v
+        local ok, description = pcall(function ()
+            self._c.locals.density = v
+        end)
+        if not ok then
+            error.raise{fname = 'UniformMedium', argname = 'magnet',
+                description = description:match(':%d+:(.+)$')}
+        end
     elseif k == 'magnet' then
-        self._c.locals.magnet = v
+        local ok, description = coordinates.set_double3(
+            self._c.locals, 'magnet', v)
+        if not ok then
+            error.raise{fname = 'UniformMedium', argname = 'magnet',
+                description = description}
+        end
     else
         base.BaseMedium.__newindex(self, k, v, strtype)
     end
@@ -53,24 +66,31 @@ do
     local function new (cls, material, density, magnet)
         if material == nil then
             raise_error{
-                argnum = 1,
-                expected = 'a string',
-                got = type(material)
-            }
+                argnum = 1, expected = 'a string', got = metatype.a(material)}
         end
 
         local self = base.BaseMedium.new(ctype, ctype_ptr, material)
 
-        if density == nil then
+        if density then
+            if type(density) ~= 'number' then
+                raise_error{argnum = 2, expected = 'a number',
+                    got = metatype.a(density)}
+            end
+        else
             local m = material_.materials[material]
             if m then
                 density = m.density
             else
-                raise_error{
-                    argnum = 2,
-                    expected = 'a number',
-                    got = 'nil'
-                }
+                raise_error{argnum = 2, expected = 'a number', got = 'nil'}
+            end
+        end
+
+        if magnet then
+            local ok, tmp = coordinates.to_double3(magnet)
+            if ok then
+                magnet = tmp
+            else
+                raise_error{argnum = 3, description = tmp}
             end
         end
 

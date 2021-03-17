@@ -46,7 +46,7 @@ pumas.UniformMedium(material, (density), (magnet))
 |----|----|-----------|
 |*material* |`string`    | Name of the filling material. |
 |(*density*)|`number`    | Bulk density of the medium, in kg/m<sup>3</sup>. If `nil` then the default material density is used.|
-|(*magnet*) |`double [3]`| Magnetic field Cartesian components in the simulation frame, in T. |
+|(*magnet*) |[Coordinates](../Coordinates.md) or `table`| Magnetic field components in the simulation frame, in T. |
 
 !!! note
     The filling material must reference a
