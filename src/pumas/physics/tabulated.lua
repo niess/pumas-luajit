@@ -73,11 +73,11 @@ do
         end
     end
 
-    local function get_or_update_table (self, property, mode, t)
-        local n, is_update
-        if t then
+    local function get_or_update_table (self, property, mode, ref)
+        local n, is_update, t
+        if ref then
             is_update = true
-            t = readonly.rawget(t)
+            t = readonly.rawget(ref)
             n = #t
         else
             is_update = false
@@ -93,7 +93,9 @@ do
             t[i + 1] = tonumber(value[0])
         end
 
-        if not is_update then
+        if is_update then
+            return ref
+        else
             return readonly.Readonly(t, property, 'PhysicsTable')
         end
     end
@@ -116,15 +118,18 @@ do
                 v = {}
             end
             for _, k in pairs{'energy_loss', 'grammage', 'proper_time'} do
-                v[k] = get_or_update_table(self, k, mode)
+                local ref = is_update and v[k] or nil
+                v[k] = get_or_update_table(self, k, mode, ref)
             end
 
             if mode == 'csda' then
+                local ref = is_update and v['kinetic_energy'] or nil
                 v['kinetic_energy'] = get_or_update_table(
-                    self, 'kinetic_energy', mode)
+                    self, 'kinetic_energy', mode, ref)
             else
+                local ref = is_update and v['cross_section'] or nil
                 v['cross_section'] = get_or_update_table(
-                    self, 'cross_section', mode)
+                    self, 'cross_section', mode, ref)
             end
 
             if not is_update then
@@ -159,7 +164,14 @@ do
             local density, composition, ZoA, I = parse_composite(
                 self._physics, self._index)
             self._properties.density = density
-            self._properties.elements = composition
+            if self._properties.elements then
+                local t = readonly.rawget(self._properties.elements)
+                for k, v in composition:pairs() do
+                    t[k] = v
+                end
+            else
+                self._properties.elements = composition
+            end
             self._properties.ZoA = ZoA
             self._properties.I = I
 
@@ -224,7 +236,9 @@ do
     }
 
     function TabulatedMaterial:__index (k)
-        if k == 'name' then
+        if k == '__metatype' then
+            return 'TabulatedMaterial'
+        elseif k == 'name' then
             return self._name
         elseif k == 'physics' then
             return self._physics

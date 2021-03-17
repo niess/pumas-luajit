@@ -1,5 +1,4 @@
 local pumas = require('pumas')
-local metatype = require('pumas.metatype')
 local util = require('spec.util')
 
 

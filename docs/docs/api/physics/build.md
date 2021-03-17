@@ -22,13 +22,13 @@ pumas.build{
 
 |Name|Type|Description|
 |----|----|-----------|
-|*materials* |`table`  | List of [Material](Material.md) or name `string` refering to existing entries in the [materials](../data/materials.md) table.|
+|*materials*   |`table`  | List of [Material](Material.md) or name `string` refering to existing entries in the [materials](../data/materials.md) table.|
 ||||
-|*compile*   |`boolean`| Compile the tabulations to a ready to use binary format. Default: `True`.|
-|*composites*|`table`  | Mapping with keys naming composite materials and values providing their composition. Default: `nil`.|
-|*energies*  |`table`  | List of kinetic energy values to tabulate. Default: see below.|
-|*particle*  |`string` | Name of the transported (projectile) particle. Must be `'muon'` or `'tau'`. Default: `'muon'`.|
-|*path*      |`table`  | Path under which to store the tabulations. Default: `'.'`.|
+|(*compile*)   |`boolean`| Compile the tabulations to a ready to use binary format. Default: `True`.|
+|(*composites*)|`table`  | Mapping with keys naming composite materials and values providing their composition. Default: `nil`.|
+|(*energies*)  |`table`  | List of kinetic energy values to tabulate. Default: see below.|
+|(*particle*)  |`string` | Name of the transported (projectile) particle. Must be `'muon'` or `'tau'`. Default: `'muon'`.|
+|(*path*)      |`table`  | Path under which to store the tabulations. Default: `'.'`.|
 
 If kinetic *energies* values are not specified a log like default sampling is
 used. For muons the exact same sampling than in the Particle Data Group

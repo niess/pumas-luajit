@@ -20,7 +20,7 @@ function readonly.rawget (t) return instances[t].table end
 -------------------------------------------------------------------------------
 local Readonly = {}
 
-Readonly.__metatable = 'readonly'
+Readonly.__metatable = 'Readonly'
 
 
 do

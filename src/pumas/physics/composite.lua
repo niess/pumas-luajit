@@ -47,18 +47,18 @@ end
 
 
 function CompositeMaterials:__newindex (k, v)
+    if not rawget(self._fractions, k) then
+        error.raise{['type'] = 'CompositeMaterials', bad_member = k}
+    end
+
     if type(v) ~= 'number' then
         error.raise{fname = 'CompositeMaterials', argname = k,
             expected = 'a number', got = metatype.a(v)}
     end
 
-    local ok = pcall(rawset, self._fractions, k, v)
-    if ok then
-        rawset(self, '_needs_update', true)
-        rawset(self._physics, '_update_composites', true)
-    else
-        error.raise{['type'] = 'CompositeMaterials', bad_member = k}
-    end
+    rawset(self._fractions, k, v)
+    rawset(self, '_needs_update', true)
+    rawset(self._physics, '_update_composites', true)
 end
 
 
@@ -79,7 +79,7 @@ do
 
         local name_ = ffi.new('const char *[1]')
         local fractions_ = compat.table_new(0, n_materials)
-        local names = compat.table_new(n_materials, 0)
+        local names = compat.table_new(n_materials, 0) -- XXX is this needed?
         for i = 1, n_materials do
             clib.pumas_physics_material_name(
                 physics_._c[0], indices[i - 1], name_)

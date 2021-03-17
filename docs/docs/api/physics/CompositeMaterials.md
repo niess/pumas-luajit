@@ -14,10 +14,12 @@ names but with some restrictions detailed below.
 {: .justify}
 
 !!! note
-    The table layout cannot be changed. However the mass fraction values can
-    be modified. Note that when doing so the physics properties of the
-    corresponding [TabulatedMaterial](TabulatedMaterial) are updated
-    accordingly, e.g. the composite density.
+    The table layout cannot be changed. However the mass fraction values can be
+    modified. Note that when doing so the physics properties of the
+    corresponding [TabulatedMaterial](TabulatedMaterial) are updated in-place
+    accordingly, e.g. the atomic composition
+    ([`material.elements`](Material.md#attributes)) or the composite
+    [density](Material.md#attributes).
     {: .justify}
 
 !!! note

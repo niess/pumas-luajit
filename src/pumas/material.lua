@@ -6,6 +6,7 @@
 local element_ = require('pumas.element')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
+local readonly = require('pumas.readonly')
 
 local material = {}
 
@@ -16,6 +17,9 @@ local material = {}
 function material.compute_ZoA (elements_, ELEMENTS, raise_error)
     ELEMENTS = ELEMENTS or element_.ELEMENTS
     local ZoA = 0
+    if getmetatable(elements_) == 'Readonly' then
+        elements_ = readonly.rawget(elements_)
+    end
     for symbol, wi in pairs(elements_) do
         local e = ELEMENTS[symbol]
         if e == nil then
@@ -37,6 +41,9 @@ end
 function material.compute_ZoA_and_I (elements_, ELEMENTS, raise_error)
     ELEMENTS = ELEMENTS or element_.elements
     local ZoA, mee = 0, 0
+    if getmetatable(elements_) == 'Readonly' then
+        elements_ = readonly.rawget(elements_)
+    end
     for symbol, wi in pairs(elements_) do
         local e = ELEMENTS[symbol]
         if e == nil then
