@@ -319,7 +319,8 @@ do
         if nargs == 1 then
             args = select(1, ...)
             if type(args) ~= 'table' then
-                raise_error{argnum = 1, expected = 'a table',
+                raise_error{argnum = 1,
+                    expected = 'an options or Physics table',
                     got = metatype.a(args)}
             end
             physics = args.physics

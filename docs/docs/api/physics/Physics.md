@@ -27,9 +27,9 @@ cross-section of radiative processes, as:
 
 |Name|Type|Description|
 |----|----|-----------|
-|*bremsstrahlung*|`function`| Bremsstrahlung differential cross-section, in m<sup>2</sup>.|
-|*pair_creation* |`function`| Differential cross-section for $e^+e^-$ pair creation, in m<sup>2</sup>.|
-|*photonuclear*  |`function`| Photonuclear differential cross-section, in m<sup>2</sup>.|
+|*bremsstrahlung*  |`function`| Bremsstrahlung differential cross-section, in m<sup>2</sup>.|
+|*pair_production* |`function`| Differential cross-section for $e^+e^-$ pair production, in m<sup>2</sup>.|
+|*photonuclear*    |`function`| Photonuclear differential cross-section, in m<sup>2</sup>.|
 
 The DCS functions have the following synopsis:
 ```lua
@@ -115,7 +115,7 @@ Physics:Context(mode)
 
 |Name|Type|Description|
 |----|----|-----------|
-|*mode*|`string`| Configuration [Mode](../simulation/Mode.md) flags for the simulation. Defaults to ``detailed forward`` {: .justify}|
+|(*mode*)|`string`| Configuration flags for the simulation. The `string` must indicate [Mode](Mode.md) attributes flag(s) with proper separator(s) (whitespace, comma, etc.). Default value is `detailed forward`. {: .justify} |
 
 ### Returns
 

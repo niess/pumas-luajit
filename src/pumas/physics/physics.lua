@@ -22,6 +22,11 @@ local type_ = {}
 -- Lazy loaders for the Physics
 -------------------------------------------------------------------------------
 local function load_composites (self)
+    local tmp = rawget(self, '_composites')
+    if tmp then
+        return tmp
+    end
+
     local n = tonumber(clib.pumas_physics_material_length(self._c[0]))
     local m = tonumber(clib.pumas_physics_composite_length(self._c[0]))
 
@@ -31,13 +36,18 @@ local function load_composites (self)
         composites[comp.name] = comp
     end
     composites = readonly.Readonly(composites, 'composites')
-    rawset(self, 'composites', composites)
+    rawset(self, '_composites', composites)
 
     return composites
 end
 
 -- XXX Allow to modify cross-sections?
 local function load_dcs (self)
+    local tmp = rawget(self, '_dcs')
+    if tmp then
+        return tmp
+    end
+
     local dcs = readonly.Readonly({
         bremsstrahlung = clib.pumas_physics_dcs_get(
             self._c[0], clib.PUMAS_PROCESS_BREMSSTRAHLUNG),
@@ -46,13 +56,18 @@ local function load_dcs (self)
         photonuclear = clib.pumas_physics_dcs_get(
             self._c[0], clib.PUMAS_PROCESS_PHOTONUCLEAR)
     }, 'dcs')
-    rawset(self, 'dcs', dcs)
+    rawset(self, '_dcs', dcs)
 
     return dcs
 end
 
 
 local function load_elements (self)
+    local tmp = rawget(self, '_elements')
+    if tmp then
+        return tmp
+    end
+
     local n = tonumber(clib.pumas_physics_element_length(self._c[0]))
     local elements = compat.table_new(0, n)
 
@@ -70,13 +85,18 @@ local function load_elements (self)
             'Element')
     end
     elements = readonly.Readonly(elements, 'elements')
-    rawset(self, 'elements', elements)
+    rawset(self, '_elements', elements)
 
     return elements
 end
 
 
 local function load_materials (self)
+    local tmp = rawget(self, '_materials')
+    if tmp then
+        return tmp
+    end
+
     local n = tonumber(clib.pumas_physics_material_length(self._c[0]))
     local m = tonumber(clib.pumas_physics_composite_length(self._c[0]))
     n = n - m
@@ -87,13 +107,18 @@ local function load_materials (self)
         materials[mat.name] = mat
     end
     materials = readonly.Readonly(materials, 'materials')
-    rawset(self, 'materials', materials)
+    rawset(self, '_materials', materials)
 
     return materials
 end
 
 
 local function load_particle (self)
+    local tmp = rawget(self, '_particle')
+    if tmp then
+        return tmp
+    end
+
     local particle = ffi.new('enum pumas_particle [1]')
     local lifetime = ffi.new('double [1]')
     local mass = ffi.new('double [1]')
@@ -108,7 +133,7 @@ local function load_particle (self)
     else
         error.raise{['type'] = 'Physics', bad_member = 'particle'}
     end
-    rawset(self, 'particle', particle)
+    rawset(self, '_particle', particle)
 
     return particle
 end
@@ -119,7 +144,7 @@ end
 -------------------------------------------------------------------------------
 local function update_composites (self)
     if self._update_composites then
-        for _, v in pairs(self.composites) do
+        for _, v in pairs(self._composites) do
             v:_update()
         end
         self._update_composites = false
@@ -140,11 +165,7 @@ do
     function dump_physics (self, path)
         if path == nil then
             local nargs = (self ~= nil) and 1 or 0
-            error.raise{
-                argnum = 'bad',
-                expected = 2,
-                got = nargs
-            }
+            raise_error{argnum = 'bad', expected = 2, got = nargs}
         end
 
         local f = io.open(path, 'wb')
@@ -197,12 +218,17 @@ do
 end
 
 
-function Physics.__newindex (_, k)
+function Physics:__newindex (k, v)
     local fields = {'__metatype', 'Context', 'composites', 'elements',
         'materials', 'particle'}
-    for _, v in ipairs(fields) do
-        if k == v then
-            error.raise{['type'] = 'Physics', not_mutable = k}
+    for _, attr in ipairs(fields) do
+        if k == attr then
+            if v == nil then
+                rawset(self, '_'..k, nil) -- It is allowed to unload the data
+                return
+            else
+                error.raise{['type'] = 'Physics', not_mutable = k}
+            end
         end
     end
     error.raise{['type'] = 'Physics', bad_member = k}
