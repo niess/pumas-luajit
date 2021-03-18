@@ -98,7 +98,7 @@ end
 
 
 function Readonly:__len ()
-    self = instances[self.table]
+    self = instances[self]
     return #self.table
 end
 

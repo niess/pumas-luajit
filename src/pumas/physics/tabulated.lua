@@ -254,11 +254,16 @@ do
             end
 
             local prop = rawget(self, '_properties')
-            prop = prop and prop [k]
-            if prop then return prop end
+            prop = prop and prop[k]
+            if prop ~= nil then return prop end
 
             local func = index[k]
             if func then return func end
+
+            for _, attr in ipairs{'materials', 'state', 'a', 'k', 'x0', 'x1',
+                'Cbar', 'delta0'} do
+                if k == attr then return nil end
+            end
 
             error.raise{['type'] = 'TabulatedMaterial', bad_member = k}
         end

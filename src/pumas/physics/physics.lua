@@ -199,7 +199,7 @@ end
 
 function Physics.__newindex (_, k)
     local fields = {'__metatype', 'Context', 'composites', 'elements',
-        'maetrials', 'particle'}
+        'materials', 'particle'}
     for _, v in ipairs(fields) do
         if k == v then
             error.raise{['type'] = 'Physics', not_mutable = k}

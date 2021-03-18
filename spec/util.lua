@@ -1,6 +1,7 @@
 local assert = require('luassert')
 local lfs = require('lfs')
 local pumas = require('pumas')
+local readonly = require('pumas.readonly')
 
 local util = {}
 
@@ -95,6 +96,7 @@ end
 -- Round floats to a given numeric precision
 -------------------------------------------------------------------------------
 function util.round (v, precision)
+    precision = precision or 7
     return math.floor(v * 10^precision + 0.5) * 10^(-precision)
 end
 
@@ -140,6 +142,21 @@ function util.muon_flux_data ()
         end
     end
 end
+
+
+-------------------------------------------------------------------------------
+-- Count the number of elements in a table
+-------------------------------------------------------------------------------
+function util.getn (t)
+    if getmetatable(t) == 'Readonly' then
+        t = readonly.rawget(t)
+    end
+
+    local n = 0
+    for _, _ in pairs(t) do n = n + 1 end
+    return n
+end
+
 
 -------------------------------------------------------------------------------
 -- Return the package

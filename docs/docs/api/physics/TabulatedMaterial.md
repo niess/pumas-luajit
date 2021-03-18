@@ -388,7 +388,7 @@ with $X$ the grammage path length. See [Fernández-Varea _et al._,
 
 ### Synopsis
 ```Lua
-TabulatedMaterial:proper_time(energy, (mode))
+TabulatedMaterial:scattering_length(energy)
 ```
 
 ### Arguments
