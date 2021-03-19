@@ -17,7 +17,7 @@ pumas.build{
     composites = {
         WetRock = {StandardRock = 0.7, Water = 0.3}
     },
-    path = 'share/materials/standard'
+    path = 'share/materials/examples'
 }
 
 print('materials tables have been dumped to share/materials/standard')

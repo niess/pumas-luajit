@@ -28,7 +28,7 @@ local state = pumas.State{
 
 -- Create a backward simulation context with a detailed transport
 local simulation = pumas.Context{
-    physics = 'share/materials/standard',
+    physics = 'share/materials/examples',
     mode = 'backward detailed',
     geometry = geometry,
     random_seed = 0

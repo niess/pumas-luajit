@@ -8,8 +8,10 @@ The resulting tabulations are stored on disk.  They are used by
 {: .justify}
 
 This function takes a single table argument as detailed in the synopsis below.
-One must provide a list of materials to tabulate. Other keyword arguments are
-optionnal.
+One must provide a table of materials to tabulate. Other keyword arguments are
+optionnal. The materials table can contain [Material](Material.md) instances
+indexed by name or directly name `string`s refering to existing entries in the
+[materials](../data/materials.md) table (see the [examples](#examples) below).
 {: .justify}
 
 ## Synopsis
@@ -22,7 +24,7 @@ pumas.build{
 
 |Name|Type|Description|
 |----|----|-----------|
-|*materials*   |`table`  | List of [Material](Material.md) or name `string` refering to existing entries in the [materials](../data/materials.md) table.|
+|*materials*   |`table`  | The table can contain [Material](Material.md) instances indexed by name or directly name `string`s refering to existing entries in the [materials](../data/materials.md) table (see the [examples](#examples) below).|
 ||||
 |(*compile*)   |`boolean`| Compile the tabulations to a ready to use binary format. Default: `True`.|
 |(*composites*)|`table`  | Mapping with keys naming composite materials and values providing their composition. Default: `nil`.|
@@ -44,17 +46,21 @@ files is used. For taus a logarithmic sampling is used ranging from 100 GeV to
 ## Examples
 
 ``` lua
+-- Create a water material for illustrative purpose. Note that the latter
+-- is readily available from pumas.materials.
+local water = pumas.Material{density = 1E+03, formula = 'H2O'}
+
 pumas.build{
-    -- List of base materials.
-    materials = {'Air', 'StandardRock', 'Water'},
+    -- Table of base materials mixing both allowed syntax.
+    materials = {'Air', 'StandardRock', Water = water},
 
     -- Composite (mixtures) of base materials with their mass fractions.
     composites = {
         WetRock = {StandardRock = 0.7, Water = 0.3}
     },
 
-    -- Path to store the tabulations.
-    path = 'share/materials/standard'
+    -- Path where to store the tabulations.
+    path = 'share/materials/examples'
 }
 ```
 

@@ -4,20 +4,25 @@ local util = require('spec.util')
 
 
 -- Load the examples physics
-local physics = pumas.Physics('share/materials/standard')
+require('spec/build-physics')
+local physics = pumas.Physics('share/materials/test/muon')
 
 
 describe('Physics', function ()
     describe('constructor', function ()
-        --[[ XXX provide smaller test data for this
         it('should also load from a MDF', function ()
             local p = pumas.Physics{
-                mdf = 'share/materials/standard/materials.xml',
-                dedx = 'share/materials/standard',
+                mdf = 'share/materials/test/tau/materials.xml',
+                dedx = 'share/materials/test/tau',
                 particle = 'tau'}
+            assert.is.equal('tau', (p.particle.name))
+            assert.is.equal(pumas.constants.TAU_MASS, (p.particle.mass))
+            assert.is.equal(pumas.constants.TAU_C_TAU, (p.particle.lifetime))
+            assert.is.equal(1, util.getn(physics.composites))
+            assert.is.equal(3, util.getn(physics.elements))
+            assert.is.equal(2, util.getn(physics.materials))
             assert.is.equal('Physics', metatype(p))
         end)
-        ]]
 
         it('should return a proper metatype', function ()
             assert.is.equal('Physics', metatype(physics))
@@ -35,14 +40,14 @@ describe('Physics', function ()
             assert.is.equal(3, util.getn(physics.dcs))
 
             assert.is.equal('Readonly', getmetatable(physics.elements))
-            assert.is.equal(6, util.getn(physics.elements))
+            assert.is.equal(3, util.getn(physics.elements))
             for _, e in physics.elements:pairs() do
                 assert.is.equal('Readonly', getmetatable(e))
                 assert.is.equal('Element', metatype(e))
             end
 
             assert.is.equal('Readonly', getmetatable(physics.materials))
-            assert.is.equal(3, util.getn(physics.materials))
+            assert.is.equal(2, util.getn(physics.materials))
             for _, m in physics.materials:pairs() do
                 assert.is.equal('TabulatedMaterial', metatype(m))
             end

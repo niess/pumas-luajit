@@ -15,7 +15,7 @@ local flux = pumas.MuonFlux{altitude = top_altitude}
 
 -- Create a backward simulation context
 local simulation = pumas.Context{
-    physics = 'share/materials/standard',
+    physics = 'share/materials/examples',
     mode = 'backward longitudinal hybrid',
     limit = {energy = 1E+08},
     geometry = geometry

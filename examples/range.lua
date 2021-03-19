@@ -1,7 +1,7 @@
 local pumas = require('pumas')
 
 -- Load materials tabulations
-local physics = pumas.Physics('share/materials/standard')
+local physics = pumas.Physics('share/materials/examples')
 
 -- Create an hybrid simulation context a la MUM
 local simulation = physics:Context('longitudinal hybrid')

@@ -37,7 +37,7 @@ describe('CompositeMaterials', function ()
         local elements = {}
         for k, v in t.elements:pairs() do elements[k] = v end
         local dedx = t:energy_loss(1)
-        local grammage_ref = t.table.csda.grammage -- XXX HERE Modify in-place?
+        local grammage_ref = t.table.csda.grammage
         local grammage = t.table.csda.grammage[10]
 
         c['StandardRock'] = 0.7

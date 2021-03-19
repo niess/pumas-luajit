@@ -22,12 +22,12 @@ local build = {}
 local function tabulate_materials (_, args)
     local raise_error = error.ErrorFunction{fname = 'build'}
 
-    if type(args) ~= 'table' then
+    if args == nil then
         raise_error{
-            argnum = 1,
-            expected = 'a table',
-            got = 'a '..type(args),
-        }
+            argnum = 'bad', expected = 1, got = 0}
+    elseif type(args) ~= 'table' then
+        raise_error{
+            argnum = 1, expected = 'a table', got = 'a '..type(args)}
     end
 
     local materials, composites, path, particle, energies, compile
@@ -99,10 +99,7 @@ local function tabulate_materials (_, args)
         path = '.'
     elseif type(path) ~= 'string' then
         raise_error{
-            argname = 'path',
-            expected = 'a string',
-            got = metatype.a(path)
-        }
+            argname = 'path', expected = 'a string', got = metatype.a(path)}
     end
 
     if path ~= "." then
@@ -112,10 +109,8 @@ local function tabulate_materials (_, args)
 
     if metatype(args.materials) ~= 'table' then
         raise_error{
-            argname = 'materials',
-            expected = 'a table',
-            got = metatype.a(args.materials)
-        }
+            argname = 'materials', expected = 'a table',
+            got = metatype.a(args.materials)}
     else
         materials = {}
 
@@ -127,34 +122,29 @@ local function tabulate_materials (_, args)
                     material = material_.materials[name]
                     if not material then
                         raise_error{
-                            argname = 'materials',
+                            argname = 'materials['..k..']',
                             description = "unknown material '"..name.."'"
                         }
                     end
                 else
                     raise_error{
-                        argname = 'materials',
-                        expected = 'a string',
-                        got = metatype.a(name)
-                    }
+                        argname = 'materials['..k..']', expected = 'a string',
+                        got = metatype.a(name)}
                 end
             elseif type(k) == 'string' then
                 name, material = k, v
                 if metatype(material) ~= 'Material' then
                     raise_error{
-                        argname = 'materials',
+                        argname = 'materials['..name..']',
                         expected = 'a Material table',
-                        got = metatype.a(material)
-                    }
+                        got = metatype.a(material)}
                 end
             end
 
             if materials[name] ~= nil then
                 raise_error{
                     argname = 'materials',
-                    description = "duplicated material name '"..
-                                  name.."'"
-                }
+                    description = "duplicated material name '"..name.."'"}
             else
                 materials[name] = material
             end

@@ -18,6 +18,7 @@ function readonly.rawget (t) return instances[t].table end
 -------------------------------------------------------------------------------
 -- The Readonly metatype
 -------------------------------------------------------------------------------
+-- XXX clone method for Readonly tables?
 local Readonly = {}
 
 Readonly.__metatable = 'Readonly'
