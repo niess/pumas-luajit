@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+-- Spec of the pumas.transparent_medium instance
+-- Author: Valentin Niess
+-- License: GNU LGPL-3.0
+-------------------------------------------------------------------------------
 local pumas = require('pumas')
 
 

@@ -1,10 +1,15 @@
+-------------------------------------------------------------------------------
+-- Spec of the pumas.build function
+-- Author: Valentin Niess
+-- License: GNU LGPL-3.0
+-------------------------------------------------------------------------------
 local pumas = require('pumas')
 
 
 -- Generate the physics tables for the tests
 -- Note that we do not explicitly test this stage. It is validated through
 -- other function, e.g. when instanciating a Physics object.
-require('spec/build-physics')
+require('spec.physics')
 
 
 describe('build', function ()

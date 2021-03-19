@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+-- Utilities for testing the spec
+-- Author: Valentin Niess
+-- License: GNU LGPL-3.0
+-------------------------------------------------------------------------------
 local assert = require('luassert')
 local lfs = require('lfs')
 local pumas = require('pumas')

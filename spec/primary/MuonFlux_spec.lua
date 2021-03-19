@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+-- Spec of the pumas.MuonFlux metatype
+-- Author: Valentin Niess
+-- License: GNU LGPL-3.0
+-------------------------------------------------------------------------------
 local pumas = require('pumas')
 local util = require('spec.util')
 

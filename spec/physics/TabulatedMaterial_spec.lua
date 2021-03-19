@@ -1,13 +1,18 @@
+-------------------------------------------------------------------------------
+-- Spec of the pumas.TabulatedMaterial metatype
+-- Author: Valentin Niess
+-- License: GNU LGPL-3.0
+-------------------------------------------------------------------------------
 local pumas = require('pumas')
 local metatype = require('pumas.metatype')
+local physics = require('spec.physics')
 local util = require('spec.util')
 
 
--- Load the examples physics
-local physics = pumas.Physics('share/materials/standard')
+-- Join base and composite materials
 local materials = {
-    physics.materials['StandardRock'], physics.materials['Water'],
-    physics.composites['WetRock']}
+    physics.muon.materials['StandardRock'], physics.muon.materials['Water'],
+    physics.muon.composites['WetRock']}
 
 
 describe('TabulatedMaterial', function ()
@@ -16,7 +21,7 @@ describe('TabulatedMaterial', function ()
         local composite = {false, false, true}
         for i, m in ipairs(materials) do
             assert.is.equal(name[i], m.name)
-            assert.is.equal(physics, m.physics)
+            assert.is.equal(physics.muon, m.physics)
             assert.is.equal(composite[i], m.composite)
 
             if m.composite then
@@ -55,14 +60,14 @@ describe('TabulatedMaterial', function ()
                     'grammage', 'proper_time'} do
                     local tt = t[property]
                     assert.is.equal('Readonly', getmetatable(tt))
-                    assert.is.equal(146, #tt)
+                    assert.is.equal(4, #tt)
                 end
                 if mode == 'csda' then
                     assert.is.equal(nil, t['cross_section'])
                 else
                     local tt = t['cross_section']
                     assert.is.equal('Readonly', getmetatable(tt))
-                    assert.is.equal(146, #tt)
+                    assert.is.equal(4, #tt)
                 end
             end
         end
@@ -88,18 +93,18 @@ describe('TabulatedMaterial', function ()
     it('atomic elements fractions should be correct', function ()
         local wH, wO, e = 0.111894, 0.888106
 
-        e = physics.materials['StandardRock'].elements
+        e = physics.muon.materials['StandardRock'].elements
         assert.is.equal('Readonly', getmetatable(e))
         assert.is.equal(1, util.getn(e))
         assert.is.equal(1, e['Rk'])
 
-        e = physics.materials['Water'].elements
+        e = physics.muon.materials['Water'].elements
         assert.is.equal('Readonly', getmetatable(e))
         assert.is.equal(2, util.getn(e))
         assert.is.equal(wH, util.round(e['H'], 6))
         assert.is.equal(wO, util.round(e['O'], 6))
 
-        e = physics.composites['WetRock'].elements
+        e = physics.muon.composites['WetRock'].elements
         assert.is.equal('Readonly', getmetatable(e))
         assert.is.equal(3, util.getn(e))
         assert.is.equal(0.7, e['Rk'])
@@ -119,7 +124,7 @@ describe('TabulatedMaterial', function ()
     describe('cross_section', function ()
         it('should be consistent', function ()
             for _, m in ipairs(materials) do
-                assert.is.equal(m.table.hybrid.cross_section[50],
+                assert.is.equal(m.table.hybrid.cross_section[3],
                     m:cross_section(1))
             end
         end)
@@ -128,9 +133,9 @@ describe('TabulatedMaterial', function ()
     describe('energy_loss', function ()
         it('should be consistent', function ()
             for _, m in ipairs(materials) do
-                assert.is.equal(m.table.csda.energy_loss[50],
+                assert.is.equal(m.table.csda.energy_loss[3],
                     m:energy_loss(1))
-                assert.is.equal(m.table.hybrid.energy_loss[50],
+                assert.is.equal(m.table.hybrid.energy_loss[3],
                     m:energy_loss(1, 'hybrid'))
             end
         end)
@@ -139,9 +144,9 @@ describe('TabulatedMaterial', function ()
     describe('grammage', function ()
         it('should be consistent', function ()
             for _, m in ipairs(materials) do
-                assert.is.equal(m.table.csda.grammage[50],
+                assert.is.equal(m.table.csda.grammage[3],
                     m:grammage(1))
-                assert.is.equal(m.table.hybrid.grammage[50],
+                assert.is.equal(m.table.hybrid.grammage[3],
                     m:grammage(1, 'hybrid'))
             end
         end)
@@ -158,9 +163,9 @@ describe('TabulatedMaterial', function ()
     describe('proper_time', function ()
         it('should be consistent', function ()
             for _, m in ipairs(materials) do
-                assert.is.equal(m.table.csda.proper_time[50],
+                assert.is.equal(m.table.csda.proper_time[3],
                     m:proper_time(1))
-                assert.is.equal(m.table.hybrid.proper_time[50],
+                assert.is.equal(m.table.hybrid.proper_time[3],
                     m:proper_time(1, 'hybrid'))
             end
         end)

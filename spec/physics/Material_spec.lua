@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+-- Spec of the pumas.Material metatype
+-- Author: Valentin Niess
+-- License: GNU LGPL-3.0
+-------------------------------------------------------------------------------
 local pumas = require('pumas')
 local metatype = require('pumas.metatype')
 local util = require('spec.util')
