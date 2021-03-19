@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 local compat = require('pumas.compat')
 local error = require('pumas.error')
+local metatype = require('pumas.metatype')
 
 local element = {}
 
@@ -19,17 +20,41 @@ Element.__index.__metatype = 'Element'
 do
     local raise_error = error.ErrorFunction{fname = 'Element'}
 
-    local function new (cls, Z, A, I)
-        local index, tp
-        if type(Z) ~= 'number' then index, tp = 1, type(Z) end
-        if type(A) ~= 'number' then index, tp = 2, type(A) end
-        if type(I) ~= 'number' then index, tp = 3, type(I) end
-        if index ~= nil then
+    local function new (cls, ...)
+        local Z, A, I, argname, argnum, var
+        local nargs = select('#', ...)
+        if nargs == 1 then
+            local args = select(1, ...)
+            if type(args) ~= 'table' then
+                raise_error{argnum = 1, expected = 'a table',
+                    got = metatype.a(args)}
+            end
+
+            Z = args.Z
+            A = args.A
+            I = args.I
+
+            if     type(Z) ~= 'number' then argname, var = 'Z', Z
+            elseif type(A) ~= 'number' then argname, var = 'A', A
+            elseif type(I) ~= 'number' then argname, var = 'I', I
+            end
+        elseif nargs == 3 then
+            Z = select(1, ...)
+            A = select(2, ...)
+            I = select(3, ...)
+
+            if     type(Z) ~= 'number' then argnum, var = 1, Z
+            elseif type(A) ~= 'number' then argnum, var = 2, A
+            elseif type(I) ~= 'number' then argnum, var = 3, A
+            end
+        else
+            raise_error{argnum = 'bad', expected = '1 or 3', got = nargs}
+        end
+
+        if argname or argnum then
             raise_error{
-                argnum = index,
-                expected = 'a number',
-                got = 'a '..tp
-            }
+                argname = argname, argnum = argnum, expected = 'a number',
+                got = metatype.a(var)}
         end
 
         local self = compat.table_new(0, 3)

@@ -86,12 +86,12 @@ do
     end
 
     local function new (cls, args, ELEMENTS)
-        if type(args) ~= 'table' then
+        if args == nil then
             raise_error{
-                argnum = 1,
-                expected = 'a table',
-                got = type(args)
-            }
+                argnum = 'bad', expected = '1', got = '0'}
+        elseif type(args) ~= 'table' then
+            raise_error{
+                argnum = 1, expected = 'a table', got = metatype(args)}
         end
 
         local formula, composition, density, state, I, a, k, x0, x1, Cbar,
@@ -108,11 +108,10 @@ do
             elseif key == 'x1' then x1 = value
             elseif key == 'Cbar' then Cbar = value
             elseif key == 'delta0' then delta0 = value
-            else
+            elseif key ~= 'ZoA' then
                 raise_error{
                     argname = key,
-                    description = 'unknown parameter'
-                }
+                    description = 'unknown parameter'}
             end
         end
 
@@ -146,8 +145,8 @@ do
                 norm = norm + wi
             end
             norm = 1 / norm
-            for _, value in ipairs(compo) do
-                value[2] = value[2] * norm
+            for symbol, v in pairs(compo) do
+                compo[symbol] = v * norm
             end
             self.elements = compo
         elseif composition then
@@ -156,7 +155,9 @@ do
                 raise_error{argname = 'composition', expected = 'a table',
                     got = metatype.a(composition)}
             end
-            self.elements = composition -- XXX copy or not?
+            local tmp = {}
+            for key, v in pairs(composition) do tmp[key] = v end
+            self.elements = tmp
         else
             raise_error{description = "missing 'composition' or 'formula'"}
         end
@@ -167,8 +168,9 @@ do
             self.ZoA = material.compute_ZoA(
                 self.elements, ELEMENTS, raise_error)
         else
-            self.ZoA, self.I = material.compute_ZoA_and_I(
+            self.ZoA, I = material.compute_ZoA_and_I(
                 self.elements, ELEMENTS, raise_error)
+            self.I = I
         end
         self.density = density
 
