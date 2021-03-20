@@ -57,7 +57,11 @@ do
         else
             for _, field in ipairs(fields) do
                 if k == field then
-                    return self._context._c.limit[k]
+                    if self._context.event['limit_'..field] then
+                        return self._context._c.limit[k]
+                    else
+                        return nil
+                    end
                 end
             end
             raise_error{argname = k, description = 'no such member'}
@@ -182,7 +186,10 @@ do
             raise_error{argnum = 'bad', expected = 2, got = nargs}
         end
 
-        if state_.__metatype ~= 'State' then
+        if metatype(self) ~= 'Context' then
+            raise_error{argnum = 1, expected = 'a Context table',
+                got = metatype.a(self)}
+        elseif metatype(state_) ~= 'State' then
             raise_error{argnum = 2, expected = 'a State table',
                 got = metatype.a(state_)}
         end
@@ -208,40 +215,62 @@ do
                 media[i] = medium.get(self._cache.media[i - 1])
             end
         end
-        return self._cache.event[0], media
+        local event = enum.Event()
+        event._value = self._cache.event[0]
+
+        return event, media
     end
 end
 
 
-local function medium_callback (self, state_)
-    if state_ == nil then
-        local nargs = (self ~= nil) and 1 or 0
-        error.raise{fname = 'medium', argnum = 'bad', expected = 2,
-            got = nargs}
+local medium_callback
+do
+    local tmp_state = state.State()
+
+    function medium_callback (self, vararg)
+        if vararg == nil then
+            local nargs = (self ~= nil) and 1 or 0
+            error.raise{fname = 'medium', argnum = 'bad', expected = 2,
+                got = nargs}
+        end
+
+        local mt, state_ = metatype(vararg)
+        if mt == 'State' then
+            state_ = vararg
+        elseif mt == 'Coordinates' then
+            state_ = tmp_state
+            state_.position = vararg
+        else
+            error.raise{fname = 'medium', argnum = 2,
+                expected = 'a Coordinates or State table',
+                got = metatype.a(vararg)}
+        end
+
+        if rawget(self, '_geometry') == nil
+            then return
+        end
+
+        local extended_state = ffi.cast(pumas_state_extended_ptr, state_._c)
+        clib.pumas_state_extended_reset(extended_state, self._c)
+
+        self._geometry:_update(self)
+        self._c.medium(self._c, state_._c, self._cache.media,
+                       self._cache.distance)
+
+        local wrapped_medium
+        if self._cache.media[0] ~= nil then
+                wrapped_medium = medium.get(self._cache.media[0])
+        end
+        return wrapped_medium, self._cache.distance[0]
     end
-
-    if state_.__metatype ~= 'State' then
-        error.raise{fname = 'medium', argnum = 2, expected = 'a State table',
-            got = metatype.a(state_)}
-    end
-
-    local extended_state = ffi.cast(pumas_state_extended_ptr, state_._c)
-    clib.pumas_state_extended_reset(extended_state, self._c)
-
-    self._geometry:_update(self)
-    self._c.medium(self._c, state_._c, self._cache.media,
-                   self._cache.distance)
-
-    local wrapped_medium
-    if self._cache.media[0] ~= nil then
-            wrapped_medium = medium.get(self._cache.media[0])
-    end
-    return wrapped_medium, self._cache.distance[0]
 end
 
 
 local function random (self, n)
-    if metatype(self) ~= 'Context' then
+    if self == nil then
+        error.raise{fname = 'random', argnum = 'bad', expected = '1 or 2',
+            got = 0}
+    elseif metatype(self) ~= 'Context' then
         error.raise{fname = 'random', argnum = 1, expected = 'a Context table',
             got = metatype.a(self)}
     end
@@ -255,6 +284,12 @@ local function random (self, n)
             error.raise{fname = 'random', argnum = 2, expected = 'a number',
                 got = metatype.a(n)}
         end
+
+        if n <= 0 then
+            error.raise{fname = 'random', argnum = 2,
+                expected = 'a strictly positive number', got = n}
+        end
+
         local t = compat.table_new(n, 0)
         for i = 1, n do
             t[i] = c:random()
@@ -290,7 +325,7 @@ do
         if v then return v end
 
         v = members[k]
-        if v then return self[v] end
+        if v then return rawget(self, v) end
 
         if k == 'random_seed' then
             local seed = ffi.new('unsigned long [1]')
@@ -318,23 +353,28 @@ do
         local args, physics, argnum, argname
         if nargs == 1 then
             args = select(1, ...)
-            if type(args) ~= 'table' then
-                raise_error{argnum = 1,
-                    expected = 'an options or Physics table',
+            if metatype(args) == 'table' then
+                physics = args.physics
+                argname = 'physics'
+            elseif metatype(args) == 'Physics' then
+                physics = args
+                args = nil
+                argnum = 1
+            else
+                raise_error{argnum = 1, expected = 'a (Physics) table',
                     got = metatype.a(args)}
             end
-            physics = args.physics
-            argname = 'physics'
-        else
+        elseif nargs == 2 then
             physics = select(1, ...)
             args = select(2, ...)
             argnum = 1
+        else
+            raise_error{argnum = 'bad', expected = '1 or 2', got = nargs}
         end
 
         if type(physics) == 'string' then
             physics = context._physics.Physics(physics)
-        elseif (type(physics) ~= 'table') or
-            (physics.__metatype ~= 'Physics') then
+        elseif metatype(physics) ~= 'Physics' then
             raise_error{argnum = argnum, argname = argname,
                 expected = 'a Physics table', got = metatype.a(physics)}
         end

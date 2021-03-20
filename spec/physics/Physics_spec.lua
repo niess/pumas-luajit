@@ -105,8 +105,8 @@ describe('Physics', function ()
         it('should throw on error on missing self', function ()
             assert.has_error(
                 function () physics.muon.Context('backward hybrid') end,
-                "bad argument #1 to 'Context' (expected an options or \z
-                Physics table, got a string)")
+                "bad argument #1 to 'Context' \z
+                (expected a (Physics) table, got a string)")
             assert.has_error(
                 function () physics.muon.Context() end,
                 "bad number of argument(s) to 'Context' \z

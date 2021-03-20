@@ -74,7 +74,8 @@ pumas.Context{
 <div markdown="1" class="shaded-box fancy">
 ## Context.medium
 
-Get the medium corresponding to a given Monte Carlo [State](State.md) for the
+Get the medium corresponding to a given point [Coordinates](../Coordinates.md)
+or for a at a given Monte Carlo [State](State.md) position for the
 current [Geometry](../Geometry.md).
 {: .justify}
 
@@ -83,6 +84,8 @@ current [Geometry](../Geometry.md).
 ### Synopsis
 
 ```lua
+Context:medium(coordinates)
+
 Context:medium(state)
 ```
 
@@ -90,6 +93,8 @@ Context:medium(state)
 
 |Name|Type|Description|
 |----|----|-----------|
+|*coordinates*|[Coordinates](../Coordinates.md)| Point coordinates at which to query the geometry. {: .justify}|
+||||
 |*state*|[State](State.md)| State (position) for which to query the geometry. {: .justify}|
 
 ### Returns
@@ -97,6 +102,10 @@ Context:medium(state)
 |Type|Description|
 |----|-----------|
 |[Medium](../Medium.md)| Geometry medium correpsonding to the provided Monte Carlo state. {: .justify}|
+
+!!! note
+    If no geometry is defined or if the requested position is located outside of
+    the current geometry then `nil` is returned. {: .justify}
 
 ### See also
 
@@ -108,8 +117,9 @@ Context:medium(state)
 <div markdown="1" class="shaded-box fancy">
 ## Context.random
 
-Get a pseudo random number from a uniform distribution over $[0,1]$. A [Mersenne
-Twister](https://en.wikipedia.org/wiki/Mersenne_Twister) algorithm is used.
+Get onr or more pseudo random number(s) from a uniform distribution over
+$[0,1]$. A [Mersenne Twister](https://en.wikipedia.org/wiki/Mersenne_Twister)
+algorithm is used.
 
 ---
 
@@ -117,17 +127,28 @@ Twister](https://en.wikipedia.org/wiki/Mersenne_Twister) algorithm is used.
 
 ```lua
 Context:random()
+
+Context:random(n)
 ```
 
 ### Arguments
 
-None, except *self*.
+|Name|Type|Description|
+|----|----|-----------|
+|*n*|`number`| Number of pseudo-random numbers to generate. Defaults to 1. {: .justify}|
 
 ### Returns
 
 |Type|Description|
 |----|-----------|
-|`number`| Pseudo random number in $[0, 1]$.|
+|`number`| First pseudo random number in $[0, 1]$.|
+| &vellip; {: .center} | &vellip; {: .center} |
+|`number`| Last (n<sup>th</sup>) pseudo random number in $[0, 1]$.|
+
+!!! note
+    This method returns one or more pseudo-random number as requested with
+    the *n* argument.
+    {: .justify}
 
 ### See also
 

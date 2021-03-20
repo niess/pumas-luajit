@@ -4,6 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 
+-- XXX Add string representations for all metatypes
 
 -------------------------------------------------------------------------------
 -- Return the PUMAS metatype. Fallback to the usual type otherwise
