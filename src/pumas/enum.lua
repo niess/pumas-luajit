@@ -92,6 +92,9 @@ do
     local function clear (self)
         if not self then
             error.raise{fname = 'clear', argnum = 'bad', expected = 1, got = 0}
+        elseif metatype(self) ~= 'Event' then
+            error.raise{fname = 'clear', argnum = 1,
+                expected = 'an Event table', got = metatype.a(self)}
         end
 
         self._value = 0
@@ -101,6 +104,9 @@ do
     local function clone (self)
         if self == nil then
             error.raise{fname = 'clone', argnum = 'bad', expected = 1, got = 0}
+        elseif metatype(self) ~= 'Event' then
+            error.raise{fname = 'clone', argnum = 1,
+                expected = 'an Event table', got = metatype.a(self)}
         end
 
         local other = enum.Event()
