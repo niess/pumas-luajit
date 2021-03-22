@@ -4,6 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local error = require('pumas.error')
+local metatype_ = require('pumas.metatype')
 
 local readonly = {}
 
@@ -115,7 +116,25 @@ end
 -------------------------------------------------------------------------------
 do
     local function wrap (cls, t, type_, metatype)
-        if not type_ then type_ = 'table' end
+        if metatype_(t) ~= 'table' then
+            error.raise{fname = 'Readonly', argnum = 1,
+                expected = 'a raw table', got = metatype_.a(t)}
+        elseif getmetatable(t) ~= nil then
+            error.raise{fname = 'Readonly', argnum = 1,
+                expected = 'a raw table', got = 'a metatable'}
+        end
+
+        if type_ == nil then
+            type_ = 'table'
+        elseif type(type_) ~= 'string' then
+            error.raise{fname = 'Readonly', argnum = 2,
+                expected = 'a string', got = metatype_.a(type_)}
+        end
+
+        if (metatype ~= nil) and (type(metatype) ~= 'string') then
+            error.raise{fname = 'Readonly', argnum = 3,
+                expected = 'a string', got = metatype_.a(metatype)}
+        end
 
         local self = {}
         instances[self] = {table = t, ['type'] = type_, metatype = metatype}

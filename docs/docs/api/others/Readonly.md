@@ -13,6 +13,12 @@ to use the [Readonly.pairs](#readonlypairs) and
 `ipairs` functions.
 {: .justify}
 
+!!! note
+    The [Readonly](Readonly.md) metatype is used in the `pumas` package in order
+    to indicate data that should not be modified by users. This metatype is not
+    meant to be directly instanciated by end-users.
+    {: .justify}
+
 ### See also
 
 [version](version.md).
