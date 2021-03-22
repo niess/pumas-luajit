@@ -9,6 +9,7 @@ local clib = require('pumas.clib')
 local enum = require('pumas.enum')
 local error = require('pumas.error')
 local medium = require('pumas.medium')
+local metatype = require('pumas.metatype')
 local state = require('pumas.state')
 
 local recorder = {}
@@ -41,6 +42,11 @@ do
 
     function Recorder:__newindex (k, v)
         if k == 'record' then
+            if (v ~= 'nil') and (type(v) ~= 'function') then
+                error.raise{['type'] = 'Recorder', argname = 'record',
+                    expected = 'a function', got = metatype.a(v)}
+            end
+
             if self._c.record ~= nil then
                 self._c.record:free()
             end
@@ -61,6 +67,11 @@ do
 
             rawset(self, '_record', v)
         elseif k == 'period' then
+            if (v ~= 'nil') and (type(v) ~= 'number') then
+                error.raise{['type'] = 'Recorder', argname = 'period',
+                    expected = 'a number', got = metatype.a(v)}
+            end
+
             self._c.period = v
         else
             error.raise{
@@ -81,6 +92,15 @@ end
 
 do
     local function new (cls, callback, period)
+        if (callback ~= nil) and (type(callback) ~= 'function') then
+            error.raise{fname = 'Recorder', argnum = 1, expected = 'a function',
+                got = metatype.a(callback)}
+        end
+        if (period ~= nil) and (type(period) ~= 'number') then
+            error.raise{fname = 'Recorder', argnum = 2, expected = 'a number',
+                got = metatype.a(period)}
+        end
+
         local ptr = ffi.new('struct pumas_recorder *[1]')
         call(clib.pumas_recorder_create, ptr, 0)
         local c = ptr[0]
