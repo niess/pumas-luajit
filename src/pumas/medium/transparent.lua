@@ -22,6 +22,8 @@ function TransparentMedium:__index (k)
         return 0
     elseif (k == 'magnet') or (k == 'material') then
         return nil
+    elseif k == 'name' then
+        return 'transparent'
     else
         return base.BaseMedium.__index(self, k, strtype)
     end
@@ -29,11 +31,10 @@ end
 
 
 function TransparentMedium:__newindex (k, v)
-    if (k == 'density') or (k == 'magnet') or (k == 'material') then
+    if (k == 'density') or (k == 'magnet') or
+       (k == 'material') or (k == 'name') then
         error.raise{
-            ['type'] = strtype,
-            not_mutable = k
-        }
+            ['type'] = strtype, not_mutable = k}
     else
         base.BaseMedium.__newindex(self, k, v, strtype)
     end

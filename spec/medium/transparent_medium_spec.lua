@@ -4,6 +4,7 @@
 -- License: GNU LGPL-3.0
 -------------------------------------------------------------------------------
 local pumas = require('pumas')
+local metatype = require('pumas.metatype')
 
 
 describe('transparent_medium', function ()
@@ -12,21 +13,34 @@ describe('transparent_medium', function ()
         assert.is.equal(0, m.density)
         assert.is.equal(nil, m.magnet)
         assert.is.equal(nil, m.material)
+        assert.is.equal('transparent', m.name)
+        assert.is.equal('Medium', metatype(m))
     end)
 
     it('should not be mutable', function ()
         local m = pumas.transparent_medium
-        assert.has_error(function ()
-            m.density = 1
-        end, "cannot modify 'density' for 'TransparentMedium'")
-        assert.has_error(function ()
-            m.material = 'Transparent'
-        end, "cannot modify 'material' for 'TransparentMedium'")
-        assert.has_error(function ()
-            m.magnet = {1, 2, 3}
-        end, "cannot modify 'magnet' for 'TransparentMedium'")
-        assert.has_error(function ()
-            m.path = 1
-        end, "'TransparentMedium' has no member named 'path'")
+        assert.has_error(
+            function () m.density = 1 end,
+            "cannot modify 'density' for 'TransparentMedium'")
+
+        assert.has_error(
+            function () m.material = 'Transparent' end,
+            "cannot modify 'material' for 'TransparentMedium'")
+
+        assert.has_error(
+            function () m.magnet = {1, 2, 3} end,
+            "cannot modify 'magnet' for 'TransparentMedium'")
+
+        assert.has_error(
+            function () m.path = 1 end,
+            "'TransparentMedium' has no member named 'path'")
+
+        assert.has_error(
+            function () m.path = 1 end,
+            "'TransparentMedium' has no member named 'path'")
+
+        assert.has_error(
+            function () m.name = 'Transparent' end,
+            "cannot modify 'name' for 'TransparentMedium'")
     end)
 end)

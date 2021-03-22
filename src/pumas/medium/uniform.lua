@@ -63,8 +63,8 @@ local ctype_ptr = ffi.typeof('struct pumas_medium_uniform *')
 do
     local raise_error = error.ErrorFunction{fname = 'UniformMedium'}
 
-    local function new (cls, material, density, magnet)
-        if material == nil then
+    local function new (cls, material, density, magnet, name)
+        if type(material) ~= 'string' then
             raise_error{
                 argnum = 1, expected = 'a string', got = metatype.a(material)}
         end
@@ -91,6 +91,15 @@ do
                 magnet = tmp
             else
                 raise_error{argnum = 3, description = tmp}
+            end
+        end
+
+        if name ~= nil then
+            if type(name) == 'string' then
+                self._name = name
+            else
+                raise_error{argnum = 4, expected = 'a string',
+                    got = metatype.a(name)}
             end
         end
 

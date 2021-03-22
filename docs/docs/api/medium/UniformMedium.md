@@ -7,9 +7,10 @@ _A metatype for describing a medium with uniform properties._
 
 |Name|Type|Description|
 |----|----|-----------|
-|*density*  |`number`    | Bulk density of the medium, in kg/m<sup>3</sup> ([see below](#constructor)). |
-|*magnet*   |`double [3]`| Magnetic field Cartesian components in the simulation frame, in T. |
-|*material* |`string`    | Name of the filling material. |
+|*density* |`number`             | Bulk density of the medium, in $\text{kg}/\text{m}^3$ ([see below](#constructor)). {: .justify} |
+|*magnet*  |`double [3]` or `nil`| Magnetic field Cartesian components in the simulation frame, in $\text{T}$. {: .justify} |
+|*material*|`string`             | Name of the filling material. {: .justify} |
+|*name*    |`string` or `nil`    | An optional name for labelling the medium. {: .justify} |
 </div>
 
 <div markdown="1" class="shaded-box fancy">
@@ -37,7 +38,7 @@ an alternative bulk density and/or an extra local magnetic field.
 ### Synopsis
 
 ```lua
-pumas.UniformMedium(material, (density), (magnet))
+pumas.UniformMedium(material, (density), (magnet), (name))
 ```
 
 ### Arguments
@@ -45,8 +46,9 @@ pumas.UniformMedium(material, (density), (magnet))
 |Name|Type|Description|
 |----|----|-----------|
 |*material* |`string`    | Name of the filling material. |
-|(*density*)|`number`    | Bulk density of the medium, in kg/m<sup>3</sup>. If `nil` then the default material density is used.|
-|(*magnet*) |[Coordinates](../Coordinates.md) or `table`| Magnetic field components in the simulation frame, in T. |
+|(*density*)|`number`    | Bulk density of the medium, in $\text{kg}/\text{m}^3$. If `nil` then the default material density is used.|
+|(*magnet*) |[Coordinates](../Coordinates.md) or `table`| Magnetic field components in the simulation frame, in $\text{T}$. |
+|(*name*)   |`string`    | An optional name for labelling the medium. {: .justify} |
 
 !!! note
     The filling material must reference a

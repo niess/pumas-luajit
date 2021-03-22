@@ -11,6 +11,7 @@ _A metatype for describing a medium with a density gradient._
 |*lambda*     |`number`                | Gradient $\lambda$ parameter, in m ([see below](#constructor)). |
 |*magnet*     |`double [3]`            | Magnetic field Cartesian components in the simulation frame, in T. |
 |*material*   |`string`                | Name of the filling material. |
+|*name*       |`string` or `nil`       | An optional name for labelling the medium. {: .justify} |
 |*rho&Oslash;*|`number`                | Gradient $\rho_0$ parameter, in kg/m<sup>3</sup> ([see below](#constructor)). |
 |*type*       |`string`                | Gradient type, i.e. `'linear'` or `'exponential'`. |
 |*z&Oslash;*  |`number`                | Gradient $z_0$ parameter, in m ([see below](#constructor)). |
@@ -55,7 +56,7 @@ an extra local magnetic field.
 
 ```lua
 pumas.GradientMedium(
-    material, {lambda=, (axis)=, (magnet)=, (rho0)=}, (type)=, (z0)=})
+    material, {lambda=, (axis)=, (magnet)=, (name)=, (rho0)=}, (type)=, (z0)=})
 ```
 
 ### Arguments
@@ -67,6 +68,7 @@ pumas.GradientMedium(
 |||
 |(*axis*)       |[Coordinates](../Coordinates.md), `table` or `string`| Coordinates of the gradient axis in the simulation frame or `'vertical'` if the gradient axis is defined by the Earth local vertical. Defaults to `'vertical'`. {: .justify} |
 |(*magnet*)     |[Coordinates](../Coordinates.md) or `table`| Magnetic field coordinates in the simulation frame, in T. Defaults to `{0, 0, 0}` T. {: .justify} |
+|(*name*)       |`string`                         | An optional name for labelling the medium. {: .justify} |
 |(*rho&Oslash;*)|`number`                         | Gradient $\rho_0$ parameter, in kg/m<sup>3</sup> ([see above](#constructor)). Defaults to the *material*'s density. {: .justify} |
 |(*type*)       |`string`                         | Gradient type, i.e. `'linear'` or `'exponential'`. Defaults to `'exponential'`. {: .justify} |
 |(*z&Oslash;*)  |`number`                         | Gradient $z_0$ parameter, in m ([see above](#constructor)). Defaults to zero. {: .justify} |

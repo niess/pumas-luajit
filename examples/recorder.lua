@@ -6,6 +6,8 @@ media.atmosphere = pumas.GradientMedium('Air', {lambda = -1E+04})
 media.sea = pumas.UniformMedium('Water')
 media.seabed = pumas.UniformMedium('StandardRock')
 
+for k, v in pairs(media) do v.name = k end -- Set media names
+
 local top_altitude, bottom_altitude = 100, -100
 local geometry = pumas.EarthGeometry{
     {medium = media.atmosphere, data = top_altitude   },
@@ -35,11 +37,6 @@ local simulation = pumas.Context{
 }
 
 -- Set a callback for printing Monte Carlo steps
-local media_names = {}
-for k, v in pairs(media) do
-    media_names[v] = k
-end
-
 simulation.recorder = function (state, medium, event)
     if event.none then return end
 
@@ -49,7 +46,7 @@ simulation.recorder = function (state, medium, event)
                                  state.direction[1] * u0[1] +
                                  state.direction[2] * u0[2]) * 180 / math.pi
 
-    local medium_name = media_names[medium]
+    local medium_name = medium and medium.name or 'nil'
 
     print(string.format('%-10s  %.3E %10.3f %.5E %.5E  %s', medium_name,
                                                             state.energy,

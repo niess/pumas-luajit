@@ -6,6 +6,7 @@
 local ffi = require('ffi')
 local clib = require('pumas.clib')
 local error = require('pumas.error')
+local metatype = require('pumas.metatype')
 
 local base = {}
 
@@ -61,22 +62,32 @@ end
 -- Note: this is an incomplete metatype intended to be inherited. It provides
 -- common functionalities for media types.
 -------------------------------------------------------------------------------
--- XXX Allow to provide an optional name?
 local BaseMedium = {}
 base.BaseMedium = BaseMedium
 
 
-function BaseMedium.__index (_, k, strtype)
+function BaseMedium:__index (k, strtype)
     if k == '__metatype' then
         return 'Medium'
+    elseif k == 'name' then
+        return rawget(self, '_name')
     else
         error.raise{['type'] = strtype, bad_member = k}
     end
 end
 
 
-function BaseMedium.__newindex (_, k, _, strtype)
-    error.raise{['type'] = strtype, bad_member = k}
+function BaseMedium:__newindex (k, v, strtype)
+    if k == 'name' then
+        if (v ~= nil) and (type(v) ~= 'string') then
+            error.raise{['type'] = strtype, argname = 'name',
+                expected = 'a string', got = metatype.a(v)}
+        else
+            rawset(self, '_name', v)
+        end
+    else
+        error.raise{['type'] = strtype, bad_member = k}
+    end
 end
 
 

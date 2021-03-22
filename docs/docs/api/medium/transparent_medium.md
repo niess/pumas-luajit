@@ -9,6 +9,7 @@ _A placeholder for an empty medium acting as a container._
 |*density*  |`number`| The transparent medium has a null density. |
 |*magnet*   |`nil`   | The transparent medium is not locally magnetized. |
 |*material* |`nil`   | The transparent medium has no filling material. |
+|*name*     |`string`| The transparent medium is labelled as `'transparent'`. {: .justify} |
 
 ## Description
 

@@ -79,7 +79,7 @@ do
 
         local name_ = ffi.new('const char *[1]')
         local fractions_ = compat.table_new(0, n_materials)
-        local names = compat.table_new(n_materials, 0) -- XXX is this needed?
+        local names = compat.table_new(n_materials, 0)
         for i = 1, n_materials do
             clib.pumas_physics_material_name(
                 physics_._c[0], indices[i - 1], name_)

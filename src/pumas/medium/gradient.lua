@@ -174,7 +174,8 @@ do
         end
 
         -- Check the named arguments
-        local parameters = {'axis', 'lambda', 'rho0', 'type', 'z0', 'magnet'}
+        local parameters = {'axis', 'lambda', 'rho0', 'type', 'z0', 'magnet',
+            'name'}
         for k, _ in pairs(args) do
             local ok = false
             for _, parameter in ipairs(parameters) do
@@ -275,6 +276,16 @@ do
                 self._c.gradient, 'axis', axis)
             if not ok then
                 raise_error{argname = 'axis', description = description}
+            end
+        end
+
+        local name = args.name
+        if name ~= nil then
+            if type(name) == 'string' then
+                self._name = name
+            else
+                raise_error{argname = 'name', expected = 'a string',
+                    got = metatype.a(name)}
             end
         end
 
