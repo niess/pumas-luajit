@@ -41,15 +41,20 @@ engine.
 
 ## Documentation
 
-A **preliminary** documentation is available as
-[GitHub Pages](https://niess.github.io/pumas-luajit/). You might also try the
-provided [examples](examples), e.g as:
+A **preliminary** documentation is available from [Read the Docs][READTHEDOCS].
+You might also try the provided [examples][EXAMPLES], e.g as:
 ```bash
 luajit-pumas examples/materials.lua
 ```
 
 ## License
+
 The `pumas` LuaJIT package is  under the **GNU LGPLv3** license. See the
-provided [LICENSE](LICENSE) and [COPYING.LESSER](COPYING.LESSER) files. The
-[examples](examples) however have a separate public domain license and can be be
+provided [LICENSE][LICENSE] and [COPYING.LESSER][COPYING.LESSER] files. The
+[examples][EXAMPLES] however have a separate public domain license and can be be
 copied without any restriction.
+
+[COPYING.LESSER]: https://github.com/niess/pumas-luajit/blob/master/COPYING.LESSER
+[EXAMPLES]: https://github.com/niess/pumas-luajit/tree/master/examples
+[LICENSE]: https://github.com/niess/pumas-luajit/blob/master/LICENSE
+[READTHEDOCS]: https://pumas-luajit.readthedocs.io/en/latest/
