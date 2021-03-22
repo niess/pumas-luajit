@@ -33,5 +33,16 @@ EOT
 fi
 
 ${LUAROCKS} make dist/pumas-${ROCK_VER}.rockspec
+
+${LUAROCKS} install busted
+mkdir lib
+cd lib
+ln -s ../${HEREROCKS_DIR}/lib/lua
+cd ..
+cd share
+ln -s ../${HEREROCKS_DIR}/share/lua
+cd ..
+./bin/luajit-pumas spec/run.lua
+
 ${LUAROCKS} pack pumas
 ${MOONROCKS} upload pumas-${ROCK_VER}.${ARCH}.rock

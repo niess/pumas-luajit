@@ -20,7 +20,7 @@ jobs:
       run: |
         ./dist/linux.sh
 
-    - name: Rock
+    - name: Rock & test
       run: |
         ./dist/rock.sh ${{ secrets.LUAROCKS_TOKEN }}
 
