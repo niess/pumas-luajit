@@ -24,6 +24,9 @@ local pumas_state_ptr = ffi.typeof('struct pumas_state *')
 local function clear (self)
     if self == nil then
         error.raise{fname = 'clear', argnum = 'bad', expected = 1, got = 0}
+    elseif metatype(self) ~= 'State' then
+        error.raise{fname = 'clear', argnum = 1, expected = 'a State table',
+            got = metatype.a(self)}
     end
 
     ffi.fill(self._c, ffi.sizeof(ctype))
@@ -35,9 +38,10 @@ local function set (self, other)
     if other == nil then
         local nargs = (self ~= nil) and 1 or 0
         error.raise{fname = 'set', argnum = 'bad', expected = 2, got = nargs}
-    end
-
-    if metatype(other) ~= 'State' then
+    elseif metatype(self) ~= 'State' then
+        error.raise{fname = 'set', argnum = 1, expected = 'a State table',
+            got = metatype.a(self)}
+    elseif metatype(other) ~= 'State' then
         error.raise{fname = 'set', argnum = 2, expected = 'a State table',
             got = metatype.a(other)}
     end
@@ -50,6 +54,9 @@ end
 local function clone (self)
     if self == nil then
         error.raise{fname = 'clone', argnum = 'bad', expected = 1, got = 0}
+    elseif metatype(self) ~= 'State' then
+        error.raise{fname = 'clone', argnum = 1, expected = 'a State table',
+            got = metatype.a(self)}
     end
 
     local other = state.State()
@@ -82,10 +89,25 @@ end
 
 
 function State:__newindex (k, v)
-    if ((k == 'position') or (k == 'direction')) and (v ~= nil) and
-        (v.__metatype == 'Coordinates') then
-        -- Get the Monte Carlo representation of the position or direction
-        v = v:get()
+    if (k == 'position') or (k == 'direction') then
+        local mt = metatype(v)
+        if mt == 'Coordinates' then
+            -- Get the Monte Carlo representation of the position or direction
+            v = v:get()
+        end
+    elseif (k == 'charge') or (k == 'energy') or (k == 'distance') or
+        (k == 'grammage') or (k == 'time') or (k == 'weight') then
+        if type(v) ~= 'number' then
+            error.raise{['type'] = 'State', argname = k, expected = 'a number',
+                got = metatype.a(v)}
+        end
+    elseif k == 'decayed' then
+        if type(v) ~= 'boolean' then
+            error.raise{['type'] = 'State', argname = k,
+                expected = 'a boolean', got = metatype.a(v)}
+        end
+    else
+        error.raise{['type'] = 'State', bad_attribute = k}
     end
 
     self._c[k] = v
