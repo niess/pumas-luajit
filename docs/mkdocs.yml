@@ -57,6 +57,7 @@ nav:
   - API &raquo; Others:
     - Readonly: api/others/Readonly.md
     - version: api/others/version.md
+  - Coverage: coverage/
 
 theme:
   name: readthedocs
@@ -77,3 +78,9 @@ extra_css: [extra.css]
 extra_javascript:
   - mathjax-config.js
   - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
+
+plugins:
+  - mkdocs-simple-hooks:
+      hooks:
+        on_pre_build: 'docs.hooks:pre_build'

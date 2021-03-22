@@ -1,15 +1,11 @@
 #! /bin/bash
 
-API_KEY=${1}
-
 set -e
 
-ARCH=linux-x86_64
 ROCK_VER=scm-1
 
 HEREROCKS_DIR=$(pwd)/share/hererocks
 LUAROCKS=${HEREROCKS_DIR}/bin/luarocks
-MOONROCKS=${HEREROCKS_DIR}/bin/moonrocks
 
 if [[ ! -d ${HEREROCKS_DIR} ]]; then
     mkdir -p ${HEREROCKS_DIR}
@@ -19,21 +15,15 @@ if [[ ! -d ${HEREROCKS_DIR} ]]; then
     ./hererocks.py -j latest -r latest .
     cd -
 
-    ${LUAROCKS} install lua-cjson
-    ${LUAROCKS} install moonrocks
+    ${LUAROCKS} install luacov
+    ${LUAROCKS} install luacov-html
     ${LUAROCKS} install busted
 fi
 
-if [ ! -z "${API_KEY}" ]; then
-    mkdir -p ~/.moonrocks
-    cat <<EOT > ~/.moonrocks/config.lua
-{
-  key = '${API_KEY}'
-}
-EOT
+if [[ ! -d build-release ]]; then
+    make install PREFIX=$(pwd)
+    ${LUAROCKS} make dist/pumas-${ROCK_VER}.rockspec
 fi
-
-${LUAROCKS} make dist/pumas-${ROCK_VER}.rockspec
 
 if [[ ! -d lib/lua ]]; then
     mkdir lib
@@ -48,7 +38,6 @@ if [[ ! -d share/lua ]]; then
     cd ..
 fi
 
-./bin/luajit-pumas spec/run.lua
-
-${LUAROCKS} pack pumas
-${MOONROCKS} upload pumas-${ROCK_VER}.${ARCH}.rock
+if [[ ! -d docs/docs/coverage ]]; then
+    ./bin/luajit-pumas spec/run.lua -c
+fi

@@ -8,3 +8,11 @@ modules = {
    ['pumas.medium.*'] = 'src',
    ['pumas.physics.*'] = 'src'
 }
+exclude = {
+   'src/pumas/pdg'
+}
+reporter = 'html'
+html = {
+   outputDirectory = "docs/docs/coverage",
+   projectName = "pumas"
+}

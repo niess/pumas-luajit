@@ -115,7 +115,7 @@ Physics:Context(mode)
 
 |Name|Type|Description|
 |----|----|-----------|
-|(*mode*)|`string`| Configuration flags for the simulation. The `string` must indicate [Mode](Mode.md) attributes flag(s) with proper separator(s) (whitespace, comma, etc.). Default value is `detailed forward`. {: .justify} |
+|(*mode*)|`string`| Configuration flags for the simulation. The `string` must indicate [Mode](../simulation/Mode.md) attributes flag(s) with proper separator(s) (whitespace, comma, etc.). Default value is `detailed forward`. {: .justify} |
 
 ### Returns
 
