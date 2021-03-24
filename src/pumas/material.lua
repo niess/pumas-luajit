@@ -11,6 +11,9 @@ local readonly = require('pumas.readonly')
 local material = {}
 
 
+-- XXX add a name attribute to materials?
+
+
 -------------------------------------------------------------------------------
 -- Utility functions for computing stats over atomic element components
 -------------------------------------------------------------------------------

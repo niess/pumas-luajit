@@ -211,7 +211,7 @@ enum pumas_step pumas_geometry_medium(struct pumas_context * context,
                           &user_data->current);
         if (medium_p != NULL) *medium_p = tmp;
 
-        return PUMAS_STEP_APPROXIMATE; /* XXX Exact steps for polyhedrons? */
+        return PUMAS_STEP_CHECK;
 }
 
 
