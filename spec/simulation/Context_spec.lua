@@ -35,6 +35,7 @@ describe('context', function ()
                 assert.is.equal('detailed', c.mode.energy_loss)
                 assert.is.equal('decay', c.mode.decay)
                 assert.is.equal('number', type(c.random_seed))
+                assert.is.equal(1E-02, c.accuracy)
                 assert.is_nil(c.recorder)
                 assert.is.equal('Context', metatype(c))
             end
@@ -47,7 +48,8 @@ describe('context', function ()
                 limit = {distance = 1, energy = 2, grammage = 3, time = 4},
                 geometry = geometry,
                 random_seed = 5,
-                recorder = function () end}
+                recorder = function () end,
+                accuracy = 1E-03}
             assert.is.equal(
                 'backward full_space hybrid weight', tostring(c.mode))
             assert.is.equal('backward', c.mode.direction)
@@ -60,6 +62,7 @@ describe('context', function ()
             assert.is.equal(4, c.limit.time)
             assert.is.equal(geometry, c.geometry)
             assert.is.equal(5, c.random_seed)
+            assert.is.equal(1E-03, c.accuracy)
             assert.is.not_equal(nil, c.recorder)
         end)
 
@@ -83,6 +86,13 @@ describe('context', function ()
                 function () pumas.Context{physics = 1} end,
                 "bad argument 'physics' to 'Context' \z
                 (expected a Physics table, got a number)")
+
+            assert.has_error(
+                function ()
+                    pumas.Context{physics = physics.muon, accuracy = 3}
+                end,
+                "bad attribute 'accuracy' for 'Context' \z
+                (expected a value in ]0,1], got 3)")
         end)
     end)
 

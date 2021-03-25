@@ -19,14 +19,44 @@ describe('Physics', function ()
             assert.is.equal('tau', (p.particle.name))
             assert.is.equal(pumas.constants.TAU_MASS, (p.particle.mass))
             assert.is.equal(pumas.constants.TAU_C_TAU, (p.particle.lifetime))
-            assert.is.equal(1, util.getn(physics.muon.composites))
-            assert.is.equal(3, util.getn(physics.muon.elements))
-            assert.is.equal(2, util.getn(physics.muon.materials))
+            assert.is.equal(1, util.getn(p.composites))
+            assert.is.equal(3, util.getn(p.elements))
+            assert.is.equal(2, util.getn(p.materials))
+            assert.is.equal(5E-02, p.cutoff)
+            assert.is.equal('Physics', metatype(p))
+        end)
+
+        it('should use a proper cutoff', function ()
+            local p = pumas.Physics{
+                mdf = physics.path..'/muon/materials.xml',
+                dedx = physics.path..'/muon',
+                particle = 'muon',
+                cutoff = 0.1}
+            assert.is.equal('muon', (p.particle.name))
+            assert.is.equal(pumas.constants.MUON_MASS, (p.particle.mass))
+            assert.is.equal(pumas.constants.MUON_C_TAU, (p.particle.lifetime))
+            assert.is.equal(1, util.getn(p.composites))
+            assert.is.equal(3, util.getn(p.elements))
+            assert.is.equal(2, util.getn(p.materials))
+            assert.is.equal(0.1, p.cutoff)
             assert.is.equal('Physics', metatype(p))
         end)
 
         it('should return a proper metatype', function ()
             assert.is.equal('Physics', metatype(physics.muon))
+        end)
+
+        it('should catch errors', function ()
+            assert.has_error(
+                function ()
+                    pumas.Physics{
+                        mdf = physics.path..'/tau/materials.xml',
+                        dedx = physics.path..'/tau',
+                        particle = 'tau',
+                        cutoff = 'bad'}
+                end,
+                "bad argument 'cutoff' to 'Physics' \z
+                (expected a number, got a string)")
         end)
     end)
 
@@ -59,6 +89,9 @@ describe('Physics', function ()
                 pumas.constants.MUON_MASS, physics.muon.particle.mass)
             assert.is.equal(pumas.constants.MUON_C_TAU,
                 physics.muon.particle.lifetime)
+
+            assert.is.equal(5E-02, physics.muon.cutoff)
+            assert.is.equal(1E-01, physics.tau.cutoff)
         end)
 
         it('should not be mutable', function ()

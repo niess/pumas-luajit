@@ -7,6 +7,7 @@ _Monte Carlo simulation context._
 
 |Name|Type|Description|
 |----|----|-----------|
+|*accuracy*    |`number`                        | Tuning factor controlling Monte Carlo steps length ([see below](#monte-carlo-stepping-accuracy)). |
 |*geometry*    |[Geometry](../Geometry.md)      | Geometry of the simulation. |
 |*limit*       |[Limit](Limit.md)               | External limits for the transport, e.g. on the kinetic energy or the particle range. {: .justify} |
 |*mode*        |[Mode](Mode.md)                 | Configuration flags for the simulation. |
@@ -20,6 +21,20 @@ _Monte Carlo simulation context._
     rules when setting an attribute.
     {: .justify}
 
+!!! note
+    Changing the random seed also resets the state of the pseudo random
+    generator.
+    {: .justify}
+
+### Monte Carlo stepping accuracy
+
+PUMAS implements a mixed Monte Carlo algorithm following [Fernandez-Varea et
+al.](https://doi.org/10.1016/0168-583X(93)95827-R) (see also the
+[PENELOPE](https://doi.org/10.1016/0168-583X(95)00349-5) Monte Carlo). The
+*accuracy* attribute determines the level of detail for rendering the multiple
+scattering, magnetic bending etc. Lowering the accuracy *parameter* results in
+shorter (more accurate) steps but at the cost of extra CPU time.
+{: .justify}
 </div>
 
 
@@ -38,6 +53,7 @@ simulation context [attributes](#attributes).
     The [Physics](../physics/Physics.md) of the simulation context is defined at
     creation and cannot be modified afterwards apart from the mass fractions
     of composite materials. A new simulation context must be created instead.
+    The *accuracy* of the Monte Carlo stepping can be freely modified however.
     {: .justify}
 
 ### Synopsis
@@ -55,6 +71,7 @@ pumas.Context{
 |----|----|-----------|
 |*physics*       |`string` or [Physics](../physics/Physics.md)| Physics tabulations used by this context (cannot be modified afterwards). If a `string` argument is provided it must point to a dump of tabulations, e.g. generated with the [build](../physics/build.md) function. Then a new [Physics](../physics/Physics.md) instance is automatically created from these tables. {: .justify} |
 |||
+|*accuracy*      |`number`                                    | Tuning factor controlling Monte Carlo steps length ([see above](#monte-carlo-stepping-accuracy)). Defaults to 1%. {: .justify}|
 |(*geometry*)    |`string` or [Geometry](../Geometry.md)      | Geometry of the simulation. If a `string` argument is provided it must reference a [TabulatedMaterial](../physics/TabulatedMaterial.md) of the *physics*. Then, an [InfiniteGeometry](../geometry/InfiniteGeometry.md) is automatically created and filled with a [UniformMedium](../medium/UniformMedium.md) using the corresponding material. {: .justify} |
 |(*limit*)       |`table`                                        | External limits for the transport, e.g. on the kinetic energy or the particle range. The `table` keys must refer to [Limit](Limit.md) attributes, e.g. as `{distance = 1000}` for a 1 km limit on the travelled distance. By default no external limit is set. {: .justify} |
 |(*mode*)        |`string`                 | Configuration flags for the simulation. The `string` must indicate [Mode](Mode.md) attributes flag(s) with proper separator(s) (whitespace, comma, etc.). Default value is `detailed forward`. {: .justify} |

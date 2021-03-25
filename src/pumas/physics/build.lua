@@ -30,13 +30,14 @@ local function tabulate_materials (_, args)
             argnum = 1, expected = 'a table', got = 'a '..type(args)}
     end
 
-    local materials, composites, path, particle, energies, compile
+    local materials, composites, path, particle, energies, compile, cutoff
     for k, v in pairs(args) do
         if k == 'composites' then composites = v
         elseif k == 'path' then path = v
         elseif k == 'particle' then particle = v
         elseif k == 'energies' then energies = v
         elseif k == 'compile' then compile = v
+        elseif k == 'cutoff' then cutoff = v
         elseif k ~= 'materials' then
             raise_error{
                 argname = k,
@@ -53,6 +54,15 @@ local function tabulate_materials (_, args)
             expected = 'a boolean',
             got = 'a '..type(compile)
         }
+    end
+
+    if cutoff ~= nil then
+        if type(cutoff) == 'number' then
+            cutoff = ffi.new('double [1]', args.cutoff)
+        else
+            raise_error{argname = 'cutoff', expected = 'a number',
+                got = metatype.a(cutoff)}
+        end
     end
 
     particle = utils.particle_ctype(particle, raise_error)
@@ -349,7 +359,7 @@ local function tabulate_materials (_, args)
     if compile then
         -- Generate a binary dump
         clib.pumas_physics_destroy(physics_)
-        call(clib.pumas_physics_create, physics_, particle, mdf, path)
+        call(clib.pumas_physics_create, physics_, particle, mdf, path, cutoff)
         dump = path..os.PATHSEP..'materials.pumas'
         local file = io.open(dump, 'w+')
         call(clib.pumas_physics_dump, physics_[0], file)

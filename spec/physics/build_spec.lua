@@ -36,6 +36,11 @@ describe('build', function ()
             (expected a string, got a number)")
 
         assert.has_error(
+            function () pumas.build{materials = {'Water'}, cutoff = 'toto'} end,
+            "bad argument 'cutoff' to 'build' \z
+            (expected a number, got a string)")
+
+        assert.has_error(
             function () pumas.build{materials = {Toto = 1}} end,
             "bad argument 'materials[Toto]' to 'build' \z
             (expected a Material table, got a number)")

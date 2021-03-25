@@ -31,6 +31,7 @@ pumas.build{
     composites = {WetRock = {StandardRock = 0.7, Water = 0.3}},
     energies = {1E+03, 1E+06, 1E+09},
     particle = 'tau',
+    cutoff = 1E-01,
     path = physics.path..'/tau'}
 
 physics.tau = pumas.Physics(physics.path..'/tau')

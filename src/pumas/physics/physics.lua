@@ -10,6 +10,7 @@ local clib = require('pumas.clib')
 local compat = require('pumas.compat')
 local context = require('pumas.context')
 local error = require('pumas.error')
+local metatype = require('pumas.metatype')
 local os = require('pumas.os')
 local readonly = require('pumas.readonly')
 local tabulated = require('pumas.physics.tabulated')
@@ -195,6 +196,8 @@ do
     function Physics:__index (k)
         if k == '__metatype' then
             return 'Physics'
+        elseif k == 'cutoff' then
+            return rawget(self, '_cutoff')
         elseif k == 'Context' then
             return context.Context
         elseif k == 'dump' then
@@ -219,7 +222,7 @@ end
 
 
 function Physics:__newindex (k, v)
-    local fields = {'__metatype', 'Context', 'composites', 'elements',
+    local fields = {'__metatype', 'cutoff', 'Context', 'composites', 'elements',
         'materials', 'particle'}
     for _, attr in ipairs(fields) do
         if k == attr then
@@ -265,8 +268,19 @@ do
 
         -- Load the physics tables
         if tp == 'table' then
+            local cutoff
+            if args.cutoff ~= nil then
+                if type(args.cutoff) == 'number' then
+                    cutoff = ffi.new('double [1]', args.cutoff)
+                else
+                    raise_error{argname = 'cutoff', expected = 'a number',
+                        got = metatype.a(args.cutoff)}
+                end
+            end
+
             local particle = utils.particle_ctype(args.particle, raise_error)
-            call(clib.pumas_physics_create, c, particle, args.mdf, args.dedx)
+            call(clib.pumas_physics_create, c, particle, args.mdf, args.dedx,
+                cutoff)
         else
             local path = args
             local mode, errmsg = lfs.attributes(path, 'mode')
@@ -291,8 +305,10 @@ do
             end
         end
 
+        local cutoff = tonumber(clib.pumas_physics_cutoff(c[0]))
+
         local self = setmetatable({_c = c, _version = physics_version,
-            _update_composites = false}, cls)
+            _update_composites = false, _cutoff = cutoff}, cls)
         physics_version = physics_version + 1
 
         return self

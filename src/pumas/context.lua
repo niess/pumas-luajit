@@ -168,6 +168,18 @@ function Context:__newindex (k, v)
             end
     elseif k == 'physics' then
         error.raise{['type'] = 'Context', not_mutable = k}
+    elseif k == 'accuracy' then
+        if type(v) == 'number' then
+            if (v <= 0) or (v > 1) then
+                error.raise{['type'] = 'Context', argname = k,
+                    expected = 'a value in ]0,1]', got = v}
+            else
+                self._c.accuracy = v
+            end
+        else
+            error.raise{['type'] = 'Context', argname = k,
+                expected = 'a number', got = metatype.a(v)}
+        end
     else
         error.raise{['type'] = 'Context', bad_member = k}
     end
@@ -331,6 +343,9 @@ do
             local seed = ffi.new('unsigned long [1]')
             clib.pumas_context_random_seed_get(self._c, seed)
             return tonumber(seed[0])
+        elseif
+            k == 'accuracy' then
+            return tonumber(self._c.accuracy)
         end
 
         error.raise{['type'] = 'Context', bad_member = k}

@@ -294,7 +294,6 @@ static double gradient_locals(struct pumas_medium * medium_,
     struct pumas_state * state, struct pumas_locals * locals)
 {
 #define GRADIENT_MIN_PROJECTION 5E-02
-#define GRADIENT_RESOLUTION 1E-02
 
         /* Set the magnetic field */
         struct pumas_medium_gradient * medium = (void *)medium_;
@@ -312,9 +311,10 @@ static double gradient_locals(struct pumas_medium * medium_,
                 d = GRADIENT_MIN_PROJECTION;
 
         const double step2 =
-            fabs(medium->gradient.lambda / d) * GRADIENT_RESOLUTION;
+            fabs(medium->gradient.lambda / d);
         if (step <= 0) return step2;
         else return (step < step2) ? step: step2;
+#undef GRADIENT_MIN_PROJECTION
 }
 
 
@@ -339,9 +339,6 @@ void pumas_medium_gradient_initialise(
                 memcpy(medium->magnet, magnet, sizeof medium->magnet);
         else
                 memset(medium->magnet, 0x0, sizeof medium->magnet);
-
-#undef GRADIENT_MIN_PROJECTION
-#undef GRADIENT_RESOLUTION
 }
 
 
@@ -463,7 +460,9 @@ double pumas_geometry_earth_magnet(struct pumas_geometry * base_geometry,
                                          GEOMAGNET_UPDATE_DISTANCE;
         }
 
-        return GEOMAGNET_UPDATE_DISTANCE;
+        struct pumas_state_extended * extended = (void *)state;
+
+        return GEOMAGNET_UPDATE_DISTANCE / extended->context->accuracy;
 
 #undef GEOMAGNET_UPDATE_DISTANCE
 }
