@@ -13,6 +13,8 @@ constants used by PUMAS.
 |`ELECTRON_MASS`   | Electron rest mass, in $\text{GeV}/\text{c}^2$. |
 |`MUON_C_TAU`      | Muon decay length, in $\text{m}$. |
 |`MUON_MASS`       | Muon rest mass, in $\text{GeV}/\text{c}^2$. |
+|`NEUTRON_MASS`    | Neutron rest mass, in $\text{GeV}/\text{c}^2$. |
+|`PROTON_MASS`     | Proton rest mass, in $\text{GeV}/\text{c}^2$. |
 |`TAU_C_TAU`       | Tau decay length, in $\text{m}$. |
 |`TAU_MASS`        | Tau rest mass, in $\text{GeV}/\text{c}^2$. |
 

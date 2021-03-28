@@ -87,6 +87,10 @@ function error_.raise (args)
                     k = "'"..args.not_mutable.."'"
                 end
                 table.insert(msg, "cannot modify "..k.." for '"..args.type.."'")
+            elseif args.bad_key ~= nil then
+                table.insert(msg, "bad key for '"..args.type.."'")
+            elseif args.bad_value ~= nil then
+                table.insert(msg, "bad value for '"..args.type.."'")
             elseif args.argname ~= nil then
                 table.insert(msg, "bad attribute '"..args.argname.."' for '"..
                     args.type.."'")

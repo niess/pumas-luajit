@@ -17,7 +17,7 @@ do
     local value = ffi.new('double [1]')
 
     for _, k in ipairs{'AVOGADRO_NUMBER', 'ELECTRON_MASS', 'MUON_C_TAU',
-        'MUON_MASS', 'TAU_C_TAU', 'TAU_MASS'} do
+        'MUON_MASS', 'NEUTRON_MASS', 'PROTON_MASS', 'TAU_C_TAU', 'TAU_MASS'} do
         clib.pumas_constant(ffi.C['PUMAS_CONSTANT_'..k], value)
         constants[k] = tonumber(value[0])
     end

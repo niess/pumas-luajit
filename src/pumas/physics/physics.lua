@@ -42,20 +42,28 @@ local function load_composites (self)
     return composites
 end
 
--- XXX Allow to modify cross-sections?
+-- XXX Add a dcs package / library (out of Physics object)
+-- XXX Add DCS model / name
 local function load_dcs (self)
     local tmp = rawget(self, '_dcs')
     if tmp then
         return tmp
     end
 
+    local bremsstrahlung = ffi.new('pumas_dcs_t * [1]')
+    clib.pumas_physics_dcs(self._c[0], clib.PUMAS_PROCESS_BREMSSTRAHLUNG,
+        nil, bremsstrahlung)
+    local pair_production = ffi.new('pumas_dcs_t * [1]')
+    clib.pumas_physics_dcs(self._c[0], clib.PUMAS_PROCESS_PAIR_PRODUCTION,
+        nil, pair_production)
+    local photonuclear = ffi.new('pumas_dcs_t * [1]')
+    clib.pumas_physics_dcs(self._c[0], clib.PUMAS_PROCESS_PHOTONUCLEAR,
+        nil, photonuclear)
+
     local dcs = readonly.Readonly({
-        bremsstrahlung = clib.pumas_physics_dcs_get(
-            self._c[0], clib.PUMAS_PROCESS_BREMSSTRAHLUNG),
-        pair_production = clib.pumas_physics_dcs_get(
-            self._c[0], clib.PUMAS_PROCESS_PAIR_PRODUCTION),
-        photonuclear = clib.pumas_physics_dcs_get(
-            self._c[0], clib.PUMAS_PROCESS_PHOTONUCLEAR)
+        bremsstrahlung = bremsstrahlung[0],
+        pair_production = pair_production[0],
+        photonuclear = photonuclear[0]
     }, 'dcs')
     rawset(self, '_dcs', dcs)
 
@@ -250,37 +258,63 @@ do
         ffi.gc(c, clib.pumas_physics_destroy)
 
         if args == nil then
-            error.raise{
-                argnum = 'bad',
-                expected = 1,
-                got = 0
-            }
+            raise_error{argnum = 'bad', expected = 1, got = 0}
         end
 
         local tp = type(args)
         if (tp ~= 'string') and (tp ~= 'table') then
             raise_error{
-                argnum = 1,
-                expected = 'a string or a table',
-                got = 'a '..type(args)
-            }
+                argnum = 1, expected = 'a string or a table',
+                got = 'a '..type(args)}
         end
 
         -- Load the physics tables
         if tp == 'table' then
-            local cutoff
-            if args.cutoff ~= nil then
-                if type(args.cutoff) == 'number' then
-                    cutoff = ffi.new('double [1]', args.cutoff)
+            local particle, mdf, dedx, cutoff, dcs
+            for k, v in pairs(args) do
+                if     k == 'particle' then particle = v
+                elseif k == 'mdf'      then mdf = v
+                elseif k == 'dedx'     then dedx = v
+                elseif k == 'cutoff'   then cutoff = v
+                elseif k == 'dcs'      then dcs = v
                 else
-                    raise_error{argname = 'cutoff', expected = 'a number',
-                        got = metatype.a(args.cutoff)}
+                    raise_error{
+                        argname = k, description = 'unknown argument'}
                 end
             end
 
-            local particle = utils.particle_ctype(args.particle, raise_error)
-            call(clib.pumas_physics_create, c, particle, args.mdf, args.dedx,
-                cutoff)
+            local settings = ffi.new('struct pumas_physics_settings [1]')
+
+            if cutoff ~= nil then
+                if type(cutoff) == 'number' then
+                    settings[0].cutoff = cutoff
+                else
+                    raise_error{argname = 'cutoff', expected = 'a number',
+                        got = metatype.a(cutoff)}
+                end
+            end
+
+            if dcs ~= nil then
+                if type(dcs) == 'table' then
+                    local setter = function (k, v)
+                        settings[0][k] = v
+                    end
+
+                    for k, v in pairs(dcs) do
+                        local ok, msg = pcall(setter, k, v)
+                        if not ok then
+                            raise_error{argname = 'dcs', description = msg}
+                        end
+                    end
+                else
+                    raise_error{argname = 'dcs', expected = 'a table',
+                        got = metatype.a(dcs)}
+                end
+            end
+
+            local c_particle = utils.particle_ctype(particle, raise_error)
+            call(clib.pumas_physics_create, c, c_particle, mdf, dedx,
+                settings)
         else
             local path = args
             local mode, errmsg = lfs.attributes(path, 'mode')

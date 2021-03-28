@@ -46,6 +46,7 @@ register('pumas.recorder')
 register('pumas.state')
 
 pumas.constants = require('pumas.constants')
+pumas.dcs = require('pumas.dcs')
 
 
 -------------------------------------------------------------------------------

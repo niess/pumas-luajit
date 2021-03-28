@@ -30,7 +30,7 @@ local function tabulate_materials (_, args)
             argnum = 1, expected = 'a table', got = 'a '..type(args)}
     end
 
-    local materials, composites, path, particle, energies, compile, cutoff
+    local materials, composites, path, particle, energies, compile, cutoff, dcs
     for k, v in pairs(args) do
         if k == 'composites' then composites = v
         elseif k == 'path' then path = v
@@ -38,11 +38,10 @@ local function tabulate_materials (_, args)
         elseif k == 'energies' then energies = v
         elseif k == 'compile' then compile = v
         elseif k == 'cutoff' then cutoff = v
+        elseif k == 'dcs' then dcs = v
         elseif k ~= 'materials' then
             raise_error{
-                argname = k,
-                description = 'unknown argument'
-            }
+                argname = k, description = 'unknown argument'}
         end
     end
 
@@ -50,18 +49,36 @@ local function tabulate_materials (_, args)
         compile = true
     elseif type(compile) ~= 'boolean' then
         raise_error{
-            argname = 'compile',
-            expected = 'a boolean',
-            got = 'a '..type(compile)
-        }
+            argname = 'compile', expected = 'a boolean',
+            got = 'a '..type(compile)}
     end
+
+    local settings = ffi.new('struct pumas_physics_settings [1]')
 
     if cutoff ~= nil then
         if type(cutoff) == 'number' then
-            cutoff = ffi.new('double [1]', args.cutoff)
+            settings[0].cutoff = cutoff
         else
             raise_error{argname = 'cutoff', expected = 'a number',
                 got = metatype.a(cutoff)}
+        end
+    end
+
+    if dcs ~= nil then
+        if type(dcs) == 'table' then
+            local setter = function (k, v)
+                settings[0][k] = v
+            end
+
+            for k, v in pairs(dcs) do
+                local ok, msg = pcall(setter, k, v)
+                if not ok then
+                    raise_error{argname = 'dcs', description = msg}
+                end
+            end
+        else
+            raise_error{argname = 'dcs', expected = 'a table',
+                got = metatype.a(dcs)}
         end
     end
 
@@ -305,7 +322,8 @@ local function tabulate_materials (_, args)
     -- Generate the energy loss tables
     local physics_ = ffi.new('struct pumas_physics *[1]')
     ffi.gc(physics_, clib.pumas_physics_destroy)
-    call(clib.pumas_physics_create_tabulation, physics_, particle, mdf)
+    call(clib.pumas_physics_create_tabulation, physics_, particle, mdf,
+        settings)
 
     local data = ffi.new('struct pumas_physics_tabulation_data')
     local outdir
@@ -359,7 +377,7 @@ local function tabulate_materials (_, args)
     if compile then
         -- Generate a binary dump
         clib.pumas_physics_destroy(physics_)
-        call(clib.pumas_physics_create, physics_, particle, mdf, path, cutoff)
+        call(clib.pumas_physics_create, physics_, particle, mdf, path, settings)
         dump = path..os.PATHSEP..'materials.pumas'
         local file = io.open(dump, 'w+')
         call(clib.pumas_physics_dump, physics_[0], file)
