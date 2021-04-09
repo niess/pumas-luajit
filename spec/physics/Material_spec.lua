@@ -13,19 +13,17 @@ describe('Material', function ()
         it('should return a Material with proper attributes', function ()
             local wH, wO, m = 0.111894, 0.888106
 
-            m = pumas.Material{density = 1E+03, formula = 'H2O'}
+            m = pumas.Material{density = 1E+03, formula = 'H2O', I = 79.7E-09}
             assert.is.equal(1E+03, m.density)
-            assert.is.equal('liquid', m.state)
+            assert.is.equal(79.7E-09, m.I)
             assert.is.equal(2, util.getn(m.elements))
             assert.is.equal(util.round(wH, 3), util.round(m.elements['H'], 3))
             assert.is.equal(util.round(wO, 3), util.round(m.elements['O'], 3))
             assert.is.equal('Material', metatype(m))
 
             local elements = {H = wH, O = wO}
-            m = pumas.Material{density = 1E+03, elements = elements,
-                state = 'solid', I = 4}
+            m = pumas.Material{density = 1E+03, elements = elements, I = 4}
             assert.is.equal(1E+03, m.density)
-            assert.is.equal('solid', m.state)
             assert.is.not_equal(elements, m.elements)
             assert.is.equal(2, util.getn(m.elements))
             assert.is.equal(wH, m.elements['H'])

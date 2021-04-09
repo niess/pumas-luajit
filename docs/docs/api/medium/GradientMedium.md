@@ -42,14 +42,14 @@ an extra local magnetic field.
 {: .justify}
 
 !!! warning
-    The ionization loss of charged particles depends on the target material
-    atomic spacing, i.e. on its density (see e.g. [Sternheimer et al.,
-    1984](https://doi.org/10.1016/0092-640X(84)90002-0)). Therefore, it is *a
-    priori* not correct to arbitrarly change the medium density without
-    re-computing the energy loss. However, this is a next to leading order
-    effect compared to the density variation itself. Therefore, in some cases
-    e.g. when modelling the atmosphere whose density (energy loss) is small
-    w.r.t. to rocks, this can be a convenient approximation.
+    The ionization loss of charged particles depends on the material dielectric
+    properties, a.k.a. the "density effect" (see e.g. [Fermi,
+    1940](https://doi.org/10.1103/PhysRev.57.485)). Therefore, it is *a priori*
+    not correct to arbitrarly change the medium density without re-computing the
+    energy loss. However, this is a next to leading order effect compared to the
+    density variation itself. Consequently, in some cases e.g. when modelling
+    the atmosphere whose density (energy loss) is small w.r.t. to rocks, this
+    can be a convenient approximation.
     {: .justify}
 
 ### Synopsis

@@ -12,7 +12,7 @@ local pumas = require('pumas')
 
 print('building materials tables for the `pumas` examples...')
 
-pumas.build{
+local ret = pumas.build{
     materials = {'StandardRock', 'Water', 'Air'},
     composites = {
         WetRock = {StandardRock = 0.7, Water = 0.3}
@@ -20,4 +20,5 @@ pumas.build{
     path = 'share/materials/examples'
 }
 
-print('materials tables have been dumped to share/materials/standard')
+local dirname = ret.mdf:gsub('(.*/)(.*)', '%1')
+print('materials tables have been dumped to '..dirname)

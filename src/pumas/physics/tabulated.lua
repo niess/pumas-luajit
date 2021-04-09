@@ -23,7 +23,7 @@ local function parse_composition (index, n_elements, c)
     local indices = ffi.new('int [?]', n_elements)
     local fractions = ffi.new('double [?]', n_elements)
     clib.pumas_physics_material_properties(c, index,
-        nil, nil, nil, nil, indices, fractions)
+        nil, nil, nil, indices, fractions)
 
     local name_ = ffi.new('const char *[1]')
     local composition = compat.table_new(0, n_elements)
@@ -38,16 +38,16 @@ end
 local function parse_composite (physics_, index)
     local n_elements=  ffi.new('int [1]')
     local density = ffi.new('double [1]')
+    local I = ffi.new('double [1]')
     clib.pumas_physics_material_properties(physics_._c[0], index,
-        n_elements, density, nil, nil, nil, nil)
+        n_elements, density, I, nil, nil)
 
     n_elements = tonumber(n_elements[0])
     local composition = parse_composition(index, n_elements, physics_._c[0])
 
-    local ZoA, I = material_.compute_ZoA_and_I(
-        composition, physics_.elements)
+    local ZoA = material_.compute_ZoA(composition, physics_.elements)
 
-    return tonumber(density[0]), composition, ZoA, I
+    return tonumber(density[0]), composition, ZoA, tonumber(I[0])
 end
 
 
@@ -260,10 +260,7 @@ do
             local func = index[k]
             if func then return func end
 
-            for _, attr in ipairs{'materials', 'state', 'a', 'k', 'x0', 'x1',
-                'Cbar', 'delta0'} do
-                if k == attr then return nil end
-            end
+            if k == 'materials' then return nil end
 
             error.raise{['type'] = 'TabulatedMaterial', bad_member = k}
         end
@@ -325,10 +322,8 @@ do
             local n_elements=  ffi.new('int [1]')
             local density = ffi.new('double [1]')
             local I = ffi.new('double [1]')
-            local density_effect =
-                ffi.new('struct pumas_physics_density_effect[1]')
             clib.pumas_physics_material_properties(physics_._c[0], index,
-                n_elements, density, I, density_effect, nil, nil)
+                n_elements, density, I, nil, nil)
 
             n_elements = tonumber(n_elements[0])
             local composition = parse_composition(
@@ -339,12 +334,6 @@ do
                 composite = false,
                 density = tonumber(density[0]),
                 I = tonumber(I[0]),
-                a = tonumber(density_effect[0].a),
-                k = tonumber(density_effect[0].k),
-                x0 = tonumber(density_effect[0].x0),
-                x1 = tonumber(density_effect[0].x1),
-                Cbar = tonumber(density_effect[0].Cbar),
-                delta0 = tonumber(density_effect[0].delta0),
                 elements = composition,
                 ZoA = ZoA}
         else

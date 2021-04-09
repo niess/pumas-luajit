@@ -22,17 +22,16 @@ an alternative bulk density and/or an extra local magnetic field.
 {: .justify}
 
 !!! note
-    The ionization loss of charged particles depends on the target material
-    atomic spacing, i.e. on its density (see e.g. [Sternheimer et al.,
-    1984](https://doi.org/10.1016/0092-640X(84)90002-0)). Therefore, it is *a
-    priori* not correct to arbitrarly change the medium density without
-    re-computing the energy loss. However, in some cases, e.g. a porous rock
-    filled with air, it is a good approximation to use a lower bulk density than
-    the material one since the air density (energy loss) is negligible w.r.t.
-    the rock one.  For more balanced mixtures, e.g. a porous rock filled with
-    water, one should instead use a composite
-    [TabulatedMaterial](../physics/TabulatedMaterial.md) and vary the mass
-    fractions rather than the medium bulk density.
+    The ionization loss of charged particles depends on the material dielectric
+    properties, a.k.a. the "density effect" (see e.g. [Fermi,
+    1940](https://doi.org/10.1103/PhysRev.57.485)). Therefore, it is *a priori*
+    not correct to arbitrarly change the medium density without re-computing the
+    energy loss. However, in some cases, e.g. a porous rock filled with air, it
+    is a good approximation to use a lower bulk density than the material one
+    since the air density (energy loss) is negligible w.r.t.  the rock one.  For
+    more balanced mixtures, e.g. a porous rock filled with water, one should
+    instead use a composite [TabulatedMaterial](../physics/TabulatedMaterial.md)
+    and vary the mass fractions rather than the medium bulk density.
     {: .justify}
 
 ### Synopsis

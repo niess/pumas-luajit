@@ -54,6 +54,8 @@ local function tabulate_materials (_, args)
     end
 
     local settings = ffi.new('struct pumas_physics_settings [1]')
+    settings[0].update = 1
+    settings[0].dry = not compile
 
     if cutoff ~= nil then
         if type(cutoff) == 'number' then
@@ -85,12 +87,15 @@ local function tabulate_materials (_, args)
     particle = utils.particle_ctype(particle, raise_error)
 
     if type(energies) == 'table' then
+        local n
         if #energies > 0 then
-            local tmp = ffi.new('double [?]', #energies)
+            n = #energies
+            local tmp = ffi.new('double [?]', n)
             for i, v in ipairs(energies) do tmp[i - 1] = v end
             energies = tmp
         else
-            local min, max, n = energies.min, energies.max, energies.n
+            n = energies.n
+            local min, max = energies.min, energies.max
             if min == nil then
                 raise_error{
                     argname = 'energies',
@@ -116,6 +121,9 @@ local function tabulate_materials (_, args)
             local dlnk = math.log(max / min) / (n - 1)
             for i = 0, n - 1 do energies[i] = min * math.exp(dlnk * i) end
         end
+
+        settings[0].n_energies = n
+        settings[0].energy = energies
     elseif energies ~= nil then
         raise_error{
             argname = 'energies', expected = 'a table',
@@ -263,8 +271,8 @@ local function tabulate_materials (_, args)
         local dedx = utils.snakify(name)..'.txt'
         table.insert(dedx_list, dedx)
         local m = materials[name]
-        xml:push('  <material name="%s" file="%s" density="%.7g">',
-            name, dedx, m.density * 1E-03)
+        xml:push('  <material name="%s" file="%s" density="%.7g" I="%.7g">',
+            name, dedx, m.density * 1E-03, m.I * 1E+09)
 
         local padmax2 = 0
         for symbol, _ in pairs(m.elements) do
@@ -322,62 +330,12 @@ local function tabulate_materials (_, args)
     -- Generate the energy loss tables
     local physics_ = ffi.new('struct pumas_physics *[1]')
     ffi.gc(physics_, clib.pumas_physics_destroy)
-    call(clib.pumas_physics_create_tabulation, physics_, particle, mdf,
+    call(clib.pumas_physics_create, physics_, particle, mdf, nil,
         settings)
-
-    local data = ffi.new('struct pumas_physics_tabulation_data')
-    local outdir
-    if path ~= nil then outdir = ffi.new('char [?]', #path + 1, path) end
-    data.outdir = outdir
-    data.overwrite = 1
-    if energies then
-        data.n_energies = ffi.sizeof(energies) / ffi.sizeof('double')
-        data.energy = energies
-    else
-        data.n_energies = -1
-        data.energy = nil
-    end
-
-    local errormsg
-    for name, material in pairs(materials) do
-        local m = data.material
-        local index = ffi.new('int [1]')
-        clib.pumas_physics_material_index(physics_[0], name, index)
-        m.index = index[0]
-        m.I = material.I
-        if material.state == nil then
-            m.state = clib.PUMAS_PHYSICS_STATE_UNKNOWN
-        else
-            m.state = ({
-                solid  = clib.PUMAS_PHYSICS_STATE_SOLID,
-                liquid = clib.PUMAS_PHYSICS_STATE_LIQUID,
-                gas    = clib.PUMAS_PHYSICS_STATE_GAS
-            })[material.state:lower()]
-        end
-        m.density_effect.a = material.a
-        m.density_effect.k = material.k
-        m.density_effect.x0 = material.x0
-        m.density_effect.x1 = material.x1
-        m.density_effect.Cbar = material.Cbar
-        m.density_effect.delta0 = material.delta0
-
-        errormsg = call.protected(
-            clib.pumas_physics_tabulate, physics_[0], data)
-        if errormsg then break end
-    end
-    clib.pumas_physics_tabulation_clear(physics_[0], data)
-    if errormsg then
-        clib.pumas_physics_destroy(physics_)
-        raise_error{
-            description = errormsg
-        }
-    end
 
     local dump
     if compile then
         -- Generate a binary dump
-        clib.pumas_physics_destroy(physics_)
-        call(clib.pumas_physics_create, physics_, particle, mdf, path, settings)
         dump = path..os.PATHSEP..'materials.pumas'
         local file = io.open(dump, 'w+')
         call(clib.pumas_physics_dump, physics_[0], file)

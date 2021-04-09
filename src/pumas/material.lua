@@ -97,20 +97,12 @@ do
                 argnum = 1, expected = 'a table', got = metatype(args)}
         end
 
-        local formula, composition, density, state, I, a, k, x0, x1, Cbar,
-            delta0
+        local formula, composition, density, I
         for key, value in pairs(args) do
             if     key == 'formula' then formula = value
             elseif key == 'elements' then composition = value
             elseif key == 'density' then density = value
-            elseif key == 'state' then state = value
             elseif key == 'I' then I = value
-            elseif key == 'a' then a = value
-            elseif key == 'k' then k = value
-            elseif key == 'x0' then x0 = value
-            elseif key == 'x1' then x1 = value
-            elseif key == 'Cbar' then Cbar = value
-            elseif key == 'delta0' then delta0 = value
             elseif key ~= 'ZoA' then
                 raise_error{
                     argname = key,
@@ -119,12 +111,6 @@ do
         end
 
         check_number('density', density, 'kg / m^2')
-
-        if delta0 then
-            check_number('delta0', delta0)
-        else
-            delta0 = 0
-        end
 
         if not ELEMENTS then
             ELEMENTS = element_.elements
@@ -176,96 +162,6 @@ do
             self.I = I
         end
         self.density = density
-
-        if state then
-            if type(state) ~= 'string' then
-                raise_error{argname = 'state', expected = 'a string',
-                    got = metatype.a(state)}
-            end
-
-            local tmp = state:lower()
-            if (tmp ~= 'gas') and (tmp ~= 'liquid') and (tmp ~= 'solid') then
-                raise_error{
-                    argname = 'state', expected = "'solid', 'liquid' or 'gas'",
-                    got = "'"..state.."'"
-                }
-            end
-            state = tmp
-        else
-            if self.density < 0.1E+03
-            then state = 'gas'
-            else state = 'liquid'
-            end
-        end
-        self.state = state
-
-        -- Set the Sternheimer coefficients. If not provided the Sternheimer
-        -- and Peierls recipe is used
-        if k then
-            check_number('k', k)
-        else
-            k = 3
-        end
-        self.k = k
-
-        if Cbar then
-            check_number('Cbar', Cbar)
-        else
-            local hwp = 28.816E-09 * math.sqrt(density * 1E-03 * self.ZoA)
-            Cbar = 2 * math.log(self.I / hwp)
-        end
-        self.Cbar = Cbar
-
-        if x0 then
-            check_number('x0', x0)
-        else
-            if state == 'gas' then
-                if     Cbar <= 10     then x0 = 1.6
-                elseif Cbar <= 10.5   then x0 = 1.7
-                elseif Cbar <= 11     then x0 = 1.8
-                elseif Cbar <= 11.5   then x0 = 1.9
-                elseif Cbar <= 13.804 then x0 = 2
-                else                       x0 = 0.326 * Cbar - 1.5
-                end
-            elseif I <= 100 then
-                if   Cbar <= 3.681
-                then x0 = 0.2
-                else x0 = 0.326 * Cbar - 1
-                end
-            else
-                if   Cbar <= 5.215
-                then x0 = 0.2
-                else x0 = 0.326 * Cbar - 1.5
-                end
-            end
-        end
-        self.x0 = x0
-
-        if x1 then
-            check_number('x1', x1)
-        else
-            if state == 'gas' then
-                if   Cbar < 13.804
-                then x1 = 4
-                else x1 = 5
-                end
-            elseif I <= 100 then
-                x1 = 2
-            else
-                x1 = 3
-            end
-        end
-        self.x1 = x1
-
-        if a then
-            check_number('a', a)
-        else
-            local dx = x1 - x0
-            a = (Cbar - 2 * math.log(10) * x0) / (dx * dx * dx)
-        end
-        self.a = a
-
-        self.delta0 = delta0
 
         return setmetatable(self, cls)
     end

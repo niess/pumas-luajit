@@ -195,7 +195,7 @@ local function dataurl (ref)
 end
 
 
-local function getdata (ref, map, fname)
+local function getdata (ref, map)
     local html = request(dataurl(ref))
 
     local is_material = false
@@ -261,38 +261,11 @@ local function getdata (ref, map, fname)
         end
     end
 
-    local txt
     if is_material then
         data.composition = composition
-
-        -- Get the energy loss table
-        if href == nil then
-            error.raise{fname = fname, argnum = 1,
-                description = "could not find the energy loss table \z
-                    for material '"..ref.."'"}
-        end
-
-        txt = request(pdg.url .. href)
-
-        local values = {}
-        local count = 0
-        for line in string_lines(txt) do
-            count = count + 1
-            if count == 5 then
-                for x in line:gmatch '[%d.]*' do
-                    table.insert(values, tonumber(x))
-                end
-                break
-            end
-        end
-
-        local keys = {'a', 'k', 'x0', 'x1', 'I', 'Cbar', 'delta0'}
-        for i, k in ipairs(keys) do
-            data[k] = values[i]
-        end
     end
 
-    return data, txt
+    return data
 end
 
 
@@ -308,7 +281,7 @@ function Pdg.__index.get_element (reference)
     local map = {['Atomic number'] = 'Z', ['Atomic mass'] = 'A',
         ['Mean excitation energy'] = 'I'}
 
-    return getdata(reference, map, 'get_element')
+    return getdata(reference, map)
 end
 
 
@@ -331,7 +304,7 @@ function Pdg.__index.get_material (reference, element)
         ['Mean excitation energy'] = 'I', ['Radiation length'] = 'X0',
         ['Muon critical energy'] = 'Ec'}
 
-    local data = getdata(reference, map, 'get_material')
+    local data = getdata(reference, map)
     if element then
         data.composition = {{element, 0, 0, 1}}
     elseif reference == 'standard_rock' then
@@ -348,9 +321,7 @@ function Pdg.__index.get_material (reference, element)
     end
 
     return {
-        elements = elements, density = data.rho, I = data.I, a = data.a,
-        k = data.k, x0 = data.x0, x1 = data.x1, Cbar = data.Cbar,
-        delta0 = data.delta0
+        elements = elements, density = data.rho, I = data.I
     }
 end
 

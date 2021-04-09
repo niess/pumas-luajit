@@ -29,25 +29,11 @@ describe('TabulatedMaterial', function ()
 
                 assert.is.equal('number', type(m.I))
                 assert.is.equal('number', type(m.ZoA))
-                assert.is.equal(nil, m.state)
-                assert.is.equal(nil, m.a)
-                assert.is.equal(nil, m.k)
-                assert.is.equal(nil, m.x0)
-                assert.is.equal(nil, m.x1)
-                assert.is.equal(nil, m.Cbar)
-                assert.is.equal(nil, m.delta0)
             else
                 local m0 = pumas.materials[name[i]]
                 assert.is.equal(nil, m.materials)
-                assert.is.equal(nil, m.state)
-                assert.is.equal(m0.I, m.I)
+                assert.is.equal(util.round(m0.I, 10), util.round(m.I, 10))
                 assert.is.equal(util.round(m0.ZoA, 7), util.round(m.ZoA, 7))
-                assert.is.equal(m0.a, m.a)
-                assert.is.equal(m0.k, m.k)
-                assert.is.equal(m0.x0, m.x0)
-                assert.is.equal(m0.x1, m.x1)
-                assert.is.equal(m0.Cbar, m.Cbar)
-                assert.is.equal(m0.delta0, m.delta0)
             end
 
             assert.is.equal('Readonly', getmetatable(m.elements))

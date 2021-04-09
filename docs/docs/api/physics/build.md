@@ -41,7 +41,13 @@ files is used. For taus a logarithmic sampling is used ranging from 100 GeV to
 
 ## Returns
 
-`nil`
+A `table` is returned containing the following key, values pairs.
+
+|Name|Type|Description|
+|----|----|-----------|
+|*dedx* |`table`   | List of paths to the generated energy loss tables. {: .justify} |
+|*dump* |`string`  | Path to the generated binary dump. {: .justify} |
+|*mdf*  |`string`  | Path to the generated Materials Description File (MDF). {: .justify} |
 
 ## Examples
 
