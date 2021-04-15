@@ -357,7 +357,7 @@ local function build_polyhedrons (args, frame, refs, depth, index)
     do
         local mt = metatype(medium_)
         if mt == 'string' then
-            medium_ = medium.UniformMedium(medium)
+            medium_ = medium.UniformMedium(medium_)
         elseif (mt ~= 'nil') and (mt ~= 'Medium') then
             error.raise{
                 fname = 'Polyhedron '..get_tag(depth, index),
