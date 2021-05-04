@@ -7,19 +7,21 @@ _A metatype for managing physics tabulations._
 
 |Name|Type|Description|
 |----|----|-----------|
-|*composites*|[Readonly](../others/Readonly.md)|Table of composite [TabulatedMaterials](TabulatedMaterial.md) indexed by name. {: .justify}|
-|*cutoff*    |`number`                         |Cutoff value ($x_\text{cut}$) between continuous and discrete energy losses. {: .justify}|
-|*dcs*       |[Readonly](../others/Readonly.md)|Differential Cross-Sections (DCS) for radiative processes ([see below](#dcs)). {: .justify}|
-|*elements*  |[Readonly](../others/Readonly.md)|Table of target atomic [Elements](Element.md) used by the physics materials, indexed by atomic symbol. {: .justify}|
-|*materials* |[Readonly](../others/Readonly.md)|Table of base [TabulatedMaterials](TabulatedMaterial.md) indexed by name. {: .justify}|
-|*particle*  |[Readonly](../others/Readonly.md)|Properties of the transported (projectile) particle ([see below](#particle)). {: .justify}|
+|*composites*    |[Readonly](../others/Readonly.md)|Table of composite [TabulatedMaterials](TabulatedMaterial.md) indexed by name. {: .justify}|
+|*cutoff*        |`number`                         |Cutoff value ($x_\text{cut}$) between continuous and discrete energy losses. {: .justify}|
+|*elastic\_ratio*|`number`                         |Ratio of the elastic hard path length w.r.t. the first transport path length. {: .justify}|
+|*dcs*           |[Readonly](../others/Readonly.md)|Differential Cross-Sections (DCS) for radiative processes ([see below](#dcs)). {: .justify}|
+|*elements*      |[Readonly](../others/Readonly.md)|Table of target atomic [Elements](Element.md) used by the physics materials, indexed by atomic symbol. {: .justify}|
+|*materials*     |[Readonly](../others/Readonly.md)|Table of base [TabulatedMaterials](TabulatedMaterial.md) indexed by name. {: .justify}|
+|*particle*      |[Readonly](../others/Readonly.md)|Properties of the transported (projectile) particle ([see below](#particle)). {: .justify}|
 
 !!! note
     The physics tables and their sub-tables, e.g. [Element](Element.md)
     components of the *elements* table, are all
-    [Readonly](../others/Readonly.md). The *cutoff* attribute cannot be
-    modified as well. It is set when building the physics table (see
-    [constructor](#constructor) below or the [pumas.build](build.md) function).
+    [Readonly](../others/Readonly.md). The *cutoff* and *elastic\_ratio*
+    attributes cannot be modified as well. They are set when building the
+    physics table (see [constructor](#constructor) below or the
+    [pumas.build](build.md) function).
     {: .justify}
 
 #### *dcs*
@@ -76,19 +78,20 @@ File (MDF) and energy loss tables (*dedx*).
 ```Lua
 pumas.Physics(path)
 
-pumas.Physics{dedx=, mdf=, particle=, (cutoff)=}
+pumas.Physics{dedx=, mdf=, particle=, (cutoff)=, (elastic_ratio)=}
 ```
 
 ### Arguments
 
 |Name|Type|Description|
 |----|----|-----------|
-|*path*    |`string`| Path to a folder containing pre-computed physics tabulations, e.g. generated with the [build](build.md) function. {: .justify}|
+|*path*            |`string`| Path to a folder containing pre-computed physics tabulations, e.g. generated with the [build](build.md) function. {: .justify}|
 ||||
-|*dedx*    |`string`| Path to a folder containing energy loss tabulations in the Particle Data Group (PDG) format. {: .justify}|
-|*mdf*     |`string`| Path to an XML Material Description File (MDF) describing the target materials, i.e. their atomic composition and physical properties. {: .justify}|
-|*particle*|`string`| Name of the transported (projectile) particle. Must be `'muon'` or `'tau'`. {: .justify}|
-|(*cutoff*)|`number`| Cutoff value between continuous and discrete energy losses. Defaults to 5% which is a good compromise between speed and accuracy for transporting a continuous flux of $\mu$ (see e.g. [Sokalski et al.](https://doi.org/10.1103/PhysRevD.64.074015) or [Koehne et al.](https://doi.org/10.1016/j.cpc.2013.04.001)). {: .justify}|
+|*dedx*            |`string`| Path to a folder containing energy loss tabulations in the Particle Data Group (PDG) format. {: .justify}|
+|*mdf*             |`string`| Path to an XML Material Description File (MDF) describing the target materials, i.e. their atomic composition and physical properties. {: .justify}|
+|*particle*        |`string`| Name of the transported (projectile) particle. Must be `'muon'` or `'tau'`. {: .justify}|
+|(*cutoff*)        |`number`| Cutoff value between continuous and discrete energy losses. Defaults to 5% which is a good compromise between speed and accuracy for transporting a continuous flux of $\mu$ (see e.g. [Sokalski et al.](https://doi.org/10.1103/PhysRevD.64.074015) or [Koehne et al.](https://doi.org/10.1016/j.cpc.2013.04.001)). {: .justify}|
+|(*elastic\_ratio*)|`number`| Ratio of the elastic hard path length w.r.t. the first transport path length. The lower the more detailed the simulation of elastic scattering. Defaults to 1E-04 (see e.g. [Fernandez-Varea et al.](https://doi.org/10.1016/0168-583X(93)95827-R)). {: .justify}|
 
 ### See also
 

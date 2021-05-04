@@ -30,7 +30,8 @@ local function tabulate_materials (_, args)
             argnum = 1, expected = 'a table', got = 'a '..type(args)}
     end
 
-    local materials, composites, path, particle, energies, compile, cutoff, dcs
+    local materials, composites, path, particle, energies, compile, cutoff,
+        elastic_ratio, dcs
     for k, v in pairs(args) do
         if k == 'composites' then composites = v
         elseif k == 'path' then path = v
@@ -38,6 +39,7 @@ local function tabulate_materials (_, args)
         elseif k == 'energies' then energies = v
         elseif k == 'compile' then compile = v
         elseif k == 'cutoff' then cutoff = v
+        elseif k == 'elastic_ratio' then elastic_ratio = v
         elseif k == 'dcs' then dcs = v
         elseif k ~= 'materials' then
             raise_error{
@@ -63,6 +65,15 @@ local function tabulate_materials (_, args)
         else
             raise_error{argname = 'cutoff', expected = 'a number',
                 got = metatype.a(cutoff)}
+        end
+    end
+
+    if elastic_ratio ~= nil then
+        if type(elastic_ratio) == 'number' then
+            settings[0].elastic_ratio = elastic_ratio
+        else
+            raise_error{argname = 'elastic_ratio', expected = 'a number',
+                got = metatype.a(elastic_ratio)}
         end
     end
 

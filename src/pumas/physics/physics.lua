@@ -206,6 +206,8 @@ do
             return 'Physics'
         elseif k == 'cutoff' then
             return rawget(self, '_cutoff')
+        elseif k == 'elastic_ratio' then
+            return rawget(self, '_elastic_ratio')
         elseif k == 'Context' then
             return context.Context
         elseif k == 'dump' then
@@ -230,8 +232,8 @@ end
 
 
 function Physics:__newindex (k, v)
-    local fields = {'__metatype', 'cutoff', 'Context', 'composites', 'elements',
-        'materials', 'particle'}
+    local fields = {'__metatype', 'cutoff', 'elastic_ratio', 'Context',
+        'composites', 'elements', 'materials', 'particle'}
     for _, attr in ipairs(fields) do
         if k == attr then
             if v == nil then
@@ -270,13 +272,14 @@ do
 
         -- Load the physics tables
         if tp == 'table' then
-            local particle, mdf, dedx, cutoff, dcs
+            local particle, mdf, dedx, cutoff, elastic_ratio, dcs
             for k, v in pairs(args) do
-                if     k == 'particle' then particle = v
-                elseif k == 'mdf'      then mdf = v
-                elseif k == 'dedx'     then dedx = v
-                elseif k == 'cutoff'   then cutoff = v
-                elseif k == 'dcs'      then dcs = v
+                if     k == 'particle'      then particle = v
+                elseif k == 'mdf'           then mdf = v
+                elseif k == 'dedx'          then dedx = v
+                elseif k == 'cutoff'        then cutoff = v
+                elseif k == 'elastic_ratio' then elastic_ratio = v
+                elseif k == 'dcs'           then dcs = v
                 else
                     raise_error{
                         argname = k, description = 'unknown argument'}
@@ -291,6 +294,15 @@ do
                 else
                     raise_error{argname = 'cutoff', expected = 'a number',
                         got = metatype.a(cutoff)}
+                end
+            end
+
+            if elastic_ratio ~= nil then
+                if type(elastic_ratio) == 'number' then
+                    settings[0].elastic_ratio = elastic_ratio
+                else
+                    raise_error{argname = 'elastic_ratio',
+                        expected = 'a number', got = metatype.a(elastic_ratio)}
                 end
             end
 
@@ -340,9 +352,11 @@ do
         end
 
         local cutoff = tonumber(clib.pumas_physics_cutoff(c[0]))
+        local elastic_ratio = tonumber(clib.pumas_physics_elastic_ratio(c[0]))
 
         local self = setmetatable({_c = c, _version = physics_version,
-            _update_composites = false, _cutoff = cutoff}, cls)
+            _update_composites = false, _cutoff = cutoff,
+            _elastic_ratio = elastic_ratio}, cls)
         physics_version = physics_version + 1
 
         return self

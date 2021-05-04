@@ -23,6 +23,7 @@ describe('Physics', function ()
             assert.is.equal(3, util.getn(p.elements))
             assert.is.equal(2, util.getn(p.materials))
             assert.is.equal(5E-02, p.cutoff)
+            assert.is.equal(1E-04, p.elastic_ratio)
             assert.is.equal('Physics', metatype(p))
         end)
 
@@ -31,7 +32,8 @@ describe('Physics', function ()
                 mdf = physics.path..'/muon/materials.xml',
                 dedx = physics.path..'/muon',
                 particle = 'muon',
-                cutoff = 0.1}
+                cutoff = 0.1,
+                elastic_ratio = 1E-02}
             assert.is.equal('muon', (p.particle.name))
             assert.is.equal(pumas.constants.MUON_MASS, (p.particle.mass))
             assert.is.equal(pumas.constants.MUON_C_TAU, (p.particle.lifetime))
@@ -39,6 +41,7 @@ describe('Physics', function ()
             assert.is.equal(3, util.getn(p.elements))
             assert.is.equal(2, util.getn(p.materials))
             assert.is.equal(0.1, p.cutoff)
+            assert.is.equal(1E-02, p.elastic_ratio)
             assert.is.equal('Physics', metatype(p))
         end)
 
@@ -56,6 +59,17 @@ describe('Physics', function ()
                         cutoff = 'bad'}
                 end,
                 "bad argument 'cutoff' to 'Physics' \z
+                (expected a number, got a string)")
+
+            assert.has_error(
+                function ()
+                    pumas.Physics{
+                        mdf = physics.path..'/tau/materials.xml',
+                        dedx = physics.path..'/tau',
+                        particle = 'tau',
+                        elastic_ratio = 'bad'}
+                end,
+                "bad argument 'elastic_ratio' to 'Physics' \z
                 (expected a number, got a string)")
         end)
     end)
@@ -92,6 +106,8 @@ describe('Physics', function ()
 
             assert.is.equal(5E-02, physics.muon.cutoff)
             assert.is.equal(1E-01, physics.tau.cutoff)
+            assert.is.equal(1E-04, physics.muon.elastic_ratio)
+            assert.is.equal(1E-02, physics.tau.elastic_ratio)
         end)
 
         it('should not be mutable', function ()

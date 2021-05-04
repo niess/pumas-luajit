@@ -32,6 +32,7 @@ pumas.build{
     energies = {1E+03, 1E+06, 1E+09},
     particle = 'tau',
     cutoff = 1E-01,
+    elastic_ratio = 1E-02,
     path = physics.path..'/tau'}
 
 physics.tau = pumas.Physics(physics.path..'/tau')

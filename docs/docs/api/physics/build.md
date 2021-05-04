@@ -17,20 +17,23 @@ indexed by name or directly name `string`s refering to existing entries in the
 ## Synopsis
 ``` lua
 pumas.build{
-    materials=, (compile)=, (composites)=, (energies)=, (particle)=, (path)=}
+    materials=, (compile)=, (composites)=, (cutoff)=, (energies)=, (elastic_ratio)=,
+    (particle)=, (path)=}
 ```
 
 ## Arguments
 
 |Name|Type|Description|
 |----|----|-----------|
-|*materials*   |`table`  | The table can contain [Material](Material.md) instances indexed by name or directly name `string`s refering to existing entries in the [materials](../data/materials.md) table (see the [examples](#examples) below).|
+|*materials*       |`table`  | The table can contain [Material](Material.md) instances indexed by name or directly name `string`s refering to existing entries in the [materials](../data/materials.md) table (see the [examples](#examples) below).|
 ||||
-|(*compile*)   |`boolean`| Compile the tabulations to a ready to use binary format. Default: `True`.|
-|(*composites*)|`table`  | Mapping with keys naming composite materials and values providing their composition. Default: `nil`.|
-|(*energies*)  |`table`  | List of kinetic energy values to tabulate. Default: see below.|
-|(*particle*)  |`string` | Name of the transported (projectile) particle. Must be `'muon'` or `'tau'`. Default: `'muon'`.|
-|(*path*)      |`table`  | Path under which to store the tabulations. Default: `'.'`.|
+|(*compile*)       |`boolean`| Compile the tabulations to a ready to use binary format. Default: `True`.|
+|(*composites*)    |`table`  | Mapping with keys naming composite materials and values providing their composition. Default: `nil`.|
+|(*cutoff*)        |`number` | Cutoff value between continuous and discrete energy losses. Defaults to 5% which is a good compromise between speed and accuracy for transporting a continuous flux of $\mu$ (see e.g. [Sokalski et al.](https://doi.org/10.1103/PhysRevD.64.074015) or [Koehne et al.](https://doi.org/10.1016/j.cpc.2013.04.001)). {: .justify}|
+|(*energies*)      |`table`  | List of kinetic energy values to tabulate. Default: see below.|
+|(*elastic\_ratio*)|`number` | Ratio of the elastic hard path length w.r.t. the first transport path length. The lower the more detailed the simulation of elastic scattering. Defaults to 1E-04 (see e.g. [Fernandez-Varea et al.](https://doi.org/10.1016/0168-583X(93)95827-R)). {: .justify}|
+|(*particle*)      |`string` | Name of the transported (projectile) particle. Must be `'muon'` or `'tau'`. Default: `'muon'`.|
+|(*path*)          |`table`  | Path under which to store the tabulations. Default: `'.'`.|
 
 If kinetic *energies* values are not specified a log like default sampling is
 used. For muons the exact same sampling than in the Particle Data Group
