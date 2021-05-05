@@ -42,8 +42,7 @@ local function load_composites (self)
     return composites
 end
 
--- XXX Add a dcs package / library (out of Physics object)
--- XXX Add DCS model / name
+
 local function load_dcs (self)
     local tmp = rawget(self, '_dcs')
     if tmp then
@@ -197,6 +196,7 @@ end
 -------------------------------------------------------------------------------
 -- The Physics metatype
 -------------------------------------------------------------------------------
+-- XXX Allow to build & load the physics using a temporary directory
 local Physics = {}
 
 

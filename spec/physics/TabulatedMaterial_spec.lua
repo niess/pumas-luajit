@@ -157,10 +157,51 @@ describe('TabulatedMaterial', function ()
         end)
     end)
 
-    describe('scattering length', function ()
+    describe('elastic_scattering length', function ()
         it('should return some number', function ()
             for _, m in ipairs(materials) do
-                assert.is.equal('number', type(m:scattering_length(1)))
+                assert.is.equal('number', type(m:elastic_scattering_length(1)))
+            end
+        end)
+    end)
+
+    describe('elastic_cutoff_angle', function ()
+        it('should return some number', function ()
+            for _, m in ipairs(materials) do
+                assert.is.equal('number', type(m:elastic_cutoff_angle(1)))
+            end
+        end)
+    end)
+
+    describe('multiple_scattering length', function ()
+        it('should return some number', function ()
+            for _, m in ipairs(materials) do
+                assert.is.equal('number', type(m:multiple_scattering_length(1)))
+            end
+        end)
+    end)
+
+    describe('table', function ()
+        it('content should be of the right size', function ()
+            for _, m in ipairs(materials) do
+                local t = m.table
+                assert.is.equal('table', type(t))
+                assert.is.equal('Readonly', getmetatable(t))
+
+                for _, mode in ipairs{'csda', 'hybrid', 'detailed'} do
+                    for _, prop in ipairs{'energy_loss', 'kinetic_energy',
+                        'grammage', 'proper_time'} do
+                        assert.is.equal(4, #t[mode][prop])
+                    end
+                end
+
+                for _, mode in ipairs{'hybrid', 'detailed'} do
+                    for _, prop in ipairs{'cross_section',
+                        'elastic_scattering_length', 'elastic_cutoff_angle',
+                        'multiple_scattering_length'} do
+                        assert.is.equal(4, #t[mode][prop])
+                    end
+                end
             end
         end)
     end)

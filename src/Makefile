@@ -15,7 +15,7 @@ LUAJIT_REPO=     "https://github.com/openresty/luajit2.git"
 LUAJIT_VERSION=  "v2.1-20200102"
 
 PUMAS_REPO=      "https://github.com/niess/pumas.git"
-PUMAS_VERSION=   "431c9e19ee407656e2763804815b1a513199e0af"
+PUMAS_VERSION=   "f42b4afdea3f38661ed8bf35c4165b825fa1e9e0"
 
 TURTLE_REPO=     "https://github.com/niess/turtle.git"
 TURTLE_VERSION=  "2c2ecdf89bfc341d64f0ec981008f5fc5c498861"
@@ -309,6 +309,8 @@ RUNTIME_OBJS= $(CORE_OBJS) \
 	      $(OBJS_DIR)/$(CROSS)pumas_data_elements.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_data_igrf13.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_data_materials.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_dcs.lua.o \
+	      $(OBJS_DIR)/$(CROSS)pumas_elastic.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_element.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_enum.lua.o \
 	      $(OBJS_DIR)/$(CROSS)pumas_error.lua.o \

@@ -47,6 +47,7 @@ register('pumas.state')
 
 pumas.constants = require('pumas.constants')
 pumas.dcs = require('pumas.dcs')
+pumas.elastic = require('pumas.elastic')
 
 
 -------------------------------------------------------------------------------

@@ -58,7 +58,7 @@ pumas.build{
     path = 'share/materials/standard'
 }
 
--- Create the simulation physics
+-- Load the tabulated physics
 local physics = pumas.Physics('share/materials/standard')
 ```
 

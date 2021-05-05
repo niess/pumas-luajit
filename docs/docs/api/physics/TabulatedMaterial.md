@@ -32,22 +32,25 @@ following extra attributes:
 #### *table*
 
 The *table* attribute contains the physics tabulations organized in three
-sub-tables corresponding to the three energy loss modes: `'csda'`, `'detailed'`
-and `'hybrid'`. The available tabulations are summarized below, where it must be
-understood that *mode* stands for one of *csda*, *detailed* or *hybrid*. E.g.
-`table.csda.energy_loss` returns the tabulation of the continuous energy loss
-for the CSDA mode. More detailed explanations of the various physical quantities
-are also provided hereafter.
+sub-tables corresponding to the energy loss modes: `'csda'`, `'detailed'`,
+`'hybrid'` and `'virtual'`. The available tabulations are summarized below,
+where it must be understood that *mode* stands for one of *csda*, *detailed*,
+*hybrid* or *virtual*. E.g.  `table.csda.energy_loss` returns the tabulation of
+the continuous energy loss for the CSDA mode. More detailed explanations of the
+various physical quantities are also provided hereafter.
 {: .justify}
 
 |Name|Type|Description|
 |----|----|-----------|
-|*(mode).energy\_loss*      |[Readonly](../others/Readonly.md)| Continuous Energy Loss (CEL) per unit grammage, $\frac{dE}{dX}$, in $\text{GeV} \cdot \text{m}^2 \cdot \text{kg}^{-1}$  ([see below](#energy_loss)). {: .justify} |
-|*(mode).kinetic\_energy*   |[Readonly](../others/Readonly.md)| Tabulated projectile kinetic energies, $E$, in $\text{GeV}$. |
-|*(mode).grammage*          |[Readonly](../others/Readonly.md)| Total grammage for CEL, $X$, in $\text{kg} \cdot \text{m}^{-2}$ ([see below](#grammage)). {: .justify} |
-|*(mode).proper\_time*       |[Readonly](../others/Readonly.md)| Total proper time for CEL, $\tau$, assuming a uniform density, in $\text{kg} \cdot \text{m}^{-2}$ ([see below](#proper_time)). {: .justify} |
+|*(mode).elastic\_cutoff\_angle*       |[Readonly](../others/Readonly.md)| Cutoff angle between hard and soft elastic events, in $rad$  ([see below](#elastic_cutoff_angle)). {: .justify} |
+|*(mode).elastic\_scattering\_length*  |[Readonly](../others/Readonly.md)| Interaction length per unit grammage for hard elastic events, in $\text{kg} \cdot \text{m}^{-2}$  ([see below](#elastic_scattering_length)). {: .justify} |
+|*(mode).energy\_loss*                 |[Readonly](../others/Readonly.md)| Continuous Energy Loss (CEL) per unit grammage, $\frac{dE}{dX}$, in $\text{GeV} \cdot \text{m}^2 \cdot \text{kg}^{-1}$  ([see below](#energy_loss)). {: .justify} |
+|*(mode).kinetic\_energy*              |[Readonly](../others/Readonly.md)| Tabulated projectile kinetic energies, $E$, in $\text{GeV}$. |
+|*(mode).grammage*                     |[Readonly](../others/Readonly.md)| Total grammage for CEL, $X$, in $\text{kg} \cdot \text{m}^{-2}$ ([see below](#grammage)). {: .justify} |
+|*(mode).multiple\_scattering\_length* |[Readonly](../others/Readonly.md)| Multiple scattering (first transport) path length for soft events, in kg/m<sup>2</sup> ([see below](#multiple_scattering_length)). {: .justify} |
+|*(mode).proper\_time*                 |[Readonly](../others/Readonly.md)| Total proper time for CEL, $\tau$, assuming a uniform density, in $\text{kg} \cdot \text{m}^{-2}$ ([see below](#proper_time)). {: .justify} |
 |||
-|*(mode).cross\_section*    |[Readonly](../others/Readonly.md)| Macroscopic cross-section for DELs, $\Sigma$, in m<sup>2</sup>/kg. Available only for `detailed` and `hybrid` modes ([see below](#cross_section)). {: .justify} |
+|*(mode).cross\_section*               |[Readonly](../others/Readonly.md)| Macroscopic cross-section for DELs, $\Sigma$, in m<sup>2</sup>/kg. Available only for `detailed` and `hybrid` modes ([see below](#cross_section)). {: .justify} |
 
 !!! note
     The *detailed* and *hybrid* mode use the same tabulations. For convenience
@@ -166,12 +169,14 @@ TabulatedMaterial:cross_section(energy)
 
 ### See also
 
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
+[elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
 [energy\_loss](#tabulatedmaterialenergy_loss),
 [grammage](#tabulatedmaterialgrammage),
 [kinetic\_energy](#tabulatedmaterialkinetic_energy),
 [magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
-[proper\_time](#tabulatedmaterialproper_time),
-[scattering\_length](#tabulatedmaterialscattering_length).
+[multiple\_scattering\_length](#tabulatedmaterialmultiple_scattering_length),
+[proper\_time](#tabulatedmaterialproper_time).
 </div>
 
 
@@ -204,11 +209,13 @@ TabulatedMaterial:energy_loss(energy, (mode))
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
+[elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
 [grammage](#tabulatedmaterialgrammage),
 [kinetic\_energy](#tabulatedmaterialkinetic_energy),
 [magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
-[proper\_time](#tabulatedmaterialproper_time),
-[scattering\_length](#tabulatedmaterialscattering_length).
+[multiple\_scattering\_length](#tabulatedmaterialmultiple_scattering_length),
+[proper\_time](#tabulatedmaterialproper_time).
 </div>
 
 
@@ -240,11 +247,13 @@ TabulatedMaterial:grammage(energy, (mode))
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
+[elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
 [energy\_loss](#tabulatedmaterialenergy_loss),
 [kinetic\_energy](#tabulatedmaterialkinetic_energy),
 [magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
-[proper\_time](#tabulatedmaterialproper_time),
-[scattering\_length](#tabulatedmaterialscattering_length).
+[multiple\_scattering\_length](#tabulatedmaterialmultiple_scattering_length),
+[proper\_time](#tabulatedmaterialproper_time).
 </div>
 
 
@@ -265,7 +274,7 @@ TabulatedMaterial:kinetic_energy(grammage, (mode))
 |Name|Type|Description|
 |----|----|-----------|
 |*grammage*|`number`| Total grammage path length, in $\text{kg} \cdot \text{m}^{-2}$.|
-|*mode*    |`string`| Energy loss mode, one of `'csda'`, `'detailed'` or `'hybrid'`. Defaults to `'csda'`. {: .justify} |
+|(*mode*)  |`string`| Energy loss mode, one of `'csda'`, `'detailed'` or `'hybrid'`. Defaults to `'csda'`. {: .justify} |
 
 ### Returns
 
@@ -276,11 +285,13 @@ TabulatedMaterial:kinetic_energy(grammage, (mode))
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
+[elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
 [energy\_loss](#tabulatedmaterialenergy_loss),
 [grammage](#tabulatedmaterialgrammage),
 [magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
-[proper\_time](#tabulatedmaterialproper_time),
-[scattering\_length](#tabulatedmaterialscattering_length).
+[multiple\_scattering\_length](#tabulatedmaterialmultiple_scattering_length),
+[proper\_time](#tabulatedmaterialproper_time).
 </div>
 
 
@@ -326,11 +337,61 @@ TabulatedMaterial:magnetic_rotation(energy)
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
+[elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
 [energy\_loss](#tabulatedmaterialenergy_loss),
 [grammage](#tabulatedmaterialgrammage),
 [kinetic\_energy](#tabulatedmaterialkinetic_energy),
-[proper\_time](#tabulatedmaterialproper_time),
-[scattering\_length](#tabulatedmaterialscattering_length).
+[multiple\_scattering\_length](#tabulatedmaterialmultiple_scattering_length),
+[proper\_time](#tabulatedmaterialproper_time).
+</div>
+
+
+<div markdown="1" class="shaded-box fancy">
+## TabulatedMaterial.multiple\_scattering\_length
+
+Interpolation of the multiple scattering (first transport) path length for soft
+events, $\lambda$, as function of the projectile kinetic energy, $E$. The first
+transport path length is related to the standard deviation of the multiple
+scattering angle as:
+{: .justify}
+
+$$
+\theta^2 = \frac{X}{2 \lambda}
+$$
+
+with $X$ the grammage path length. See [Fernández-Varea _et al._,
+1993](https://doi.org/10.1016/0168-583X(93)95827-R), for more details.
+{: .justify}
+
+### Synopsis
+```Lua
+TabulatedMaterial:multiple_scattering_length(energy, (mode))
+```
+
+### Arguments
+
+|Name|Type|Description|
+|----|----|-----------|
+|*energy*|`number`| Kinetic energy of the projectile, in GeV.|
+|(*mode*)|`string`| Energy loss mode, one of `'csda'`, `'detailed'`, `'hybrid'` or `'virtual'`. Defaults to `'csda'`. {: .justify} |
+
+### Returns
+
+|Type|Description|
+|----|-----------|
+|`number`| The transport first path length, in $\text{kg} \cdot \text{m}^{-2}$.|
+
+### See also
+
+[cross\_section](#tabulatedmaterialcross_section),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
+[elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
+[energy\_loss](#tabulatedmaterialenergy_loss),
+[grammage](#tabulatedmaterialgrammage),
+[kinetic\_energy](#tabulatedmaterialkinetic_energy),
+[magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
+[proper\_time](#tabulatedmaterialproper_time).
 </div>
 
 
@@ -351,7 +412,7 @@ TabulatedMaterial:proper_time(energy, (mode))
 |Name|Type|Description|
 |----|----|-----------|
 |*energy*|`number`| Initial kinetic energy of the projectile, in GeV.|
-|*mode*  |`string`| Energy loss mode, one of `'csda'`, `'detailed'` or `'hybrid'`. Defaults to `'csda'`. {: .justify} |
+|(*mode*)|`string`| Energy loss mode, one of `'csda'`, `'detailed'` or `'hybrid'`. Defaults to `'csda'`. {: .justify} |
 
 ### Returns
 
@@ -362,53 +423,11 @@ TabulatedMaterial:proper_time(energy, (mode))
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
+[elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
 [energy\_loss](#tabulatedmaterialenergy_loss),
 [grammage](#tabulatedmaterialgrammage),
 [kinetic\_energy](#tabulatedmaterialkinetic_energy),
 [magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
-[scattering\_length](#tabulatedmaterialscattering_length).
-</div>
-
-
-<div markdown="1" class="shaded-box fancy">
-## TabulatedMaterial.scattering\_length
-
-Compute the first transport path length for Coulomb Multiple Scattering (MS),
-$\lambda$, as function of the projectile kinetic energy, $E$. The first path
-length is related to the standard deviation of the MS angle as:
-{: .justify}
-
-$$
-\theta^2 = \frac{X}{2 \lambda}
-$$
-
-with $X$ the grammage path length. See [Fernández-Varea _et al._,
-1993](https://doi.org/10.1016/0168-583X(93)95827-R), for more details.
-{: .justify}
-
-### Synopsis
-```Lua
-TabulatedMaterial:scattering_length(energy)
-```
-
-### Arguments
-
-|Name|Type|Description|
-|----|----|-----------|
-|*energy*|`number`| Kinetic energy of the projectile, in GeV.|
-
-### Returns
-
-|Type|Description|
-|----|-----------|
-|`number`| The Coulomb MS first path length, in $\text{kg} \cdot \text{m}^{-2}$.|
-
-### See also
-
-[cross\_section](#tabulatedmaterialcross_section),
-[energy\_loss](#tabulatedmaterialenergy_loss),
-[grammage](#tabulatedmaterialgrammage),
-[kinetic\_energy](#tabulatedmaterialkinetic_energy),
-[magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
-[proper\_time](#tabulatedmaterialproper_time).
+[multiple\_scattering\_length](#tabulatedmaterialmultiple_scattering_length).
 </div>

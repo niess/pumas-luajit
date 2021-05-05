@@ -18,6 +18,10 @@ for k, v in pairs(type_) do
 end
 
 
+-- XXX wrap double[3] accessor if possible? E.g. use state.direction.x instead
+--     of state.direction[0]
+
+
 -------------------------------------------------------------------------------
 -- Wrap setter for double[3]
 -------------------------------------------------------------------------------

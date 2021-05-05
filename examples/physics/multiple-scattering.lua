@@ -1,9 +1,36 @@
+-------------------------------------------------------------------------------
+-- Simulate the multiple scattering distribution of muons for some experimental
+-- configurations
+--
+-- The following configurations have been implemented:
+--
+--   1. HYPERON, Akimenko et al. (1996) :
+--      - 7.3 GeV /c muon beam on a 14.36 cm thick Cu target.
+--
+--   2. MUSCAT, Attwood et al. (2006) :
+--      - 172 MeV/c muon beam on 1.5 mm of Al or 0.24 mm of Fe.
+--
+-- Reference:
+--   - Akimenko et al. (1996),
+--     https://doi.org/10.1016/0168-9002(86)90990-3
+--
+--   - Attwood et al. (2006),
+--     https://doi.org/10.1016/j.nimb.2006.05.006
+--
+-- Author: Valentin Niess
+-------------------------------------------------------------------------------
 local pumas = require('pumas')
 
+
+-------------------------------------------------------------------------------
 -- Parse the setup from the command line
+-------------------------------------------------------------------------------
 local setup = arg[1] or 'Al'
 
+
+-------------------------------------------------------------------------------
 -- Build the scattering target
+-------------------------------------------------------------------------------
 local bins, material, momentum, thickness
 if setup == 'Cu' then
     -- Akimenko et al. (1984)
@@ -41,20 +68,32 @@ end
 local geometry = pumas.PolyhedronGeometry{material,
     Box({0, 0, 0.5 * thickness}, 10, 10, 0.5 * thickness)}
 
--- Create a detailed simulation context
+
+-------------------------------------------------------------------------------
+-- Tabulate the physics
+-------------------------------------------------------------------------------
 pumas.build{materials = {material}, path = 'share/materials/elastic'}
 
+
+-------------------------------------------------------------------------------
+-- Create a detailed simulation context
+-------------------------------------------------------------------------------
 local simulation = pumas.Context{
     physics = 'share/materials/elastic',
-    mode = 'forward detailed',
     geometry = geometry}
 
+
+-------------------------------------------------------------------------------
 -- Initial muon state
-local m = pumas.constants.MUON_MASS
-local energy = math.sqrt(momentum^2 + m^2) - m
+-------------------------------------------------------------------------------
+local mass = pumas.constants.MUON_MASS
+local energy = math.sqrt(momentum^2 + mass^2) - mass
 local initial_state = pumas.State{energy = energy}
 
+
+-------------------------------------------------------------------------------
 -- Run the Monte Carlo
+-------------------------------------------------------------------------------
 local counts = {}
 for i = 1,#bins do counts[i] = 0 end
 
@@ -63,23 +102,31 @@ local state = pumas.State()
 for _ = 1, n do
     state:set(initial_state)
     simulation:transport(state)
-    local theta
-    if setup == 'Cu' then
-        local rho = math.sqrt(state.direction[0]^2 + state.direction[1]^2)
-        theta = math.atan2(rho, state.direction[2])
-    else
-        theta = math.atan2(state.direction[1], state.direction[2])
-        theta = math.abs(theta)
-    end
-    for i, v in ipairs(bins) do
-        if theta < v then
-            counts[i] = counts[i] + 1
-            break
+
+    local epsilon = 1E-09
+    if (state.energy > 0.1E-03) and
+       (state.position[2] >= thickness - epsilon) then
+        local theta
+        if setup == 'Cu' then
+            local rho = math.sqrt(state.direction[0]^2 + state.direction[1]^2)
+            theta = math.atan2(rho, state.direction[2])
+        else
+            theta = math.atan2(state.direction[1], state.direction[2])
+            theta = math.abs(theta)
+        end
+        for i, v in ipairs(bins) do
+            if theta < v then
+                counts[i] = counts[i] + 1
+                break
+            end
         end
     end
 end
 
+
+-------------------------------------------------------------------------------
 -- Print the result
+-------------------------------------------------------------------------------
 print('# angle       pdf      uncert.')
 print('# (rad)    (rad^-1)   (rad^-1)')
 local xlow = 0.

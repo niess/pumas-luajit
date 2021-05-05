@@ -66,6 +66,8 @@ do
                 return clib.PUMAS_MODE_CSDA
             elseif (mode == 'hybrid') or (mode == 'detailed') then
                 return clib.PUMAS_MODE_HYBRID
+            elseif (mode == 'virtual') then
+                return clib.PUMAS_MODE_VIRTUAL
             else
                 error.raise{fname = fname, argnum = 3,
                     description = "invalid mode '"..mode.."'"}
@@ -110,26 +112,35 @@ do
             t = {}
         end
 
-        for _, mode in pairs{'csda', 'hybrid'} do
+        for _, mode in ipairs{'csda', 'hybrid', 'virtual'} do
             local v
             if is_update then
                 v = readonly.rawget(t[mode])
             else
                 v = {}
             end
-            for _, k in pairs{'energy_loss', 'grammage', 'proper_time'} do
+            if mode == 'virtual' then
+                local k = 'multiple_scattering_length'
                 local ref = is_update and v[k] or nil
                 v[k] = get_or_update_table(self, k, mode, ref)
+            else
+                for _, k in ipairs{'energy_loss', 'grammage', 'proper_time',
+                    'multiple_scattering_length'} do
+                    local ref = is_update and v[k] or nil
+                    v[k] = get_or_update_table(self, k, mode, ref)
+                end
             end
 
             if mode == 'csda' then
                 local ref = is_update and v['kinetic_energy'] or nil
                 v['kinetic_energy'] = get_or_update_table(
                     self, 'kinetic_energy', mode, ref)
-            else
-                local ref = is_update and v['cross_section'] or nil
-                v['cross_section'] = get_or_update_table(
-                    self, 'cross_section', mode, ref)
+            elseif mode == 'hybrid' then
+                for _, prop in ipairs{'cross_section',
+                    'elastic_scattering_length', 'elastic_cutoff_angle'} do
+                    local ref = is_update and v[prop] or nil
+                    v[prop] = get_or_update_table(self, prop, mode, ref)
+                end
             end
 
             if not is_update then
@@ -139,6 +150,11 @@ do
 
         if not is_update then
             readonly.rawget(t.hybrid).kinetic_energy = t.csda.kinetic_energy
+            for _, prop in ipairs{'elastic_scattering_length',
+                'elastic_cutoff_angle'} do
+                readonly.rawget(t.csda)[prop] = t.hybrid[prop]
+                readonly.rawget(t.virtual)[prop] = t.hybrid[prop]
+            end
             t.detailed = t.hybrid
             return readonly.Readonly(t)
         end
@@ -227,10 +243,25 @@ do
             return tonumber(value[0])
         end,
 
-        scattering_length = function (self, energy)
-            update(self, 'scattering_length')
-            call(clib.pumas_physics_property_scattering_length,
+        elastic_cutoff_angle = function (self, energy)
+            update(self, 'elastic_cutoff_angle')
+            call(clib.pumas_physics_property_elastic_cutoff_angle,
                 self.physics._c[0], self._index, energy, value)
+            return tonumber(value[0])
+        end,
+
+        elastic_scattering_length = function (self, energy)
+            update(self, 'elastic_scattering_length')
+            call(clib.pumas_physics_property_elastic_scattering_length,
+                self.physics._c[0], self._index, energy, value)
+            return tonumber(value[0])
+        end,
+
+        multiple_scattering_length = function (self, energy, mode)
+            update(self, 'multiple_scattering_length')
+            call(clib.pumas_physics_property_multiple_scattering_length,
+                self.physics._c[0], toindex(mode, 'multiple_scattering_length'),
+                self._index, energy, value)
             return tonumber(value[0])
         end
     }
