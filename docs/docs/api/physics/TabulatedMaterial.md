@@ -42,8 +42,8 @@ various physical quantities are also provided hereafter.
 
 |Name|Type|Description|
 |----|----|-----------|
-|*(mode).elastic\_cutoff\_angle*       |[Readonly](../others/Readonly.md)| Cutoff angle between hard and soft elastic events, in $rad$  ([see below](#elastic_cutoff_angle)). {: .justify} |
-|*(mode).elastic\_scattering\_length*  |[Readonly](../others/Readonly.md)| Interaction length per unit grammage for hard elastic events, in $\text{kg} \cdot \text{m}^{-2}$  ([see below](#elastic_scattering_length)). {: .justify} |
+|*(mode).elastic\_cutoff\_angle*       |[Readonly](../others/Readonly.md)| Cutoff angle between hard and soft elastic events, $\theta_0$, in $rad$  ([see below](#elastic_cutoff_angle)). {: .justify} |
+|*(mode).elastic\_scattering\_length*  |[Readonly](../others/Readonly.md)| Interaction length per unit grammage for hard elastic events, $\lambda_\text{el}$, in $\text{kg} \cdot \text{m}^{-2}$  ([see below](#elastic_scattering_length)). {: .justify} |
 |*(mode).energy\_loss*                 |[Readonly](../others/Readonly.md)| Continuous Energy Loss (CEL) per unit grammage, $\frac{dE}{dX}$, in $\text{GeV} \cdot \text{m}^2 \cdot \text{kg}^{-1}$  ([see below](#energy_loss)). {: .justify} |
 |*(mode).kinetic\_energy*              |[Readonly](../others/Readonly.md)| Tabulated projectile kinetic energies, $E$, in $\text{GeV}$. |
 |*(mode).grammage*                     |[Readonly](../others/Readonly.md)| Total grammage for CEL, $X$, in $\text{kg} \cdot \text{m}^{-2}$ ([see below](#grammage)). {: .justify} |
@@ -57,14 +57,43 @@ various physical quantities are also provided hereafter.
     both notations can be used. Yet, they actualy refer to the same tables.
     {: .justify}
 
+#### elastic\_cutoff\_angle
+
+The simulation of elastic (Coulomb) interactions is done following a condensed
+(mixed) Monte Carlo scheme, as detailed in [Fernández-Varea _et al._,
+1993](https://doi.org/10.1016/0168-583X(93)95827-R). Soft interactions with
+deflections smaller than a cutoff angle $\theta_0$ are rendered collectively as
+a multiple scattering process. Hard elastic collisions, with larger deflections,
+are however simulated in detail.
+{: .justify}
+
+!!! note
+    The cutoff angle, $\theta_0$, is set by the *elastic\_ratio* parameter when
+    [building](build.md) the Physics.
+    {: .justify}
+
+#### elastic\_scattering\_length
+
+The interaction length for hard elastic events, $\lambda_\text{el}$, is defined
+per unit mass as:
+{: .justify}
+
+$$
+\frac{1}{\lambda_\text{el}(E)} = 2 \pi \frac{\mathcal{N}_A}{A} \int_{\theta_0}^{\pi}{\frac{\partial \sigma_\text{el}(E, \theta)}{\partial \theta} \sin(\theta) d\theta}
+$$
+
+where $\sigma_\text{el}$ is the elastic differential cross-section. Soft elastic
+events, with a scattering angle smaller than $\theta_0$ are included in the
+multiple scattering.
+
 #### energy\_loss
 
-The simulation of physics interactions is split into two components: Discrete
-Energy Losses (DELs) and Continuous Energy Losses (CELs), see [Niess _et al._,
-2017](https://arxiv.org/abs/1705.05636) for more details. The splitting is done
-using a relative cutoff $\alpha = 5\%$, following [Sokalski _et al._,
-2001](https://arxiv.org/abs/hep-ph/0010322). The continuous energy loss per
-unit of grammage, $\frac{dE}{dX}$, is given as:
+The simulation of non elastic physics interactions is split into two components:
+Discrete Energy Losses (DELs) and Continuous Energy Losses (CELs), see [Niess
+_et al._, 2017](https://arxiv.org/abs/1705.05636) for more details. The
+splitting is done using a relative cutoff $\alpha = 5\%$, following [Sokalski
+_et al._, 2001](https://arxiv.org/abs/hep-ph/0010322). The continuous energy
+loss per unit of grammage, $\frac{dE}{dX}$, is given as:
 {: .justify}
 
 $$
@@ -115,6 +144,20 @@ $$
 where $E_0$ if the energy after the first DEL and $E_1$ the energy before the
 second DEL occurs.
 {: .justify}
+
+#### multiple\_scattering
+
+Angular deflections due to soft events are treated collectively as a multiple
+scattering process. The effective (first transport) path length of this process
+is computed by summing up all soft contributions, as:
+{: .justify}
+
+$$
+\begin{aligned}
+\frac{1}{\lambda_1(E)} =& 4 \pi \frac{\mathcal{N}_A}{A} \int_0^{\theta_0}{(1 - \cos(\theta))\frac{\partial \sigma_\text{el}(E, \theta)}{\partial \theta} \sin(\theta) d\theta}\, + \\
+                        & 4 \pi \frac{\mathcal{N}_A}{A} \int_0^{\alpha E}{(1 - \cos(\theta))\frac{\partial \sigma(E, \theta)}{\partial q}\frac{\partial q}{\partial \theta} \sin(\theta) dq}
+\end{aligned}
+$$
 
 #### proper\_time
 
@@ -181,6 +224,82 @@ TabulatedMaterial:cross_section(energy)
 
 
 <div markdown="1" class="shaded-box fancy">
+## TabulatedMaterial.elastic\_cutoff\_angle
+
+Interpolation of the cutoff angle for elastic events, $\theta_0$, as function of
+the projectile kinetic energy, $E$. [See above](#elastic_cutoff_angle) for more
+details.
+{: .justify}
+
+### Synopsis
+```Lua
+TabulatedMaterial:elastic_cutoff_angle(energy)
+```
+
+### Arguments
+
+|Name|Type|Description|
+|----|----|-----------|
+|*energy*|`number`| Kinetic energy of the projectile, in GeV.|
+
+### Returns
+
+|Type|Description|
+|----|-----------|
+|`number`| The elastic cutoff angle, in $rad$ ([see above](#elastic_cutoff_angle)).|
+
+### See also
+
+[cross\_section](#tabulatedmaterialcross_section),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
+[energy\_loss](#tabulatedmaterialenergy_loss),
+[grammage](#tabulatedmaterialgrammage),
+[kinetic\_energy](#tabulatedmaterialkinetic_energy),
+[magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
+[multiple\_scattering\_length](#tabulatedmaterialmultiple_scattering_length),
+[proper\_time](#tabulatedmaterialproper_time).
+</div>
+
+
+<div markdown="1" class="shaded-box fancy">
+## TabulatedMaterial.elastic\_scattering\_length
+
+Interpolation of the interaction length for hard elastic events,
+$\lambda_\text{el}$, as function of the projectile kinetic energy, $E$. [See
+above](#elastic_scattering_length) for more details.
+{: .justify}
+
+### Synopsis
+```Lua
+TabulatedMaterial:elastic_scattering_length(energy)
+```
+
+### Arguments
+
+|Name|Type|Description|
+|----|----|-----------|
+|*energy*|`number`| Kinetic energy of the projectile, in GeV.|
+
+### Returns
+
+|Type|Description|
+|----|-----------|
+|`number`| The interaction length for hard elastic events, in $\text{kg} \cdot \text{m}^{-2}$ ([see above](#elastic_scattering_length)).|
+
+### See also
+
+[cross\_section](#tabulatedmaterialcross_section),
+[elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
+[energy\_loss](#tabulatedmaterialenergy_loss),
+[grammage](#tabulatedmaterialgrammage),
+[kinetic\_energy](#tabulatedmaterialkinetic_energy),
+[magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
+[multiple\_scattering\_length](#tabulatedmaterialmultiple_scattering_length),
+[proper\_time](#tabulatedmaterialproper_time).
+</div>
+
+
+<div markdown="1" class="shaded-box fancy">
 ## TabulatedMaterial.energy\_loss
 
 Interpolation of the Continuous Energy Loss (CEL), $\frac{dE}{dX}$, as function
@@ -209,8 +328,8 @@ TabulatedMaterial:energy_loss(energy, (mode))
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
-[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [grammage](#tabulatedmaterialgrammage),
 [kinetic\_energy](#tabulatedmaterialkinetic_energy),
 [magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
@@ -247,8 +366,8 @@ TabulatedMaterial:grammage(energy, (mode))
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
-[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [energy\_loss](#tabulatedmaterialenergy_loss),
 [kinetic\_energy](#tabulatedmaterialkinetic_energy),
 [magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
@@ -285,8 +404,8 @@ TabulatedMaterial:kinetic_energy(grammage, (mode))
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
-[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [energy\_loss](#tabulatedmaterialenergy_loss),
 [grammage](#tabulatedmaterialgrammage),
 [magnetic\_rotation](#tabulatedmaterialmagnetic_rotation),
@@ -337,8 +456,8 @@ TabulatedMaterial:magnetic_rotation(energy)
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
-[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [energy\_loss](#tabulatedmaterialenergy_loss),
 [grammage](#tabulatedmaterialgrammage),
 [kinetic\_energy](#tabulatedmaterialkinetic_energy),
@@ -351,13 +470,13 @@ TabulatedMaterial:magnetic_rotation(energy)
 ## TabulatedMaterial.multiple\_scattering\_length
 
 Interpolation of the multiple scattering (first transport) path length for soft
-events, $\lambda$, as function of the projectile kinetic energy, $E$. The first
-transport path length is related to the standard deviation of the multiple
+events, $\lambda_1$, as function of the projectile kinetic energy, $E$. The
+first transport path length is related to the standard deviation of the multiple
 scattering angle as:
 {: .justify}
 
 $$
-\theta^2 = \frac{X}{2 \lambda}
+\theta^2 = \frac{X}{2 \lambda_1}
 $$
 
 with $X$ the grammage path length. See [Fernández-Varea _et al._,
@@ -385,8 +504,8 @@ TabulatedMaterial:multiple_scattering_length(energy, (mode))
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
-[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [energy\_loss](#tabulatedmaterialenergy_loss),
 [grammage](#tabulatedmaterialgrammage),
 [kinetic\_energy](#tabulatedmaterialkinetic_energy),
@@ -423,8 +542,8 @@ TabulatedMaterial:proper_time(energy, (mode))
 ### See also
 
 [cross\_section](#tabulatedmaterialcross_section),
-[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [elastic\_cutoff\_angle](#tabulatedmaterialelastic_cutoff_angle),
+[elastic\_scattering\_length](#tabulatedmaterialelastic_scattering_length),
 [energy\_loss](#tabulatedmaterialenergy_loss),
 [grammage](#tabulatedmaterialgrammage),
 [kinetic\_energy](#tabulatedmaterialkinetic_energy),

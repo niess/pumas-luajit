@@ -18,6 +18,8 @@ local polyhedron = {}
 -- The polyhedron geometry metatype
 -------------------------------------------------------------------------------
 -- XXX Add a Polyhedron.validate method ?
+-- XXX Add generic polyhedron constructors, e.g. boxes, with rotation &
+--     translation
 
 local PolyhedronGeometry = {}
 

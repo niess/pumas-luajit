@@ -31,7 +31,7 @@ local setup = arg[1] or 'Al'
 -------------------------------------------------------------------------------
 -- Build the scattering target
 -------------------------------------------------------------------------------
-local bins, material, momentum, thickness
+local bins, material, momentum, thickness, density
 if setup == 'Cu' then
     -- Akimenko et al. (1984)
     material, thickness, momentum = 'Copper', 1.436E-02, 7.3
@@ -47,6 +47,8 @@ else
         material, thickness = 'Aluminum', 1.5E-03
     elseif setup == 'Fe' then
         material, thickness = 'Iron', 0.24E-03
+    elseif setup == 'H2' then
+        material, thickness, density = 'LiquidHydrogen', 109E-03, 0.0755E+03
     else
         error("bad setup '"..setup.."'")
     end
@@ -65,7 +67,8 @@ local function Box (center, hx, hy, hz)
     }
 end
 
-local geometry = pumas.PolyhedronGeometry{material,
+local medium = pumas.UniformMedium(material, density)
+local geometry = pumas.PolyhedronGeometry{medium,
     Box({0, 0, 0.5 * thickness}, 10, 10, 0.5 * thickness)}
 
 
