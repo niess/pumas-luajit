@@ -97,6 +97,8 @@ pumas.Physics{dedx=, mdf=, particle=, (cutoff)=, (elastic_ratio)=}
 
 [build](build.md),
 [CompositeMaterials](CompositeMaterials.md),
+[dcs](dcs.md),
+[elastic](elastic.md),
 [Element](Element.md),
 [Material](Material.md),
 [TabulatedMaterial](TabulatedMaterial.md).

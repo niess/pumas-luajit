@@ -37,3 +37,7 @@ td {
         -ms-transform: translate(-2px, -4px);
             transform: translate(-2px, -4px);
 }
+
+.nowrap {
+    white-space: nowrap;
+}

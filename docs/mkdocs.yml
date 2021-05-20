@@ -41,6 +41,8 @@ nav:
   - API &raquo; Physics:
     - build: api/physics/build.md
     - CompositeMaterials: api/physics/CompositeMaterials.md
+    - dcs: api/physics/dcs.md
+    - elastic: api/physics/elastic.md
     - Element: api/physics/Element.md
     - Material: api/physics/Material.md
     - Physics: api/physics/Physics.md

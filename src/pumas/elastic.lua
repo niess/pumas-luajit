@@ -7,7 +7,7 @@ local clib = require('pumas.clib')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
 
--- XXX Document the elastic API
+-- XXX Allow Element or Material to be provided as target
 local Elastic = {}
 
 do

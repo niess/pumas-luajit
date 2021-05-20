@@ -30,6 +30,8 @@ names but with some restrictions detailed below.
 ### See also
 
 [build](build.md),
+[dcs](dcs.md),
+[elastic](elastic.md),
 [Element](Element.md),
 [Material](Material.md),
 [Physics](Physics.md),

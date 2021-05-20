@@ -179,6 +179,8 @@ vacuum speed of light, $c$.
 
 [build](build.md),
 [CompositeMaterials](CompositeMaterials.md),
+[dcs](dcs.md),
+[elastic](elastic.md),
 [Element](Element.md),
 [Material](Material.md),
 [Physics](Physics.md).

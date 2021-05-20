@@ -8,7 +8,6 @@ local clib = require('pumas.clib')
 local error = require('pumas.error')
 local metatype = require('pumas.metatype')
 
--- XXX Document the dcs API
 local Dcs = {}
 
 

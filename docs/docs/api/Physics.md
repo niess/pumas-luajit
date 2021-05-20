@@ -66,6 +66,8 @@ local physics = pumas.Physics('share/materials/standard')
 
 [build](physics/build.md),
 [CompositeMaterials](physics/CompositeMaterials.md),
+[dcs](physics/dcs.md),
+[elastic](physics/elastic.md),
 [Element](physics/Element.md),
 [Material](physics/Material.md),
 [Physics](physics/Physics.md),

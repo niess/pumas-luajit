@@ -59,6 +59,8 @@ pumas.Material{density=, (elements)=, (formula)=, (I)=}
 
 [build](build.md),
 [CompositeMaterials](CompositeMaterials.md),
+[dcs](dcs.md),
+[elastic](elastic.md),
 [Element](Element.md),
 [Physics](Physics.md),
 [TabulatedMaterial](TabulatedMaterial.md).

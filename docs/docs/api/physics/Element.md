@@ -46,6 +46,8 @@ pumas.Element(element)
 
 [build](build.md),
 [CompositeMaterials](CompositeMaterials.md),
+[dcs](dcs.md),
+[elastic](elastic.md),
 [Material](Material.md),
 [Physics](Physics.md),
 [TabulatedMaterial](TabulatedMaterial.md).
