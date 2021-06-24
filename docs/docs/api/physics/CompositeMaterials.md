@@ -32,6 +32,7 @@ names but with some restrictions detailed below.
 [build](build.md),
 [dcs](dcs.md),
 [elastic](elastic.md),
+[electronic](electronic.md),
 [Element](Element.md),
 [Material](Material.md),
 [Physics](Physics.md),

@@ -31,6 +31,7 @@ build = {
       ['pumas.data.materials'] = 'src/pumas/data/materials.lua',
       ['pumas.dcs'] = 'src/pumas/dcs.lua',
       ['pumas.elastic'] = 'src/pumas/elastic.lua',
+      ['pumas.electronic'] = 'src/pumas/electronic.lua',
       ['pumas.element'] = 'src/pumas/element.lua',
       ['pumas.enum'] = 'src/pumas/enum.lua',
       ['pumas.error'] = 'src/pumas/error.lua',

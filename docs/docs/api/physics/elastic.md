@@ -9,8 +9,10 @@ elastic interactions as detailed below.
 
 ## See also
 
+[build](build.md),
 [CompositeMaterials](CompositeMaterials.md),
 [dcs](dcs.md),
+[electronic](electronic.md),
 [Element](Element.md),
 [Material](Material.md),
 [Physics](Physics.md),
@@ -65,7 +67,7 @@ elastic.dcs(Z, A, mass, energy, theta)
 <div markdown="1" class="shaded-box fancy">
 ## elastic.length
 
-The interaction length of the first transport path length for elastic processes.
+The interaction length or the first transport path length for elastic processes.
 {: .justify}
 
 ---

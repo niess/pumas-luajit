@@ -239,7 +239,8 @@ local function getdata (ref, map)
                     line_index = line_index + 1
                 end
             elseif line_index == 2 then
-                local v = line:gsub('[()%[%]</td>]', '')
+                local v = line:gsub('[(]%d+[)]', '')
+                              :gsub('[%[%]</td>]', '')
                 data[key] = tonumber(v)
                 key = nil
                 line_index = 0

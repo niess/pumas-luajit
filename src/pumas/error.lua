@@ -65,10 +65,15 @@ end
 -------------------------------------------------------------------------------
 -- Generic error messages formater
 -------------------------------------------------------------------------------
-function error_.raise (args)
+function error_.raise (args, c_msg)
     local msg
     if type(args) == 'string' then
-        msg = args
+        if c_msg then
+            -- This is an FFI error message
+            msg = c_msg:gsub('?', args, 1)
+        else
+            msg = args
+        end
     else
         -- Format the error message
         msg = {}

@@ -71,8 +71,10 @@ local dcs_ABB = pumas.dcs['bremsstrahlung ABB']
 
 ## See also
 
+[build](build.md),
 [CompositeMaterials](CompositeMaterials.md),
 [elastic](elastic.md),
+[electronic](electronic.md),
 [Element](Element.md),
 [Material](Material.md),
 [Physics](Physics.md),

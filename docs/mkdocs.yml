@@ -43,6 +43,7 @@ nav:
     - CompositeMaterials: api/physics/CompositeMaterials.md
     - dcs: api/physics/dcs.md
     - elastic: api/physics/elastic.md
+    - electronic: api/physics/electronic.md
     - Element: api/physics/Element.md
     - Material: api/physics/Material.md
     - Physics: api/physics/Physics.md

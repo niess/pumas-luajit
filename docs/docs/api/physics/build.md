@@ -78,6 +78,7 @@ pumas.build{
 [CompositeMaterials](CompositeMaterials.md),
 [dcs](dcs.md),
 [elastic](elastic.md),
+[electronic](electronic.md),
 [Element](Element.md),
 [Material](Material.md),
 [Physics](Physics.md),
